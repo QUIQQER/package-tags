@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+    <types>
+
+        <type type="types/tag-listing">
+            <locale group="quiqqer/tags" var="admin.types.tag.listing" />
+            <desc>
+                <locale group="quiqqer/tags" var="admin.types.tag.listing.desc" />
+            </desc>
+        </type>
+
+        <type type="types/tag">
+            <locale group="quiqqer/tags" var="admin.types.tag" />
+            <desc>
+                <locale group="quiqqer/tags" var="admin.types.tag.desc" />
+            </desc>
+        </type>
+
+        <type type="types/tag-search">
+            <locale group="quiqqer/tags" var="admin.types.tag.search" />
+            <desc>
+                <locale group="quiqqer/tags" var="admin.types.tag.search.desc" />
+            </desc>
+        </type>
+
+    </types>
+
+</site>

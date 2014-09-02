@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+
+.qui-tags-add-window label,
+.qui-tags-add-window input,
+.qui-tags-add-window textarea {
+    float: left;
+    width: 100%;
+}
+
+.qui-tags-add-window label {
+    cursor: pointer;
+    line-height: 30px;
+}
+
+.qui-tags-add-window input {
+    margin-bottom: 10px;
+}
+
+.qui-tags-add-window textarea {
+    height : 140px;
+}
