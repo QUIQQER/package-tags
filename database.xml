@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+
+    <projects>
+
+        <table name="tags">
+            <field type="varchar( 40 ) NOT NULL">tag</field>
+            <field type="text NOT NULL">ptags</field>
+            <field type="varchar( 128 ) NOT NULL">title</field>
+            <field type="text default NULL">desc</field>
+            <field type="text default NULL">image</field>
+            <field type="varchar( 20 ) default NULL">url</field>
+        </table>
+
+        <table name="cache">
+            <field type="varchar( 40 ) NOT NULL">tag</field>
+            <field type="text NOT NULL">sites</field>
+        </table>
+
+        <table name="siteCache">
+            <field type="bigint( 20 ) NOT NULL">id</field>
+            <field type="varchar( 200 )">name</field>
+            <field type="tinytext">title</field>
+            <field type="text NOT NULL">tags</field>
+            <field type="timestamp">c_date</field>
+            <field type="timestamp">e_date</field>
+        </table>
+
+        <table name="sites">
+            <field type="bigint( 20 ) NOT NULL">id</field>
+            <field type="text NOT NULL">tags</field>
+        </table>
+
+    </projects>
+
+</database>
