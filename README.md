@@ -23,6 +23,20 @@ die starre Hierarchisierung der herkömmlichen Navigations-Rubriken wird somit e
 }
 
 ```
-Package require
+Package Name:
 
 + quiqqer/tags
+
+
+## Installation dev
+
+```json
+{
+    "type": "vcs",
+    "url": "git@dev.quiqqer.com:quiqqer/package-tags.git"
+}
+```
+
+```bash
+php var/composer/composer.phar --working-dir="var/composer/" require "quiqqer/tags:dev-master"
+```
