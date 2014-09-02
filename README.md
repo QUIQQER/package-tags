@@ -9,3 +9,20 @@ an die besuchten Seiten frei wählbare Begriffe zu hängen (die Texte werden qua
 Dadurch lassen sich Artikel in unterschiedliche Themenbereiche gleichzeitig einsortieren;
 die starre Hierarchisierung der herkömmlichen Navigations-Rubriken wird somit ergänzt oder ersetzt.
 
+
+# Installation
+
+```json
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://update.quiqqer.com/"
+        }
+    ]
+}
+
+```
+Package require
+
++ quiqqer/tags
