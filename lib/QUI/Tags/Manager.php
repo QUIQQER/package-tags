@@ -207,12 +207,21 @@ class Manager
 
     /**
      * Return all tags from a project
+     * if params set, the return is an grid result array
      *
      * @param Array $params - Grid Params
      * @return Array
      */
     public function getList($params=array())
     {
+        if ( empty( $params ) )
+        {
+            return \QUI::getDataBase()->fetch(array(
+                'from'  => \QUI::getDBProjectTableName( 'tags', $this->_Project ),
+                'order' => 'tag'
+            ));
+        }
+
         $Grid = new \QUI\Utils\Grid();
 
         $params = array_merge( $Grid->parseDBParams( $params ), array(
@@ -220,9 +229,200 @@ class Manager
             'order' => 'tag'
         ));
 
-        $result = \QUI::getDataBase()->fetch( $params );
-
-        return $result;
+        return \QUI::getDataBase()->fetch( $params );
     }
 
+    /**
+     * Gibt die Tags, welche in "Beziehung" zu diesem Tag stehen, zurück
+     * D.h. Welche Tags die Suche verkleinern können um noch Ergebnisse zu bekommen
+     *
+     * @param Array $tags
+     * @return Array
+     */
+    public function getRelationTags($tags)
+    {
+        if ( !is_array( $tags ) ) {
+            return array();
+        }
+
+        if ( empty( $tags ) ) {
+            return array();
+        }
+
+        // seitenids bekommen
+        $str = '';
+
+        for ( $i = 0, $len = count( $tags ); $i < $len; $i++ )
+        {
+            $str .= ' tag = "'. $this->clearTagName( $tags[ $i ] ) .'"';
+
+            if ( $i != $len - 1 ) {
+                $str .= ' OR ';
+            }
+        }
+
+        $DataBase = \QUI::getDataBase();
+
+        $result = $DataBase->fetch(array(
+            'from'  => \QUI::getDBProjectTableName( 'tags_siteCache', $this->_Project ),
+            'where' => $str
+        ));
+
+        if ( !isset( $result[0] ) ) {
+            return $tags;
+        }
+
+        $ids = array();
+
+        foreach ( $result as $entry )
+        {
+            $_ids = explode( ',', $entry['sites'] );
+
+            foreach ( $_ids as $_id )
+            {
+                if ( empty( $_id ) ) {
+                    continue;
+                }
+
+                if ( !isset( $ids[ $_id ] ) )
+                {
+                    $ids[ $_id ] = 1;
+                    continue;
+                }
+
+                $ids[ $_id ]++;
+            }
+        }
+
+        // rausfiltern welche tags nur einmal vorkommen
+        $_ids     = array();
+        $tagcount = count( $tags );
+
+        foreach ( $ids as $id => $count )
+        {
+            if ( $count >= $tagcount ) {
+                $_ids[] = $id;
+            }
+        }
+
+        $ids = $_ids;
+        $ids = array_unique( $ids );
+
+        if ( empty( $_ids ) ) {
+            return array();
+        }
+
+
+        // tags der ids bekommen
+        $ids = implode( ',', $ids );
+        $ids = trim( $ids, ',' );
+
+
+        $result = $DataBase->fetch(array(
+            'from'  => \QUI::getDBProjectTableName( 'tags_sites', $this->_Project ),
+            'where' => 'id in ('. $ids .')'
+        ));
+
+        $tag_str = '';
+
+        foreach ( $result as $entry ) {
+            $tag_str .= $entry['tags'];
+        }
+
+        $tag_str = str_replace( ',,', ',', $tag_str );
+        $tag_str = trim( $tag_str, ',' );
+        $tag_str = explode( ',', $tag_str );
+
+        foreach ( $tags as $_tag ) {
+            $tag_str[] = $_tag;
+        }
+
+
+        $tags = array_unique( $tag_str );
+        sort( $tags );
+
+        return $tags;
+    }
+
+
+    /**
+     * site methods
+     */
+
+    /**
+     * Set tags to a site
+     *
+     * @param String $siteId - id of the Site ID
+     * @param Array $tags - Tag List
+     */
+    public function setSiteTags($siteId, $tags)
+    {
+        if ( !is_array( $tags ) ) {
+            return;
+        }
+
+        $list  = array();
+        $table = \QUI::getDBProjectTableName( 'tags_sites', $this->_Project );
+        $Site  = $this->_Project->get( $siteId );
+
+
+        foreach ( $tags as $tag )
+        {
+            if ( $this->existsTag( $tag ) ) {
+                $list[] = $tag;
+            }
+        }
+
+
+
+        // entry exists?
+        $result = \QUI::getDataBase()->fetch(array(
+            'from'  => $table,
+            'where' => array(
+                'id' => $Site->getId()
+            ),
+            'limit' => 1
+        ));
+
+        if ( !isset( $result[ 0 ] ) )
+        {
+            \QUI::getDataBase()->insert($table, array(
+                'id' => $Site->getId()
+            ));
+        }
+
+
+        \QUI::getDataBase()->update(
+            $table,
+            array( 'tags' => ','. implode( ',', $list ) .',' ),
+            array( 'id' => $Site->getId() )
+        );
+    }
+
+    /**
+     * Get the tags from a site
+     *
+     * @param unknown $siteId
+     * @return array
+     */
+    public function getSiteTags($siteId)
+    {
+        $result = \QUI::getDataBase()->fetch(array(
+            'from'  => \QUI::getDBProjectTableName( 'tags_sites', $this->_Project ),
+            'where' => array(
+                'id' => $siteId
+            ),
+            'limit' => 1
+        ));
+
+        if ( !isset( $result[ 0 ] ) ) {
+            return array();
+        }
+
+        $tags = str_replace( ',,', ',', $result[ 0 ][ 'tags' ] );
+        $tags = trim( $tags, ',' );
+        $tags = explode( ',', $tags );
+
+        return $tags;
+    }
 }

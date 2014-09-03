@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+
+.qui-tags label {
+    line-height: 30px;
+    float: left;
+    width: 100%;
+}

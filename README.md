@@ -40,3 +40,21 @@ Package Name:
 ```bash
 php var/composer/composer.phar --working-dir="var/composer/" require "quiqqer/tags:dev-master"
 ```
+
+
+## Entwickler
+
+Eine Beisitzt folgende neue Attribute:
+
+- (array) quiqqer.tags.tagList
+
+```html
+{$Site->getAttribute('quiqqer.tags.tagList')}
+```
+
+```html
+{assign var=tags value=$Site->getAttribute('quiqqer.tags.tagList')}
+{foreach from=$tags entry=tag}
+    {$tag}
+{/foreach}
+```

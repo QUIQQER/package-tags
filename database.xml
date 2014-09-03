@@ -26,8 +26,7 @@
             <field type="timestamp">e_date</field>
         </table>
 
-        <table name="tags_sites" no-site-reference="1">
-            <field type="bigint( 20 ) NOT NULL PRIMARY KEY">id</field>
+        <table name="tags_sites" no-auto-update="1">
             <field type="text">tags</field>
         </table>
 

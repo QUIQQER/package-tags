@@ -26,4 +26,16 @@
 
     </types>
 
+
+    <!-- extend every panel -->
+    <window>
+        <tab name="quiqqer.tags">
+            <text>
+                <locale group="quiqqer/tags" var="panel.title" />
+            </text>
+            <image>icon-tags</image>
+            <onload require="URL_OPT_DIR/quiqqer/tags/bin/Site"></onload>
+        </tab>
+    </window>
+
 </site>
