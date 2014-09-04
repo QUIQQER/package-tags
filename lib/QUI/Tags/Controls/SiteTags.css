@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+.qui-tags-sitetags {
+    padding-bottom: 10px !important;
+}
+
+.qui-tags-sitetags-title {
+    color: #999;
+    float: left;
+    line-height: 24px;
+    margin-right: 20px
+}
+
+.qui-tags-tag {
+    background-color: #EFF0F0;
+    border: 1px solid #D6D9D9;
+    border-radius: 3px;
+        -webkit-border-radius: 3px;
+    color: #99A2A6 !important;
+    float: left;
+    margin: 0 5px 5px 0;
+    padding: 3px 10px;
+    position: relative;
+    text-decoration: none;
+}
+
+.qui-tags-tag:hover {
+    color: #899195;
+    background-color: #FFFFFF;
+    text-decoration: none !important;
+}

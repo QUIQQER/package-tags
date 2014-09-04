@@ -1,4 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <locales>
 
+    <groups name="quiqqer/tags" type="php,js">
+
+        <locale name="message.no.tags.found">
+            <de><![CDATA[Keine tags gefunden]]></de>
+            <en><![CDATA[No tags found]]></en>
+        </locale>
+
+    </groups>
+
+    <groups name="quiqqer/tags" type="php">
+        <!-- types -->
+        <locale name="admin.types.tag.listing">
+            <de><![CDATA[QUIQQER : Tag Liste]]></de>
+            <en><![CDATA[QUIQQER : Tag listing]]></en>
+        </locale>
+        <locale name="admin.types.tag.listing.desc">
+            <de><![CDATA[]]></de>
+            <en><![CDATA[]]></en>
+        </locale>
+
+        <locale name="admin.types.tag.tag">
+            <de><![CDATA[QUIQQER : Einzelner Tag]]></de>
+            <en><![CDATA[QUIQQER : Single tag]]></en>
+        </locale>
+        <locale name="admin.types.tag.tag.desc">
+            <de><![CDATA[QUIQQER : Einzelner Tag]]></de>
+            <en><![CDATA[QUIQQER : Single tag]]></en>
+        </locale>
+
+        <locale name="admin.types.tag.search">
+            <de><![CDATA[QUIQQER : Tag Suche]]></de>
+            <en><![CDATA[QUIQQER : Tag Search]]></en>
+        </locale>
+        <locale name="admin.types.tag.search.desc">
+            <de><![CDATA[QUIQQER : Tag Suche]]></de>
+            <en><![CDATA[QUIQQER : Tag Search]]></en>
+        </locale>
+
+
+    </groups>
+
+    <groups name="quiqqer/tags" type="js">
+
+    </groups>
+
+
+
 </locales>

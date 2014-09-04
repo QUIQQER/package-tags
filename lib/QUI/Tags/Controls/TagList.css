@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+
+.quiqqer-tags-menu {
+    margin: 20px 0 0 0;
+    padding: 0 !important;
+}
+
+.quiqqer-tags-menu-tags-menu .entry {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background: #dedede;
+}
+
+.quiqqer-tags-menu .entry a {
+    float: left;
+    text-align: center;
+    text-decoration: none;
+    line-height: 60px;
+    font-size: 18px;
+    width: 100%;
+
+    color: #212527;
+
+    -moz-outline: none;
+    outline: none;
+}
+
+.quiqqer-tags-menu .active a,
+.quiqqer-tags-menu .entry a:hover {
+    background: #333333 !important;
+    color: #fff !important;
+}
+
+.quiqqer-tags-list {
+    float: left;
+    clear: both;
+    margin: 40px 0 0 0;
+}
+
+.quiqqer-tags-list ul {
+    padding: 0 !important;
+}
+
+.quiqqer-tags-list li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 20px 20px 20px;
+    min-height: 200px;
+    border-bottom: 1px solid #D0D3D3;
+}

@@ -44,9 +44,9 @@ php var/composer/composer.phar --working-dir="var/composer/" require "quiqqer/ta
 
 ## Entwickler
 
-Eine Beisitzt folgende neue Attribute:
+Eine Seite besitzt folgende neue Attribute:
 
-- (array) quiqqer.tags.tagList
+- (array) **quiqqer.tags.tagList**
 
 ```html
 {$Site->getAttribute('quiqqer.tags.tagList')}
@@ -58,3 +58,10 @@ Eine Beisitzt folgende neue Attribute:
     {$tag}
 {/foreach}
 ```
+
+### Controls
+
+{control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
+{control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
+
+

@@ -3,7 +3,7 @@
 
     <types>
 
-        <type type="types/tag-listing">
+        <type type="types/tag-listing" icon="icon-tag">
             <locale group="quiqqer/tags" var="admin.types.tag.listing" />
             <desc>
                 <locale group="quiqqer/tags" var="admin.types.tag.listing.desc" />

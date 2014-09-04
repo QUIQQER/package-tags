@@ -25,6 +25,12 @@ class Manager
     protected $_Project;
 
     /**
+     * tag list
+     * @var array
+     */
+    protected $_tags = array();
+
+    /**
      * constructor
      * @param \QUI\Projects\Project $Project
      */
@@ -186,6 +192,10 @@ class Manager
      */
     public function get($tag)
     {
+        if ( isset( $this->_tags[ $tag ] ) ) {
+            return $this->_tags[ $tag ];
+        }
+
         $result = \QUI::getDataBase()->fetch(array(
             'from'  => \QUI::getDBProjectTableName( 'tags', $this->_Project ),
             'where' => array(
@@ -201,6 +211,8 @@ class Manager
                 404
             );
         }
+
+        $this->_tags[ $tag ] = $result[ 0 ];
 
         return $result[ 0 ];
     }

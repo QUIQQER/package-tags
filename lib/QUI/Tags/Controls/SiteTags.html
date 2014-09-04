@@ -1,0 +1,23 @@
+{assign var=tags value=$Site->getAttribute('quiqqer.tags.tagList')}
+<div class="qui-tags-sitetags">
+
+    {if $this->getAttribute('hideTitle') !== true}
+    <span class="qui-tags-sitetags-title">
+        <span class="icon-tag"></span>&nbsp;
+        {t}quiqqer/tags control.site.tags.title{/t}
+    </span>
+    {/if}
+
+    {foreach from=$tags item=tag}
+    {assign var=tagData value=$TagManager->get( $tag )}
+    <a href="{url site=$SearchSite searchstring=$tag}"
+       class="qui-tags-tag"
+    >
+        {if $tagData.title}
+            {$tagData.title}
+        {else}
+            {$tag}
+        {/if}
+    </a>
+    {/foreach}
+</div>
