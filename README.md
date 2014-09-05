@@ -59,9 +59,22 @@ Eine Seite besitzt folgende neue Attribute:
 {/foreach}
 ```
 
-### Controls
+### Controls die mitgeliefert werden
 
-{control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
-{control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
+## {control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
 
+Listet die Tags einer Seite auf
+
+**Attribute**
+- {\QUI\Projects\Project\Site} Site - Seite für die die Tags angezeigt werden soll
+- {Bool} hideTitle - [optional] zeigt den Titel vor den Tags an oder nicht an
+
+
+## {control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
+
+Zeigt eine Tag Liste an. Tags anzeigen von A-Z
+
+**Attribute**
+- {\QUI\Projects\Project\Site} Site - [optional] Die Liste selbst, wenn keine Liste angegeben wird, wird eine Seite types:tag-listing gesucht
+- {\QUI\Projects\Project} Project - [optional] Project der Liste, wenn kein Projekt angegeben wird, wird das Projekt der Site verwendet
 

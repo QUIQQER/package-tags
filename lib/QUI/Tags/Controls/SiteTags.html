@@ -1,3 +1,10 @@
+{*
+
+    Listet die Tags einer Seite auf
+
+    {control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
+
+*}
 {assign var=tags value=$Site->getAttribute('quiqqer.tags.tagList')}
 <div class="qui-tags-sitetags">
 
