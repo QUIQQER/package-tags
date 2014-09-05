@@ -84,6 +84,10 @@
             <de><![CDATA[Markierte Tags löschen]]></de>
             <en><![CDATA[Delete marked tags]]></en>
         </locale>
+        <locale name="panel.manager.image.tag">
+            <de><![CDATA[Tag Bild]]></de>
+            <en><![CDATA[Image for the tag]]></en>
+        </locale>
 
 
         <!-- panel add window -->
@@ -91,6 +95,7 @@
             <de><![CDATA[Tag hinzufügen]]></de>
             <en><![CDATA[Add a Tag]]></en>
         </locale>
+
 
         <!-- panel delete window -->
         <locale name="panel.delete.window.title">

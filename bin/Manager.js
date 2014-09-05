@@ -23,13 +23,14 @@ define([
     'qui/controls/windows/Confirm',
     'qui/controls/buttons/Select',
     'controls/grid/Grid',
+    'utils/Controls',
     'Ajax',
     'Locale',
     'Projects',
 
     'css!URL_OPT_DIR/quiqqer/tags/bin/Manager.css'
 
-], function(QUI, QUIPanel, QUIConfirm, QUISelect, Grid, Ajax, Locale, Projects)
+], function(QUI, QUIPanel, QUIConfirm, QUISelect, Grid, ControlUtils, Ajax, Locale, Projects)
 {
     "use strict";
 
@@ -373,10 +374,17 @@ define([
                                 Locale.get( lg, 'tag' ) +
                             '</label>'+
                             '<input type="text" name="tag" id="field-tag" />'+
+
                             '<label for="field-title">'+
                                 Locale.get( 'quiqqer/system', 'title' ) +
                             '</label>'+
                             '<input type="text" name="title" id="field-title" />'+
+
+                            '<label for="field-desc">'+
+                                Locale.get( lg, 'panel.manager.image.tag' ) +
+                            '</label>'+
+                            '<input name="image" id="field-image" class="media-image" type="text" />' +
+
                             '<label for="field-desc">'+
                                 Locale.get( 'quiqqer/system', 'description' ) +
                             '</label>'+
@@ -385,7 +393,10 @@ define([
 
                         var Tag   = Content.getElement( '[name="tag"]' ),
                             Title = Content.getElement( '[name="title"]' ),
-                            Desc  = Content.getElement( '[name="desc"]' );
+                            Desc  = Content.getElement( '[name="desc"]' ),
+                            Img   = Content.getElement( '[name="image"]' );
+
+                        ControlUtils.parse( Content );
 
                         (function()
                         {
@@ -406,6 +417,7 @@ define([
                             Tag.value   = tag;
                             Title.value = data.title,
                             Desc.value  = data.desc;
+                            Img.value   = data.image;
 
                             Win.Loader.hide();
                         }, {
@@ -421,13 +433,15 @@ define([
                         var Content = this.getContent(),
                             Tag     = Content.getElement( '[name="tag"]' ),
                             Title   = Content.getElement( '[name="title"]' ),
-                            Desc    = Content.getElement( '[name="desc"]' );
+                            Desc    = Content.getElement( '[name="desc"]' ),
+                            Img     = Content.getElement( '[name="image"]' );
 
                         Win.Loader.show();
 
                         var tagParams = {
                             title : Title.value,
-                            desc  : Desc.value
+                            desc  : Desc.value,
+                            image : Img.value
                         };
 
                         var callback = function() {

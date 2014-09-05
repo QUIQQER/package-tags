@@ -66,8 +66,8 @@ Eine Seite besitzt folgende neue Attribute:
 Listet die Tags einer Seite auf
 
 **Attribute**
-- {\QUI\Projects\Project\Site} Site - Seite für die die Tags angezeigt werden soll
-- {Bool} hideTitle - [optional] zeigt den Titel vor den Tags an oder nicht an
++ {\QUI\Projects\Project\Site} Site - Seite für die die Tags angezeigt werden soll
++ {Bool} hideTitle - [optional] zeigt den Titel vor den Tags an oder nicht an
 
 
 ### {control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
@@ -75,6 +75,6 @@ Listet die Tags einer Seite auf
 Zeigt eine Tag Liste an. Tags anzeigen von A-Z
 
 **Attribute**
-- {\QUI\Projects\Project\Site} Site - [optional] Die Liste selbst, wenn keine Liste angegeben wird, wird eine Seite types:tag-listing gesucht
-- {\QUI\Projects\Project} Project - [optional] Project der Liste, wenn kein Projekt angegeben wird, wird das Projekt der Site verwendet
++ {\QUI\Projects\Project\Site} Site - [optional] Die Liste selbst, wenn keine Liste angegeben wird, wird eine Seite types:tag-listing gesucht
++ {\QUI\Projects\Project} Project - [optional] Project der Liste, wenn kein Projekt angegeben wird, wird das Projekt der Site verwendet
 
