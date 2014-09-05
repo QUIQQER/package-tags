@@ -25,11 +25,11 @@
 
 
     <groups name="quiqqer/tags" datatype="php">
-        <locale name="menu.tags.manager">
+        <locale name="menu.tags">
             <de><![CDATA[Tags]]></de>
             <en><![CDATA[Tags]]></en>
         </locale>
-        <locale name="menu.tags.">
+        <locale name="menu.tags.manager">
             <de><![CDATA[Tag Verwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
         </locale>

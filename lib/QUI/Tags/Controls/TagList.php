@@ -66,7 +66,7 @@ class TagList extends \QUI\Control
 
 
         $Tags = new \QUI\Tags\Manager( $Project );
-        $tags = $Tags->getList();
+        $tags = $this->getList( $needle );
 
         // Sucheseite finden
         $result = $Project->getSites(array(
@@ -88,6 +88,61 @@ class TagList extends \QUI\Control
 
 
         return $Engine->fetch( dirname( __FILE__ ) .'/TagList.html' );
+    }
+
+    /**
+     * Return a tag list by its sektor
+     *
+     * @param String $sektor - tag sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz"
+     * @return Array
+     */
+    public function getList($sektor)
+    {
+        switch ( $sektor )
+        {
+            default:
+            case 'abc':
+                $where = 'tag LIKE "a%" OR tag LIKE "b%" OR tag LIKE "c%"';
+            break;
+
+            case 'def':
+                $where = 'tag LIKE "d%" OR tag LIKE "e%" OR tag LIKE "f%"';
+            break;
+
+            case 'ghi':
+                $where = 'tag LIKE "g%" OR tag LIKE "h%" OR tag LIKE "i%"';
+            break;
+
+            case 'jkl':
+                $where = 'tag LIKE "j%" OR tag LIKE "k%" OR tag LIKE "l%"';
+            break;
+
+            case 'mno':
+                $where = 'tag LIKE "m%" OR tag LIKE "n%" OR tag LIKE "o%"';
+            break;
+
+            case 'pqr':
+                $where = 'tag LIKE "p%" OR tag LIKE "q%" OR tag LIKE "r%"';
+            break;
+
+            case 'stu':
+                $where = 'tag LIKE "s%" OR tag LIKE "t%" OR tag LIKE "u%"';
+            break;
+
+            case 'vz':
+                $where = 'tag LIKE "v%" OR
+                        tag LIKE "w%" OR
+                        tag LIKE "x%" OR
+                        tag LIKE "y%" OR
+                        tag LIKE "z%"';
+            break;
+        }
+
+        return \QUI::getDataBase()->fetch(array(
+            'from'  => \QUI::getDBProjectTableName( 'tags', $this->_getProject() ),
+            'order' => 'tag',
+            'where' => $where
+        ));
     }
 
     /**

@@ -82,12 +82,18 @@
     </li>
 </ul>
 
-<div class="quiqqer-tags-list grid-parent grid-100">
-    <ul class="grid-100">
+<div class="quiqqer-tags-list-result grid-parent grid-100">
+    <ul class="grid-100 quiqqer-tags-list-result-ul">
         {foreach from=$tags item=tag}
-        <li class="grid-50">
+        <li class="grid-50 quiqqer-tags-list-result-li">
             <h3>
-                <a href="{url site=$SearchSite searchstring=$tag.tag}">{$tag.title}</a>
+                <a href="{url site=$SearchSite searchstring=$tag.tag}" class="quiqqer-tags-list-result-header-link">
+                    {if $tag.title}
+                        {$tag.title}
+                    {else}
+                        {$tag.tag}
+                    {/if}
+                </a>
             </h3>
 
             <a href="{url site=$SearchSite searchstring=$tag.tag}">
@@ -100,7 +106,9 @@
         </li>
 
         {foreachelse}
-            <li>{t}quiqqer/tags message.no.tags.found{/t}</li>
+            <li class="grid-100 quiqqer-tags-list-result-li">
+                {t}quiqqer/tags message.no.tags.found{/t}
+            </li>
         {/foreach}
     </ul>
 </div>
