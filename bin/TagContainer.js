@@ -5,6 +5,11 @@
  * @module URL_OPT_DIR/quiqqer/tags/bin/TagContainer.js
  * @author www.pcsg.de (Henning Leutz)
  *
+ * @require qui/QUI
+ * @require qui/controls/Control
+ * @require qui/controls/loader/Loader
+ * @require css!URL_OPT_DIR/quiqqer/tags/bin/TagContainer.css
+ *
  * @event onAdd [ {self}, {String} tag ]
  * @event onRemove [ {self}, {String} tag ]
  */
@@ -188,5 +193,4 @@ define([
         }
 
     });
-
 });

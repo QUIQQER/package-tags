@@ -1,6 +1,19 @@
 
 /**
+ * Tag Manager
  *
+ * @module URL_OPT_DIR/quiqqer/tags/bin/Manager
+ * @author www.pcsg.de (Henning Leutz)
+ *
+ * @require qui/QUI
+ * @require qui/controls/desktop/Panel
+ * @require qui/controls/windows/Confirm
+ * @require qui/controls/buttons/Select
+ * @require controls/grid/Grid
+ * @require Ajax
+ * @require Locale
+ * @require Projects
+ * @require css!URL_OPT_DIR/quiqqer/tags/bin/Manager.css
  */
 
 define([
@@ -20,6 +33,8 @@ define([
 {
     "use strict";
 
+    var lg = 'quiqqer/tags';
+
     return new Class({
 
         Extends : QUIPanel,
@@ -32,7 +47,7 @@ define([
         ],
 
         options : {
-            title : 'Tag Verwaltung'
+            title : Locale.get( lg, 'panel.manager.title' )
         },
 
         initialize : function(options)
@@ -78,7 +93,7 @@ define([
             this.addButton( { type : 'seperator' } );
 
             this.addButton({
-                text      : 'Tag hinzufügen',
+                text      : Locale.get( lg, 'panel.manager.button.add.tag' ),
                 textimage : 'icon-plus',
                 name      : 'add-tag',
                 disabled  : true,
@@ -90,7 +105,7 @@ define([
             });
 
             this.addButton({
-                text      : 'Markierte Tags löschen',
+                text      : Locale.get( lg, 'panel.manager.button.delete.tag' ),
                 textimage : 'icon-trash',
                 name      : 'delete-tag',
                 disabled  : true,
@@ -108,17 +123,17 @@ define([
 
             this.$Grid = new Grid( Container, {
                 columnModel : [{
-                    header    : 'Tag',
+                    header    : Locale.get( lg, 'tag' ),
                     dataIndex : 'tag',
                     dataType  : 'string',
                     width     : 200
                 }, {
-                    header    : 'Title',
+                    header    : Locale.get( 'quiqqer/system', 'title' ),
                     dataIndex : 'title',
                     dataType  : 'string',
                     width     : 200
                 }, {
-                    header    : 'Beschreibung',
+                    header    : Locale.get( 'quiqqer/system', 'description' ),
                     dataIndex : 'desc',
                     dataType  : 'string',
                     width     : 300
@@ -338,7 +353,7 @@ define([
             var self = this;
 
             new QUIConfirm({
-                title     : 'Tag hinzufügen',
+                title     : Locale.get( lg, 'panel.add.window.title' ),
                 icon      : 'icon-plus',
                 maxWidth  : 400,
                 maxHeight : 500,
@@ -354,11 +369,17 @@ define([
                         Content.set(
                             'html',
 
-                            '<label for="field-tag">Tag</label>'+
+                            '<label for="field-tag">'+
+                                Locale.get( lg, 'tag' ) +
+                            '</label>'+
                             '<input type="text" name="tag" id="field-tag" />'+
-                            '<label for="field-title">Title</label>'+
+                            '<label for="field-title">'+
+                                Locale.get( 'quiqqer/system', 'title' ) +
+                            '</label>'+
                             '<input type="text" name="title" id="field-title" />'+
-                            '<label for="field-desc">Beschreibung</label>'+
+                            '<label for="field-desc">'+
+                                Locale.get( 'quiqqer/system', 'description' ) +
+                            '</label>'+
                             '<textarea name="desc" id="field-desc"></textarea>'
                         );
 
@@ -441,7 +462,7 @@ define([
 
 
             new QUIConfirm({
-                title     : 'Tags löschen',
+                title     : Locale.get( lg, 'panel.delete.window.title' ),
                 icon      : 'icon-plus',
                 maxWidth  : 600,
                 maxHeight : 300,
@@ -455,8 +476,9 @@ define([
                         Content.set(
                             'html',
 
-                            '<p>Möchten Sie folgende Tags wirklich löschen?</p>' +
-                            '<p><strong>'+ tags.join(', ') +'</strong></p>'
+                            Locale.get( lg, 'panel.delete.window.message', {
+                                tags : tags.join(', ')
+                            })
                         );
                     },
 
@@ -470,7 +492,6 @@ define([
                     }
                 }
             }).open();
-
         }
 
     });

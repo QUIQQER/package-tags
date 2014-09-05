@@ -1,4 +1,21 @@
 
+/**
+ * Tag Verwaltung für eine Seite
+ *
+ * @module URL_OPT_DIR/quiqqer/tags/bin/Site
+ * @author www.pcsg.de (Henning Leutz)
+ *
+ * @require qui/QUI
+ * @require qui/controls/Control
+ * @require qui/controls/loader/Loader
+ * @require qui/controls/windows/Confirm
+ * @require URL_OPT_DIR/quiqqer/tags/bin/TagContainer
+ * @require Ajax
+ * @require Locale
+ * @require Projects
+ * @require css!URL_OPT_DIR/quiqqer/tags/bin/Site.css
+ */
+
 define([
 
     'qui/QUI',
@@ -17,10 +34,12 @@ define([
 {
     "use strict";
 
+    var lg = 'quiqqer/tags';
+
     return new Class({
 
         Extends : QUIControl,
-        Type    : 'quiqqer/tags/bin/Site',
+        Type    : 'URL_OPT_DIR/quiqqer/tags/bin/Site',
 
         Binds : [
             '$onInject',
@@ -55,13 +74,15 @@ define([
             this.$Elm = new Element('div', {
                 'class' : 'qui-tags qui-box',
                 html    : '<table class="data-table">'+
-                              '<thead><tr><th>Der Seite zugewiesene Tags</th></tr></thead>'+
+                              '<thead><tr><th>'+
+                                  Locale.get( lg, 'site.table.title' ) +
+                              '</th></tr></thead>'+
                               '<tbody>'+
                                   '<tr><td class="odd"></td></tr>'+
                                   '<tr>'+
                                       '<td class="even">'+
                                           '<p class="description">'+
-                                              'Per klick auf das Tagfeld können Sie der Seite Tags hinzufügen'+
+                                              Locale.get( lg, 'site.table.description' ) +
                                           '</p>'+
                                       '</td>'+
                                   '</tr>'+
@@ -212,7 +233,7 @@ define([
             var self = this;
 
             new QUIConfirm({
-                title : 'Tag existiert nicht',
+                title : Locale.get( lg, 'site.window.add.tag.title' ),
                 icon  : 'icon-tag',
                 maxWidth  : 500,
                 maxHeight : 300,
@@ -224,7 +245,9 @@ define([
 
                         Content.set(
                             'html',
-                            '<p>Der Tag <strong>'+ tag +'</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?'
+                            Locale.get( lg, 'site.window.add.tag.title', {
+                                tag : tag
+                            })
                         );
                     },
 
@@ -243,6 +266,5 @@ define([
                 }
             }).open();
         }
-
     });
 });

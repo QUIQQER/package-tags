@@ -3,11 +3,29 @@
 
     <groups name="quiqqer/tags" type="php,js">
 
+        <locale name="exception.tag.already.exists">
+            <de><![CDATA[Der Tag existiert bereits.]]></de>
+            <en><![CDATA[The Tag already exist.]]></en>
+        </locale>
+
+        <locale name="exception.tag.not.found">
+            <de><![CDATA[Der Tag wurde leider nicht gefunden.]]></de>
+            <en><![CDATA[The Tag was not found]]></en>
+        </locale>
+
+
+
+
+
         <locale name="message.no.tags.found">
             <de><![CDATA[Keine tags gefunden]]></de>
             <en><![CDATA[No tags found]]></en>
         </locale>
 
+        <locale name="tag">
+            <de><![CDATA[Tag]]></de>
+            <en><![CDATA[Tag]]></en>
+        </locale>
     </groups>
 
     <groups name="quiqqer/tags" type="php">
@@ -39,10 +57,73 @@
             <en><![CDATA[QUIQQER : Tag Search]]></en>
         </locale>
 
+        <locale name="site.panel.category.title">
+            <de><![CDATA[Tags]]></de>
+            <en><![CDATA[Tags]]></en>
+        </locale>
+
 
     </groups>
 
     <groups name="quiqqer/tags" type="js">
+
+        <!-- panel -->
+        <locale name="panel.manager.title">
+            <de><![CDATA[Tag Verwaltung]]></de>
+            <en><![CDATA[Tag Management]]></en>
+        </locale>
+        <locale name="panel.manager.button.add.tag">
+            <de><![CDATA[Tag hinzufügen]]></de>
+            <en><![CDATA[Add a tag]]></en>
+        </locale>
+        <locale name="panel.manager.button.delete.tag">
+            <de><![CDATA[Markierte Tags löschen]]></de>
+            <en><![CDATA[Delete marked tags]]></en>
+        </locale>
+
+
+        <!-- panel add window -->
+        <locale name="panel.add.window.title">
+            <de><![CDATA[Tag hinzufügen]]></de>
+            <en><![CDATA[Add a Tag]]></en>
+        </locale>
+
+        <!-- panel delete window -->
+        <locale name="panel.delete.window.title">
+            <de><![CDATA[Tag löschen]]></de>
+            <en><![CDATA[Delete a Tag]]></en>
+        </locale>
+        <locale name="panel.delete.window.message">
+            <de><![CDATA[
+                <p>Möchten Sie folgende Tags wirklich löschen?</p>
+                <p><strong>[tags]</strong></p>
+            ]]></de>
+            <en><![CDATA[
+                <p>Do you really want to delete the following tags?</p>
+                <p><strong>[tags]</strong></p>
+            ]]></en>
+        </locale>
+
+        <!-- site -->
+        <locale name="site.table.title">
+            <de><![CDATA[Der Seite zugewiesene Tags]]></de>
+            <en><![CDATA[The page assigned tags]]></en>
+        </locale>
+        <locale name="site.table.description">
+            <de><![CDATA[Per klick auf das Tagfeld können Sie der Seite Tags hinzufügen.]]></de>
+            <en><![CDATA[By clicking on the tag field, you can add tags to the site.]]></en>
+        </locale>
+
+        <locale name="site.window.add.tag.title">
+            <de><![CDATA[Tag existiert nicht]]></de>
+            <en><![CDATA[Tag doesn't exist]]></en>
+        </locale>
+        <locale name="site.window.add.tag.title" html="true">
+            <de><![CDATA[<p>Der Tag <strong>[tag]</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?]]></de>
+            <en><![CDATA[<p>The Tag <strong>[tag]</strong> doesn't exist. Would you add the Tag?]]></en>
+        </locale>
+
+
 
     </groups>
 

@@ -31,7 +31,7 @@
     <window>
         <tab name="quiqqer.tags">
             <text>
-                <locale group="quiqqer/tags" var="panel.title" />
+                <locale group="quiqqer/tags" var="site.panel.category.title" />
             </text>
             <image>icon-tags</image>
             <onload require="URL_OPT_DIR/quiqqer/tags/bin/Site"></onload>
