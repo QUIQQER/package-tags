@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <locales>
 
-    <groups name="quiqqer/tags" type="php,js">
-
+    <groups name="quiqqer/tags" datatype="php,js">
         <locale name="exception.tag.already.exists">
             <de><![CDATA[Der Tag existiert bereits.]]></de>
             <en><![CDATA[The Tag already exist.]]></en>
@@ -12,10 +11,6 @@
             <de><![CDATA[Der Tag wurde leider nicht gefunden.]]></de>
             <en><![CDATA[The Tag was not found]]></en>
         </locale>
-
-
-
-
 
         <locale name="message.no.tags.found">
             <de><![CDATA[Keine tags gefunden]]></de>
@@ -28,7 +23,17 @@
         </locale>
     </groups>
 
-    <groups name="quiqqer/tags" type="php">
+
+    <groups name="quiqqer/tags" datatype="php">
+        <locale name="menu.tags.manager">
+            <de><![CDATA[Tags]]></de>
+            <en><![CDATA[Tags]]></en>
+        </locale>
+        <locale name="menu.tags.">
+            <de><![CDATA[Tag Verwaltung]]></de>
+            <en><![CDATA[Tag Management]]></en>
+        </locale>
+
         <!-- types -->
         <locale name="admin.types.tag.listing">
             <de><![CDATA[QUIQQER : Tag Liste]]></de>
@@ -61,11 +66,10 @@
             <de><![CDATA[Tags]]></de>
             <en><![CDATA[Tags]]></en>
         </locale>
-
-
     </groups>
 
-    <groups name="quiqqer/tags" type="js">
+
+    <groups name="quiqqer/tags" datatype="js">
 
         <!-- panel -->
         <locale name="panel.manager.title">
@@ -122,9 +126,6 @@
             <de><![CDATA[<p>Der Tag <strong>[tag]</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?]]></de>
             <en><![CDATA[<p>The Tag <strong>[tag]</strong> doesn't exist. Would you add the Tag?]]></en>
         </locale>
-
-
-
     </groups>
 
 
