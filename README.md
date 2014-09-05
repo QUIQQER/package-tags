@@ -61,7 +61,7 @@ Eine Seite besitzt folgende neue Attribute:
 
 ### Controls die mitgeliefert werden
 
-## {control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
+#### {control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
 
 Listet die Tags einer Seite auf
 
@@ -70,7 +70,7 @@ Listet die Tags einer Seite auf
 - {Bool} hideTitle - [optional] zeigt den Titel vor den Tags an oder nicht an
 
 
-## {control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
+#### {control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
 
 Zeigt eine Tag Liste an. Tags anzeigen von A-Z
 
