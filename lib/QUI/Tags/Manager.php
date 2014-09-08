@@ -356,6 +356,112 @@ class Manager
         return $tags;
     }
 
+    /**
+     * Return all site ids that have the tags
+     *
+     * @param Array $tags - list of tags
+     * @return Array
+     */
+    public function getSiteIdsFromTags($tags)
+    {
+        $cacheTable = \QUI::getDBProjectTableName( 'tags_cache', $this->_Project );
+
+        if ( !is_array( $tags ) ) {
+            return array();
+        }
+
+        // tag check
+        $tagList = array();
+
+        foreach ( $tags as $tag )
+        {
+            if ( $this->existsTag( $tag ) ) {
+                $tagList[] = $tag;
+            }
+        }
+
+        if ( !empty( $tagList ) ) {
+            return array();
+        }
+
+
+        // search string
+        $where = '';
+
+        for ($i = 0, $len = count( $tagList ); $i < $len; $i++)
+        {
+            $where .= ' tag = "'. $tagList[ $i ] .'"';
+
+            if ( $i != $len-1 ) {
+                $where .= ' OR ';
+            }
+        }
+
+        $result = \QUI::getDataBase()->fetch(array(
+            'from'  => $cacheTable,
+            'where' => $where
+        ));
+
+        if ( !isset( $result[0] ) ) {
+            return array();
+        }
+
+        $sites = array();
+        $ids   = array();
+        $_tmp  = array();
+
+        // filter double tags
+        foreach ( $result as $entry )
+        {
+            $list = explode( ',', $entry['sites'] );
+
+            foreach ( $list as $id )
+            {
+                $id = (int)$id;
+
+                if ( !$id ) {
+                    continue;
+                }
+
+                if ( !isset( $ids[ $id ] ) ) {
+                    $ids[ (int)$id ] = 0;
+                }
+
+                $ids[ (int)$id ]++;
+            }
+        }
+
+        arsort( $ids );
+
+        return $ids;
+    }
+
+    /**
+     * Return all sites that have the tags
+     *
+     * @param Array $tags - list of tags
+     * @return Array
+     */
+    public function getSitesFromTags($tags)
+    {
+        $siteIds = $this->getSiteIdsFromTags( $tags );
+        $result  = array();
+
+        foreach ( $siteIds as $id )
+        {
+            try
+            {
+                $result[] = $this->_Project->get( $id );
+
+            } catch ( \QUI\Exception $Exception )
+            {
+
+            }
+        }
+
+        return $result;
+    }
+
 
     /**
      * site methods

@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+.qui-tags-tag-list-entry {
+    float: left
+}
+
+.qui-tags-tag-content-image {
+    float : left;
+    margin: 0 10px 10px 0;
+}
+

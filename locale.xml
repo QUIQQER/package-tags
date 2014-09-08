@@ -44,11 +44,11 @@
             <en><![CDATA[]]></en>
         </locale>
 
-        <locale name="admin.types.tag.tag">
+        <locale name="admin.types.tag">
             <de><![CDATA[QUIQQER : Einzelner Tag]]></de>
             <en><![CDATA[QUIQQER : Single tag]]></en>
         </locale>
-        <locale name="admin.types.tag.tag.desc">
+        <locale name="admin.types.tag.desc">
             <de><![CDATA[QUIQQER : Einzelner Tag]]></de>
             <en><![CDATA[QUIQQER : Single tag]]></en>
         </locale>
