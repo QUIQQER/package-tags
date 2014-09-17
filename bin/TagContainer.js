@@ -162,7 +162,7 @@ define([
                           '<span class="qui-tags-tag-value">'+ tag +'</span>' +
                           '<span class="icon-remove"></span>',
                 'data-tag' : tag
-            })
+            });
 
             if ( Edit )
             {
