@@ -154,13 +154,24 @@ define([
                 return;
             }
 
+            var Edit = this.$Elm.getElement( '.qui-tags-tag-add' );
+
             var Tag = new Element('div', {
                 'class' : 'qui-tags-tag',
                 html    : '<span class="icon-tag"></span>'+
                           '<span class="qui-tags-tag-value">'+ tag +'</span>' +
                           '<span class="icon-remove"></span>',
                 'data-tag' : tag
-            }).inject( this.$Elm );
+            })
+
+            if ( Edit )
+            {
+                Tag.inject( Edit, 'before' );
+            } else
+            {
+                Tag.inject( this.$Elm );
+            }
+
 
             Tag.getElement( '.icon-remove' ).addEvent('click', function() {
                 this.getParent().destroy();
