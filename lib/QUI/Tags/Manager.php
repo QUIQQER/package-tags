@@ -518,6 +518,21 @@ class Manager
     }
 
     /**
+     * Delete the tags from a site
+     *
+     * @param String $siteId
+     */
+    public function deleteSiteTags($siteId)
+    {
+        $table = \QUI::getDBProjectTableName( 'tags_sites', $this->_Project );
+        $Site  = $this->_Project->get( $siteId );
+
+        \QUI::getDataBase()->delete($table, array(
+            'id' => $Site->getId()
+        ));
+    }
+
+    /**
      * Get the tags from a site
      *
      * @param unknown $siteId

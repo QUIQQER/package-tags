@@ -28,7 +28,7 @@ class Site
             $tags = '';
         }
 
-        if ( !is_string( $tags ) ) {
+        if ( is_string( $tags ) ) {
             $tags = explode( ',', $tags );
         }
 
@@ -58,5 +58,15 @@ class Site
         $tags    = $Manager->getSiteTags( $Site->getId() );
 
         $Site->setAttribute( 'quiqqer.tags.tagList', $tags );
+    }
+
+    /**
+     * event on site destroy
+     * @param \QUI\Projects\Project\Site $Site
+     */
+    static function onDestroy($Site)
+    {
+        $Manager = new \QUI\Tags\Manager( $Site->getProject() );
+        $Manager->deleteSiteTags( $Site->getId() );
     }
 }
