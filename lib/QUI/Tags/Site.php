@@ -28,12 +28,15 @@ class Site
             $tags = '';
         }
 
-        $tags = explode( ',', $tags );
-        $list = array();
+        if ( !is_string( $tags ) ) {
+            $tags = explode( ',', $tags );
+        }
 
         if ( !is_array( $tags ) ) {
             return;
         }
+
+        $list = array();
 
         foreach ( $tags as $tag )
         {
