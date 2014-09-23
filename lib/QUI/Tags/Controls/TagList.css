@@ -2,7 +2,7 @@
 
 .quiqqer-tags-menu {
     background: #DDD;
-    margin: 20px 0 0 0;
+    margin: 20px 0 0 0 !important;
     padding: 0 !important;
 }
 
@@ -47,14 +47,9 @@
     margin: 40px 0 0 0;
 }
 
-.quiqqer-tags-list-result-ul {
-    padding: 0 !important;
-}
-
-.quiqqer-tags-list-result-li {
+.quiqqer-tags-list-result-entry {
     list-style-type: none;
     margin: 0;
-    padding: 20px;
     min-height: 200px;
     border-bottom: 1px solid #D0D3D3;
 }

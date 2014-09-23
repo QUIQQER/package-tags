@@ -1,13 +1,6 @@
 
-{assign var=list value=''}
 {assign var=next value='abc'}
 {assign var=prev value='def'}
-
-{if isset($smarty.request.list)}
-    {assign var=list value=$smarty.request.list}
-{else}
-    {assign var=list value="abc"}
-{/if}
 
 {if $list == 'abc'}
     {assign var=prev value='abc'}
@@ -51,64 +44,62 @@
 
 <ul class="quiqqer-tags-menu grid-parent grid-100">
     <li class="entry grid-10 mobile-grid-50 hide-on-mobile">
-        <a href="{url site=$Site list=$prev}">&lt;</a>
+        <a href="{url site=$Site params=[$prev]}">&lt;</a>
     </li>
     <li class="entry grid-10 mobile-grid-50{if $list == 'abc'} active{/if}">
         <a href="{url site=$Site}" id="tag_ABC">A B C</a>
     </li>
     <li class="entry grid-10 mobile-grid-50{if $list == 'def'} active{/if}">
-        <a href="{url site=$Site list=def}" id="tag_DEF">D E F</a>
+        <a href="{url site=$Site params=[def]}" id="tag_DEF">D E F</a>
     </li>
     <li class="entry grid-10 mobile-grid-50{if $list == 'ghi'} active{/if}">
-        <a href="{url site=$Site list=ghi}" id="tag_GHI">G H I</a>
+        <a href="{url site=$Site params=[ghi]}" id="tag_GHI">G H I</a>
     </li>
     <li class="entry grid-10 mobile-grid-50{if $list == 'jkl'} active{/if}">
-        <a href="{url site=$Site list=jkl}" id="tag_JKL">J K L</a>
+        <a href="{url site=$Site params=[jkl]}" id="tag_JKL">J K L</a>
     </li>
     <li class="entry grid-10 mobile-grid-50{if $list == 'mno'} active{/if}">
-        <a href="{url site=$Site list=mno}" id="tag_MNO">M N O</a>
+        <a href="{url site=$Site params=[mno]}" id="tag_MNO">M N O</a>
     </li>
     <li class="entry grid-10 mobile-grid-50{if $list == 'pqr'} active{/if}">
-        <a href="{url site=$Site list=pqr}" id="tag_PQR">P Q R</a>
+        <a href="{url site=$Site params=[pqr]}" id="tag_PQR">P Q R</a>
     </li>
     <li class="entry grid-10 mobile-grid-50{if $list == 'stu'} active{/if}">
-        <a href="{url site=$Site list=stu}" id="tag_STU">S T U</a>
+        <a href="{url site=$Site params=[stu]}" id="tag_STU">S T U</a>
     </li>
     <li  class="entry grid-10 mobile-grid-50{if $list == 'vz'} active{/if}">
-        <a href="{url site=$Site list=vz}" id="tag_V-Z">V - Z</a>
+        <a href="{url site=$Site params=[vz]}" id="tag_V-Z">V - Z</a>
     </li>
     <li class="entry grid-10 hide-on-mobile">
-        <a href="{url site=$Site list=$next}">&gt;</a>
+        <a href="{url site=$Site params=[$next]}">&gt;</a>
     </li>
 </ul>
 
-<div class="quiqqer-tags-list-result grid-parent grid-100">
-    <ul class="grid-100 quiqqer-tags-list-result-ul">
-        {foreach from=$tags item=tag}
-        <li class="grid-50 quiqqer-tags-list-result-li">
-            <h3>
-                <a href="{url site=$SearchSite searchstring=$tag.tag}" class="quiqqer-tags-list-result-header-link">
-                    {if $tag.title}
-                        {$tag.title}
-                    {else}
-                        {$tag.tag}
-                    {/if}
-                </a>
-            </h3>
-
-            <a href="{url site=$SearchSite searchstring=$tag.tag}">
-                {if $tag.image}
-                    {image src=$tag.image class="quiqqer-tags-list-result-image" width="500"}
+<section class="quiqqer-tags-list-result grid-parent grid-100 mobile-grid-100">
+    {foreach from=$tags item=tag}
+    <article class="grid-50 mobile-grid-100 quiqqer-tags-list-result-entry">
+        <h3>
+            <a href="{url site=$SearchSite params=[ $tag.tag ]}" class="quiqqer-tags-list-result-header-link">
+                {if $tag.title}
+                    {$tag.title}
+                {else}
+                    {$tag.tag}
                 {/if}
             </a>
+        </h3>
 
-            <p>{$tag.desc}</p>
-        </li>
+        <a href="{url site=$SearchSite params=[ $tag.tag ]}">
+            {if $tag.image}
+                {image src=$tag.image class="quiqqer-tags-list-result-image" width="500"}
+            {/if}
+        </a>
 
-        {foreachelse}
-            <li class="grid-100 quiqqer-tags-list-result-li">
-                {t}quiqqer/tags message.no.tags.found{/t}
-            </li>
-        {/foreach}
-    </ul>
-</div>
+        <p>{$tag.desc}</p>
+    </article>
+
+    {foreachelse}
+        <div class="grid-100 quiqqer-tags-list-result-li">
+            {t}quiqqer/tags message.no.tags.found{/t}
+        </div>
+    {/foreach}
+</section>

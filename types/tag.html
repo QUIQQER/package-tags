@@ -1,22 +1,25 @@
-{if $tag.title}
-    <h1>{$tag.title}</h1>
-{else}
-    <h1>{$tag.tag}</h1>
-{/if}
 
-<div class="qui-tags-tag-content grid-100 mobile-grid-100 grid-parent">
-    {if $tag.image}
-        {image src=$tag.image
-            class="qui-tags-tag-content-image"
-            width="150"
-        }
+<section class="content-header grid-100 mobile-grid-100">
+    {if $tag.title}
+        <h1>{$tag.title}</h1>
+    {else}
+        <h1>{$tag.tag}</h1>
     {/if}
 
-    {$tag.desc}
-</div>
+    <div class="content-short qui-tags-tag-content">
+        {if $tag.image}
+            {image src=$tag.image
+                class="qui-tags-tag-content-image"
+                width="150"
+            }
+        {/if}
 
+        {$tag.desc}
+    </div>
+</section>
+
+<section class="content-template grid-100 mobile-grid-100">
 {if count( $sites )}
-
     <ul class="qui-tags-tag-list">
     {foreach from=$sites item=Entry}
     <li class="qui-tags-tag-list-entry">
@@ -42,8 +45,7 @@
     </li>
     {/foreach}
     </ul>
-
-
 {else}
     {t}quiqqer/tags message.types.tag.no.entries.found{/t}
 {/if}
+</section>

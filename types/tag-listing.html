@@ -1,5 +1,21 @@
-<h1>{$Site->getAttribute('title')}</h1>
+<section class="content-header grid-100 mobile-grid-100">
+    <header>
+        <h1>{$Site->getAttribute('title')}</h1>
+    </header>
 
-{$Site->getAttribute('content')}
+    {if $Site->getAttribute('short')}
+    <div class="content-short">
+        {$Site->getAttribute('short')}
+    </div>
+    {/if}
+</section>
 
-{control control="\QUI\Tags\Controls\TagList"}
+{if $Site->getAttribute('content')}
+<section class="content-body grid-100 mobile-grid-100">
+    {$Site->getAttribute('content')}
+</section>
+{/if}
+
+<section class="content-template grid-100 mobile-grid-100">
+    {control control="\QUI\Tags\Controls\TagList"}
+</section>

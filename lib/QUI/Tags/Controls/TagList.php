@@ -38,6 +38,9 @@ class TagList extends \QUI\Control
         $Engine  = \QUI::getTemplateManager()->getEngine();
         $Project = $this->_getProject();
         $Site    = $this->_getSite();
+        $Rewrite = \QUI::getRewrite();
+
+        $urlParams = $Rewrite->getUrlParamsList();
 
         $Engine->assign(array(
             'Project' => $Project,
@@ -48,9 +51,9 @@ class TagList extends \QUI\Control
 
         $needle = 'abc';
 
-        if ( isset( $_REQUEST['list'] ) )
+        if ( !empty( $urlParams ) )
         {
-            switch ( $_REQUEST['list'] )
+            switch ( $urlParams[ 0 ] )
             {
                 case 'def':
                 case 'ghi':
@@ -59,7 +62,7 @@ class TagList extends \QUI\Control
                 case 'pqr':
                 case 'stu':
                 case 'vz':
-                    $needle = $_REQUEST['list'];
+                    $needle = $urlParams[ 0 ];
                 break;
             }
         }
@@ -71,7 +74,7 @@ class TagList extends \QUI\Control
         // Sucheseite finden
         $result = $Project->getSites(array(
             'where' => array(
-                'type' => 'quiqqer/tags:types/search'
+                'type' => 'quiqqer/tags:types/tag'
             )
         ));
 
@@ -83,7 +86,8 @@ class TagList extends \QUI\Control
 
         $Engine->assign(array(
             'tags'       => $tags,
-            'SearchSite' => $SearchSite
+            'SearchSite' => $SearchSite,
+            'list'       => $needle
         ));
 
 

@@ -7,9 +7,16 @@
  */
 
 $Manager = new \QUI\Tags\Manager( $Project );
+$tag     = false;
+
+$urlParams = \QUI::getRewrite()->getUrlParamsList();
+
+if ( isset( $urlParams[ 0 ] ) ) {
+    $tag = $urlParams[ 0 ];
+}
 
 // tag is undefined
-if ( !isset( $_REQUEST['tag'] ) || !$Manager->existsTag( $_REQUEST['tag'] ) )
+if ( !$tag || !$Manager->existsTag( $tag ) )
 {
     // tag liste
     $result = $Project->getSites(array(
@@ -32,10 +39,9 @@ if ( !isset( $_REQUEST['tag'] ) || !$Manager->existsTag( $_REQUEST['tag'] ) )
     exit;
 }
 
-$sites = $Manager->getSitesFromTags( array( $_REQUEST['tag'] ) );
-$tag   = $Manager->get( $_REQUEST['tag'] );
+$sites = $Manager->getSitesFromTags( array( $tag ) );
 
 $Engine->assign(array(
-    'tag'   => $tag,
+    'tag'   => $Manager->get( $tag ),
     'sites' => $sites
 ));
