@@ -7,6 +7,7 @@
 namespace QUI\Tags;
 
 use \QUI\Utils\Security\Orthos;
+use \QUI\Projects\Site\Edit;
 
 /**
  * Tag Manager
@@ -481,8 +482,7 @@ class Manager
 
         $list  = array();
         $table = \QUI::getDBProjectTableName( 'tags_sites', $this->_Project );
-        $Site  = $this->_Project->get( $siteId );
-
+        $Site  = new Edit( $this->_Project, $siteId );
 
         foreach ( $tags as $tag )
         {
@@ -525,7 +525,7 @@ class Manager
     public function deleteSiteTags($siteId)
     {
         $table = \QUI::getDBProjectTableName( 'tags_sites', $this->_Project );
-        $Site  = $this->_Project->get( $siteId );
+        $Site  = new Edit($this->_Project, $siteId );
 
         \QUI::getDataBase()->delete($table, array(
             'id' => $Site->getId()
