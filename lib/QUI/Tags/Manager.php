@@ -381,7 +381,7 @@ class Manager
             }
         }
 
-        if ( !empty( $tagList ) ) {
+        if ( empty( $tagList ) ) {
             return array();
         }
 
