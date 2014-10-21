@@ -389,7 +389,7 @@ class Manager
         // search string
         $where = '';
 
-        for ($i = 0, $len = count( $tagList ); $i < $len; $i++)
+        for ( $i = 0, $len = count( $tagList ); $i < $len; $i++ )
         {
             $where .= ' tag = "'. $tagList[ $i ] .'"';
 
