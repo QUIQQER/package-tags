@@ -448,7 +448,7 @@ class Manager
         $siteIds = $this->getSiteIdsFromTags( $tags );
         $result  = array();
 
-        foreach ( $siteIds as $id )
+        foreach ( $siteIds as $id => $count )
         {
             try
             {
