@@ -19,10 +19,11 @@ define([
     'qui/QUI',
     'qui/controls/Control',
     'qui/controls/loader/Loader',
+    'Ajax',
 
     'css!URL_OPT_DIR/quiqqer/tags/bin/TagContainer.css'
 
-], function(QUI, QUIControl, QUILoader)
+], function(QUI, QUIControl, QUILoader, Ajax)
 {
     "use strict";
 
@@ -33,13 +34,14 @@ define([
         Type    : 'URL_OPT_DIR/quiqqer/tags/bin/TagContainer',
 
         Binds : [
-
+            '$onInject'
         ],
 
         options : {
             editable : true,
             datalist : false,
-            styles   : false
+            styles   : false,
+            loadDatalist : false
         },
 
         initialize : function(options)
@@ -47,6 +49,12 @@ define([
             this.parent( options );
 
             this.Loader = new QUILoader();
+
+            this.$DataList = null;
+
+            this.addEvents({
+                onInject : this.$onInject
+            });
         },
 
         /**
@@ -83,6 +91,45 @@ define([
         },
 
         /**
+         * event : on inject
+         */
+        $onInject : function()
+        {
+            if ( !this.getAttribute( 'loadDatalist' ) ) {
+                return;
+            }
+
+            // create own datalist
+            this.$DataList = new Element('', {
+                id : 'list-'+ this.getId()
+            }).inject( this.getElm() );
+
+            this.setAttribute( 'datalist', 'list-'+ this.getId() );
+            this.$refreshDatalist();
+        },
+
+        /**
+         * Refresh the internal datalist
+         */
+        $refreshDatalist : function()
+        {
+            if ( !this.getAttribute( 'loadDatalist' ) ) {
+                return;
+            }
+
+            var self = this;
+
+            Ajax.get('package_quiqqer_tags_ajax_tag_getDataList', function(result)
+            {
+console.log( result );
+                self.$DataList.set( 'html', result );
+
+            }, {
+                'package' : 'quiqqer/tags'
+            });
+        },
+
+        /**
          * focus the element
          * if the container is editable, and input elm would be insert to add a tag
          */
@@ -104,6 +151,9 @@ define([
                 'class' : 'qui-tags-tag-add',
                 name    : 'add-tag',
                 type    : 'text',
+                styles  : {
+                    width : 150
+                },
                 events  :
                 {
                     change : function(event)

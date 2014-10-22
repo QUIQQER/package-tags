@@ -358,6 +358,30 @@ class Manager
     }
 
     /**
+     * Search similar tags
+     *
+     * @param String $search - Search string
+     * @return Array
+     */
+    public function searchTags($search)
+    {
+        $search = mb_strtolower( $search );
+
+        $result = $DataBase->fetch(array(
+            'from'  => \QUI::getDBProjectTableName( 'tags', $this->_Project ),
+            'where' => array(
+                'tag' => array(
+                    'value' => $search,
+                    'type'  => 'LIKE%'
+                )
+            )
+        ));
+
+        return $result;
+    }
+
+
+    /**
      * Return all site ids that have the tags
      *
      * @param Array $tags - list of tags
