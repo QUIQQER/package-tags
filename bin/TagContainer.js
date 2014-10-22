@@ -120,21 +120,33 @@ define([
                 return;
             }
 
+            var self = this;
+
+            this.Loader.show();
+
             // create own datalist
             this.$DataList = new Element('datalist', {
                 id : 'list-'+ this.getId()
             }).inject( this.getElm() );
 
             this.setAttribute( 'datalist', 'list-'+ this.getId() );
-            this.$refreshDatalist();
+
+            this.$refreshDatalist(function() {
+                self.Loader.hide();
+            });
         },
 
         /**
          * Refresh the internal datalist
          */
-        $refreshDatalist : function()
+        $refreshDatalist : function(callback)
         {
-            if ( !this.getAttribute( 'loadDatalist' ) ) {
+            if ( !this.getAttribute( 'loadDatalist' ) )
+            {
+                if ( typeof callback !== 'undefined' ) {
+                    callback();
+                }
+
                 return;
             }
 
@@ -154,6 +166,10 @@ define([
             Ajax.get('package_quiqqer_tags_ajax_tag_getDataList', function(result)
             {
                 self.$DataList.set( 'html', result );
+
+                if ( typeof callback !== 'undefined' ) {
+                    callback();
+                }
 
             }, {
                 'package'   : 'quiqqer/tags',
@@ -231,7 +247,8 @@ define([
                 return;
             }
 
-            var tags = this.getTags();
+            var self = this,
+                tags = this.getTags();
 
             if ( tags.contains( tag ) ) {
                 return;
@@ -244,33 +261,48 @@ define([
                 }
             }
 
+            this.Loader.show();
 
-            var Edit = this.$Container.getElement( '.qui-tags-tag-add' );
-
-            var Tag = new Element('div', {
-                'class' : 'qui-tags-tag',
-                html    : '<span class="icon-tag fa fa-tag"></span>'+
-                          '<span class="qui-tags-tag-value">'+ tag +'</span>' +
-                          '<span class="icon-remove fa fa-remove"></span>',
-                'data-tag' : tag
-            });
-
-            if ( Edit )
+            Ajax.get('ajax_permissions_hasPermission', function(hasPermission)
             {
-                Tag.inject( Edit, 'before' );
+                if ( !hasPermission )
+                {
+                    self.Loader.hide();
+                    return;
+                }
 
-            } else
-            {
-                Tag.inject( this.$Container );
-            }
+
+                var Edit = self.$Container.getElement( '.qui-tags-tag-add' );
+
+                var Tag = new Element('div', {
+                    'class' : 'qui-tags-tag',
+                    html    : '<span class="icon-tag fa fa-tag"></span>'+
+                              '<span class="qui-tags-tag-value">'+ tag +'</span>' +
+                              '<span class="icon-remove fa fa-remove"></span>',
+                    'data-tag' : tag
+                });
+
+                if ( Edit )
+                {
+                    Tag.inject( Edit, 'before' );
+
+                } else
+                {
+                    Tag.inject( self.$Container );
+                }
 
 
-            Tag.getElement( '.icon-remove' ).addEvent('click', function() {
-                this.getParent().destroy();
+                Tag.getElement( '.icon-remove' ).addEvent('click', function() {
+                    self.getParent().destroy();
+                });
+
+
+                self.fireEvent( 'add', [ self, tag ] );
+                self.Loader.hide();
+
+            }, {
+                permission : 'tags.create'
             });
-
-
-            this.fireEvent( 'add', [ this, tag ] );
         },
 
         /**

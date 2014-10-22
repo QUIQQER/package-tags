@@ -9,7 +9,7 @@
  * @require qui/controls/Control
  * @require qui/controls/loader/Loader
  * @require qui/controls/windows/Confirm
- * @require URL_OPT_DIR/quiqqer/tags/bin/TagContainer
+ * @require package/quiqqer/tags/bin/TagContainer
  * @require Ajax
  * @require Locale
  * @require Projects
