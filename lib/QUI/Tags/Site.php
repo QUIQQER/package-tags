@@ -41,7 +41,7 @@ class Site
         foreach ( $tags as $tag )
         {
             if ( $Manager->existsTag( $tag ) ) {
-                $list[] = $tag;
+                $list[] = mb_strtolower( $tag );
             }
         }
 

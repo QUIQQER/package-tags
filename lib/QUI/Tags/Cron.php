@@ -57,6 +57,8 @@ class Cron
                     continue;
                 }
 
+                $tag = mb_strtolower( $tag );
+
                 $entry['id'] = (int)$entry['id'];
 
                 $_str = $entry['id'] .'_'. $tag;
