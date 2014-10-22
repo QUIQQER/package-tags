@@ -48,6 +48,9 @@ class Manager
      */
     public function add($tag, $params)
     {
+        \QUI\Rights\Permission::checkPermission( 'tags.create' );
+
+
         $tag = mb_strtolower( $tag );
         $tag = $this->clearTagName( $tag );
 
@@ -107,6 +110,9 @@ class Manager
      */
     public function deleteTag($tag)
     {
+        \QUI\Rights\Permission::checkPermission( 'tags.delete' );
+
+
         $tag = $this->clearTagName( $tag );
 
         if ( !$this->existsTag( $tag ) ) {
@@ -138,6 +144,9 @@ class Manager
      */
     public function edit($tag, $params)
     {
+        \QUI\Rights\Permission::checkPermission( 'tags.create' );
+
+
         $tag = mb_strtolower( $tag );
 
         // exist tag?
@@ -367,7 +376,7 @@ class Manager
     {
         $search = mb_strtolower( $search );
 
-        $result = $DataBase->fetch(array(
+        $result = \QUI::getDataBase()->fetch(array(
             'from'  => \QUI::getDBProjectTableName( 'tags', $this->_Project ),
             'where' => array(
                 'tag' => array(
@@ -537,7 +546,7 @@ class Manager
         \QUI::getDataBase()->update(
             $table,
             array( 'tags' => ','. implode( ',', $list ) .',' ),
-            array( 'id' => $Site->getId() )
+            array( 'id'   => $Site->getId() )
         );
     }
 

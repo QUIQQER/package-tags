@@ -22,13 +22,13 @@ define([
     'qui/controls/Control',
     'qui/controls/loader/Loader',
     'qui/controls/windows/Confirm',
-    'URL_OPT_DIR/quiqqer/tags/bin/TagContainer',
+    'package/quiqqer/tags/bin/TagContainer',
 
     'Ajax',
     'Locale',
     'Projects',
 
-    'css!URL_OPT_DIR/quiqqer/tags/bin/Site.css'
+    'css!package/quiqqer/tags/bin/Site.css'
 
 ], function(QUI, QUIControl, QUILoader, QUIConfirm, TagContainer, Ajax, Locale, Projects)
 {

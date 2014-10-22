@@ -28,7 +28,7 @@ define([
     'Locale',
     'Projects',
 
-    'css!URL_OPT_DIR/quiqqer/tags/bin/Manager.css'
+    'css!package/quiqqer/tags/bin/Manager.css'
 
 ], function(QUI, QUIPanel, QUIConfirm, QUISelect, Grid, ControlUtils, Ajax, Locale, Projects)
 {
@@ -39,7 +39,7 @@ define([
     return new Class({
 
         Extends : QUIPanel,
-        Type    : 'URL_OPT_DIR/quiqqer/tags/bin/Manager',
+        Type    : 'package/quiqqer/tags/bin/Manager',
 
         Binds : [
             '$onCreate',

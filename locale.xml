@@ -21,6 +21,13 @@
             <de><![CDATA[Tag]]></de>
             <en><![CDATA[Tag]]></en>
         </locale>
+
+        <locale name="tag-container-info">
+            <de><![CDATA[Fügen Sie einen tag per hinzu in dem Sie einfach auf die Tagfläche klicken.]]></de>
+            <en><![CDATA[Add a tag to simply click on the tag area.]]></en>
+        </locale>
+
+
     </groups>
 
 

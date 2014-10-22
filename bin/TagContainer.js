@@ -20,10 +20,11 @@ define([
     'qui/controls/Control',
     'qui/controls/loader/Loader',
     'Ajax',
+    'Locale',
 
-    'css!URL_OPT_DIR/quiqqer/tags/bin/TagContainer.css'
+    'css!package/quiqqer/tags/bin/TagContainer.css'
 
-], function(QUI, QUIControl, QUILoader, Ajax)
+], function(QUI, QUIControl, QUILoader, Ajax, Locale)
 {
     "use strict";
 
@@ -31,17 +32,20 @@ define([
     return new Class({
 
         Extends : QUIControl,
-        Type    : 'URL_OPT_DIR/quiqqer/tags/bin/TagContainer',
+        Type    : 'package/quiqqer/tags/bin/TagContainer',
 
         Binds : [
             '$onInject'
         ],
 
         options : {
-            editable : true,
-            datalist : false,
-            styles   : false,
-            loadDatalist : false
+            editable     : true,
+            datalist     : false,
+            styles       : false,
+            loadDatalist : false,
+
+            project     : false,
+            projectLang : false
         },
 
         initialize : function(options)
@@ -50,7 +54,9 @@ define([
 
             this.Loader = new QUILoader();
 
-            this.$DataList = null;
+            this.$Container = null;
+            this.$DataList  = null;
+            this.$list      = {};
 
             this.addEvents({
                 onInject : this.$onInject
@@ -67,10 +73,15 @@ define([
             var self = this;
 
             this.$Elm = new Element('div', {
-                'class' : 'qui-tags-container'
+                'class' : 'qui-tags-container',
+                html    : '<div class="qui-tags-container-list"></div>'+
+                          '<div class="qui-tags-container-info">' +
+                              Locale.get('quiqqer/tags', 'tag-container-info') +
+                          '</div>'
             });
 
             this.Loader.inject( this.$Elm );
+            this.$Container = this.$Elm.getElement( '.qui-tags-container-list' );
 
 
             this.$Elm.addEvents({
@@ -91,6 +102,16 @@ define([
         },
 
         /**
+         * Returns the DOMNode of the tag container
+         *
+         * @return {DOMNode}
+         */
+        getContainer : function()
+        {
+            return this.$Container;
+        },
+
+        /**
          * event : on inject
          */
         $onInject : function()
@@ -100,7 +121,7 @@ define([
             }
 
             // create own datalist
-            this.$DataList = new Element('', {
+            this.$DataList = new Element('datalist', {
                 id : 'list-'+ this.getId()
             }).inject( this.getElm() );
 
@@ -119,13 +140,25 @@ define([
 
             var self = this;
 
+            var project = this.getAttribute( 'project' ),
+                lang    = this.getAttribute( 'projectLang' );
+
+            if ( !project && typeof QUIQQER_PROJECT !== 'undefined' ) {
+                project = QUIQQER_PROJECT.name;
+            }
+
+            if ( !lang && typeof QUIQQER_PROJECT !== 'undefined' ) {
+                lang = QUIQQER_PROJECT.lang;
+            }
+
             Ajax.get('package_quiqqer_tags_ajax_tag_getDataList', function(result)
             {
-console.log( result );
                 self.$DataList.set( 'html', result );
 
             }, {
-                'package' : 'quiqqer/tags'
+                'package'   : 'quiqqer/tags',
+                projectName : project,
+                projectLang : lang
             });
         },
 
@@ -139,9 +172,9 @@ console.log( result );
                 return;
             }
 
-            if ( this.$Elm.getElement( '.qui-tags-tag-add' ) )
+            if ( this.$Container.getElement( '.qui-tags-tag-add' ) )
             {
-                this.$Elm.getElement( '.qui-tags-tag-add' ).focus();
+                this.$Container.getElement( '.qui-tags-tag-add' ).focus();
                 return;
             }
 
@@ -152,9 +185,10 @@ console.log( result );
                 name    : 'add-tag',
                 type    : 'text',
                 styles  : {
-                    width : 150
+                    'float' : 'left',
+                    width   : 150
                 },
-                events  :
+                events :
                 {
                     change : function(event)
                     {
@@ -167,10 +201,9 @@ console.log( result );
                         self.blur();
                     }
                 }
-            }).inject( this.$Elm );
+            }).inject( this.$Container );
 
             Edit.focus();
-
 
             if ( this.getAttribute( 'datalist' ) ) {
                 Edit.set( 'list', this.getAttribute( 'datalist' ) );
@@ -204,22 +237,31 @@ console.log( result );
                 return;
             }
 
-            var Edit = this.$Elm.getElement( '.qui-tags-tag-add' );
+            if ( this.getAttribute( 'loadDatalist' ) )
+            {
+                if ( !this.$DataList.getElement( '[value="'+ tag +'"]' ) ) {
+                    return;
+                }
+            }
+
+
+            var Edit = this.$Container.getElement( '.qui-tags-tag-add' );
 
             var Tag = new Element('div', {
                 'class' : 'qui-tags-tag',
-                html    : '<span class="icon-tag"></span>'+
+                html    : '<span class="icon-tag fa fa-tag"></span>'+
                           '<span class="qui-tags-tag-value">'+ tag +'</span>' +
-                          '<span class="icon-remove"></span>',
+                          '<span class="icon-remove fa fa-remove"></span>',
                 'data-tag' : tag
             });
 
             if ( Edit )
             {
                 Tag.inject( Edit, 'before' );
+
             } else
             {
-                Tag.inject( this.$Elm );
+                Tag.inject( this.$Container );
             }
 
 
@@ -248,7 +290,7 @@ console.log( result );
          */
         getTags : function()
         {
-            return this.$Elm.getElements( '.qui-tags-tag-value' ).map(function(Elm) {
+            return this.$Container.getElements( '.qui-tags-tag-value' ).map(function(Elm) {
                 return Elm.get( 'text' );
             });
         }
