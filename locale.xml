@@ -26,8 +26,6 @@
             <de><![CDATA[Fügen Sie einen tag per hinzu in dem Sie einfach auf die Tagfläche klicken.]]></de>
             <en><![CDATA[Add a tag to simply click on the tag area.]]></en>
         </locale>
-
-
     </groups>
 
 
@@ -140,6 +138,17 @@
         </locale>
     </groups>
 
+    <!-- permissions -->
+    <groups name="locale/permissions" datatype="php">
+        <locale name="tags.create._title">
+            <de><![CDATA[Darf tags erstellen und bearbeiten.]]></de>
+            <en><![CDATA[Can create and edit tags.]]></en>
+        </locale>
+        <locale name="tags.delete._title">
+            <de><![CDATA[Darf tags löschen.]]></de>
+            <en><![CDATA[Can delete tags.]]></en>
+        </locale>
+    </groups>
 
 
 </locales>
