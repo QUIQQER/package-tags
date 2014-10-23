@@ -30,11 +30,6 @@
             <en><![CDATA[Tag]]></en>
         </locale>
 
-        <locale name="tag.container.info">
-            <de><![CDATA[Fügen Sie einen tag hinzu in dem Sie auf die Tagfläche klicken.]]></de>
-            <en><![CDATA[Add a tag to click on the tag area.]]></en>
-        </locale>
-
         <locale name="tag.control.placeholder.addtag">
             <de><![CDATA[Geben Sie bitte hier Ihren gewünschten tag ein ...]]></de>
             <en><![CDATA[Please enter here your wanted tag ...]]></en>
