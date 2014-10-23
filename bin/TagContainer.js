@@ -19,12 +19,13 @@ define([
     'qui/QUI',
     'qui/controls/Control',
     'qui/controls/loader/Loader',
+    'qui/utils/Elements',
     'Ajax',
     'Locale',
 
     'css!package/quiqqer/tags/bin/TagContainer.css'
 
-], function(QUI, QUIControl, QUILoader, Ajax, Locale)
+], function(QUI, QUIControl, QUILoader, ElementUtils, Ajax, Locale)
 {
     "use strict";
 
@@ -43,6 +44,7 @@ define([
             datalist     : false,
             styles       : false,
             loadDatalist : false,
+            limit        : false,
 
             project     : false,
             projectLang : false
@@ -55,6 +57,7 @@ define([
             this.Loader = new QUILoader();
 
             this.$Container = null;
+            this.$Input     = null;
             this.$DataList  = null;
             this.$list      = {};
 
@@ -74,31 +77,95 @@ define([
 
             this.$Elm = new Element('div', {
                 'class' : 'qui-tags-container',
-                html    : '<div class="qui-tags-container-list"></div>'+
-                          '<div class="qui-tags-container-info">' +
-                              Locale.get('quiqqer/tags', 'tag-container-info') +
-                          '</div>'
+                html    : '<div class="qui-tags-container-list"></div>',
+                styles  : {
+                    height : 150
+                }
             });
 
             this.Loader.inject( this.$Elm );
+
             this.$Container = this.$Elm.getElement( '.qui-tags-container-list' );
 
+            this.$Input = new Element('input', {
+                'class' : 'qui-tags-input',
+                name    : 'add-tag',
+                type    : 'text',
+                placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.addtag' ),
+                events :
+                {
+                    change : function(event)
+                    {
+                        self.addTag( this.value );
 
-            this.$Elm.addEvents({
-                click : function() {
-                    self.focus();
-                },
-
-                blur : function() {
-
+                        this.value = '';
+                    }
                 }
-            });
+            }).inject( this.$Elm );
+
+
+            if ( this.getAttribute( 'datalist' ) ) {
+                this.$Input.set( 'list', this.getAttribute( 'datalist' ) );
+            }
 
             if ( this.getAttribute( 'styles' ) ) {
                 this.$Elm.setStyles( this.getAttribute( 'styles' ) );
             }
 
             return this.$Elm;
+        },
+
+        /**
+         * resize the internal elements and control
+         */
+        resize : function()
+        {
+            var size     = this.$Elm.getSize(),
+                computed = this.$Elm.getComputedSize();
+
+            this.$Elm.setStyles({
+                height : size.y
+            });
+
+            this.$Container.setStyles({
+                height : size.y - this.$Input.getSize().y -
+                         computed['padding-bottom'] - computed['padding-top']
+            });
+
+            this.$Input.setStyles({
+                left   : computed['padding-left'],
+                bottom : computed['padding-bottom']
+            });
+
+            this.$Input.style.setProperty(
+                "width",
+                this.$Container.getSize().x +'px',
+                "important"
+            );
+        },
+
+        /**
+         * Refresh the DOMNode
+         */
+        refresh : function()
+        {
+            if ( !this.getAttribute( 'limit' ) )
+            {
+                this.$Input.setStyle( 'display', 'none' );
+                return;
+            }
+
+            var tagList = this.getTags();
+
+            if ( tagList.length >= this.getAttribute( 'limit' ) )
+            {
+                this.$Input.setStyle( 'display', 'none' );
+            } else
+            {
+                this.$Input.setStyle( 'display', null );
+            }
+
+            this.resize();
         },
 
         /**
@@ -130,9 +197,13 @@ define([
             }).inject( this.getElm() );
 
             this.setAttribute( 'datalist', 'list-'+ this.getId() );
+            this.$Input.set( 'list', this.getAttribute( 'datalist' ) );
 
-            this.$refreshDatalist(function() {
+
+            this.$refreshDatalist(function()
+            {
                 self.Loader.hide();
+                self.refresh();
             });
         },
 
@@ -163,9 +234,13 @@ define([
                 lang = QUIQQER_PROJECT.lang;
             }
 
-            Ajax.get('package_quiqqer_tags_ajax_tag_getDataList', function(result)
+            Ajax.get([
+                'package_quiqqer_tags_ajax_tag_getDataList',
+                'ajax_permissions_session_getPermission'
+            ], function(dataList, limit)
             {
-                self.$DataList.set( 'html', result );
+                self.$DataList.set( 'html', dataList );
+                self.setAttribute( 'limit', limit );
 
                 if ( typeof callback !== 'undefined' ) {
                     callback();
@@ -174,66 +249,10 @@ define([
             }, {
                 'package'   : 'quiqqer/tags',
                 projectName : project,
-                projectLang : lang
+                projectLang : lang,
+                permission  : 'tags.siteLimit',
+                ruleset     : 'max_integer'
             });
-        },
-
-        /**
-         * focus the element
-         * if the container is editable, and input elm would be insert to add a tag
-         */
-        focus : function()
-        {
-            if ( this.getAttribute( 'editable' ) === false ) {
-                return;
-            }
-
-            if ( this.$Container.getElement( '.qui-tags-tag-add' ) )
-            {
-                this.$Container.getElement( '.qui-tags-tag-add' ).focus();
-                return;
-            }
-
-            var self = this;
-
-            var Edit = new Element('input', {
-                'class' : 'qui-tags-tag-add',
-                name    : 'add-tag',
-                type    : 'text',
-                styles  : {
-                    'float' : 'left',
-                    width   : 150
-                },
-                events :
-                {
-                    change : function(event)
-                    {
-                        self.addTag( this.value );
-
-                        this.value = '';
-                    },
-
-                    blur : function () {
-                        self.blur();
-                    }
-                }
-            }).inject( this.$Container );
-
-            Edit.focus();
-
-            if ( this.getAttribute( 'datalist' ) ) {
-                Edit.set( 'list', this.getAttribute( 'datalist' ) );
-            }
-        },
-
-        /**
-         * blur -> destroy the adding input element, if exists
-         */
-        blur : function()
-        {
-            if ( this.$Elm.getElement( '.qui-tags-tag-add' ) ) {
-                this.$Elm.getElement( '.qui-tags-tag-add' ).destroy();
-            }
         },
 
         /**
@@ -254,25 +273,40 @@ define([
                 return;
             }
 
-            if ( this.getAttribute( 'loadDatalist' ) )
-            {
-                if ( !this.$DataList.getElement( '[value="'+ tag +'"]' ) ) {
-                    return;
-                }
+            var project = this.getAttribute( 'project' ),
+                lang    = this.getAttribute( 'projectLang' );
+
+            if ( !project && typeof QUIQQER_PROJECT !== 'undefined' ) {
+                project = QUIQQER_PROJECT.name;
             }
+
+            if ( !lang && typeof QUIQQER_PROJECT !== 'undefined' ) {
+                lang = QUIQQER_PROJECT.lang;
+            }
+
 
             this.Loader.show();
 
-            Ajax.get('ajax_permissions_hasPermission', function(hasPermission)
+            Ajax.get([
+                'ajax_permissions_session_hasPermission',
+                'package_quiqqer_tags_ajax_tag_exists'
+            ], function(hasPermission, tagExists)
             {
-                if ( !hasPermission )
+                var Edit = self.$Container.getElement( '.qui-tags-tag-add' );
+
+                if ( !hasPermission && !tagExists )
                 {
+                    QUI.getMessageHandler(function(MH)
+                    {
+                        MH.addError(
+                            Locale.get( 'quiqqer/tags', 'message.no.permission.create.tags' ),
+                            self.getElm()
+                        );
+                    });
+
                     self.Loader.hide();
                     return;
                 }
-
-
-                var Edit = self.$Container.getElement( '.qui-tags-tag-add' );
 
                 var Tag = new Element('div', {
                     'class' : 'qui-tags-tag',
@@ -293,15 +327,19 @@ define([
 
 
                 Tag.getElement( '.icon-remove' ).addEvent('click', function() {
-                    self.getParent().destroy();
+                    self.removeTag( this.getParent().get( 'data-tag' ) );
                 });
-
 
                 self.fireEvent( 'add', [ self, tag ] );
                 self.Loader.hide();
+                self.refresh();
 
             }, {
-                permission : 'tags.create'
+                'package'   : 'quiqqer/tags',
+                permission  : 'tags.create',
+                projectName : project,
+                projectLang : lang,
+                tag         : tag
             });
         },
 
@@ -313,6 +351,7 @@ define([
             this.$Elm.getElements( '[data-tag="'+ tag +'"]' ).destroy();
 
             this.fireEvent( 'remove', [ this, tag ] );
+            this.refresh();
         },
 
         /**

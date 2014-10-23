@@ -3,18 +3,26 @@
 
     <groups name="quiqqer/tags" datatype="php,js">
         <locale name="exception.tag.already.exists">
-            <de><![CDATA[Der Tag existiert bereits.]]></de>
-            <en><![CDATA[The Tag already exist.]]></en>
+            <de><![CDATA[Der tag existiert bereits.]]></de>
+            <en><![CDATA[The tag already exist.]]></en>
+        </locale>
+        <locale name="exception.tag.not.found">
+            <de><![CDATA[Der tag wurde leider nicht gefunden.]]></de>
+            <en><![CDATA[The tag was not found]]></en>
+        </locale>
+        <locale name="exception.limit.tags.to.site">
+            <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Seite wurde nicht gespeichert.]]></de>
+            <en><![CDATA[You can add only [limit] tags the page. The page wasn't saved.]]></en>
         </locale>
 
-        <locale name="exception.tag.not.found">
-            <de><![CDATA[Der Tag wurde leider nicht gefunden.]]></de>
-            <en><![CDATA[The Tag was not found]]></en>
-        </locale>
 
         <locale name="message.no.tags.found">
             <de><![CDATA[Keine tags gefunden]]></de>
             <en><![CDATA[No tags found]]></en>
+        </locale>
+        <locale name="message.no.permission.create.tags">
+            <de><![CDATA[Sie haben nicht die nötigen Rechte neue tags anzulegen. Bitte verwenden Sie nur existierende tags.]]></de>
+            <en><![CDATA[You dont have the necessary rights to create new tags. Please only use existing tags.]]></en>
         </locale>
 
         <locale name="tag">
@@ -22,17 +30,23 @@
             <en><![CDATA[Tag]]></en>
         </locale>
 
-        <locale name="tag-container-info">
-            <de><![CDATA[Fügen Sie einen tag per hinzu in dem Sie einfach auf die Tagfläche klicken.]]></de>
-            <en><![CDATA[Add a tag to simply click on the tag area.]]></en>
+        <locale name="tag.container.info">
+            <de><![CDATA[Fügen Sie einen tag hinzu in dem Sie auf die Tagfläche klicken.]]></de>
+            <en><![CDATA[Add a tag to click on the tag area.]]></en>
         </locale>
+
+        <locale name="tag.control.placeholder.addtag">
+            <de><![CDATA[Geben Sie bitte hier Ihren gewünschten tag ein ...]]></de>
+            <en><![CDATA[Please enter here your wanted tag ...]]></en>
+        </locale>
+
     </groups>
 
 
     <groups name="quiqqer/tags" datatype="php">
         <locale name="menu.tags">
-            <de><![CDATA[Tags]]></de>
-            <en><![CDATA[Tags]]></en>
+            <de><![CDATA[tags]]></de>
+            <en><![CDATA[tags]]></en>
         </locale>
         <locale name="menu.tags.manager">
             <de><![CDATA[Tag Verwaltung]]></de>
@@ -50,11 +64,11 @@
         </locale>
 
         <locale name="admin.types.tag">
-            <de><![CDATA[QUIQQER : Einzelner Tag]]></de>
+            <de><![CDATA[QUIQQER : Einzelner tag]]></de>
             <en><![CDATA[QUIQQER : Single tag]]></en>
         </locale>
         <locale name="admin.types.tag.desc">
-            <de><![CDATA[QUIQQER : Einzelner Tag]]></de>
+            <de><![CDATA[QUIQQER : Einzelner tag]]></de>
             <en><![CDATA[QUIQQER : Single tag]]></en>
         </locale>
 
@@ -86,11 +100,11 @@
             <en><![CDATA[Add a tag]]></en>
         </locale>
         <locale name="panel.manager.button.delete.tag">
-            <de><![CDATA[Markierte Tags löschen]]></de>
+            <de><![CDATA[Markierte tags löschen]]></de>
             <en><![CDATA[Delete marked tags]]></en>
         </locale>
         <locale name="panel.manager.image.tag">
-            <de><![CDATA[Tag Bild]]></de>
+            <de><![CDATA[Tag-Bild]]></de>
             <en><![CDATA[Image for the tag]]></en>
         </locale>
 
@@ -98,18 +112,18 @@
         <!-- panel add window -->
         <locale name="panel.add.window.title">
             <de><![CDATA[Tag hinzufügen]]></de>
-            <en><![CDATA[Add a Tag]]></en>
+            <en><![CDATA[Add a tag]]></en>
         </locale>
 
 
         <!-- panel delete window -->
         <locale name="panel.delete.window.title">
             <de><![CDATA[Tag löschen]]></de>
-            <en><![CDATA[Delete a Tag]]></en>
+            <en><![CDATA[Delete a tag]]></en>
         </locale>
         <locale name="panel.delete.window.message">
             <de><![CDATA[
-                <p>Möchten Sie folgende Tags wirklich löschen?</p>
+                <p>Möchten Sie folgende tags wirklich löschen?</p>
                 <p><strong>[tags]</strong></p>
             ]]></de>
             <en><![CDATA[
@@ -120,11 +134,11 @@
 
         <!-- site -->
         <locale name="site.table.title">
-            <de><![CDATA[Der Seite zugewiesene Tags]]></de>
+            <de><![CDATA[Der Seite zugewiesene tags]]></de>
             <en><![CDATA[The page assigned tags]]></en>
         </locale>
         <locale name="site.table.description">
-            <de><![CDATA[Per klick auf das Tagfeld können Sie der Seite Tags hinzufügen.]]></de>
+            <de><![CDATA[Per klick auf das Tagfeld können Sie der Seite tags hinzufügen.]]></de>
             <en><![CDATA[By clicking on the tag field, you can add tags to the site.]]></en>
         </locale>
 
@@ -133,13 +147,18 @@
             <en><![CDATA[Tag doesn't exist]]></en>
         </locale>
         <locale name="site.window.add.tag.title" html="true">
-            <de><![CDATA[<p>Der Tag <strong>[tag]</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?]]></de>
-            <en><![CDATA[<p>The Tag <strong>[tag]</strong> doesn't exist. Would you add the Tag?]]></en>
+            <de><![CDATA[<p>Der tag <strong>[tag]</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?]]></de>
+            <en><![CDATA[<p>The tag <strong>[tag]</strong> doesn't exist. Would you add the tag?]]></en>
         </locale>
     </groups>
 
     <!-- permissions -->
-    <groups name="locale/permissions" datatype="php">
+    <groups name="locale/permissions" datatype="php,js">
+        <locale name="tags._title">
+            <de><![CDATA[Tag Rechte]]></de>
+            <en><![CDATA[Tag permissions]]></en>
+        </locale>
+
         <locale name="tags.create._title">
             <de><![CDATA[Darf tags erstellen und bearbeiten.]]></de>
             <en><![CDATA[Can create and edit tags.]]></en>
@@ -148,6 +167,11 @@
             <de><![CDATA[Darf tags löschen.]]></de>
             <en><![CDATA[Can delete tags.]]></en>
         </locale>
+        <locale name="tags.siteLimit._title">
+            <de><![CDATA[Anzahl der tags die der Benutzer einer Seite hinzufügen darf.]]></de>
+            <en><![CDATA[Anzahl der tags die der Benutzer einer Seite hinzufügen darf.]]></en>
+        </locale>
+
     </groups>
 
 

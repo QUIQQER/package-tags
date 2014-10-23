@@ -5,22 +5,32 @@
     float: left;
     max-width: 100%;
     padding: 10px;
+    position: relative;
     width: 600px;
 }
 
 .qui-tags-container-list {
-    border: 1px solid #999;
+    border: 1px solid #cfd2d2;
     clear: both;
     float: left;
     max-width: 100%;
-    min-height: 100px;
+    overflow: auto;
     padding: 10px;
     width: 600px;
 }
 
+.qui-tags-container-list:hover {
+    border: 1px solid #999;
+}
+
 .qui-tags-container input {
     box-shadow: none;
-    border: none;
+    border: 1px solid #cfd2d2;
+}
+
+.qui-tags-container input:hover,
+.qui-tags-container input:focus {
+    border: 1px solid #999;
 }
 
 .qui-tags-tag {
@@ -52,6 +62,16 @@
     color: #FFFFFF;
 }
 
-.qui-tags-tag-add {
+.qui-tags-input {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.qui-tags-container-info {
+    clear: both;
     float: left;
+    margin: 10px 0 0 0;
+    width: 100%;
 }
