@@ -10,13 +10,14 @@
 }
 
 .qui-tags-container-list {
+    background: #ffffff;
     border: 1px solid #cfd2d2;
     clear: both;
     float: left;
     max-width: 100%;
     overflow: auto;
     padding: 10px;
-    width: 600px;
+    width: 100%;
 }
 
 .qui-tags-container-list:hover {

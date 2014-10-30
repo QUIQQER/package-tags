@@ -96,9 +96,18 @@ define([
                 {
                     change : function(event)
                     {
-                        self.addTag( this.value );
+                        var val = this.value,
+                            tag = self.$DataList
+                                      .getElement( '[value="'+ val +'"]' )
+                                      .get( 'data-tag' );
 
-                        this.value = '';
+                        self.addTag( tag );
+
+                        (function()
+                        {
+                            this.value = '';
+                            this.focus();
+                        }).delay( 100, this );
                     }
                 }
             }).inject( this.$Elm );
@@ -151,7 +160,11 @@ define([
         {
             if ( !this.getAttribute( 'limit' ) )
             {
-                this.$Input.setStyle( 'display', 'none' );
+                this.$Input.set({
+                    disabled    : null,
+                    placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.addtag' )
+                });
+
                 return;
             }
 
@@ -159,10 +172,17 @@ define([
 
             if ( tagList.length >= this.getAttribute( 'limit' ) )
             {
-                this.$Input.setStyle( 'display', 'none' );
+                this.$Input.set({
+                    disabled    : 'disabled',
+                    placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.limit' )
+                });
+
             } else
             {
-                this.$Input.setStyle( 'display', null );
+                this.$Input.set({
+                    disabled    : null,
+                    placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.addtag' )
+                });
             }
 
             this.resize();
@@ -289,8 +309,9 @@ define([
 
             Ajax.get([
                 'ajax_permissions_session_hasPermission',
-                'package_quiqqer_tags_ajax_tag_exists'
-            ], function(hasPermission, tagExists)
+                'package_quiqqer_tags_ajax_tag_exists',
+                'package_quiqqer_tags_ajax_tag_get'
+            ], function(hasPermission, tagExists, tagData)
             {
                 var Edit = self.$Container.getElement( '.qui-tags-tag-add' );
 
@@ -308,10 +329,17 @@ define([
                     return;
                 }
 
+                var title = tag;
+
+                if ( tagData.title !== '' ) {
+                    title = tagData.title;
+                }
+
+
                 var Tag = new Element('div', {
                     'class' : 'qui-tags-tag',
                     html    : '<span class="icon-tag fa fa-tag"></span>'+
-                              '<span class="qui-tags-tag-value">'+ tag +'</span>' +
+                              '<span class="qui-tags-tag-value">'+ title +'</span>' +
                               '<span class="icon-remove fa fa-remove"></span>',
                     'data-tag' : tag
                 });

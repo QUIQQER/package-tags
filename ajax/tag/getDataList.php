@@ -1,9 +1,13 @@
 <?php
 
 /**
- * Add a tag
+ * Get inner html for a datalist
  *
- * @return Array
+ * @param String $projectName - name of the project
+ * @param String $projectLang - lang of the project
+ * @param String $string - matching string
+ *
+ * @return string
  */
 
 function package_quiqqer_tags_ajax_tag_getDataList($projectName, $projectLang, $string)
@@ -15,8 +19,15 @@ function package_quiqqer_tags_ajax_tag_getDataList($projectName, $projectLang, $
     $result = '';
     $list   = $Tags->searchTags( $string );
 
-    foreach ( $list as $tag ) {
-        $result .= '<option value="'. $tag['tag'] .'">';
+    foreach ( $list as $tag )
+    {
+        $value = $tag['tag'];
+
+        if ( $tag['tag'] ) {
+            $value = $tag['title'];
+        }
+
+        $result .= '<option value="'. $value .'" data-tag="'. $tag['tag'] .'">';
     }
 
     return $result;

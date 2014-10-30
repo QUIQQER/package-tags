@@ -34,6 +34,10 @@
             <de><![CDATA[Geben Sie bitte hier Ihren gewünschten tag ein ...]]></de>
             <en><![CDATA[Please enter here your wanted tag ...]]></en>
         </locale>
+        <locale name="tag.control.placeholder.limit">
+            <de><![CDATA[Weitere Tags können nicht hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht.]]></de>
+            <en><![CDATA[More tags can not be added. The maximum number of tags has been reached.]]></en>
+        </locale>
 
     </groups>
 

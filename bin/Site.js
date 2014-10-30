@@ -79,13 +79,6 @@ define([
                               '</th></tr></thead>'+
                               '<tbody>'+
                                   '<tr><td class="odd"></td></tr>'+
-                                  '<tr>'+
-                                      '<td class="even">'+
-                                          '<p class="description">'+
-                                              Locale.get( lg, 'site.table.description' ) +
-                                          '</p>'+
-                                      '</td>'+
-                                  '</tr>'+
                               '</tbody>'+
                           '</table>'
             });
@@ -95,14 +88,14 @@ define([
                 datalistId  = 'datalist-'+ projectName +'-'+ projectLang;
 
             this.$Container = new TagContainer({
-                datalist : datalistId,
-                events   : {
+                loadDatalist : true,
+                project      : projectName,
+                projectLang  : projectLang,
+                events : {
                     onAdd : this.$onTagAdd
                 },
                 styles : {
-                    background: '#fff',
-                    border : 'none',
-                    width  : '100%'
+                    width : '100%'
                 }
             }).inject( this.$Elm.getElement( '.odd' ) );
 
@@ -114,6 +107,8 @@ define([
          */
         $onInject : function()
         {
+            this.$Container.refresh();
+
             var tags = this.$Site.getAttribute( 'quiqqer.tags.tagList' );
 
             if ( typeOf( tags ) === 'string' ) {
@@ -127,34 +122,34 @@ define([
             for ( var i = 0, len = tags.length; i < len; i++ ) {
                 this.$Container.addTag( tags[ i ] );
             }
-
-            var projectName = this.$Project.getName(),
-                projectLang = this.$Project.getLang(),
-                datalistId  = 'datalist-'+ projectName +'-'+ projectLang;
-
-            Ajax.get('package_quiqqer_tags_ajax_project_getList', function(list)
-            {
-                if ( !document.id( datalistId ) ) {
-                    new Element( 'datalist#'+ datalistId ).inject( document.body );
-                }
-
-                var Datalist = document.id( datalistId ),
-                    data     = list.data;
-
-                Datalist.set( 'html', '' );
-
-                for ( var i = 0, len = data.length; i < len; i++ )
-                {
-                    new Element('option', {
-                        value : data[ i ].tag
-                    }).inject( Datalist );
-                }
-
-            }, {
-                'package'   : 'quiqqer/tags',
-                projectName : projectName,
-                projectLang : projectLang
-            });
+//
+//            var projectName = this.$Project.getName(),
+//                projectLang = this.$Project.getLang(),
+//                datalistId  = 'datalist-'+ projectName +'-'+ projectLang;
+//
+//            Ajax.get('package_quiqqer_tags_ajax_project_getList', function(list)
+//            {
+//                if ( !document.id( datalistId ) ) {
+//                    new Element( 'datalist#'+ datalistId ).inject( document.body );
+//                }
+//
+//                var Datalist = document.id( datalistId ),
+//                    data     = list.data;
+//
+//                Datalist.set( 'html', '' );
+//
+//                for ( var i = 0, len = data.length; i < len; i++ )
+//                {
+//                    new Element('option', {
+//                        value : data[ i ].tag
+//                    }).inject( Datalist );
+//                }
+//
+//            }, {
+//                'package'   : 'quiqqer/tags',
+//                projectName : projectName,
+//                projectLang : projectLang
+//            });
         },
 
         /**
