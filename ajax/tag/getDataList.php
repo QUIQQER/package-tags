@@ -23,7 +23,7 @@ function package_quiqqer_tags_ajax_tag_getDataList($projectName, $projectLang, $
     {
         $value = $tag['tag'];
 
-        if ( $tag['tag'] ) {
+        if ( !empty( $tag['title'] ) ) {
             $value = $tag['title'];
         }
 
