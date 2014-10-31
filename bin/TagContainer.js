@@ -19,16 +19,19 @@ define([
     'qui/QUI',
     'qui/controls/Control',
     'qui/controls/loader/Loader',
+    'qui/controls/desktop/panels/Sheet',
+    'qui/controls/buttons/Button',
     'qui/utils/Elements',
     'Ajax',
     'Locale',
 
     'css!package/quiqqer/tags/bin/TagContainer.css'
 
-], function(QUI, QUIControl, QUILoader, ElementUtils, Ajax, Locale)
+], function(QUI, QUIControl, QUILoader, QUISheet, QUIButton, ElementUtils, Ajax, Locale)
 {
     "use strict";
 
+    var lg = 'quiqqer/tags';
 
     return new Class({
 
@@ -61,6 +64,8 @@ define([
             this.$DataList  = null;
             this.$list      = {};
 
+            this.$AddTag = null;
+
             this.addEvents({
                 onInject : this.$onInject
             });
@@ -85,21 +90,30 @@ define([
 
             this.Loader.inject( this.$Elm );
 
+            this.$AddTag = new QUISheet({
+                buttons : false,
+                header  : false
+            }).inject( this.$Elm );
+
             this.$Container = this.$Elm.getElement( '.qui-tags-container-list' );
 
             this.$Input = new Element('input', {
                 'class' : 'qui-tags-input',
                 name    : 'add-tag',
                 type    : 'text',
-                placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.addtag' ),
+                placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' ),
                 events :
                 {
                     change : function(event)
                     {
                         var val = this.value,
-                            tag = self.$DataList
-                                      .getElement( '[value="'+ val +'"]' )
-                                      .get( 'data-tag' );
+                            Tag = self.$DataList.getElement( '[value="'+ val +'"]' );
+
+                        var tag = this.value;
+
+                        if ( Tag )  {
+                            tag = Tag.get( 'data-tag' );
+                        }
 
                         self.addTag( tag );
 
@@ -162,7 +176,7 @@ define([
             {
                 this.$Input.set({
                     disabled    : null,
-                    placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.addtag' )
+                    placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' )
                 });
 
                 return;
@@ -174,14 +188,14 @@ define([
             {
                 this.$Input.set({
                     disabled    : 'disabled',
-                    placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.limit' )
+                    placeholder : Locale.get( lg, 'tag.control.placeholder.limit' )
                 });
 
             } else
             {
                 this.$Input.set({
                     disabled    : null,
-                    placeholder : Locale.get( 'quiqqer/tags', 'tag.control.placeholder.addtag' )
+                    placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' )
                 });
             }
 
@@ -293,18 +307,6 @@ define([
                 return;
             }
 
-            var project = this.getAttribute( 'project' ),
-                lang    = this.getAttribute( 'projectLang' );
-
-            if ( !project && typeof QUIQQER_PROJECT !== 'undefined' ) {
-                project = QUIQQER_PROJECT.name;
-            }
-
-            if ( !lang && typeof QUIQQER_PROJECT !== 'undefined' ) {
-                lang = QUIQQER_PROJECT.lang;
-            }
-
-
             this.Loader.show();
 
             Ajax.get([
@@ -320,7 +322,7 @@ define([
                     QUI.getMessageHandler(function(MH)
                     {
                         MH.addError(
-                            Locale.get( 'quiqqer/tags', 'message.no.permission.create.tags' ),
+                            Locale.get( lg, 'message.no.permission.create.tags' ),
                             self.getElm()
                         );
                     });
@@ -329,9 +331,16 @@ define([
                     return;
                 }
 
+                if ( !tagExists )
+                {
+                    self.showAddTag( tag );
+                    self.Loader.hide();
+                    return;
+                }
+
                 var title = tag;
 
-                if ( tagData.title !== '' ) {
+                if ( typeof tagData !== 'undefined' && tagData && tagData.title !== '' ) {
                     title = tagData.title;
                 }
 
@@ -344,15 +353,8 @@ define([
                     'data-tag' : tag
                 });
 
-                if ( Edit )
-                {
-                    Tag.inject( Edit, 'before' );
 
-                } else
-                {
-                    Tag.inject( self.$Container );
-                }
-
+                Tag.inject( self.$Container );
 
                 Tag.getElement( '.icon-remove' ).addEvent('click', function() {
                     self.removeTag( this.getParent().get( 'data-tag' ) );
@@ -365,9 +367,70 @@ define([
             }, {
                 'package'   : 'quiqqer/tags',
                 permission  : 'tags.create',
-                projectName : project,
-                projectLang : lang,
-                tag         : tag
+                projectName : this.getProject(),
+                projectLang : this.getProjectLang(),
+                tag         : tag,
+                showError   : false
+            });
+        },
+
+        /**
+         * Show the add tag sheet
+         */
+        showAddTag : function(tag)
+        {
+            var self = this;
+
+            this.$AddTag.show(function()
+            {
+                var Content = self.$AddTag.getContent();
+
+                Content.set({
+                    html : Locale.get( lg, 'site.window.add.tag.title', {
+                        tag : tag
+                    }),
+                    styles : {
+                        padding: 20
+                    }
+                });
+
+                new QUIButton({
+                    text   : 'Hinzufügen',
+                    events :
+                    {
+                        onClick : function()
+                        {
+                            Ajax.get('package_quiqqer_tags_ajax_tag_add', function(result)
+                            {
+                                self.Loader.show();
+                                self.addTag( tag );
+                                self.$AddTag.hide();
+
+                            }, {
+                                'package'   : 'quiqqer/tags',
+                                projectName : self.getProject(),
+                                projectLang : self.getProjectLang(),
+                                tag         : tag
+                            });
+                        }
+                    },
+                    styles : {
+                        margin : '10px 10px 10px 0'
+                    }
+                }).inject( Content );
+
+                new QUIButton({
+                    text   : 'Abbrechen',
+                    events :
+                    {
+                        onClick : function() {
+                            self.$AddTag.hide();
+                        }
+                    },
+                    styles : {
+                        margin : 10
+                    }
+                }).inject( Content );
             });
         },
 
@@ -392,7 +455,42 @@ define([
             return this.$Container.getElements( '.qui-tags-tag-value' ).map(function(Elm) {
                 return Elm.get( 'text' );
             });
-        }
+        },
 
+        /**
+         * Return the project name
+         *
+         * @return {String}
+         */
+        getProject : function()
+        {
+            if ( this.getAttribute( 'project' ) ) {
+                return this.getAttribute( 'project' );
+            }
+
+            if ( typeof QUIQQER_PROJECT !== 'undefined' ) {
+                return QUIQQER_PROJECT.name;
+            }
+
+            return '';
+        },
+
+        /**
+         * Return the project lang
+         *
+         * @return {String}
+         */
+        getProjectLang : function()
+        {
+            if ( this.getAttribute( 'projectLang' ) ) {
+                return this.getAttribute( 'projectLang' );
+            }
+
+            if ( typeof QUIQQER_PROJECT !== 'undefined' ) {
+                return QUIQQER_PROJECT.lang;
+            }
+
+            return '';
+        }
     });
 });

@@ -122,34 +122,6 @@ define([
             for ( var i = 0, len = tags.length; i < len; i++ ) {
                 this.$Container.addTag( tags[ i ] );
             }
-//
-//            var projectName = this.$Project.getName(),
-//                projectLang = this.$Project.getLang(),
-//                datalistId  = 'datalist-'+ projectName +'-'+ projectLang;
-//
-//            Ajax.get('package_quiqqer_tags_ajax_project_getList', function(list)
-//            {
-//                if ( !document.id( datalistId ) ) {
-//                    new Element( 'datalist#'+ datalistId ).inject( document.body );
-//                }
-//
-//                var Datalist = document.id( datalistId ),
-//                    data     = list.data;
-//
-//                Datalist.set( 'html', '' );
-//
-//                for ( var i = 0, len = data.length; i < len; i++ )
-//                {
-//                    new Element('option', {
-//                        value : data[ i ].tag
-//                    }).inject( Datalist );
-//                }
-//
-//            }, {
-//                'package'   : 'quiqqer/tags',
-//                projectName : projectName,
-//                projectLang : projectLang
-//            });
         },
 
         /**
