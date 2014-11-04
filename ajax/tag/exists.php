@@ -17,6 +17,5 @@ function package_quiqqer_tags_ajax_tag_exists($projectName, $projectLang, $tag)
 
 \QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_exists',
-    array( 'projectName', 'projectLang', 'tag' ),
-    'Permission::checkAdminUser'
+    array( 'projectName', 'projectLang', 'tag' )
 );

@@ -20,5 +20,5 @@ function package_quiqqer_tags_ajax_tag_edit($projectName, $projectLang, $tag, $t
 \QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_edit',
     array( 'projectName', 'projectLang', 'tag', 'tagParams' ),
-    'Permission::checkAdminUser'
+    'Permission::checkUser'
 );

@@ -179,6 +179,8 @@ define([
                     placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' )
                 });
 
+                this.resize();
+
                 return;
             }
 
@@ -257,17 +259,6 @@ define([
 
             var self = this;
 
-            var project = this.getAttribute( 'project' ),
-                lang    = this.getAttribute( 'projectLang' );
-
-            if ( !project && typeof QUIQQER_PROJECT !== 'undefined' ) {
-                project = QUIQQER_PROJECT.name;
-            }
-
-            if ( !lang && typeof QUIQQER_PROJECT !== 'undefined' ) {
-                lang = QUIQQER_PROJECT.lang;
-            }
-
             Ajax.get([
                 'package_quiqqer_tags_ajax_tag_getDataList',
                 'ajax_permissions_session_getPermission'
@@ -282,8 +273,8 @@ define([
 
             }, {
                 'package'   : 'quiqqer/tags',
-                projectName : project,
-                projectLang : lang,
+                projectName : this.getProject(),
+                projectLang : this.getProjectLang(),
                 permission  : 'tags.siteLimit',
                 ruleset     : 'max_integer'
             });
@@ -452,8 +443,8 @@ define([
          */
         getTags : function()
         {
-            return this.$Container.getElements( '.qui-tags-tag-value' ).map(function(Elm) {
-                return Elm.get( 'text' );
+            return this.$Container.getElements( '.qui-tags-tag' ).map(function(Elm) {
+                return Elm.get( 'data-tag' );
             });
         },
 

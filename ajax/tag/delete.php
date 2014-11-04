@@ -30,5 +30,5 @@ function package_quiqqer_tags_ajax_tag_delete($projectName, $projectLang, $tags)
 \QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_delete',
     array( 'projectName', 'projectLang', 'tags' ),
-    'Permission::checkAdminUser'
+    'Permission::checkUser'
 );

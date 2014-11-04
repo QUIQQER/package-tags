@@ -17,6 +17,5 @@ function package_quiqqer_tags_ajax_tag_get($projectName, $projectLang, $tag)
 
 \QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_get',
-    array( 'projectName', 'projectLang', 'tag', 'tagParams' ),
-    'Permission::checkAdminUser'
+    array( 'projectName', 'projectLang', 'tag', 'tagParams' )
 );
