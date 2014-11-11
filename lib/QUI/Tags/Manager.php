@@ -48,6 +48,7 @@ class Manager
      *
      * @param String $tag
      * @param Array $params
+     * @return String - Tag
      */
     public function add($tag, $params)
     {
@@ -74,6 +75,8 @@ class Manager
         );
 
         $this->edit( $tag , $params );
+
+        return $tag;
     }
 
     /**

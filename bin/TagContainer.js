@@ -394,7 +394,7 @@ define([
                             Ajax.get('package_quiqqer_tags_ajax_tag_add', function(result)
                             {
                                 self.Loader.show();
-                                self.addTag( tag );
+                                self.addTag( result );
                                 self.$AddTag.hide();
 
                             }, {

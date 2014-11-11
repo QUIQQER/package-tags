@@ -14,7 +14,7 @@ function package_quiqqer_tags_ajax_tag_add($projectName, $projectLang, $tag, $ta
 
     $tagParams = json_decode( $tagParams, true );
 
-    $Tags->add( $tag, $tagParams );
+    return $Tags->add( $tag, $tagParams );
 }
 
 \QUI::$Ajax->register(

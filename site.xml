@@ -22,6 +22,10 @@
             <desc>
                 <locale group="quiqqer/tags" var="admin.types.tag.search.desc" />
             </desc>
+
+            <events>
+                <event on="onSave" fire="\QUI\test"></event>
+            </events>
         </type>
 
     </types>
