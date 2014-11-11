@@ -127,9 +127,10 @@ define([
                     header    : Locale.get( lg, 'tag' ),
                     dataIndex : 'tag',
                     dataType  : 'string',
-                    width     : 200
+                    width     : 200,
+                    hidden    : true
                 }, {
-                    header    : Locale.get( 'quiqqer/system', 'title' ),
+                    header    : Locale.get( lg, 'panel.manager.tag.title' ),
                     dataIndex : 'title',
                     dataType  : 'string',
                     width     : 200
@@ -370,13 +371,13 @@ define([
                         Content.set(
                             'html',
 
-                            '<label for="field-tag">'+
-                                Locale.get( lg, 'tag' ) +
-                            '</label>'+
-                            '<input type="text" name="tag" id="field-tag" />'+
+//                            '<label for="field-tag">'+
+//                                Locale.get( lg, 'tag' ) +
+//                            '</label>'+
+                            '<input type="hidden" name="tag" id="field-tag" />'+
 
                             '<label for="field-title">'+
-                                Locale.get( 'quiqqer/system', 'title' ) +
+                                Locale.get( lg, 'panel.manager.tag.title' ) +
                             '</label>'+
                             '<input type="text" name="title" id="field-title" />'+
 
@@ -409,6 +410,8 @@ define([
                         if ( typeof tag === 'undefined' ) {
                             return;
                         }
+
+                        Title.set( 'disabled', 'disabled' );
 
                         Win.Loader.show();
 
@@ -451,7 +454,7 @@ define([
 
                         if ( typeof tag === 'undefined' )
                         {
-                            self.addTag( Tag.value, tagParams, callback );
+                            self.addTag( Title.value, tagParams, callback );
                         } else
                         {
                             self.editTag( Tag.value, tagParams,  callback );
@@ -507,7 +510,5 @@ define([
                 }
             }).open();
         }
-
     });
-
 });

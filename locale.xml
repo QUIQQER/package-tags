@@ -113,6 +113,10 @@
             <de><![CDATA[Tag hinzufügen]]></de>
             <en><![CDATA[Add a tag]]></en>
         </locale>
+        <locale name="panel.manager.tag.title">
+            <de><![CDATA[Tag Titel]]></de>
+            <en><![CDATA[Tag title]]></en>
+        </locale>
 
 
         <!-- panel delete window -->

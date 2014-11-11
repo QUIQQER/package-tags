@@ -103,11 +103,11 @@ class Manager
     public function count()
     {
         $result = QUI::getDataBase()->fetch(array(
-            'count'  => array(
+            'count' => array(
                 'select' => 'tag',
                 'as'     => 'count'
             ),
-            'from'  => QUI::getDBProjectTableName( 'tags', $this->_Project )
+            'from' => QUI::getDBProjectTableName( 'tags', $this->_Project )
         ));
 
         return (int)$result[ 0 ][ 'count' ];
