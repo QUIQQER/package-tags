@@ -89,8 +89,8 @@ class Manager
     static function clearTagName($str)
     {
         $str = Orthos::clear( $str );
-        $str = str_replace( array( '|', ' ', "\t", "\n" ), '', $str );
-        $str = str_replace( array( '/', '.', '-' ), '_', $str );
+        $str = ucwords( mb_strtolower( $str ) );
+        $str = preg_replace( '/[^a-zA-Z0-9]/', '', $str );
 
         return $str;
     }
