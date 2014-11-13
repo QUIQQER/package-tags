@@ -91,6 +91,7 @@ class Manager
         $str = Orthos::clear( $str );
         $str = ucwords( mb_strtolower( $str ) );
         $str = preg_replace( '/[^a-zA-Z0-9]/', '', $str );
+        $str = substr( $str, 0, 250 );
 
         return $str;
     }

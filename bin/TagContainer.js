@@ -102,6 +102,7 @@ define([
                 name    : 'add-tag',
                 type    : 'text',
                 placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' ),
+                maxlength : 250,
                 events :
                 {
                     change : function(event)
