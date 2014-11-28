@@ -6,6 +6,8 @@
 
 namespace QUI\Tags;
 
+use QUI;
+
 /**
  * Site events for tags
  *
@@ -16,13 +18,14 @@ class Site
 {
     /**
      * event on site save
-     * @param \QUI\Projects\Project\Site $Site
+     * @param \QUI\Projects\Site $Site
+     * @throws \QUI\Exception
      */
     static function onSave($Site)
     {
         $Project = $Site->getProject();
         $tags    = $Site->getAttribute( 'quiqqer.tags.tagList' );
-        $Manager = new \QUI\Tags\Manager( $Project );
+        $Manager = new QUI\Tags\Manager( $Project );
 
         if ( !$tags ) {
             $tags = '';
@@ -50,8 +53,8 @@ class Site
 
         if ( $limit < count( $list ) )
         {
-            throw new \QUI\Exception(
-                \QUI::getLocale()->get( 'quiqqer/tags', 'exception.limit.tags.to.site', array(
+            throw new QUI\Exception(
+                QUI::getLocale()->get( 'quiqqer/tags', 'exception.limit.tags.to.site', array(
                     'limit' => $limit
                 ))
             );
@@ -62,11 +65,11 @@ class Site
 
     /**
      * event on site load
-     * @param \QUI\Projects\Project\Site $Site
+     * @param \QUI\Projects\Site $Site
      */
     static function onLoad($Site)
     {
-        $Manager = new \QUI\Tags\Manager( $Site->getProject() );
+        $Manager = new QUI\Tags\Manager( $Site->getProject() );
         $tags    = $Manager->getSiteTags( $Site->getId() );
 
         $Site->setAttribute( 'quiqqer.tags.tagList', $tags );
@@ -74,11 +77,11 @@ class Site
 
     /**
      * event on site destroy
-     * @param \QUI\Projects\Project\Site $Site
+     * @param \QUI\Projects\Site $Site
      */
     static function onDestroy($Site)
     {
-        $Manager = new \QUI\Tags\Manager( $Site->getProject() );
+        $Manager = new QUI\Tags\Manager( $Site->getProject() );
         $Manager->deleteSiteTags( $Site->getId() );
     }
 }

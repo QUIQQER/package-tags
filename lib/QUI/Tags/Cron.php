@@ -6,6 +6,8 @@
 
 namespace QUI\Tags;
 
+use QUI;
+
 /**
  * Tag Crons - Crons for the tag system
  *
@@ -18,7 +20,7 @@ class Cron
      * creates the tag cache
      *
      * @param Array $params
-     * @param unknown $CronManager
+     * @param QUI\Cron\Manager $CronManager
      */
     static function createCache($params, $CronManager)
     {
@@ -111,6 +113,15 @@ class Cron
             {
                 $Site = $Project->get( (int)$entry['id'] );
 
+                if ( !$Site->getAttribute( 'active' ) ) {
+                    continue;
+                }
+
+                if ( $Site->getAttribute( 'deleted' ) ) {
+                    continue;
+                }
+
+
                 $DataBase->insert(
                     $tableSiteCache,
                     array(
@@ -123,7 +134,7 @@ class Cron
                     )
                 );
 
-            } catch ( \QUI\Exception $Exception )
+            } catch ( QUI\Exception $Exception )
             {
 
             }

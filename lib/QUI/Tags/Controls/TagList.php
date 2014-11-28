@@ -6,13 +6,15 @@
 
 namespace QUI\Tags\Controls;
 
+use QUI;
+
 /**
  * tag list control
  *
  * @author www.pcsg.de (Henning Leutz)
  */
 
-class TagList extends \QUI\Control
+class TagList extends QUI\Control
 {
     /**
      * constructor
@@ -35,17 +37,17 @@ class TagList extends \QUI\Control
      */
     public function getBody()
     {
-        $Engine  = \QUI::getTemplateManager()->getEngine();
+        $Engine  = QUI::getTemplateManager()->getEngine();
         $Project = $this->_getProject();
         $Site    = $this->_getSite();
-        $Rewrite = \QUI::getRewrite();
+        $Rewrite = QUI::getRewrite();
 
         $urlParams = $Rewrite->getUrlParamsList();
 
         $Engine->assign(array(
             'Project' => $Project,
             'Site'    => $Site,
-            'Locale'  => \QUI::getLocale()
+            'Locale'  => QUI::getLocale()
         ));
 
 
@@ -68,7 +70,6 @@ class TagList extends \QUI\Control
         }
 
 
-        $Tags = new \QUI\Tags\Manager( $Project );
         $tags = $this->getList( $needle );
 
         // Sucheseite finden
@@ -151,7 +152,7 @@ class TagList extends \QUI\Control
 
     /**
      * Return the Project
-     * @return Ambigous <\QUI\unknown_type, boolean, multitype:>|\QUI\Projects\Project
+     * @return QUI\Projects\Project
      */
     protected function _getProject()
     {
@@ -159,12 +160,12 @@ class TagList extends \QUI\Control
             return $this->getAttribute('Project');
         }
 
-        return \QUI::getProjectManager()->get();
+        return QUI::getProjectManager()->get();
     }
 
     /**
      * Return the Project
-     * @return Ambigous <\QUI\unknown_type, boolean, multitype:>|\QUI\Projects\Project
+     * @return QUI\Projects\Site
      */
     protected function _getSite()
     {

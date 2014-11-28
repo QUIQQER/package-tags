@@ -6,13 +6,15 @@
 
 namespace QUI\Tags\Controls;
 
+use QUI;
+
 /**
  * tag list control
  *
  * @author www.pcsg.de (Henning Leutz)
  */
 
-class SiteTags extends \QUI\Control
+class SiteTags extends QUI\Control
 {
     /**
      * constructor
@@ -35,7 +37,8 @@ class SiteTags extends \QUI\Control
      */
     public function getBody()
     {
-        $Engine  = \QUI::getTemplateManager()->getEngine();
+        /* @var $Site QUI\Projects\Site */
+        $Engine  = QUI::getTemplateManager()->getEngine();
         $Site    = $this->getAttribute('Site');
         $Project = $Site->getProject();
 
@@ -43,8 +46,8 @@ class SiteTags extends \QUI\Control
         $Engine->assign(array(
             'Project'    => $Project,
             'Site'       => $Site,
-            'Locale'     => \QUI::getLocale(),
-            'TagManager' => new \QUI\Tags\Manager( $Project ),
+            'Locale'     => QUI::getLocale(),
+            'TagManager' => new QUI\Tags\Manager( $Project ),
             'this'       => $this
         ));
 

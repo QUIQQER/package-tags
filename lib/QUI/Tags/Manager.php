@@ -49,6 +49,7 @@ class Manager
      * @param String $tag
      * @param Array $params
      * @return String - Tag
+     * @throws QUI\Exception
      */
     public function add($tag, $params)
     {
@@ -210,6 +211,7 @@ class Manager
      * Return a tag
      *
      * @param String $tag
+     * @throws QUI\Exception
      */
     public function get($tag)
     {
@@ -451,9 +453,7 @@ class Manager
             return array();
         }
 
-        $sites = array();
-        $ids   = array();
-        $_tmp  = array();
+        $ids = array();
 
         // filter double tags
         foreach ( $result as $entry )
@@ -579,7 +579,7 @@ class Manager
     /**
      * Get the tags from a site
      *
-     * @param unknown $siteId
+     * @param Integer $siteId
      * @return array
      */
     public function getSiteTags($siteId)
@@ -587,7 +587,7 @@ class Manager
         $result = QUI::getDataBase()->fetch(array(
             'from'  => QUI::getDBProjectTableName( 'tags_sites', $this->_Project ),
             'where' => array(
-                'id' => $siteId
+                'id' => (int)$siteId
             ),
             'limit' => 1
         ));
