@@ -276,7 +276,7 @@ define([
          * 		desc,
          * 		image
          * }
-         * @param {Function} callback - [optional] callback function
+         * @param {Function} [callback] - (optional), callback function
          */
         addTag : function(tag, tagParams, callback)
         {
@@ -306,7 +306,7 @@ define([
          * 		desc,
          * 		image
          * }
-         * @param {Function} callback - [optional] callback function
+         * @param {Function} [callback] - (optional), callback function
          */
         editTag : function(tag, tagParams, callback)
         {
@@ -330,7 +330,7 @@ define([
          * Delete the tags
          *
          * @param {Array} tags - List of tags [tags1, tag2, tag3]
-         * @param {Function} callback - [optional] callback function
+         * @param {Function} [callback] - (optional), callback function
          */
         deleteTags : function(tags, callback)
         {
