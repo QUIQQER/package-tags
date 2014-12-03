@@ -9,7 +9,6 @@
  *
  * @return string
  */
-
 function package_quiqqer_tags_ajax_tag_getDataList($projectName, $projectLang, $string)
 {
     $Tags = new \QUI\Tags\Manager(

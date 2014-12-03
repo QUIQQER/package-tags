@@ -13,7 +13,6 @@ use QUI;
  *
  * @author www.pcsg.de (Henning Leutz)
  */
-
 class Cron
 {
     /**
@@ -33,12 +32,12 @@ class Cron
         }
 
 
-        $Project  = \QUI::getProject( $params['project'], $params['lang'] );
-        $DataBase = \QUI::getDataBase();
+        $Project  = QUI::getProject( $params['project'], $params['lang'] );
+        $DataBase = QUI::getDataBase();
 
-        $tableSites     = \QUI::getDBProjectTableName( 'tags_sites', $Project );
-        $tableSiteCache = \QUI::getDBProjectTableName( 'tags_siteCache', $Project );
-        $tableCache     = \QUI::getDBProjectTableName( 'tags_cache', $Project );
+        $tableSites     = QUI::getDBProjectTableName( 'tags_sites', $Project );
+        $tableSiteCache = QUI::getDBProjectTableName( 'tags_siteCache', $Project );
+        $tableCache     = QUI::getDBProjectTableName( 'tags_cache', $Project );
 
 
         // get ids

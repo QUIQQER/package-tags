@@ -3,9 +3,11 @@
 /**
  * Add a tag
  *
+ * @param String $projectName - name of the project
+ * @param String $projectLang - lang of the project
+ * @param String $tags - JSON Array, list of tags to be deleted
  * @return Array
  */
-
 function package_quiqqer_tags_ajax_tag_delete($projectName, $projectLang, $tags)
 {
     $Tags = new \QUI\Tags\Manager(

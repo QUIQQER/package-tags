@@ -3,6 +3,9 @@
 /**
  * Add a tag
  *
+ * @param String $projectName - name of the project
+ * @param String $projectLang - lang of the project
+ * @param String $gridParams - JSON Array, Grid parameter
  * @return Array
  */
 

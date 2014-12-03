@@ -36,6 +36,9 @@ define([
 
     var lg = 'quiqqer/tags';
 
+    /**
+     * @param {Object} options - options / attributes
+     */
     return new Class({
 
         Extends : QUIPanel,
@@ -79,7 +82,7 @@ define([
                 name   : 'tag-projects',
                 events :
                 {
-                    onChange : function(value, Select)
+                    onChange : function(value)
                     {
                         self.loadProject(
                             value.split(':')[ 0 ],
@@ -173,6 +176,10 @@ define([
 
                 for ( var project in result )
                 {
+                    if ( !result.hasOwnProperty( project ) ) {
+                        continue;
+                    }
+
                     langs = result[ project ].langs.split( ',' );
 
                     for ( i = 0, len = langs.length; i < len; i++ )
@@ -255,7 +262,7 @@ define([
             }, {
                 'package'   : 'quiqqer/tags',
                 projectName : this.$project,
-                projectLang : this.$lang,
+                projectLang : this.$lang
             });
         },
 
@@ -348,7 +355,7 @@ define([
         /**
          * Opens the tag adding / edit window
          *
-         * @param {String} tag - [optional] Tag
+         * @param {String} [tag] - (optional) TAG
          */
         openTagWindow : function(tag)
         {
@@ -418,7 +425,7 @@ define([
                         Ajax.get('package_quiqqer_tags_ajax_tag_get', function(data)
                         {
                             Tag.value   = tag;
-                            Title.value = data.title,
+                            Title.value = data.title;
                             Desc.value  = data.desc;
                             Img.value   = data.image;
 
@@ -486,7 +493,7 @@ define([
                 autoclose : false,
                 events    :
                 {
-                    onOpen : function(Win)
+                    onOpen : function()
                     {
                         var Content = this.getContent();
 

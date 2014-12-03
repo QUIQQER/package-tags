@@ -12,7 +12,6 @@
  * @require package/quiqqer/tags/bin/TagContainer
  * @require Ajax
  * @require Locale
- * @require Projects
  * @require css!URL_OPT_DIR/quiqqer/tags/bin/Site.css
  */
 
@@ -26,11 +25,10 @@ define([
 
     'Ajax',
     'Locale',
-    'Projects',
 
     'css!package/quiqqer/tags/bin/Site.css'
 
-], function(QUI, QUIControl, QUILoader, QUIConfirm, TagContainer, Ajax, Locale, Projects)
+], function(QUI, QUIControl, QUILoader, QUIConfirm, TagContainer, Ajax, Locale)
 {
     "use strict";
 
@@ -51,7 +49,7 @@ define([
             Site : false
         },
 
-        initialize : function(options, Panel)
+        initialize : function(options)
         {
             this.parent( options );
 
@@ -67,7 +65,7 @@ define([
         /**
          * create the dom node element
          *
-         * @return {DOMNode}
+         * @return {HTMLElement}
          */
         create : function()
         {
@@ -84,8 +82,7 @@ define([
             });
 
             var projectName = this.$Project.getName(),
-                projectLang = this.$Project.getLang(),
-                datalistId  = 'datalist-'+ projectName +'-'+ projectLang;
+                projectLang = this.$Project.getLang();
 
             this.$Container = new TagContainer({
                 loadDatalist : true,
@@ -139,7 +136,7 @@ define([
         /**
          * event on tag adding via tag container
          *
-         * @param {} Container
+         * @param {Object} Container - TagContainer
          * @param {String} tag
          */
         $onTagAdd : function(Container, tag)
@@ -177,7 +174,7 @@ define([
 
             this.$Container.Loader.show();
 
-            Ajax.get('package_quiqqer_tags_ajax_tag_add', function(result)
+            Ajax.get('package_quiqqer_tags_ajax_tag_add', function()
             {
                 self.$Container.addTag( tag );
                 self.$Container.Loader.hide();
@@ -206,7 +203,7 @@ define([
                 maxHeight : 300,
                 events :
                 {
-                    onOpen : function(Win)
+                    onOpen : function()
                     {
                         var Content = this.getContent();
 

@@ -8,7 +8,12 @@
  * @require qui/QUI
  * @require qui/controls/Control
  * @require qui/controls/loader/Loader
- * @require css!URL_OPT_DIR/quiqqer/tags/bin/TagContainer.css
+ * @require qui/controls/desktop/panels/Sheet
+ * @require qui/controls/buttons/Button
+ * @require qui/utils/Elements
+ * @require Ajax
+ * @require Locale
+ * @require css!package/quiqqer/tags/bin/TagContainer.css
  *
  * @event onAdd [ {self}, {String} tag ]
  * @event onRemove [ {self}, {String} tag ]
@@ -74,7 +79,7 @@ define([
         /**
          * create the domnode elemente
          *
-         * @return {DOMnode}
+         * @return {HTMLElement}
          */
         create : function()
         {
@@ -105,7 +110,7 @@ define([
                 maxlength : 250,
                 events :
                 {
-                    change : function(event)
+                    change : function()
                     {
                         var val = this.value,
                             Tag = self.$DataList.getElement( '[value="'+ val +'"]' );
@@ -208,7 +213,7 @@ define([
         /**
          * Returns the DOMNode of the tag container
          *
-         * @return {DOMNode}
+         * @return {HTMLElement}
          */
         getContainer : function()
         {
@@ -307,8 +312,6 @@ define([
                 'package_quiqqer_tags_ajax_tag_get'
             ], function(hasPermission, tagExists, tagData)
             {
-                var Edit = self.$Container.getElement( '.qui-tags-tag-add' );
-
                 if ( !hasPermission && !tagExists )
                 {
                     QUI.getMessageHandler(function(MH)

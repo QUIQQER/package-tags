@@ -19,7 +19,6 @@ use QUI\Utils\Grid;
  * @author www.pcsg.de (Henning Leutz)
  * @todo tag permissions
  */
-
 class Manager
 {
     /**

@@ -3,9 +3,11 @@
 /**
  * Exists a tag?
  *
+ * @param String $projectName - name of the project
+ * @param String $projectLang - lang of the project
+ * @param String $tag - wanted tag
  * @return Bool
  */
-
 function package_quiqqer_tags_ajax_tag_exists($projectName, $projectLang, $tag)
 {
     $Tags = new \QUI\Tags\Manager(

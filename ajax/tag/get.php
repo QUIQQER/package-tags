@@ -3,9 +3,11 @@
 /**
  * Add a tag
  *
+ * @param String $projectName - name of the project
+ * @param String $projectLang - lang of the project
+ * @param String $tag - wanted tag
  * @return Array
  */
-
 function package_quiqqer_tags_ajax_tag_get($projectName, $projectLang, $tag)
 {
     $Tags = new \QUI\Tags\Manager(
