@@ -64,9 +64,6 @@
 }
 
 .qui-tags-input {
-    bottom: 0;
-    left: 0;
-    position: absolute;
     width: 100%;
 }
 
@@ -80,4 +77,22 @@
     float: left;
     margin: 10px 0 0 0;
     width: 100%;
+}
+
+/** tag popup list
+ * =============================================== */
+
+.qui-tags-container-window-select {
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.qui-tags-container-window-container {
+    padding: 10px;
+}
+
+.qui-tags-container-window-container .qui-tags-tag:hover {
+    background: #2f8fc6;
+    color: #fff;
+    cursor: pointer;
 }

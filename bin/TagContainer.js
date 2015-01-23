@@ -19,20 +19,21 @@
  * @event onRemove [ {self}, {String} tag ]
  */
 
-define([
+define('package/quiqqer/tags/bin/TagContainer', [
 
     'qui/QUI',
     'qui/controls/Control',
     'qui/controls/loader/Loader',
     'qui/controls/desktop/panels/Sheet',
     'qui/controls/buttons/Button',
+    'qui/controls/windows/Popup',
     'qui/utils/Elements',
     'Ajax',
     'Locale',
 
     'css!package/quiqqer/tags/bin/TagContainer.css'
 
-], function(QUI, QUIControl, QUILoader, QUISheet, QUIButton, ElementUtils, Ajax, Locale)
+], function(QUI, QUIControl, QUILoader, QUISheet, QUIButton, QUIWindow, ElementUtils, Ajax, Locale)
 {
     "use strict";
 
@@ -48,11 +49,13 @@ define([
         ],
 
         options : {
-            editable     : true,
-            datalist     : false,
-            styles       : false,
-            loadDatalist : false,
-            limit        : false,
+            editable      : true,
+            datalist      : false,
+            styles        : false,
+            loadDatalist  : false,
+            limit         : false,
+            inputPosition : 'top', // input position bottom or top
+            tagWindowOnClick : true,
 
             project     : false,
             projectLang : false
@@ -102,12 +105,36 @@ define([
 
             this.$Container = this.$Elm.getElement( '.qui-tags-container-list' );
 
+            this.$Container.addEvents({
+                click : function()
+                {
+                    if ( self.$Input.get( 'disabled' ) ||
+                         self.$Input.get( 'disabled' ) == 'disabled' )
+                    {
+                        return;
+                    }
+
+                    if ( !self.getAttribute( 'tagWindowOnClick' ) )
+                    {
+                        self.$Input.focus();
+                        return;
+                    }
+
+                    self.openTagWindow();
+                }
+            });
+
             this.$Input = new Element('input', {
                 'class' : 'qui-tags-input',
                 name    : 'add-tag',
                 type    : 'text',
                 placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' ),
                 maxlength : 250,
+                styles : {
+                    bottom   : 0,
+                    left     : 0,
+                    position : 'absolute'
+                },
                 events :
                 {
                     change : function()
@@ -131,6 +158,17 @@ define([
                     }
                 }
             }).inject( this.$Elm );
+
+            if ( this.getAttribute( 'inputPosition' ) == 'top' )
+            {
+                this.$Input.setStyles({
+                    bottom   : null,
+                    left     : null,
+                    position : null
+                });
+
+                this.$Input.inject( this.$Elm, 'top' );
+            }
 
 
             if ( this.getAttribute( 'datalist' ) ) {
@@ -351,7 +389,10 @@ define([
 
                 Tag.inject( self.$Container );
 
-                Tag.getElement( '.icon-remove' ).addEvent('click', function() {
+                Tag.getElement( '.icon-remove' ).addEvent('click', function(event)
+                {
+                    event.stop();
+
                     self.removeTag( this.getParent().get( 'data-tag' ) );
                 });
 
@@ -486,6 +527,124 @@ define([
             }
 
             return '';
+        },
+
+        /**
+         * Open the tag select window
+         */
+        openTagWindow : function()
+        {
+            if ( this.$Input.get( 'disabled' ) ||
+                 this.$Input.get( 'disabled' ) == 'disabled' )
+            {
+                return;
+            }
+
+            var self = this;
+
+            new QUIWindow({
+                title     : 'Tag hinzufügen',
+                maxWidth  : 600,
+                maxHeight : 400,
+                events    :
+                {
+                    onOpen : function(Win)
+                    {
+                        var Content = Win.getContent();
+
+                        Content.set(
+                            'html',
+
+                            '<select class="qui-tags-container-window-select">'+
+                                '<option value="abc">A B C</option>'+
+                                '<option value="def">D E F</option>'+
+                                '<option value="ghi">G H I</option>'+
+                                '<option value="jkl">J K L</option>'+
+                                '<option value="mno">M N O</option>'+
+                                '<option value="pqr">P Q R</option>'+
+                                '<option value="stu">S T U</option>'+
+                                '<option value="vz">V - Z</option>'+
+                            '</select>'+
+                            '<div class="qui-tags-container-window-container"></div>'
+                        );
+
+
+                        var Select       = Content.getElement( 'select' ),
+                            TagContainer = Content.getElement( '.qui-tags-container-window-container' );
+
+                        Select.addEvent('change', function()
+                        {
+                            Win.Loader.show();
+
+                            self.getTagsBySektor(this.value, function(result)
+                            {
+                                if ( !result.length )
+                                {
+                                    TagContainer.set( 'html', '<p>Keine Tags vorhanden</p>' );
+                                    Win.Loader.hide();
+
+                                    return;
+                                }
+
+                                TagContainer.set( 'html', '' );
+
+                                var i, len, tag, title, tagData;
+
+                                for ( i = 0, len = result.length; i < len; i++ )
+                                {
+                                    tagData = result[ i ];
+
+                                    tag   = tagData.tag;
+                                    title = tag;
+
+                                    if ( tagData.title !== '' ) {
+                                        title = tagData.title;
+                                    }
+
+                                    new Element('div', {
+                                        'class' : 'qui-tags-tag',
+                                        html    : '<span class="icon-tag fa fa-tag"></span>'+
+                                                  '<span class="qui-tags-tag-value">'+ title +'</span>',
+                                        'data-tag' : tag
+                                    }).inject( TagContainer );
+                                }
+
+                                TagContainer.getElements( '.qui-tags-tag' ).addEvent('click', function()
+                                {
+                                    self.addTag( this.get( 'data-tag' ) );
+
+                                    Win.close();
+                                });
+
+                                Win.Loader.hide();
+                            });
+                        });
+
+                        Select.fireEvent( 'change' );
+                    }
+                }
+            }).open();
+        },
+
+        /**
+         * Search tags by the window select value
+         *
+         * @param {string} sektor
+         * @param {Function} callback
+         */
+        getTagsBySektor : function(sektor, callback)
+        {
+            Ajax.get('package_quiqqer_tags_ajax_search_getTagsBySektor', function(result)
+            {
+                callback( result );
+            }, {
+                'package' : 'quiqqer/tags',
+                project : JSON.encode({
+                    name : this.getProject(),
+                    lang : this.getProjectLang()
+                }),
+                sektor : sektor
+            });
         }
     });
 });
