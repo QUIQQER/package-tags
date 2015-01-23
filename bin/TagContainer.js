@@ -54,8 +54,8 @@ define('package/quiqqer/tags/bin/TagContainer', [
             styles        : false,
             loadDatalist  : false,
             limit         : false,
-            inputPosition : 'top', // input position bottom or top
-            tagWindowOnClick : true,
+            inputPosition : 'top',   // input position bottom or top
+            tagWindowOnClick : true, // click at the tag container opens a tag add window
 
             project     : false,
             projectLang : false
@@ -431,7 +431,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 });
 
                 new QUIButton({
-                    text   : 'Hinzufügen',
+                    text   : Locale.get( lg, 'control.tagcontainer.sheet.btn.add' ),
                     events :
                     {
                         onClick : function()
@@ -456,7 +456,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 }).inject( Content );
 
                 new QUIButton({
-                    text   : 'Abbrechen',
+                    text   : Locale.get( lg, 'control.tagcontainer.sheet.btn.cancel' ),
                     events :
                     {
                         onClick : function() {
@@ -543,7 +543,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
             var self = this;
 
             new QUIWindow({
-                title     : 'Tag hinzufügen',
+                title     : Locale.get( lg, 'control.tagcontainer.window.add.title' ),
                 maxWidth  : 600,
                 maxHeight : 400,
                 events    :
@@ -580,7 +580,10 @@ define('package/quiqqer/tags/bin/TagContainer', [
                             {
                                 if ( !result.length )
                                 {
-                                    TagContainer.set( 'html', '<p>Keine Tags vorhanden</p>' );
+                                    TagContainer.set(
+                                        'html',
+                                        Locale.get( lg, 'control.tagcontainer.window.message.no.tags' )
+                                    );
                                     Win.Loader.hide();
 
                                     return;

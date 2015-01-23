@@ -118,7 +118,6 @@
             <en><![CDATA[Tag title]]></en>
         </locale>
 
-
         <!-- panel delete window -->
         <locale name="panel.delete.window.title">
             <de><![CDATA[Tag löschen]]></de>
@@ -134,6 +133,28 @@
                 <p><strong>[tags]</strong></p>
             ]]></en>
         </locale>
+
+        <!-- control add window -->
+        <locale name="control.tagcontainer.window.add.title">
+            <de><![CDATA[Tag hinzufügen]]></de>
+            <en><![CDATA[Add a tag]]></en>
+        </locale>
+        <locale name="control.tagcontainer.window.message.no.tags">
+            <de><![CDATA[Keine Tags gefunden.]]></de>
+            <en><![CDATA[No tags found.]]></en>
+        </locale>
+
+        <locale name="control.tagcontainer.sheet.btn.cancel">
+            <de><![CDATA[Abbrechen]]></de>
+            <en><![CDATA[Cancel]]></en>
+        </locale>
+        <locale name="control.tagcontainer.sheet.btn.add">
+            <de><![CDATA[Hinzufügen]]></de>
+            <en><![CDATA[Add]]></en>
+        </locale>
+
+
+
 
         <!-- site -->
         <locale name="site.table.title">
