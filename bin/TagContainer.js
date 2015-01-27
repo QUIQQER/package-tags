@@ -2,7 +2,7 @@
 /**
  * Tag container - collect tags
  *
- * @module URL_OPT_DIR/quiqqer/tags/bin/TagContainer.js
+ * @module package/quiqqer/tags/bin/TagContainer
  * @author www.pcsg.de (Henning Leutz)
  *
  * @require qui/QUI

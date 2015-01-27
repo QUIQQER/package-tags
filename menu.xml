@@ -9,7 +9,7 @@
 
     <item parent="/extras/tags/"
           name="manager"
-          require="URL_OPT_DIR/quiqqer/tags/bin/Manager"
+          require="package/quiqqer/tags/bin/Manager"
           icon="icon-tags"
     >
         <locale group="quiqqer/tags" var="menu.tags.manager" />

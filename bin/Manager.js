@@ -2,7 +2,7 @@
 /**
  * Tag Manager
  *
- * @module URL_OPT_DIR/quiqqer/tags/bin/Manager
+ * @module package/quiqqer/tags/bin/Manager
  * @author www.pcsg.de (Henning Leutz)
  *
  * @require qui/QUI
@@ -13,10 +13,10 @@
  * @require Ajax
  * @require Locale
  * @require Projects
- * @require css!URL_OPT_DIR/quiqqer/tags/bin/Manager.css
+ * @require css!package/quiqqer/tags/bin/Manager.css
  */
 
-define([
+define('package/quiqqer/tags/bin/Manager', [
 
     'qui/QUI',
     'qui/controls/desktop/Panel',

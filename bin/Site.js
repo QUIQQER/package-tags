@@ -2,7 +2,7 @@
 /**
  * Tag Verwaltung für eine Seite
  *
- * @module URL_OPT_DIR/quiqqer/tags/bin/Site
+ * @module package/quiqqer/tags/bin/Site
  * @author www.pcsg.de (Henning Leutz)
  *
  * @require qui/QUI
@@ -15,7 +15,7 @@
  * @require css!URL_OPT_DIR/quiqqer/tags/bin/Site.css
  */
 
-define([
+define('package/quiqqer/tags/bin/Site', [
 
     'qui/QUI',
     'qui/controls/Control',
@@ -37,7 +37,7 @@ define([
     return new Class({
 
         Extends : QUIControl,
-        Type    : 'URL_OPT_DIR/quiqqer/tags/bin/Site',
+        Type    : 'package/quiqqer/tags/bin/Site',
 
         Binds : [
             '$onInject',
