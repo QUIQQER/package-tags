@@ -2,6 +2,11 @@
 <locales>
 
     <groups name="quiqqer/tags" datatype="php,js">
+        <locale name="package.title">
+            <de><![CDATA[QUIQQER - TAG's]]></de>
+            <en><![CDATA[QUIQQER - TAG's]]></en>
+        </locale>
+
         <locale name="exception.tag.already.exists">
             <de><![CDATA[Der tag existiert bereits.]]></de>
             <en><![CDATA[The tag already exist.]]></en>
@@ -14,7 +19,6 @@
             <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Seite wurde nicht gespeichert.]]></de>
             <en><![CDATA[You can add only [limit] tags the page. The page wasn't saved.]]></en>
         </locale>
-
 
         <locale name="message.no.tags.found">
             <de><![CDATA[Keine tags gefunden]]></de>
@@ -38,7 +42,6 @@
             <de><![CDATA[Weitere Tags können nicht hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht.]]></de>
             <en><![CDATA[More tags can not be added. The maximum number of tags has been reached.]]></en>
         </locale>
-
     </groups>
 
 
@@ -107,7 +110,6 @@
             <en><![CDATA[Image for the tag]]></en>
         </locale>
 
-
         <!-- panel add window -->
         <locale name="panel.add.window.title">
             <de><![CDATA[Tag hinzufügen]]></de>
@@ -154,8 +156,6 @@
         </locale>
 
 
-
-
         <!-- site -->
         <locale name="site.table.title">
             <de><![CDATA[Der Seite zugewiesene tags]]></de>
@@ -195,8 +195,6 @@
             <de><![CDATA[Anzahl der tags die der Benutzer einer Seite hinzufügen darf.]]></de>
             <en><![CDATA[Anzahl der tags die der Benutzer einer Seite hinzufügen darf.]]></en>
         </locale>
-
     </groups>
-
 
 </locales>
