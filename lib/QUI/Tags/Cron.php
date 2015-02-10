@@ -58,6 +58,7 @@ class Cron
                     continue;
                 }
 
+                $tag = Manager::clearTagName( $tag );
                 $tag = mb_strtolower( $tag );
 
                 $entry['id'] = (int)$entry['id'];
