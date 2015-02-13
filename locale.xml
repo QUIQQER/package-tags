@@ -6,7 +6,19 @@
             <de><![CDATA[QUIQQER - TAG's]]></de>
             <en><![CDATA[QUIQQER - TAG's]]></en>
         </locale>
+        <locale name="package.description">
+            <de><![CDATA[
+                <p>Tags lassen sich mit "Schlagwörtern" oder „Stichwörtern“ übersetzen.
+                Sie beschreiben einen Inhalt mit einzelnen Wörtern.</p>
+                <p>Für einen Artikel über eine Reise nach Rom wären demnach zum Beispiel
+                die Tags „Italien“, „Reise“ oder „Rom“ passend.</p>
+                <p>Sie können Tags in Ihrem Projekt nutzen, um Ihren Lesern mehr Übersicht zu bieten.</p>
+            ]]></de>
+            <en><![CDATA[
 
+            ]]></en>
+        </locale>
+        
         <locale name="exception.tag.already.exists">
             <de><![CDATA[Der tag existiert bereits.]]></de>
             <en><![CDATA[The tag already exist.]]></en>
