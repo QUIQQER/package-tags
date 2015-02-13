@@ -1,10 +1,10 @@
 
 <permissions>
     <permission name="tags.create" type="bool">
-        <defaultvalue>1</defaultvalue>
+        <defaultvalue>0</defaultvalue>
     </permission>
     <permission name="tags.delete" type="bool">
-        <defaultvalue>1</defaultvalue>
+        <defaultvalue>0</defaultvalue>
     </permission>
     <permission name="tags.siteLimit" type="int">
         <defaultvalue>10</defaultvalue>
