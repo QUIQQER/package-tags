@@ -1,6 +1,6 @@
 {
     "name" : "quiqqer/tags",
-    "type" : "quiqqer-library",
+    "type" : "quiqqer-module",
     "description" : "Tags for QUIQQER.",
     "version" : "dev-dev",
     "license" : "GPL-2.0+",
