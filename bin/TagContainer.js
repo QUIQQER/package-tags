@@ -331,6 +331,12 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         addTag : function(tag)
         {
+            if ( !tag ) {
+                return;
+            }
+
+            tag = tag.toString();
+
             if ( tag.trim() === '' ) {
                 return;
             }
