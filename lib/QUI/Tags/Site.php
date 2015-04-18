@@ -13,75 +13,77 @@ use QUI;
  *
  * @author www.pcsg.de (Henning Leutz)
  */
-
 class Site
 {
     /**
      * event on site save
+     *
      * @param \QUI\Projects\Site $Site
+     *
      * @throws \QUI\Exception
      */
     static function onSave($Site)
     {
         $Project = $Site->getProject();
-        $tags    = $Site->getAttribute( 'quiqqer.tags.tagList' );
-        $Manager = new QUI\Tags\Manager( $Project );
+        $tags = $Site->getAttribute('quiqqer.tags.tagList');
+        $Manager = new QUI\Tags\Manager($Project);
 
-        if ( !$tags ) {
+        if (!$tags) {
             $tags = '';
         }
 
-        if ( is_string( $tags ) ) {
-            $tags = explode( ',', $tags );
+        if (is_string($tags)) {
+            $tags = explode(',', $tags);
         }
 
-        if ( !is_array( $tags ) ) {
+        if (!is_array($tags)) {
             return;
         }
 
         $list = array();
 
-        foreach ( $tags as $tag )
-        {
-            if ( $Manager->existsTag( $tag ) ) {
-                $list[] = mb_strtolower( $tag );
+        foreach ($tags as $tag) {
+            if ($Manager->existsTag($tag)) {
+                $list[] = mb_strtolower($tag);
             }
         }
 
-        $User  = \QUI::getUserBySession();
-        $limit = $User->getPermission( 'tags.siteLimit', 'max_integer' );
+        $User = \QUI::getUserBySession();
+        $limit = $User->getPermission('tags.siteLimit', 'max_integer');
 
-        if ( $limit < count( $list ) )
-        {
+        if ($limit < count($list)) {
             throw new QUI\Exception(
-                QUI::getLocale()->get( 'quiqqer/tags', 'exception.limit.tags.to.site', array(
-                    'limit' => $limit
-                ))
+                QUI::getLocale()
+                   ->get('quiqqer/tags', 'exception.limit.tags.to.site', array(
+                       'limit' => $limit
+                   ))
             );
         }
 
-        $Manager->setSiteTags( $Site->getId(), $list );
+        $Manager->setSiteTags($Site->getId(), $list);
     }
 
     /**
      * event on site load
+     *
      * @param \QUI\Projects\Site $Site
      */
     static function onLoad($Site)
     {
-        $Manager = new QUI\Tags\Manager( $Site->getProject() );
-        $tags    = $Manager->getSiteTags( $Site->getId() );
+        $Manager = new QUI\Tags\Manager($Site->getProject());
+        $tags = $Manager->getSiteTags($Site->getId());
 
-        $Site->setAttribute( 'quiqqer.tags.tagList', $tags );
+        $Site->setAttribute('quiqqer.tags.tagList', $tags);
     }
 
     /**
      * event on site destroy
+     *
      * @param \QUI\Projects\Site $Site
      */
     static function onDestroy($Site)
     {
-        $Manager = new QUI\Tags\Manager( $Site->getProject() );
-        $Manager->deleteSiteTags( $Site->getId() );
+        $Manager = new QUI\Tags\Manager($Site->getProject());
+        $Manager->deleteSiteTags($Site->getId());
     }
 }

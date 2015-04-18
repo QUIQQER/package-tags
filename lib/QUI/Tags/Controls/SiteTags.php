@@ -13,33 +13,34 @@ use QUI;
  *
  * @author www.pcsg.de (Henning Leutz)
  */
-
 class SiteTags extends QUI\Control
 {
     /**
      * constructor
+     *
      * @param Array $attributes
      */
-    public function __construct($attributes=array())
+    public function __construct($attributes = array())
     {
-        parent::setAttributes( $attributes );
+        parent::setAttributes($attributes);
 
         $this->addCSSFile(
-            dirname( __FILE__ ) .'/SiteTags.css'
+            dirname(__FILE__).'/SiteTags.css'
         );
 
-        $this->setAttribute( 'class', 'quiqqer-tags-list grid-100 grid-parent' );
+        $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
     }
 
     /**
      * (non-PHPdoc)
+     *
      * @see \QUI\Control::create()
      */
     public function getBody()
     {
         /* @var $Site QUI\Projects\Site */
-        $Engine  = QUI::getTemplateManager()->getEngine();
-        $Site    = $this->getAttribute('Site');
+        $Engine = QUI::getTemplateManager()->getEngine();
+        $Site = $this->getAttribute('Site');
         $Project = $Site->getProject();
 
 
@@ -47,7 +48,7 @@ class SiteTags extends QUI\Control
             'Project'    => $Project,
             'Site'       => $Site,
             'Locale'     => QUI::getLocale(),
-            'TagManager' => new QUI\Tags\Manager( $Project ),
+            'TagManager' => new QUI\Tags\Manager($Project),
             'this'       => $this
         ));
 
@@ -61,7 +62,7 @@ class SiteTags extends QUI\Control
 
         $SearchSite = $Site;
 
-        if ( isset( $result[0] ) ) {
+        if (isset($result[0])) {
             $SearchSite = $result[0];
         }
 
@@ -69,6 +70,6 @@ class SiteTags extends QUI\Control
             'SearchSite' => $SearchSite
         ));
 
-        return $Engine->fetch( dirname( __FILE__ ) .'/SiteTags.html' );
+        return $Engine->fetch(dirname(__FILE__).'/SiteTags.html');
     }
 }
