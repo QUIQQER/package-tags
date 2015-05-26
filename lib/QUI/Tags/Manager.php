@@ -54,7 +54,8 @@ class Manager
     {
         Permission::checkPermission( 'tags.create' );
 
-        $title = Orthos::clear( $tag );
+        $title = Orthos::removeHTML( $tag );
+        $title = Orthos::clearFormRequest( $title );
 
         $tag = mb_strtolower( $tag );
         $tag = $this->clearTagName( $tag );
