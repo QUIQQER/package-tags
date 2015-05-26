@@ -5,19 +5,20 @@
  *
  * @param String $projectName - name of the project
  * @param String $projectLang - lang of the project
- * @param String $tag - wanted tag
+ * @param String $tag         - wanted tag
+ *
  * @return Bool
  */
 function package_quiqqer_tags_ajax_tag_exists($projectName, $projectLang, $tag)
 {
     $Tags = new \QUI\Tags\Manager(
-        \QUI::getProject( $projectName, $projectLang )
+        \QUI::getProject($projectName, $projectLang)
     );
 
-    return $Tags->existsTag( $tag );
+    return $Tags->existsTag($tag);
 }
 
 \QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_exists',
-    array( 'projectName', 'projectLang', 'tag' )
+    array('projectName', 'projectLang', 'tag')
 );

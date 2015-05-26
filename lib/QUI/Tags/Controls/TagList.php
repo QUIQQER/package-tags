@@ -13,33 +13,34 @@ use QUI;
  *
  * @author www.pcsg.de (Henning Leutz)
  */
-
 class TagList extends QUI\Control
 {
     /**
      * constructor
+     *
      * @param Array $attributes
      */
-    public function __construct($attributes=array())
+    public function __construct($attributes = array())
     {
-        parent::setAttributes( $attributes );
+        parent::setAttributes($attributes);
 
         $this->addCSSFile(
-            dirname( __FILE__ ) .'/TagList.css'
+            dirname(__FILE__).'/TagList.css'
         );
 
-        $this->setAttribute( 'class', 'quiqqer-tags-list grid-100 grid-parent' );
+        $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
     }
 
     /**
      * (non-PHPdoc)
+     *
      * @see \QUI\Control::create()
      */
     public function getBody()
     {
-        $Engine  = QUI::getTemplateManager()->getEngine();
+        $Engine = QUI::getTemplateManager()->getEngine();
         $Project = $this->_getProject();
-        $Site    = $this->_getSite();
+        $Site = $this->_getSite();
         $Rewrite = QUI::getRewrite();
 
         $urlParams = $Rewrite->getUrlParamsList();
@@ -53,10 +54,8 @@ class TagList extends QUI\Control
 
         $needle = 'abc';
 
-        if ( !empty( $urlParams ) )
-        {
-            switch ( $urlParams[ 0 ] )
-            {
+        if (!empty($urlParams)) {
+            switch ($urlParams[0]) {
                 case 'def':
                 case 'ghi':
                 case 'jkl':
@@ -64,13 +63,13 @@ class TagList extends QUI\Control
                 case 'pqr':
                 case 'stu':
                 case 'vz':
-                    $needle = $urlParams[ 0 ];
-                break;
+                    $needle = $urlParams[0];
+                    break;
             }
         }
 
 
-        $tags = $this->getList( $needle );
+        $tags = $this->getList($needle);
 
         // Sucheseite finden
         $result = $Project->getSites(array(
@@ -81,7 +80,7 @@ class TagList extends QUI\Control
 
         $SearchSite = $Site;
 
-        if ( isset( $result[0] ) ) {
+        if (isset($result[0])) {
             $SearchSite = $result[0];
         }
 
@@ -92,59 +91,61 @@ class TagList extends QUI\Control
         ));
 
 
-        return $Engine->fetch( dirname( __FILE__ ) .'/TagList.html' );
+        return $Engine->fetch(dirname(__FILE__).'/TagList.html');
     }
 
     /**
      * Return a tag list by its sektor
      *
      * @param String $sektor - tag sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz"
+     *
      * @return Array
      */
     public function getList($sektor)
     {
-        switch ( $sektor )
-        {
+        switch ($sektor) {
             default:
             case 'abc':
                 $where = 'tag LIKE "a%" OR tag LIKE "b%" OR tag LIKE "c%"';
-            break;
+                break;
 
             case 'def':
                 $where = 'tag LIKE "d%" OR tag LIKE "e%" OR tag LIKE "f%"';
-            break;
+                break;
 
             case 'ghi':
                 $where = 'tag LIKE "g%" OR tag LIKE "h%" OR tag LIKE "i%"';
-            break;
+                break;
 
             case 'jkl':
                 $where = 'tag LIKE "j%" OR tag LIKE "k%" OR tag LIKE "l%"';
-            break;
+                break;
 
             case 'mno':
                 $where = 'tag LIKE "m%" OR tag LIKE "n%" OR tag LIKE "o%"';
-            break;
+                break;
 
             case 'pqr':
                 $where = 'tag LIKE "p%" OR tag LIKE "q%" OR tag LIKE "r%"';
-            break;
+                break;
 
             case 'stu':
                 $where = 'tag LIKE "s%" OR tag LIKE "t%" OR tag LIKE "u%"';
-            break;
+                break;
 
             case 'vz':
-                $where = 'tag LIKE "v%" OR
+                $where
+                    = 'tag LIKE "v%" OR
                         tag LIKE "w%" OR
                         tag LIKE "x%" OR
                         tag LIKE "y%" OR
                         tag LIKE "z%"';
-            break;
+                break;
         }
 
         return \QUI::getDataBase()->fetch(array(
-            'from'  => \QUI::getDBProjectTableName( 'tags', $this->_getProject() ),
+            'from'  => \QUI::getDBProjectTableName('tags',
+                $this->_getProject()),
             'order' => 'tag',
             'where' => $where
         ));
@@ -152,11 +153,12 @@ class TagList extends QUI\Control
 
     /**
      * Return the Project
+     *
      * @return QUI\Projects\Project
      */
     protected function _getProject()
     {
-        if ( $this->getAttribute('Project') ) {
+        if ($this->getAttribute('Project')) {
             return $this->getAttribute('Project');
         }
 
@@ -165,11 +167,12 @@ class TagList extends QUI\Control
 
     /**
      * Return the Project
+     *
      * @return QUI\Projects\Site
      */
     protected function _getSite()
     {
-        if ( $this->getAttribute('Site') ) {
+        if ($this->getAttribute('Site')) {
             return $this->getAttribute('Site');
         }
 
@@ -181,6 +184,6 @@ class TagList extends QUI\Control
             'limit' => 1
         ));
 
-        return $this->_getProject()->get( $result[ 0 ][ 'id' ] );
+        return $this->_getProject()->get($result[0]['id']);
     }
 }
