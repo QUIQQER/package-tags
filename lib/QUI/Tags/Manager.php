@@ -58,8 +58,8 @@ class Manager
     {
         Permission::checkPermission('tags.create');
 
-        $title = Orthos::removeHTML( $tag );
-        $title = Orthos::clearFormRequest( $title );
+        $title = Orthos::removeHTML($tag);
+        $title = Orthos::clearFormRequest($title);
 
         $tag = mb_strtolower($tag);
         $tag = $this->clearTagName($tag);
@@ -124,11 +124,12 @@ class Manager
      * Delete the tag
      *
      * @param String $tag
+     *
+     * @throws QUI\Database\Exception
      */
     public function deleteTag($tag)
     {
         Permission::checkPermission('tags.delete');
-
 
         $tag = $this->clearTagName($tag);
 
@@ -136,16 +137,25 @@ class Manager
             return;
         }
 
-        $DataBase = QUI::getDataBase();
 
         // Erstmal alle Elternbeziehungen löschen
-        $DataBase->fetchSQL(
+        $Statement = QUI::getPDO()->prepare(
             "UPDATE `".QUI::getDBProjectTableName('tags', $this->_Project)."`
              SET `ptags` = replace(`ptags`, ',".$tag.",', ',')"
         );
 
+        try {
+            $Statement->execute();
+
+        } catch (\PDOException $Exception) {
+            throw new QUI\Database\Exception(
+                $Exception->getMessage(),
+                $Exception->getCode()
+            );
+        }
+
         // Dann sich selbst löschen
-        $DataBase->delete(
+        QUI::getDataBase()->delete(
             QUI::getDBProjectTableName('tags', $this->_Project),
             array('tag' => $tag)
         );
