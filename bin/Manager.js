@@ -157,6 +157,10 @@ define('package/quiqqer/tags/bin/Manager', [
 
                 onClick : function() {
                     self.getButtons( 'delete-tag' ).enable();
+                },
+
+                onRefresh : function() {
+                    self.refresh();
                 }
             });
         },
@@ -228,9 +232,11 @@ define('package/quiqqer/tags/bin/Manager', [
          */
         refresh : function()
         {
-            if ( this.$project ) {
-                this.loadProject( this.$project, this.$lang );
+            if ( !this.$project ) {
+                return;
             }
+
+            this.loadProject( this.$project, this.$lang );
         },
 
 
@@ -258,6 +264,7 @@ define('package/quiqqer/tags/bin/Manager', [
             Ajax.get('package_quiqqer_tags_ajax_project_getList', function(result)
             {
                 self.$Grid.setData( result );
+                self.getButtons('delete-tag').disable();
                 self.Loader.hide();
             }, {
                 'package'   : 'quiqqer/tags',
@@ -280,11 +287,15 @@ define('package/quiqqer/tags/bin/Manager', [
          */
         addTag : function(tag, tagParams, callback)
         {
+            var self = this;
+
             Ajax.post('package_quiqqer_tags_ajax_tag_add', function()
             {
                 if ( typeof callback !== 'undefined' ) {
                     callback();
                 }
+
+                self.refresh();
 
             }, {
                 'package'   : 'quiqqer/tags',
@@ -310,11 +321,15 @@ define('package/quiqqer/tags/bin/Manager', [
          */
         editTag : function(tag, tagParams, callback)
         {
+            var self = this;
+
             Ajax.post('package_quiqqer_tags_ajax_tag_edit', function()
             {
                 if ( typeof callback !== 'undefined' ) {
                     callback();
                 }
+
+                self.refresh();
 
             }, {
                 'package'   : 'quiqqer/tags',
@@ -334,11 +349,15 @@ define('package/quiqqer/tags/bin/Manager', [
          */
         deleteTags : function(tags, callback)
         {
+            var self = this;
+
             Ajax.post('package_quiqqer_tags_ajax_tag_delete', function()
             {
                 if ( typeof callback !== 'undefined' ) {
                     callback();
                 }
+
+                self.refresh();
 
             }, {
                 'package'   : 'quiqqer/tags',
@@ -418,7 +437,7 @@ define('package/quiqqer/tags/bin/Manager', [
                             return;
                         }
 
-                        Title.set( 'disabled', 'disabled' );
+//                        Title.set( 'disabled', 'disabled' );
 
                         Win.Loader.show();
 
@@ -508,10 +527,8 @@ define('package/quiqqer/tags/bin/Manager', [
 
                     onSubmit : function(Win)
                     {
-                        self.deleteTags(tags, function()
-                        {
+                        self.deleteTags(tags, function() {
                             Win.close();
-                            self.refresh();
                         });
                     }
                 }

@@ -14,8 +14,8 @@ function package_quiqqer_tags_ajax_tag_getDataList(
     $projectLang,
     $string
 ) {
-    $Tags = new \QUI\Tags\Manager(
-        \QUI::getProject($projectName, $projectLang)
+    $Tags = new QUI\Tags\Manager(
+        QUI::getProject($projectName, $projectLang)
     );
 
     $result = '';
@@ -34,7 +34,7 @@ function package_quiqqer_tags_ajax_tag_getDataList(
     return $result;
 }
 
-\QUI::$Ajax->register(
+QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_getDataList',
     array('projectName', 'projectLang', 'string')
 );

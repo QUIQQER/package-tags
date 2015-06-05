@@ -69,6 +69,10 @@
             <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Seite wurde nicht gespeichert.]]></de>
             <en><![CDATA[You can add only [limit] tags the page. The page wasn't saved.]]></en>
         </locale>
+        <locale name="exception.tag.title.exist">
+            <de><![CDATA[Ein tag mit dem selben Titel existiert bereits]]></de>
+            <en><![CDATA[A tag with the same title already exist.]]></en>
+        </locale>
         <locale name="exception.tag.already.exists">
             <de><![CDATA[Der tag existiert bereits]]></de>
             <en><![CDATA[The tag already exist.]]></en>

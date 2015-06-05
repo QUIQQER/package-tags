@@ -16,8 +16,8 @@ function package_quiqqer_tags_ajax_tag_add(
     $tag,
     $tagParams
 ) {
-    $Tags = new \QUI\Tags\Manager(
-        \QUI::getProject($projectName, $projectLang)
+    $Tags = new QUI\Tags\Manager(
+        QUI::getProject($projectName, $projectLang)
     );
 
     $tagParams = json_decode($tagParams, true);
@@ -25,7 +25,7 @@ function package_quiqqer_tags_ajax_tag_add(
     return $Tags->add($tag, $tagParams);
 }
 
-\QUI::$Ajax->register(
+QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_add',
     array('projectName', 'projectLang', 'tag', 'tagParams'),
     'Permission::checkUser'

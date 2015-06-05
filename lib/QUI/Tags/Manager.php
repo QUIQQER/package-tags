@@ -168,31 +168,55 @@ class Manager
      *
      * @param String $tag
      * @param Array  $params
+     *
+     * @throws QUI\Exception
      */
     public function edit($tag, $params)
     {
         Permission::checkPermission('tags.create');
 
-
-        $tag = mb_strtolower($tag);
+        $tag = $this->clearTagName($tag);
 
         // exist tag?
         $tagParams = $this->get($tag);
 
         if (isset($params['title'])) {
-            $tagParams['title'] = Orthos::clear($params['title']);
+            $tagParams['title'] = Orthos::removeHTML($params['title']);
+            $tagParams['title'] = Orthos::clearFormRequest($tagParams['title']);
         }
 
         if (isset($params['desc'])) {
-            $tagParams['desc'] = Orthos::clear($params['desc']);
+            $tagParams['desc'] = Orthos::removeHTML($params['desc']);
+            $tagParams['desc'] = Orthos::clearFormRequest($tagParams['desc']);
         }
 
         if (isset($params['image'])) {
-            $tagParams['image'] = Orthos::clear($params['image']);
+            $tagParams['image'] = Orthos::removeHTML($params['image']);
+            $tagParams['image'] = Orthos::clearFormRequest($tagParams['image']);
         }
 
         if (isset($params['url'])) {
-            $tagParams['url'] = Orthos::clear($params['url']);
+            $tagParams['url'] = Orthos::removeHTML($params['url']);
+            $tagParams['url'] = Orthos::clearFormRequest($tagParams['url']);
+        }
+
+        $result = QUI::getDataBase()->fetch(array(
+            'from'  => QUI::getDBProjectTableName('tags', $this->_Project),
+            'where' => array(
+                'title' => $tagParams['title']
+            )
+        ));
+
+        foreach ($result as $tagEntry) {
+            if ($tagEntry['tag'] != $tag) {
+                throw new QUI\Exception(
+                    QUI::getLocale()->get(
+                        'quiqqer/tags',
+                        'exception.tag.title.exist'
+                    ),
+                    404
+                );
+            }
         }
 
 
@@ -246,8 +270,10 @@ class Manager
 
         if (!isset($result[0])) {
             throw new QUI\Exception(
-                QUI::getLocale()
-                   ->get('quiqqer/tags', 'exception.tag.not.found'),
+                QUI::getLocale()->get(
+                    'quiqqer/tags',
+                    'exception.tag.not.found'
+                ),
                 404
             );
         }

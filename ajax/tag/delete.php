@@ -11,8 +11,8 @@
  */
 function package_quiqqer_tags_ajax_tag_delete($projectName, $projectLang, $tags)
 {
-    $Tags = new \QUI\Tags\Manager(
-        \QUI::getProject($projectName, $projectLang)
+    $Tags = new QUI\Tags\Manager(
+        QUI::getProject($projectName, $projectLang)
     );
 
     $tags = json_decode($tags, true);
@@ -21,13 +21,16 @@ function package_quiqqer_tags_ajax_tag_delete($projectName, $projectLang, $tags)
         try {
             $Tags->deleteTag($tag);
 
-        } catch (\QUI\Exception $Exception) {
-            \QUI::getMessagesHandler()->addError($Exception->getMessage());
+        } catch (QUI\Database\Exception $Exception) {
+            QUI\System\Log::addDebug($Exception->getMessage());
+
+        } catch (QUI\Exception $Exception) {
+            QUI::getMessagesHandler()->addError($Exception->getMessage());
         }
     }
 }
 
-\QUI::$Ajax->register(
+QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_delete',
     array('projectName', 'projectLang', 'tags'),
     'Permission::checkUser'
