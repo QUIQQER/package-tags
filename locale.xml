@@ -65,6 +65,24 @@
         </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
+
+        <locale name="permission.tags._header">
+            <de><![CDATA[Tagverwaltung]]></de>
+            <en><![CDATA[Tag Management]]></en>
+        </locale>
+        <locale name="permission.tags.siteLimit">
+            <de><![CDATA[Anzahl der Tags, die der Benutzer einer Seite hinzufügen darf.]]></de>
+            <en><![CDATA[Number of tags that can be added to a page by the user]]></en>
+        </locale>
+        <locale name="permission.tags.delete">
+            <de><![CDATA[Darf Tags löschen.]]></de>
+            <en><![CDATA[Can delete tags.]]></en>
+        </locale>
+        <locale name="permission.tags.create">
+            <de><![CDATA[Darf Tags erstellen und bearbeiten.]]></de>
+            <en><![CDATA[Can create and edit tags.]]></en>
+        </locale>
+
         <locale name="exception.limit.tags.to.site">
             <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Seite wurde nicht gespeichert.]]></de>
             <en><![CDATA[You can add only [limit] tags the page. The page wasn't saved.]]></en>
