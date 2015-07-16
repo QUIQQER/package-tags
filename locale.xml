@@ -169,5 +169,19 @@
             <de><![CDATA[Tagverwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
         </locale>
+
+        <locale name="watch.add.tags">
+            <de><![CDATA[Tag [tag] hinzugefügt]]></de>
+            <en><![CDATA[Add tag [tag]]]></en>
+        </locale>
+        <locale name="watch.delete.tags">
+            <de><![CDATA[Tag [tag] gelöscht]]></de>
+            <en><![CDATA[Delete tag [tag]]]></en>
+        </locale>
+        <locale name="watch.edit.tags">
+            <de><![CDATA[Tag [tag] editiert]]></de>
+            <en><![CDATA[Edit tag [tag]]]></en>
+        </locale>
+
     </groups>
 </locales>
