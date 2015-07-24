@@ -15,7 +15,6 @@
  * @require Projects
  * @require css!package/quiqqer/tags/bin/Manager.css
  */
-
 define('package/quiqqer/tags/bin/Manager', [
 
     'qui/QUI',
@@ -232,11 +231,11 @@ define('package/quiqqer/tags/bin/Manager', [
          */
         refresh : function()
         {
-            if ( !this.$project ) {
+            if (!this.$project) {
                 return;
             }
 
-            this.loadProject( this.$project, this.$lang );
+            this.loadProject(this.$project, this.$lang);
         },
 
 
@@ -269,7 +268,11 @@ define('package/quiqqer/tags/bin/Manager', [
             }, {
                 'package'   : 'quiqqer/tags',
                 projectName : this.$project,
-                projectLang : this.$lang
+                projectLang : this.$lang,
+                gridParams  : JSON.encode({
+                    perPage : this.$Grid.options.perPage,
+                    page    : this.$Grid.options.page
+                })
             });
         },
 
