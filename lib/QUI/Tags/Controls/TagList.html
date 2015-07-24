@@ -43,35 +43,29 @@
 {/if}
 
 <ul class="quiqqer-tags-menu grid-parent grid-100">
-    <li class="entry grid-10 mobile-grid-50 hide-on-mobile">
-        <a href="{url site=$Site params=[$prev]}">&lt;</a>
-    </li>
-    <li class="entry grid-10 mobile-grid-50{if $list == 'abc'} active{/if}">
+    <li class="quiqqer-tags-menu-entry{if $list == 'abc'} active{/if}">
         <a href="{url site=$Site}" id="tag_ABC">A B C</a>
     </li>
-    <li class="entry grid-10 mobile-grid-50{if $list == 'def'} active{/if}">
+    <li class="quiqqer-tags-menu-entry{if $list == 'def'} active{/if}">
         <a href="{url site=$Site params=[def]}" id="tag_DEF">D E F</a>
     </li>
-    <li class="entry grid-10 mobile-grid-50{if $list == 'ghi'} active{/if}">
+    <li class="quiqqer-tags-menu-entry{if $list == 'ghi'} active{/if}">
         <a href="{url site=$Site params=[ghi]}" id="tag_GHI">G H I</a>
     </li>
-    <li class="entry grid-10 mobile-grid-50{if $list == 'jkl'} active{/if}">
+    <li class="quiqqer-tags-menu-entry{if $list == 'jkl'} active{/if}">
         <a href="{url site=$Site params=[jkl]}" id="tag_JKL">J K L</a>
     </li>
-    <li class="entry grid-10 mobile-grid-50{if $list == 'mno'} active{/if}">
+    <li class="quiqqer-tags-menu-entry{if $list == 'mno'} active{/if}">
         <a href="{url site=$Site params=[mno]}" id="tag_MNO">M N O</a>
     </li>
-    <li class="entry grid-10 mobile-grid-50{if $list == 'pqr'} active{/if}">
+    <li class="quiqqer-tags-menu-entry{if $list == 'pqr'} active{/if}">
         <a href="{url site=$Site params=[pqr]}" id="tag_PQR">P Q R</a>
     </li>
-    <li class="entry grid-10 mobile-grid-50{if $list == 'stu'} active{/if}">
+    <li class="quiqqer-tags-menu-entry{if $list == 'stu'} active{/if}">
         <a href="{url site=$Site params=[stu]}" id="tag_STU">S T U</a>
     </li>
-    <li  class="entry grid-10 mobile-grid-50{if $list == 'vz'} active{/if}">
+    <li  class="quiqqer-tags-menu-entry{if $list == 'vz'} active{/if}">
         <a href="{url site=$Site params=[vz]}" id="tag_V-Z">V - Z</a>
-    </li>
-    <li class="entry grid-10 hide-on-mobile">
-        <a href="{url site=$Site params=[$next]}">&gt;</a>
     </li>
 </ul>
 

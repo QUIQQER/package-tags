@@ -1,8 +1,7 @@
 @CHARSET "UTF-8";
 
 .quiqqer-tags-menu {
-    background: #DDD;
-    margin: 20px 0 0 0 !important;
+    margin: 0 !important;
     padding: 0 !important;
 }
 
@@ -11,29 +10,30 @@
     padding: 0;
 }
 
-.quiqqer-tags-menu-tags-menu .entry {
+.quiqqer-tags-menu-entry {
+    background: #dedede;
+    clear: none !important;
+    float: left;
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background: #dedede;
+    width: 12.5% !important;
 }
 
-.quiqqer-tags-menu .entry a {
+.quiqqer-tags-menu-entry a {
+    color: #212527;
     float: left;
+    font-size: 18px;
+    line-height: 60px;
     text-align: center;
     text-decoration: none;
-    line-height: 60px;
-    font-size: 18px;
-    width: 100%;
-
-    color: #212527;
-
-    -moz-outline: none;
     outline: none;
+        -moz-outline: none;
+    width: 100%;
 }
 
 .quiqqer-tags-menu .active a,
-.quiqqer-tags-menu .entry a:hover {
+.quiqqer-tags-menu-entry a:hover {
     background: #333333 !important;
     color: #fff !important;
 }
