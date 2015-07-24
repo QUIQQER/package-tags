@@ -18,7 +18,6 @@
  * @event onAdd [ {self}, {String} tag ]
  * @event onRemove [ {self}, {String} tag ]
  */
-
 define('package/quiqqer/tags/bin/TagContainer', [
 
     'qui/QUI',
@@ -263,7 +262,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         $onInject : function()
         {
-            if ( !this.getAttribute( 'loadDatalist' ) ) {
+            if (!this.getAttribute('loadDatalist')) {
                 return;
             }
 
@@ -276,8 +275,8 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 id : 'list-'+ this.getId()
             }).inject( this.getElm() );
 
-            this.setAttribute( 'datalist', 'list-'+ this.getId() );
-            this.$Input.set( 'list', this.getAttribute( 'datalist' ) );
+            this.setAttribute('datalist', 'list-'+ this.getId());
+            this.$Input.set('list', this.getAttribute('datalist'));
 
 
             this.$refreshDatalist(function()
@@ -292,9 +291,9 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         $refreshDatalist : function(callback)
         {
-            if ( !this.getAttribute( 'loadDatalist' ) )
+            if (!this.getAttribute('loadDatalist'))
             {
-                if ( typeof callback !== 'undefined' ) {
+                if (typeof callback === 'function') {
                     callback();
                 }
 
@@ -308,8 +307,8 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 'ajax_permissions_session_getPermission'
             ], function(dataList, limit)
             {
-                self.$DataList.set( 'html', dataList );
-                self.setAttribute( 'limit', limit );
+                self.$DataList.set('html', dataList);
+                self.setAttribute('limit', limit);
 
                 if ( typeof callback !== 'undefined' ) {
                     callback();
@@ -331,20 +330,20 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         addTag : function(tag)
         {
-            if ( !tag ) {
+            if (!tag) {
                 return;
             }
 
             tag = tag.toString();
 
-            if ( tag.trim() === '' ) {
+            if (tag.trim() === '') {
                 return;
             }
 
             var self = this,
                 tags = this.getTags();
 
-            if ( tags.contains( tag ) ) {
+            if (tags.contains(tag)) {
                 return;
             }
 
@@ -356,12 +355,12 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 'package_quiqqer_tags_ajax_tag_get'
             ], function(hasPermission, tagExists, tagData)
             {
-                if ( !hasPermission && !tagExists )
+                if (!hasPermission && !tagExists)
                 {
                     QUI.getMessageHandler(function(MH)
                     {
                         MH.addError(
-                            Locale.get( lg, 'message.no.permission.create.tags' ),
+                            Locale.get(lg, 'message.no.permission.create.tags'),
                             self.getElm()
                         );
                     });
@@ -370,16 +369,16 @@ define('package/quiqqer/tags/bin/TagContainer', [
                     return;
                 }
 
-                if ( !tagExists )
+                if (!tagExists)
                 {
-                    self.showAddTag( tag );
+                    self.showAddTag(tag);
                     self.Loader.hide();
                     return;
                 }
 
                 var title = tag;
 
-                if ( typeof tagData !== 'undefined' && tagData && tagData.title !== '' ) {
+                if (typeof tagData !== 'undefined' && tagData && tagData.title !== '') {
                     title = tagData.title;
                 }
 
@@ -393,16 +392,16 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 });
 
 
-                Tag.inject( self.$Container );
+                Tag.inject(self.$Container);
 
-                Tag.getElement( '.icon-remove' ).addEvent('click', function(event)
+                Tag.getElement('.icon-remove').addEvent('click', function(event)
                 {
                     event.stop();
 
-                    self.removeTag( this.getParent().get( 'data-tag' ) );
+                    self.removeTag(this.getParent().get('data-tag'));
                 });
 
-                self.fireEvent( 'add', [ self, tag ] );
+                self.fireEvent('add', [self, tag]);
                 self.Loader.hide();
                 self.refresh();
 
@@ -428,7 +427,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 var Content = self.$AddTag.getContent();
 
                 Content.set({
-                    html : Locale.get( lg, 'site.window.add.tag.title', {
+                    html : Locale.get(lg, 'site.window.add.tag.title', {
                         tag : tag
                     }),
                     styles : {
@@ -437,15 +436,15 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 });
 
                 new QUIButton({
-                    text   : Locale.get( lg, 'control.tagcontainer.sheet.btn.add' ),
+                    text   : Locale.get(lg, 'control.tagcontainer.sheet.btn.add'),
                     events :
                     {
                         onClick : function()
                         {
-                            Ajax.get('package_quiqqer_tags_ajax_tag_add', function(result)
+                            Ajax.post('package_quiqqer_tags_ajax_tag_add', function(result)
                             {
                                 self.Loader.show();
-                                self.addTag( result );
+                                self.addTag(result);
                                 self.$AddTag.hide();
 
                             }, {
@@ -462,7 +461,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 }).inject( Content );
 
                 new QUIButton({
-                    text   : Locale.get( lg, 'control.tagcontainer.sheet.btn.cancel' ),
+                    text   : Locale.get(lg, 'control.tagcontainer.sheet.btn.cancel'),
                     events :
                     {
                         onClick : function() {
@@ -481,9 +480,9 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         removeTag : function(tag)
         {
-            this.$Elm.getElements( '[data-tag="'+ tag +'"]' ).destroy();
+            this.$Elm.getElements('[data-tag="'+ tag +'"]').destroy();
 
-            this.fireEvent( 'remove', [ this, tag ] );
+            this.fireEvent('remove', [this, tag]);
             this.refresh();
         },
 
@@ -494,8 +493,8 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         getTags : function()
         {
-            return this.$Container.getElements( '.qui-tags-tag' ).map(function(Elm) {
-                return Elm.get( 'data-tag' );
+            return this.$Container.getElements('.qui-tags-tag').map(function(Elm) {
+                return Elm.get('data-tag');
             });
         },
 
@@ -506,11 +505,11 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         getProject : function()
         {
-            if ( this.getAttribute( 'project' ) ) {
-                return this.getAttribute( 'project' );
+            if (this.getAttribute('project')) {
+                return this.getAttribute('project');
             }
 
-            if ( typeof QUIQQER_PROJECT !== 'undefined' ) {
+            if (typeof QUIQQER_PROJECT !== 'undefined') {
                 return QUIQQER_PROJECT.name;
             }
 
@@ -524,11 +523,11 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         getProjectLang : function()
         {
-            if ( this.getAttribute( 'projectLang' ) ) {
-                return this.getAttribute( 'projectLang' );
+            if (this.getAttribute('projectLang')) {
+                return this.getAttribute('projectLang');
             }
 
-            if ( typeof QUIQQER_PROJECT !== 'undefined' ) {
+            if (typeof QUIQQER_PROJECT !== 'undefined') {
                 return QUIQQER_PROJECT.lang;
             }
 
@@ -540,8 +539,8 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         openTagWindow : function()
         {
-            if ( this.$Input.get( 'disabled' ) ||
-                 this.$Input.get( 'disabled' ) == 'disabled' )
+            if (this.$Input.get( 'disabled' ) ||
+                this.$Input.get( 'disabled' ) == 'disabled')
             {
                 return;
             }
@@ -549,7 +548,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
             var self = this;
 
             new QUIWindow({
-                title     : Locale.get( lg, 'control.tagcontainer.window.add.title' ),
+                title     : Locale.get(lg, 'control.tagcontainer.window.add.title'),
                 maxWidth  : 600,
                 maxHeight : 400,
                 events    :
@@ -575,8 +574,8 @@ define('package/quiqqer/tags/bin/TagContainer', [
                         );
 
 
-                        var Select       = Content.getElement( 'select' ),
-                            TagContainer = Content.getElement( '.qui-tags-container-window-container' );
+                        var Select       = Content.getElement('select'),
+                            TagContainer = Content.getElement('.qui-tags-container-window-container');
 
                         Select.addEvent('change', function()
                         {
@@ -584,29 +583,29 @@ define('package/quiqqer/tags/bin/TagContainer', [
 
                             self.getTagsBySektor(this.value, function(result)
                             {
-                                if ( !result.length )
+                                if (!result.length)
                                 {
                                     TagContainer.set(
                                         'html',
-                                        Locale.get( lg, 'control.tagcontainer.window.message.no.tags' )
+                                        Locale.get(lg, 'control.tagcontainer.window.message.no.tags')
                                     );
                                     Win.Loader.hide();
 
                                     return;
                                 }
 
-                                TagContainer.set( 'html', '' );
+                                TagContainer.set('html', '');
 
                                 var i, len, tag, title, tagData;
 
-                                for ( i = 0, len = result.length; i < len; i++ )
+                                for (i = 0, len = result.length; i < len; i++)
                                 {
                                     tagData = result[ i ];
 
                                     tag   = tagData.tag;
                                     title = tag;
 
-                                    if ( tagData.title !== '' ) {
+                                    if (tagData.title !== '') {
                                         title = tagData.title;
                                     }
 
@@ -618,9 +617,9 @@ define('package/quiqqer/tags/bin/TagContainer', [
                                     }).inject( TagContainer );
                                 }
 
-                                TagContainer.getElements( '.qui-tags-tag' ).addEvent('click', function()
+                                TagContainer.getElements('.qui-tags-tag').addEvent('click', function()
                                 {
-                                    self.addTag( this.get( 'data-tag' ) );
+                                    self.addTag(this.get('data-tag'));
 
                                     Win.close();
                                 });
@@ -629,7 +628,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
                             });
                         });
 
-                        Select.fireEvent( 'change' );
+                        Select.fireEvent('change');
                     }
                 }
             }).open();
@@ -645,7 +644,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
         {
             Ajax.get('package_quiqqer_tags_ajax_search_getTagsBySektor', function(result)
             {
-                callback( result );
+                callback(result);
             }, {
                 'package' : 'quiqqer/tags',
                 project : JSON.encode({

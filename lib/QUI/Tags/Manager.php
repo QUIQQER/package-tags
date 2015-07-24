@@ -61,7 +61,6 @@ class Manager
         $title = Orthos::removeHTML($tag);
         $title = Orthos::clearFormRequest($title);
 
-        $tag = mb_strtolower($tag);
         $tag = $this->clearTagName($tag);
 
         if ($this->existsTag($tag)) {
@@ -94,8 +93,8 @@ class Manager
     static function clearTagName($str)
     {
         $str = Orthos::clear($str);
-        $str = ucwords(mb_strtolower($str));
         $str = preg_replace('/[^a-zA-Z0-9]/', '', $str);
+        $str = ucwords(mb_strtolower($str));
         $str = substr($str, 0, 250);
         $str = trim($str);
 
