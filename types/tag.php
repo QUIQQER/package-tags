@@ -4,6 +4,7 @@
  * Tag anzeige
  *
  * Anzeige aller Seiten die dem Tag zugewiesen sind
+ * @deprecated
  */
 
 $Manager = new \QUI\Tags\Manager($Project);

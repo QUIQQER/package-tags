@@ -1,21 +1,69 @@
-<section class="content-header grid-100 mobile-grid-100">
-    <header>
-        <h1>{$Site->getAttribute('title')}</h1>
-    </header>
+{if isset($tag) && $tag}
 
-    {if $Site->getAttribute('short')}
-    <div class="content-short">
-        {$Site->getAttribute('short')}
-    </div>
+    <section class="content-header grid-100 mobile-grid-100">
+        {if $tag.title}
+            <h1>{$tag.title}</h1>
+        {else}
+            <h1>{$tag.tag}</h1>
+        {/if}
+
+        <div class="content-short qui-tags-tag-content">
+            {$tag.desc}
+        </div>
+    </section>
+
+    <section class="content-template grid-100 mobile-grid-100">
+        {if isset($sites) && count($sites)}
+        <ul class="qui-tags-tag-list">
+            {foreach from=$sites item=Entry}
+            <li class="qui-tags-tag-list-entry">
+                <h2>
+                    <a href="{url site=$Entry}">
+                        {$Entry->getAttribute('title')}
+                    </a>
+                </h2>
+
+                {if $Entry->getAttribute('image')}
+                    {image src=$Entry->getAttribute('image')
+                        class="qui-tags-tag-list-entry-image"
+                        width="100"
+                    }
+                {/if}
+
+                <div class="qui-tags-tag-list-entry-short">
+                    {$Entry->getAttribute('short')}
+                    <a href="{url site=$Entry}">
+                        {t}quiqqer/tags types.tag.read.more{/t}
+                    </a>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+        {else}
+            {t}quiqqer/tags message.types.tag.no.entries.found{/t}
+        {/if}
+    </section>
+
+{else}
+    <section class="content-header grid-100 mobile-grid-100">
+        <header>
+            <h1>{$Site->getAttribute('title')}</h1>
+        </header>
+
+        {if $Site->getAttribute('short')}
+        <div class="content-short">
+            {$Site->getAttribute('short')}
+        </div>
+        {/if}
+    </section>
+
+    {if $Site->getAttribute('content')}
+    <section class="content-body grid-100 mobile-grid-100">
+        {$Site->getAttribute('content')}
+    </section>
     {/if}
-</section>
 
-{if $Site->getAttribute('content')}
-<section class="content-body grid-100 mobile-grid-100">
-    {$Site->getAttribute('content')}
-</section>
+    <section class="content-template grid-100 mobile-grid-100">
+        {control control="\QUI\Tags\Controls\TagList"}
+    </section>
 {/if}
-
-<section class="content-template grid-100 mobile-grid-100">
-    {control control="\QUI\Tags\Controls\TagList"}
-</section>

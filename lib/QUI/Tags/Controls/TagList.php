@@ -22,7 +22,7 @@ class TagList extends QUI\Control
      */
     public function __construct($attributes = array())
     {
-        parent::setAttributes($attributes);
+        parent::__construct($attributes);
 
         $this->addCSSFile(
             dirname(__FILE__).'/TagList.css'
@@ -63,6 +63,7 @@ class TagList extends QUI\Control
                 case 'pqr':
                 case 'stu':
                 case 'vz':
+                case '123':
                     $needle = $urlParams[0];
                     break;
             }
@@ -71,23 +72,9 @@ class TagList extends QUI\Control
 
         $tags = $this->getList($needle);
 
-        // Sucheseite finden
-        $result = $Project->getSites(array(
-            'where' => array(
-                'type' => 'quiqqer/tags:types/tag'
-            )
-        ));
-
-        $SearchSite = $Site;
-
-        if (isset($result[0])) {
-            $SearchSite = $result[0];
-        }
-
         $Engine->assign(array(
-            'tags'       => $tags,
-            'SearchSite' => $SearchSite,
-            'list'       => $needle
+            'tags' => $tags,
+            'list' => $needle
         ));
 
 
@@ -95,9 +82,9 @@ class TagList extends QUI\Control
     }
 
     /**
-     * Return a tag list by its sektor
+     * Return a tag list by its sektor (title)
      *
-     * @param String $sektor - tag sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz"
+     * @param String $sektor - tag sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
      *
      * @return Array
      */
@@ -106,47 +93,58 @@ class TagList extends QUI\Control
         switch ($sektor) {
             default:
             case 'abc':
-                $where = 'tag LIKE "a%" OR tag LIKE "b%" OR tag LIKE "c%"';
+                $where
+                    = 'title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%"';
                 break;
 
             case 'def':
-                $where = 'tag LIKE "d%" OR tag LIKE "e%" OR tag LIKE "f%"';
+                $where
+                    = 'title LIKE "d%" OR title LIKE "e%" OR title LIKE "f%"';
                 break;
 
             case 'ghi':
-                $where = 'tag LIKE "g%" OR tag LIKE "h%" OR tag LIKE "i%"';
+                $where
+                    = 'title LIKE "g%" OR title LIKE "h%" OR title LIKE "i%"';
                 break;
 
             case 'jkl':
-                $where = 'tag LIKE "j%" OR tag LIKE "k%" OR tag LIKE "l%"';
+                $where
+                    = 'title LIKE "j%" OR title LIKE "k%" OR title LIKE "l%"';
                 break;
 
             case 'mno':
-                $where = 'tag LIKE "m%" OR tag LIKE "n%" OR tag LIKE "o%"';
+                $where
+                    = 'title LIKE "m%" OR title LIKE "n%" OR title LIKE "o%"';
                 break;
 
             case 'pqr':
-                $where = 'tag LIKE "p%" OR tag LIKE "q%" OR tag LIKE "r%"';
+                $where
+                    = 'title LIKE "p%" OR title LIKE "q%" OR title LIKE "r%"';
                 break;
 
             case 'stu':
-                $where = 'tag LIKE "s%" OR tag LIKE "t%" OR tag LIKE "u%"';
+                $where
+                    = 'title LIKE "s%" OR title LIKE "t%" OR title LIKE "u%"';
+                break;
+
+            case '123':
+                $where = 'title REGEXP \'^[^A-Za-z]\'';
                 break;
 
             case 'vz':
                 $where
-                    = 'tag LIKE "v%" OR
-                        tag LIKE "w%" OR
-                        tag LIKE "x%" OR
-                        tag LIKE "y%" OR
-                        tag LIKE "z%"';
+                    = 'title LIKE "v%" OR
+                        title LIKE "w%" OR
+                        title LIKE "x%" OR
+                        title LIKE "y%" OR
+                        title LIKE "z%"';
                 break;
         }
 
         return \QUI::getDataBase()->fetch(array(
-            'from'  => \QUI::getDBProjectTableName('tags',
+            'from' => \QUI::getDBProjectTableName('tags',
                 $this->_getProject()),
-            'order' => 'tag',
+            'order' => 'title',
             'where' => $where
         ));
     }

@@ -1,47 +1,4 @@
 
-{assign var=next value='abc'}
-{assign var=prev value='def'}
-
-{if $list == 'abc'}
-    {assign var=prev value='abc'}
-    {assign var=next value='def'}
-{/if}
-
-{if $list == 'def'}
-    {assign var=prev value='abc'}
-    {assign var=next value='ghi'}
-{/if}
-
-{if $list == 'ghi'}
-    {assign var=prev value='def'}
-    {assign var=next value='jkl'}
-{/if}
-
-{if $list == 'jkl'}
-    {assign var=prev value='ghi'}
-    {assign var=next value='mno'}
-{/if}
-
-{if $list == 'mno'}
-    {assign var=prev value='jkl'}
-    {assign var=next value='pqr'}
-{/if}
-
-{if $list == 'pqr'}
-    {assign var=prev value='mno'}
-    {assign var=next value='stu'}
-{/if}
-
-{if $list == 'stu'}
-    {assign var=prev value='pqr'}
-    {assign var=next value='vz'}
-{/if}
-
-{if $list == 'vz'}
-    {assign var=prev value='stu'}
-    {assign var=next value='vz'}
-{/if}
-
 <ul class="quiqqer-tags-menu grid-parent grid-100">
     <li class="quiqqer-tags-menu-entry{if $list == 'abc'} active{/if}">
         <a href="{url site=$Site}" id="tag_ABC">A B C</a>
@@ -67,28 +24,35 @@
     <li  class="quiqqer-tags-menu-entry{if $list == 'vz'} active{/if}">
         <a href="{url site=$Site params=[vz]}" id="tag_V-Z">V - Z</a>
     </li>
+    <li  class="quiqqer-tags-menu-entry{if $list == '123'} active{/if}">
+        <a href="{url site=$Site params=[123]}" id="tag_123">0 - 9</a>
+    </li>
 </ul>
 
 <section class="quiqqer-tags-list-result grid-parent grid-100 mobile-grid-100">
     {foreach from=$tags item=tag}
-    <article class="grid-50 mobile-grid-100 quiqqer-tags-list-result-entry">
-        <h3>
-            <a href="{url site=$SearchSite params=[ $tag.tag ]}" class="quiqqer-tags-list-result-header-link">
-                {if $tag.title}
-                    {$tag.title}
-                {else}
-                    {$tag.tag}
-                {/if}
-            </a>
-        </h3>
-
-        <a href="{url site=$SearchSite params=[ $tag.tag ]}">
+    <article class="grid-100 mobile-grid-100 grid-parent quiqqer-tags-list-result-entry">
+        <a href="{url site=$Site params=[ $tag.tag ] paramAsSites=true}">
             {if $tag.image}
-                {image src=$tag.image class="quiqqer-tags-list-result-image" width="500"}
+                {image src=$tag.image class="quiqqer-tags-list-result-image" width="100"}
+            {else}
+                <div class="quiqqer-tags-list-result-entry-imgplaceholder"
+                        style="background: url('{$Project->getMedia()->getPlaceholder()}') center center no-repeat"
+                ></div>
             {/if}
-        </a>
 
-        <p>{$tag.desc}</p>
+            <div class="quiqqer-tags-list-result-entry-text">
+                <h3>
+                    {if $tag.title}
+                        {$tag.title}
+                    {else}
+                        {$tag.tag}
+                    {/if}
+                </h3>
+
+                <p>{$tag.desc}</p>
+            </div>
+        </a>
     </article>
 
     {foreachelse}

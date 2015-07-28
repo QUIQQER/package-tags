@@ -17,7 +17,7 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 12.5% !important;
+    width: 11.1% !important;
 }
 
 .quiqqer-tags-menu-entry a {
@@ -50,12 +50,24 @@
 .quiqqer-tags-list-result-entry {
     list-style-type: none;
     margin: 0;
-    min-height: 200px;
     border-bottom: 1px solid #D0D3D3;
 }
 
-.quiqqer-tags-list-result-header-link {
+.quiqqer-tags-list-result-entry a {
+    float: left;
+    padding: 10px 0;
     text-decoration: none;
+    width: 100%;
+}
+
+.quiqqer-tags-list-result-entry h3 {
+    margin: 0 0 10px;
+    padding: 0;
+}
+
+.quiqqer-tags-list-result-entry-text {
+    float: left;
+    width: calc( 100% - 110px )
 }
 
 .quiqqer-tags-list-result-header-link:hover {
@@ -63,5 +75,14 @@
 }
 
 .quiqqer-tags-list-result-image {
+    float: left;
+    margin: 0 10px 0 0;
     max-width: 100%;
+}
+
+.quiqqer-tags-list-result-entry-imgplaceholder {
+    float: left;
+    height: 100px;
+    margin: 0 10px 0 0;
+    width: 100px;
 }

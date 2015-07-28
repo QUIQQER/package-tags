@@ -28,6 +28,13 @@ class Site
         $tags = $Site->getAttribute('quiqqer.tags.tagList');
         $Manager = new QUI\Tags\Manager($Project);
 
+        // register path
+        $url = $Site->getUrlRewrited();
+        $url = str_replace(QUI\Rewrite::URL_DEFAULT_SUFFIX, '', $url);
+
+        QUI::getRewrite()->registerPath($url.'/*', $Site);
+
+        // set tags
         if (!$tags) {
             $tags = '';
         }
