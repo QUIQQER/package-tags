@@ -1,0 +1,52 @@
+
+/** result list
+ * =============================================== */
+
+.quiqqer-tags-list-result {
+    float: left;
+    clear: both;
+    margin: 40px 0 0 0;
+}
+
+.quiqqer-tags-list-result-entry {
+    border-bottom: 1px solid #D0D3D3;
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    width: 100%;
+}
+
+.quiqqer-tags-list-result-entry a {
+    float: left;
+    padding: 10px 0;
+    text-decoration: none;
+    width: 100%;
+}
+
+.quiqqer-tags-list-result-entry h2,
+.quiqqer-tags-list-result-entry h3 {
+    margin: 0 0 10px;
+    padding: 0;
+}
+
+.quiqqer-tags-list-result-entry-text {
+    float: left;
+    width: calc( 100% - 110px )
+}
+
+.quiqqer-tags-list-result-header-link:hover {
+    text-decoration: underline;
+}
+
+.quiqqer-tags-list-result-image {
+    float: left;
+    margin: 0 10px 0 0;
+    max-width: 100%;
+}
+
+.quiqqer-tags-list-result-entry-imgplaceholder {
+    float: left;
+    height: 100px;
+    margin: 0 10px 0 0;
+    width: 100px;
+}

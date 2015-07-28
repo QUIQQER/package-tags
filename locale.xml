@@ -183,5 +183,15 @@
             <en><![CDATA[Edit tag [tag]]]></en>
         </locale>
 
+        <locale name="template.tag.header.results">
+            <de><![CDATA[Seiten die den Tag [tag] enthalten]]></de>
+            <en><![CDATA[Pages that contain the tag [tag]]]></en>
+        </locale>
+
+        <locale name="message.types.tag.no.entries.found">
+            <de><![CDATA[Keine Seite gefunden.]]></de>
+            <en><![CDATA[No pages found.]]></en>
+        </locale>
+
     </groups>
 </locales>

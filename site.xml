@@ -10,13 +10,6 @@
             </desc>
         </type>
 
-        <type type="types/tag">
-            <locale group="quiqqer/tags" var="admin.types.tag" />
-            <desc>
-                <locale group="quiqqer/tags" var="admin.types.tag.desc" />
-            </desc>
-        </type>
-
         <type type="types/tag-search">
             <locale group="quiqqer/tags" var="admin.types.tag.search" />
             <desc>

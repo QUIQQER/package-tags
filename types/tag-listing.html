@@ -1,5 +1,9 @@
 {if isset($tag) && $tag}
+    {**
 
+        TAG
+
+    **}
     <section class="content-header grid-100 mobile-grid-100">
         {if $tag.title}
             <h1>{$tag.title}</h1>
@@ -14,37 +18,44 @@
 
     <section class="content-template grid-100 mobile-grid-100">
         {if isset($sites) && count($sites)}
-        <ul class="qui-tags-tag-list">
+        <header>
+            <h2>{t tag=$tag.title}quiqqer/tags template.tag.header.results{/t}</h2>
+        </header>
+
             {foreach from=$sites item=Entry}
-            <li class="qui-tags-tag-list-entry">
-                <h2>
-                    <a href="{url site=$Entry}">
-                        {$Entry->getAttribute('title')}
-                    </a>
-                </h2>
+            <article class="quiqqer-tags-list-result-entry">
+                <a href="{url site=$Entry}">
 
-                {if $Entry->getAttribute('image')}
-                    {image src=$Entry->getAttribute('image')
-                        class="qui-tags-tag-list-entry-image"
-                        width="100"
-                    }
-                {/if}
+                    {if $Entry->getAttribute('image')}
+                        {image src=$Entry->getAttribute('image')
+                            class="qui-tags-tag-list-entry-image"
+                            width="100"
+                        }
+                    {else}
+                    <div class="quiqqer-tags-list-result-entry-imgplaceholder"
+                         style="background: url('{$Project->getMedia()->getPlaceholder()}') center center no-repeat"
+                            ></div>
+                    {/if}
 
-                <div class="qui-tags-tag-list-entry-short">
-                    {$Entry->getAttribute('short')}
-                    <a href="{url site=$Entry}">
-                        {t}quiqqer/tags types.tag.read.more{/t}
-                    </a>
-                </div>
-            </li>
+                    <div class="quiqqer-tags-list-result-entry-text">
+                        <h3>{$Entry->getAttribute('title')}</h3>
+                        <p>{$Entry->getAttribute('short')}</p>
+                    </div>
+                </a>
+            </article>
             {/foreach}
-        </ul>
+
         {else}
             {t}quiqqer/tags message.types.tag.no.entries.found{/t}
         {/if}
     </section>
 
 {else}
+    {**
+
+        TAG LIST
+
+    **}
     <section class="content-header grid-100 mobile-grid-100">
         <header>
             <h1>{$Site->getAttribute('title')}</h1>
