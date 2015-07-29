@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains \QUI\Tags\Controls\TagList
+ * This file contains \QUI\Tags\Controls\SiteTags
  */
 
 namespace QUI\Tags\Controls;
@@ -22,6 +22,11 @@ class SiteTags extends QUI\Control
      */
     public function __construct($attributes = array())
     {
+        // defaults
+        $this->setAttributes(array(
+            'hideTitle' => true
+        ));
+
         parent::setAttributes($attributes);
 
         $this->addCSSFile(
@@ -41,7 +46,24 @@ class SiteTags extends QUI\Control
         /* @var $Site QUI\Projects\Site */
         $Engine = QUI::getTemplateManager()->getEngine();
         $Site = $this->getAttribute('Site');
+
+        if (!$Site) {
+            $Site = QUI::getRewrite()->getSite();
+        }
+
         $Project = $Site->getProject();
+        $Tags = new QUI\Tags\Manager($Project);
+        $tags = $Site->getAttribute('quiqqer.tags.tagList');
+        $tagList = array();
+
+        foreach ($tags as $tag) {
+
+            try {
+                $tagList[] = $Tags->get($tag);
+            } catch (QUI\Exception $Exception) {
+
+            }
+        }
 
 
         $Engine->assign(array(
@@ -49,14 +71,15 @@ class SiteTags extends QUI\Control
             'Site'       => $Site,
             'Locale'     => QUI::getLocale(),
             'TagManager' => new QUI\Tags\Manager($Project),
-            'this'       => $this
+            'this'       => $this,
+            'tagList'    => $tagList
         ));
 
 
         // Sucheseite finden
         $result = $Project->getSites(array(
             'where' => array(
-                'type' => 'quiqqer/tags:types/search'
+                'type' => 'quiqqer/tags:types/tag-search'
             )
         ));
 

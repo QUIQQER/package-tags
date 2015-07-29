@@ -193,5 +193,10 @@
             <en><![CDATA[No pages found.]]></en>
         </locale>
 
+        <locale name="message.site.has.no.tags">
+            <de><![CDATA[Die Seite besitzt keine Tags.]]></de>
+            <en><![CDATA[The Page has no tags.]]></en>
+        </locale>
+
     </groups>
 </locales>
