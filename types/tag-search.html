@@ -26,8 +26,9 @@
         {foreach $requestTags as $requestTag}
             {assign var=params value=$requestTagNames}
             {assign var=key value=array_search($requestTag.tag, $requestTagNames)}
-            
-            <a href="{url site=$Site params=[$requestTag.tag]}" class="qui-tags-tag">
+            {array_unset var=$params key=$key assign=params}
+
+            <a href="{url site=$Site params=$params}" class="qui-tags-tag">
                 <span class="fa fa-minus"></span>
                 {$requestTag.tag}
             </a>
