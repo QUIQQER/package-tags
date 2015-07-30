@@ -472,7 +472,6 @@ class Manager
             return array();
         }
 
-
         // search string
         $where = '';
 
@@ -533,7 +532,10 @@ class Manager
 
         foreach ($siteIds as $id => $count) {
             try {
-                $result[] = $this->_Project->get($id);
+                $Child = $this->_Project->get($id);
+                $Child->load('quiqqer/tags');
+
+                $result[] = $Child;
 
             } catch (QUI\Exception $Exception) {
 

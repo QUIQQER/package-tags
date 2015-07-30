@@ -56,12 +56,14 @@ class SiteTags extends QUI\Control
         $tags = $Site->getAttribute('quiqqer.tags.tagList');
         $tagList = array();
 
-        foreach ($tags as $tag) {
+        if (is_array($tags)) {
+            foreach ($tags as $tag) {
 
-            try {
-                $tagList[] = $Tags->get($tag);
-            } catch (QUI\Exception $Exception) {
+                try {
+                    $tagList[] = $Tags->get($tag);
+                } catch (QUI\Exception $Exception) {
 
+                }
             }
         }
 
@@ -77,11 +79,22 @@ class SiteTags extends QUI\Control
 
 
         // Sucheseite finden
-        $result = $Project->getSites(array(
-            'where' => array(
-                'type' => 'quiqqer/tags:types/tag-search'
-            )
-        ));
+        $cacheName = $Project->getName().'/'.$Project->getLang()
+            .'/sites/quiqqer/tags:types/tag-search';
+
+        try {
+            $result = QUI\Cache\Manager::get($cacheName);
+
+        } catch (QUI\Exception $Exception) {
+
+            $result = $Project->getSites(array(
+                'where' => array(
+                    'type' => 'quiqqer/tags:types/tag-search'
+                )
+            ));
+
+            QUI\Cache\Manager::set($cacheName, $result, 60);
+        }
 
         $SearchSite = $Site;
 
