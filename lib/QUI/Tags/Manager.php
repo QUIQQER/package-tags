@@ -447,11 +447,12 @@ class Manager
     /**
      * Return all site ids that have the tags
      *
-     * @param Array $tags - list of tags
+     * @param Array $tags   - list of tags
+     * @param Array $params - Database params , only limit
      *
      * @return Array
      */
-    public function getSiteIdsFromTags($tags)
+    public function getSiteIdsFromTags($tags, $params = array())
     {
         $cacheTable = QUI::getDBProjectTableName('tags_cache', $this->_Project);
 
@@ -515,19 +516,35 @@ class Manager
 
         arsort($ids);
 
+        if (isset($params['limit'])) {
+
+            if (strpos($params['limit'], ',') === false) {
+                $start = 0;
+                $end = (int)$params['limit'];
+            } else {
+                $parts = explode(',', $params['limit']);
+
+                $start = (int)$parts[0];
+                $end = (int)$parts[1];
+            }
+
+            $ids = array_slice($ids, $start, $end, true);
+        }
+
         return $ids;
     }
 
     /**
      * Return all sites that have the tags
      *
-     * @param Array $tags - list of tags
+     * @param Array $tags   - list of tags
+     * @param Array $params - Database params
      *
      * @return Array
      */
-    public function getSitesFromTags($tags)
+    public function getSitesFromTags($tags, $params = array())
     {
-        $siteIds = $this->getSiteIdsFromTags($tags);
+        $siteIds = $this->getSiteIdsFromTags($tags, $params);
         $result = array();
 
         foreach ($siteIds as $id => $count) {

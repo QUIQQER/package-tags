@@ -198,5 +198,10 @@
             <en><![CDATA[The Page has no tags.]]></en>
         </locale>
 
+        <locale name="message.site.result">
+            <de><![CDATA[Ergebnisse [start] - [end] von [count] Beiträgen]]></de>
+            <en><![CDATA[Result [start] - [end] of [count] entries]]></en>
+        </locale>
+
     </groups>
 </locales>

@@ -51,6 +51,7 @@
 .quiqqer-tags-search-menu-entry .active,
 .quiqqer-tags-search-menu-entry a:hover {
     background: #333333 !important;
+    box-shadow: none;
     color: #fff !important;
 }
 
@@ -84,7 +85,22 @@
 }
 
 .quiqqer-tags-search-result-entry:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid #FFFFff;
+}
+
+.quiqqer-tags-search-results .quiqqer-sheets {
+    clear: both;
+    float: left;
+    width: 100%;
+}
+
+.quiqqer-tags-search-results .quiqqer-sheets {
+    margin-bottom: 20px !important;
+}
+
+.quiqqer-tags-search-results .quiqqer-sheets:last-child {
+    margin-bottom: 0 !important;
+    margin-top: 40px !important;
 }
 
 .quiqqer-tags-search-result-entry-link {

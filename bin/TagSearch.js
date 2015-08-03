@@ -35,10 +35,18 @@ define('package/quiqqer/tags/bin/TagSearch', [
             var Elm = this.getElm();
 
             // available list
-            var Available    = Elm.getElement('.quiqqer-tags-search-available'),
+            var Menu         = Elm.getElement('.quiqqer-tags-search-menu'),
+                Available    = Elm.getElement('.quiqqer-tags-search-available'),
                 Pool         = Elm.getElement('.quiqqer-tags-search-available-pool'),
                 poolElements = Pool.getElements('.qui-tags-tag'),
                 categories   = Available.getElements('.quiqqer-tags-search-menu-entry a');
+
+            Menu.setStyles({
+                display : null,
+                height  : 0,
+                overflow : 'hidden',
+                opacity : 0
+            });
 
             categories.addEvents({
                 click : function(event) {
@@ -77,8 +85,8 @@ define('package/quiqqer/tags/bin/TagSearch', [
                                 opacity : 1,
                                 width   : Node.getScrollSize().x
                             }, {
-                                equation: 'cubic-bezier(.42,.4,.46,1.29)',
-                                duration: 250
+                                equation : 'cubic-bezier(.42,.4,.46,1.29)',
+                                duration : 250
                             });
 
                         } else {
@@ -89,8 +97,8 @@ define('package/quiqqer/tags/bin/TagSearch', [
                                 padding : 0,
                                 width   : 0
                             }, {
-                                duration: 250,
-                                equation: 'cubic-bezier(.42,.4,.46,1.29)',
+                                duration : 250,
+                                equation : 'cubic-bezier(.42,.4,.46,1.29)',
                                 callback : function() {
                                     Node.setStyle('display', 'none');
                                 }
@@ -101,6 +109,14 @@ define('package/quiqqer/tags/bin/TagSearch', [
             });
 
             categories[0].fireEvent('click');
+
+            moofx(Menu).animate({
+                height  : 60,
+                opacity : 1
+            }, {
+                duration : 250,
+                equation : 'cubic-bezier(.42,.4,.46,1.29)'
+            });
         }
 
     });

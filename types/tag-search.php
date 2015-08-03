@@ -1,6 +1,29 @@
 <?php
 
 /**
+ * settings
+ */
+
+$max = $Site->getAttribute('quiqqer.settings.results.max');
+$types = $Site->getAttribute('quiqqer.settings.results.types');
+
+$count = 0;
+$start = 0;
+$types = explode(';', $types);
+
+if (!$max) {
+    $max = 1;
+}
+
+if (isset($_REQUEST['sheet'])) {
+    $start = ((int)$_REQUEST['sheet'] - 1) * $max;
+}
+
+if (isset($_REQUEST['limit']) && is_numeric($_REQUEST['limit'])) {
+    $max = (int)$_REQUEST['limit'];
+}
+
+/**
  * Tag Manager
  */
 
@@ -25,6 +48,10 @@ $requestList = QUI::getRewrite()->getUrlParamsList();
 $requestTags = array();
 $requestTagNames = array();
 
+if (isset($_REQUEST['tags']) && !empty($_REQUEST['tags'])) {
+    $requestList = explode(QUI\Rewrite::URL_SPACE_CHARACTER, $_REQUEST['tags']);
+}
+
 foreach ($requestList as $requestTag) {
 
     try {
@@ -33,6 +60,8 @@ foreach ($requestList as $requestTag) {
 
     } catch (QUI\Exception $Exception) {
 
+        // tag not found
+        QUI::getRewrite()->showErrorHeader(404);
     }
 
 }
@@ -55,11 +84,18 @@ if (!empty($requestTags)) {
         $tags[] = $requestTag['tag'];
     }
 
-    $result = $Manager->getSitesFromTags($tags);
-}
+    $result = $Manager->getSitesFromTags($tags, array(
+        'limit' => $start.','.$max
+    ));
 
+    $count = count($Manager->getSiteIdsFromTags($tags));
+}
 
 $Engine->assign(array(
     'result'  => $result,
-    'Manager' => $Manager
+    'Manager' => $Manager,
+    'count'   => $count,
+    'sheets'  => ceil($count / $max),
+    'start'   => $start,
+    'max'     => $max
 ));
