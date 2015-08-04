@@ -15,6 +15,45 @@
             <desc>
                 <locale group="quiqqer/tags" var="admin.types.tag.search.desc" />
             </desc>
+
+            <!-- extra attributes -->
+            <attributes>
+                <attribute default="10">quiqqer.tag.settings.limit</attribute>
+                <attribute default="1">quiqqer.tag.settings.showPagination</attribute>
+                <attribute default="1">quiqqer.tag.settings.showAvailableTags</attribute>
+                <attribute default="1">quiqqer.tag.settings.showSelectedTags</attribute>
+            </attributes>
+
+            <settings>
+                <category name="tags-tag-search-settings">
+                    <settings>
+                        <title>
+                            <locale group="quiqqer/tags" var="quiqqer.tag.search.settings.title" />
+                        </title>
+
+                        <input conf="quiqqer.tag.settings.limit" type="number">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.limit" />
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.showPagination" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showPagination" />
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.showAvailableTags" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showAvailableTags" />
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.showSelectedTags" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showSelectedTags" />
+                            </text>
+                        </input>
+                    </settings>
+                </category>
+            </settings>
         </type>
 
     </types>

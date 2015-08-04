@@ -20,7 +20,10 @@
         data-qui="package/quiqqer/tags/bin/TagSearch"
         >
 
-    <h2>Ausgewählte Themen:</h2>
+    {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')}
+    <h2>
+        {locale group="quiqqer/tags" var="template.tags.search.header.selectTags"}
+    </h2>
 
     <div class="quiqqer-tags-search-pool">
         {foreach $requestTags as $requestTag}
@@ -35,9 +38,15 @@
             </a>
         {/foreach}
     </div>
+    {/if}
 
+
+    {if $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')}
     <div class="quiqqer-tags-search-available">
-        <h3>Vorhandene Themen:</h3>
+
+        <h3>
+            {locale group="quiqqer/tags" var="template.tags.search.header.availableTags"}
+        </h3>
 
         <div class="quiqqer-tags-search-available-container">
             <ul class="quiqqer-tags-search-menu grid-parent grid-100" style="display: none">
@@ -85,29 +94,29 @@
             </div>
         </div>
     </div>
+    {/if}
 
     <div class="quiqqer-tags-search-results">
-        <h3>Ergebnis</h3>
-
-        {if $count}
-        <p>
-            {if $max < $count}
-                {locale group="quiqqer/tags" var="message.site.result" start=$start+1 end=$max count=$count}
-            {else}
-                {locale group="quiqqer/tags" var="message.site.result" start=$start+1 end=$count count=$count}
+        {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')
+            && $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')
+        }
+            <h3>
+                {locale group="quiqqer/tags" var="template.tags.search.header.result"}
+            </h3>
+            {if $count}
+            <p>
+                {if $max < $count}
+                    {locale group="quiqqer/tags" var="message.site.result" start=$start+1 end=$max count=$count}
+                {else}
+                    {locale group="quiqqer/tags" var="message.site.result" start=$start+1 end=$count count=$count}
+                {/if}
+            </p>
             {/if}
-        </p>
         {/if}
 
-
-        {control
-            control="\QUI\Controls\Sheets"
-            Site=$Site
-            sheets=$sheets
-            tags=$requestTagNames
-            showLimit=true
-            limit=$max
-        }
+        {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
+            {$Pagination->create()}
+        {/if}
 
         <div>
             {foreach $result as $Entry}
@@ -132,7 +141,7 @@
 
                 <div class="quiqqer-tags-search-result-entry-taglist">
                     <span class="quiqqer-tags-search-result-entry-tagText">
-                        zugewiesene Tags:
+                        {locale group="quiqqer/tags" var="template.tags.search.result.tagList"}
                     </span>
                     {control assign=Control control="\QUI\Tags\Controls\SiteTags" Site=$Entry}
                     {$Control->getBody()}
@@ -143,14 +152,9 @@
             {/foreach}
         </div>
 
-        {control
-            control="\QUI\Controls\Sheets"
-            Site=$Site
-            sheets=$sheets
-            tags=$requestTagNames
-            showLimit=true
-            limit=$max
-        }
+        {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
+            {$Pagination->create()}
+        {/if}
     </div>
 
 </section>

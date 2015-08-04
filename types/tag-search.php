@@ -4,24 +4,21 @@
  * settings
  */
 
-$max = $Site->getAttribute('quiqqer.settings.results.max');
 $types = $Site->getAttribute('quiqqer.settings.results.types');
-
-$count = 0;
-$start = 0;
 $types = explode(';', $types);
 
-if (!$max) {
-    $max = 1;
-}
+/**
+ * Pagination
+ */
 
-if (isset($_REQUEST['sheet'])) {
-    $start = ((int)$_REQUEST['sheet'] - 1) * $max;
-}
+$Pagination = new \QUI\Controls\Sheets(array(
+    'Site'      => $Site,
+    'showLimit' => true,
+    'limit'     => $Site->getAttribute('quiqqer.tag.settings.limit')
+));
 
-if (isset($_REQUEST['limit']) && is_numeric($_REQUEST['limit'])) {
-    $max = (int)$_REQUEST['limit'];
-}
+$Pagination->loadFromRequest();
+
 
 /**
  * Tag Manager
@@ -40,6 +37,7 @@ try {
 } catch (QUI\Exception $Exception) {
 
 }
+
 
 /**
  * Requested tags
@@ -75,27 +73,44 @@ $Engine->assign(array(
  * Search
  */
 
+$count = 0;
+$sheets = 0;
 $result = array();
 
 if (!empty($requestTags)) {
+
     $tags = array();
 
     foreach ($requestTags as $requestTag) {
         $tags[] = $requestTag['tag'];
     }
 
+    $sqlParams = $Pagination->getSQLParams();
+
     $result = $Manager->getSitesFromTags($tags, array(
-        'limit' => $start.','.$max
+        'limit' => $sqlParams['limit']
     ));
 
     $count = count($Manager->getSiteIdsFromTags($tags));
 }
 
+if ($Pagination->getAttribute('limit')) {
+    $sheets = ceil($count / $Pagination->getAttribute('limit'));
+}
+
+
+$Pagination->setAttributes(array(
+    'sheets' => $sheets,
+    'tags'   => $requestTagNames
+));
+
+
 $Engine->assign(array(
-    'result'  => $result,
-    'Manager' => $Manager,
-    'count'   => $count,
-    'sheets'  => ceil($count / $max),
-    'start'   => $start,
-    'max'     => $max
+    'result'     => $result,
+    'Manager'    => $Manager,
+    'count'      => $count,
+    'sheets'     => $Pagination->getAttribute('sheets'),
+    'start'      => $Pagination->getStart(),
+    'max'        => $Pagination->getAttribute('limit'),
+    'Pagination' => $Pagination
 ));

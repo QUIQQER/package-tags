@@ -516,7 +516,7 @@ class Manager
 
         arsort($ids);
 
-        if (isset($params['limit'])) {
+        if (isset($params['limit']) && $params['limit']) {
 
             if (strpos($params['limit'], ',') === false) {
                 $start = 0;

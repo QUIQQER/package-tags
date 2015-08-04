@@ -203,5 +203,43 @@
             <en><![CDATA[Result [start] - [end] of [count] entries]]></en>
         </locale>
 
+        <locale name="template.tags.search.header.selectTags">
+            <de><![CDATA[Ausgewählte Themen:]]></de>
+            <en><![CDATA[Selected tags:]]></en>
+        </locale>
+        <locale name="template.tags.search.header.availableTags">
+            <de><![CDATA[Vorhandene Themen:]]></de>
+            <en><![CDATA[Existing tags:]]></en>
+        </locale>
+        <locale name="template.tags.search.header.result">
+            <de><![CDATA[Ergebnis:]]></de>
+            <en><![CDATA[Results:]]></en>
+        </locale>
+        <locale name="template.tags.search.result.tagList">
+            <de><![CDATA[Zugewiesene Tags:]]></de>
+            <en><![CDATA[Assigned tags:]]></en>
+        </locale>
+
+        <locale name="quiqqer.tag.search.settings.title">
+            <de><![CDATA[Tag Suche Einstellungen]]></de>
+            <en><![CDATA[Tag search settings]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.limit">
+            <de><![CDATA[Anzahl Ergebnisse je Seite]]></de>
+            <en><![CDATA[Number of results per page]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.showPagination">
+            <de><![CDATA[Blätterfunktion anzeigen]]></de>
+            <en><![CDATA[Show Pagination]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.showAvailableTags">
+            <de><![CDATA[Vorhandene tags anzeigen]]></de>
+            <en><![CDATA[Show available tags]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.showSelectedTags">
+            <de><![CDATA[Ausgewählte tags anzeigen]]></de>
+            <en><![CDATA[Show selected tags]]></en>
+        </locale>
+
     </groups>
 </locales>
