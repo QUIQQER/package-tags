@@ -27,6 +27,7 @@
 .qui-tags-container input {
     box-shadow: none;
     border: 1px solid #cfd2d2;
+    width: 100% !important;
 }
 
 .qui-tags-container input:hover,

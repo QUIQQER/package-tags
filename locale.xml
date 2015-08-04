@@ -189,8 +189,8 @@
         </locale>
 
         <locale name="message.types.tag.no.entries.found">
-            <de><![CDATA[Keine Seite gefunden.]]></de>
-            <en><![CDATA[No pages found.]]></en>
+            <de><![CDATA[Die Tagsuche ergab keine Treffer.]]></de>
+            <en><![CDATA[The Tag search found no results.]]></en>
         </locale>
 
         <locale name="message.site.has.no.tags">
@@ -239,6 +239,10 @@
         <locale name="quiqqer.tag.settings.showSelectedTags">
             <de><![CDATA[Ausgewählte tags anzeigen]]></de>
             <en><![CDATA[Show selected tags]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.defaultTags">
+            <de><![CDATA[Vorausgewählte tags]]></de>
+            <en><![CDATA[Preselected tags]]></en>
         </locale>
 
     </groups>

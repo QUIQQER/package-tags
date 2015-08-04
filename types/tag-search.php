@@ -42,6 +42,7 @@ try {
 /**
  * Requested tags
  */
+
 $requestList = QUI::getRewrite()->getUrlParamsList();
 $requestTags = array();
 $requestTagNames = array();
@@ -60,6 +61,27 @@ foreach ($requestList as $requestTag) {
 
         // tag not found
         QUI::getRewrite()->showErrorHeader(404);
+    }
+
+}
+
+// default tag set?
+if (empty($requestTagNames)
+    && $Site->getAttribute('quiqqer.tag.settings.defaultTags')
+) {
+
+    $defaultTags = $Site->getAttribute('quiqqer.tag.settings.defaultTags');
+    $defaultTags = explode(',', $defaultTags);
+
+    foreach ($defaultTags as $tag) {
+
+        try {
+            $requestTags[] = $Manager->get($tag);
+            $requestTagNames[] = $tag;
+
+        } catch (QUI\Exception $Exception) {
+
+        }
     }
 
 }

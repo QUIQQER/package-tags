@@ -44,7 +44,8 @@ define('package/quiqqer/tags/bin/TagContainer', [
         Type    : 'package/quiqqer/tags/bin/TagContainer',
 
         Binds : [
-            '$onInject'
+            '$onInject',
+            '$onImport'
         ],
 
         options : {
@@ -62,19 +63,21 @@ define('package/quiqqer/tags/bin/TagContainer', [
 
         initialize : function(options)
         {
-            this.parent( options );
+            this.parent(options);
 
             this.Loader = new QUILoader();
 
             this.$Container = null;
             this.$Input     = null;
+            this.$Value     = null;
             this.$DataList  = null;
             this.$list      = {};
 
             this.$AddTag = null;
 
             this.addEvents({
-                onInject : this.$onInject
+                onInject : this.$onInject,
+                onImport : this.$onImport
             });
         },
 
@@ -95,25 +98,25 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 }
             });
 
-            this.Loader.inject( this.$Elm );
+            this.Loader.inject(this.$Elm);
 
             this.$AddTag = new QUISheet({
                 buttons : false,
                 header  : false
-            }).inject( this.$Elm );
+            }).inject(this.$Elm);
 
-            this.$Container = this.$Elm.getElement( '.qui-tags-container-list' );
+            this.$Container = this.$Elm.getElement('.qui-tags-container-list');
 
             this.$Container.addEvents({
                 click : function()
                 {
-                    if ( self.$Input.get( 'disabled' ) ||
-                         self.$Input.get( 'disabled' ) == 'disabled' )
+                    if (self.$Input.get('disabled') ||
+                        self.$Input.get('disabled') == 'disabled')
                     {
                         return;
                     }
 
-                    if ( !self.getAttribute( 'tagWindowOnClick' ) )
+                    if (!self.getAttribute('tagWindowOnClick'))
                     {
                         self.$Input.focus();
                         return;
@@ -123,11 +126,12 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 }
             });
 
+
             this.$Input = new Element('input', {
                 'class' : 'qui-tags-input',
                 name    : 'add-tag',
                 type    : 'text',
-                placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' ),
+                placeholder : Locale.get(lg, 'tag.control.placeholder.addtag'),
                 maxlength : 250,
                 styles : {
                     bottom   : 0,
@@ -138,27 +142,41 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 {
                     change : function()
                     {
+                        if (!self.$DataList) {
+                            return;
+                        }
+
                         var val = this.value,
-                            Tag = self.$DataList.getElement( '[value="'+ val +'"]' );
+                            Tag = self.$DataList.getElement('[value="'+ val +'"]');
 
                         var tag = this.value;
 
-                        if ( Tag )  {
-                            tag = Tag.get( 'data-tag' );
+                        if (Tag)  {
+                            tag = Tag.get('data-tag');
                         }
 
-                        self.addTag( tag );
+                        self.addTag(tag);
 
                         (function()
                         {
                             this.value = '';
                             this.focus();
-                        }).delay( 100, this );
+                        }).delay(100, this);
                     }
                 }
-            }).inject( this.$Elm );
+            }).inject(this.$Elm);
 
-            if ( this.getAttribute( 'inputPosition' ) == 'top' )
+            if (!this.$Value) {
+                this.$Value = new Element('input').inject(this.$Elm);
+
+            } else {
+                this.$Value.inject(this.$Elm);
+            }
+
+            this.$Value.set('type', 'hidden');
+
+
+            if (this.getAttribute('inputPosition') == 'top')
             {
                 this.$Input.setStyles({
                     bottom   : null,
@@ -166,16 +184,16 @@ define('package/quiqqer/tags/bin/TagContainer', [
                     position : null
                 });
 
-                this.$Input.inject( this.$Elm, 'top' );
+                this.$Input.inject(this.$Elm, 'top');
             }
 
 
-            if ( this.getAttribute( 'datalist' ) ) {
-                this.$Input.set( 'list', this.getAttribute( 'datalist' ) );
+            if (this.getAttribute('datalist')) {
+                this.$Input.set('list', this.getAttribute('datalist'));
             }
 
-            if ( this.getAttribute( 'styles' ) ) {
-                this.$Elm.setStyles( this.getAttribute( 'styles' ) );
+            if (this.getAttribute('styles')) {
+                this.$Elm.setStyles(this.getAttribute('styles'));
             }
 
             return this.$Elm;
@@ -215,11 +233,13 @@ define('package/quiqqer/tags/bin/TagContainer', [
          */
         refresh : function()
         {
-            if ( !this.getAttribute( 'limit' ) )
+            this.$Value.value = this.getTags().join(',');
+
+            if (!this.getAttribute('limit'))
             {
                 this.$Input.set({
                     disabled    : null,
-                    placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' )
+                    placeholder : Locale.get(lg, 'tag.control.placeholder.addtag')
                 });
 
                 this.resize();
@@ -229,18 +249,18 @@ define('package/quiqqer/tags/bin/TagContainer', [
 
             var tagList = this.getTags();
 
-            if ( tagList.length >= this.getAttribute( 'limit' ) )
+            if (tagList.length >= this.getAttribute('limit'))
             {
                 this.$Input.set({
                     disabled    : 'disabled',
-                    placeholder : Locale.get( lg, 'tag.control.placeholder.limit' )
+                    placeholder : Locale.get(lg, 'tag.control.placeholder.limit')
                 });
 
             } else
             {
                 this.$Input.set({
                     disabled    : null,
-                    placeholder : Locale.get( lg, 'tag.control.placeholder.addtag' )
+                    placeholder : Locale.get(lg, 'tag.control.placeholder.addtag')
                 });
             }
 
@@ -283,6 +303,65 @@ define('package/quiqqer/tags/bin/TagContainer', [
             {
                 self.Loader.hide();
                 self.refresh();
+            });
+        },
+
+        /**
+         * event on import
+         */
+        $onImport : function()
+        {
+            var self = this,
+                Parent = this.$Elm.getParent(),
+                size = this.$Elm.getSize();
+
+            this.$Value = this.$Elm;
+
+            // settings
+            if (this.$Value.get('data-loaddatalist')) {
+                this.setAttribute('loadDatalist', true);
+            }
+
+            if (this.$Value.get('data-limit')) {
+                this.setAttribute('limit', this.$Value.get('data-limit'));
+            }
+
+            if (this.$Value.get('data-inputposition')) {
+                this.setAttribute('inputPosition', this.$Value.get('data-inputposition'));
+            }
+
+
+            var Container = this.create();
+
+            this.$Elm.setStyles({
+                width : size.x
+            });
+
+            Container.inject(Parent);
+
+            this.Loader.show();
+
+            var tags = this.$Value.value.split(',');
+
+            Ajax.get('package_quiqqer_tags_ajax_tag_clearTagList', function(tagList) {
+
+                // add tags
+                for (var i = 0, len = tagList.length; i < len; i++) {
+                    self.$createTag(tagList[i]).inject(self.$Container);
+                }
+
+                if (!self.getAttribute('loadDatalist')) {
+                    self.resize();
+
+                } else {
+                    self.$onInject();
+                }
+
+            }, {
+                'package'   : 'quiqqer/tags',
+                projectName : this.getProject(),
+                projectLang : this.getProjectLang(),
+                tags        : JSON.encode(tags)
             });
         },
 
@@ -376,32 +455,10 @@ define('package/quiqqer/tags/bin/TagContainer', [
                     return;
                 }
 
-                var title = tag;
 
-                if (typeof tagData !== 'undefined' && tagData && tagData.title !== '') {
-                    title = tagData.title;
-                }
-
-
-                var Tag = new Element('div', {
-                    'class' : 'qui-tags-tag',
-                    html    : '<span class="icon-tag fa fa-tag"></span>'+
-                              '<span class="qui-tags-tag-value">'+ title +'</span>' +
-                              '<span class="icon-remove fa fa-remove"></span>',
-                    'data-tag' : tag
-                });
-
-
-                Tag.inject(self.$Container);
-
-                Tag.getElement('.icon-remove').addEvent('click', function(event)
-                {
-                    event.stop();
-
-                    self.removeTag(this.getParent().get('data-tag'));
-                });
-
+                self.$createTag(tagData).inject(self.$Container);
                 self.fireEvent('add', [self, tag]);
+
                 self.Loader.hide();
                 self.refresh();
 
@@ -471,7 +528,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
                     styles : {
                         margin : 10
                     }
-                }).inject( Content );
+                }).inject(Content);
             });
         },
 
@@ -653,6 +710,40 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 }),
                 sektor : sektor
             });
+        },
+
+        /**
+         * Create tag domnode
+         *
+         * @param {Object} tagData - tag data
+         */
+        $createTag : function(tagData)
+        {
+            var self = this,
+                tag = tagData.tag,
+                title = tag;
+
+            if (typeof tagData !== 'undefined' && tagData && tagData.title !== '') {
+                title = tagData.title;
+            }
+
+
+            var Tag = new Element('div', {
+                'class' : 'qui-tags-tag',
+                html    : '<span class="icon-tag fa fa-tag"></span>'+
+                '<span class="qui-tags-tag-value">'+ title +'</span>' +
+                '<span class="icon-remove fa fa-remove"></span>',
+                'data-tag' : tag
+            });
+
+            Tag.getElement('.icon-remove').addEvent('click', function(event)
+            {
+                event.stop();
+
+                self.removeTag(this.getParent().get('data-tag'));
+            });
+
+            return Tag;
         }
     });
 });
