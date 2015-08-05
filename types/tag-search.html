@@ -1,3 +1,4 @@
+
 <section class="content-header grid-100 mobile-grid-100">
     <header>
         <h1>{$Site->getAttribute('title')}</h1>
@@ -31,10 +32,11 @@
             {assign var=key value=array_search($requestTag.tag, $requestTagNames)}
             {array_unset var=$params key=$key assign=params}
             {array_sort var=$params assign=params}
+            {assign var=params value=implode('-', $params)}
 
-            <a href="{url site=$Site params=$params}" class="qui-tags-tag">
+            <a href="{url site=$Site _get__tags=$params}" class="qui-tags-tag">
                 <span class="fa fa-minus"></span>
-                {$requestTag.tag}
+                {$requestTag.title}
             </a>
         {/foreach}
     </div>
@@ -80,13 +82,14 @@
             </ul>
 
             <div class="quiqqer-tags-search-available-pool">
-                {foreach from=$tags item=tag}
+                {foreach $tags as $tag}
                     {if !in_array($tag.tag, $requestTagNames)}
                         {assign var=params value=$requestTagNames}
                         {$params[] = $tag.tag}
                         {array_sort var=$params assign=params}
+                        {assign var=params value=implode('-', $params)}
 
-                        <a href="{url site=$Site params=$params}" class="qui-tags-tag animated">
+                        <a href="{url site=$Site _get__tags=$params}" class="qui-tags-tag animated">
                             {$tag.title}
                         </a>
                     {/if}

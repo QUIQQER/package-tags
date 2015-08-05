@@ -19,6 +19,11 @@ $Pagination = new \QUI\Controls\Sheets(array(
 
 $Pagination->loadFromRequest();
 
+$Pagination->setGetParams(
+    'limit',
+    $Site->getAttribute('quiqqer.tag.settings.limit')
+);
+
 
 /**
  * Tag Manager
@@ -47,8 +52,8 @@ $requestList = QUI::getRewrite()->getUrlParamsList();
 $requestTags = array();
 $requestTagNames = array();
 
-if (isset($_REQUEST['tags']) && !empty($_REQUEST['tags'])) {
-    $requestList = explode(QUI\Rewrite::URL_SPACE_CHARACTER, $_REQUEST['tags']);
+if (isset($_GET['tags']) && !empty($_GET['tags'])) {
+    $requestList = explode('-', $_GET['tags']);
 }
 
 foreach ($requestList as $requestTag) {
@@ -122,10 +127,10 @@ if ($Pagination->getAttribute('limit')) {
 
 
 $Pagination->setAttributes(array(
-    'sheets' => $sheets,
-    'tags'   => $requestTagNames
+    'sheets' => $sheets
 ));
 
+$Pagination->setGetParams('tags', implode('-', $requestTagNames));
 
 $Engine->assign(array(
     'result'     => $result,
