@@ -44,6 +44,7 @@ if ($siteUrl != $_REQUEST['_url']
 
         QUI::getRewrite()->showErrorHeader(404);
 
+        $Site->setAttribute('canonical', $Site->getUrlRewrited());
     }
 
 }

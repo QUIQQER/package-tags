@@ -64,10 +64,7 @@ foreach ($requestList as $requestTag) {
 
     } catch (QUI\Exception $Exception) {
 
-        // tag not found
-        QUI::getRewrite()->showErrorHeader(404);
     }
-
 }
 
 // default tag set?
