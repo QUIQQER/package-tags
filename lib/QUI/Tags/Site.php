@@ -25,14 +25,17 @@ class Site
     static function onSave($Site)
     {
         $Project = $Site->getProject();
-        $tags = $Site->getAttribute('quiqqer.tags.tagList');
+        $tags    = $Site->getAttribute('quiqqer.tags.tagList');
         $Manager = new QUI\Tags\Manager($Project);
 
         // register path
-        $url = $Site->getUrlRewrited();
-        $url = str_replace(QUI\Rewrite::URL_DEFAULT_SUFFIX, '', $url);
+        if ($Site->getAttribute('type') == 'types/tag-listing') {
+            $url = $Site->getUrlRewrited();
+            $url = str_replace(QUI\Rewrite::URL_DEFAULT_SUFFIX, '', $url);
 
-        QUI::getRewrite()->registerPath($url.'/*', $Site);
+            QUI::getRewrite()->registerPath($url . '/*', $Site);
+        }
+
 
         // set tags
         if (!$tags) {
@@ -55,15 +58,15 @@ class Site
             }
         }
 
-        $User = \QUI::getUserBySession();
+        $User  = \QUI::getUserBySession();
         $limit = $User->getPermission('tags.siteLimit', 'max_integer');
 
         if ($limit < count($list)) {
             throw new QUI\Exception(
                 QUI::getLocale()
-                   ->get('quiqqer/tags', 'exception.limit.tags.to.site', array(
-                       'limit' => $limit
-                   ))
+                    ->get('quiqqer/tags', 'exception.limit.tags.to.site', array(
+                        'limit' => $limit
+                    ))
             );
         }
 
@@ -78,7 +81,7 @@ class Site
     static function onLoad($Site)
     {
         $Manager = new QUI\Tags\Manager($Site->getProject());
-        $tags = $Manager->getSiteTags($Site->getId());
+        $tags    = $Manager->getSiteTags($Site->getId());
 
         $Site->setAttribute('quiqqer.tags.tagList', $tags);
     }
