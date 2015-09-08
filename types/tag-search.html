@@ -156,7 +156,9 @@
                     </div>
                 </article>
                 {foreachelse}
-                    {locale group="quiqqer/tags" var="message.types.tag.no.entries.found"}
+                    <div class="content-message-attention">
+                        {locale group="quiqqer/tags" var="message.types.tag.no.entries.found"}
+                    </div>
                 {/foreach}
             </div>
 
