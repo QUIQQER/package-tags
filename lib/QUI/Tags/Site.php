@@ -29,7 +29,9 @@ class Site
         $Manager = new QUI\Tags\Manager($Project);
 
         // register path
-        if ($Site->getAttribute('type') == 'types/tag-listing') {
+        if ($Site->getAttribute('type') == 'types/tag-listing' &&
+            $Site->getAttribute('active')
+        ) {
             $url = $Site->getUrlRewrited();
             $url = str_replace(QUI\Rewrite::URL_DEFAULT_SUFFIX, '', $url);
 
