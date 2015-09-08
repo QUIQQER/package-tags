@@ -63,6 +63,10 @@
             <de><![CDATA[Tagverwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
         </locale>
+        <locale name="control.tags.search.category.no.tags">
+            <de><![CDATA[Keine Tags enthalten]]></de>
+            <en><![CDATA[No tags contained]]></en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
 

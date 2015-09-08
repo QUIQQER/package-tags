@@ -77,11 +77,13 @@
                     <a href="{url site=$Site params=[vz]}" data-tag="^[v-z]">V - Z</a>
                 </li>
                 <li class="quiqqer-tags-search-menu-entry">
-                    <a href="{url site=$Site params=[123]}" data-tag="^[0-9]">0 - 9</a>
+                    <a href="{url site=$Site params=[123]}" data-tag="^[^a-zA-Z]">#-0-9</a>
                 </li>
             </ul>
 
             <div class="quiqqer-tags-search-available-pool">
+
+                <noscript>
                 {foreach $tags as $tag}
                     {if !in_array($tag.tag, $requestTagNames)}
                         {assign var=params value=$requestTagNames}
@@ -89,12 +91,14 @@
                         {array_sort var=$params assign=params}
                         {assign var=params value=implode('-', $params)}
 
-                        <a href="{url site=$Site _get__tags=$params}" class="qui-tags-tag animated">
-                            {$tag.title}
-                        </a>
+                    <a href="{url site=$Site _get__tags=$params}" class="qui-tags-tag animated">
+                        {$tag.title}
+                    </a>
                     {/if}
                 {/foreach}
+                </noscript>
             </div>
+
         </div>
     </div>
     {/if}
