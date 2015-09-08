@@ -103,14 +103,16 @@
     </div>
     {/if}
 
+    {if isset($smarty.get.tags)}
     <div class="quiqqer-tags-search-results">
         {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')
             && $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')
         }
+            {if $count}
             <h3>
                 {locale group="quiqqer/tags" var="template.tags.search.header.result"}
             </h3>
-            {if $count}
+
             <p>
                 {if $max < $count}
                     {locale group="quiqqer/tags" var="message.site.result" start=$start+1 end=$max count=$count}
@@ -121,7 +123,7 @@
             {/if}
         {/if}
 
-        {if isset($smarty.get.tags)}
+        {if $count}
             {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
                 {$Pagination->create()}
             {/if}
@@ -165,7 +167,12 @@
             {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
                 {$Pagination->create()}
             {/if}
+        {else}
+        <div class="content-message-attention">
+            {locale group="quiqqer/tags" var="message.types.tag.no.entries.found"}
+        </div>
         {/if}
     </div>
+    {/if}
 
 </section>
