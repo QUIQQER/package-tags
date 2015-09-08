@@ -21,7 +21,7 @@
         data-qui="package/quiqqer/tags/bin/TagSearch"
         >
 
-    {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')}
+    {if $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')}
     <h2>
         {locale group="quiqqer/tags" var="template.tags.search.header.selectTags"}
     </h2>
@@ -43,7 +43,7 @@
     {/if}
 
 
-    {if $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')}
+    {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')}
     <div class="quiqqer-tags-search-available">
 
         <h3>
