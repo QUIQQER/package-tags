@@ -7,6 +7,7 @@
  *
  * @require qui/QUI
  * @require qui/controls/Control
+ * @require Locale
  */
 define('package/quiqqer/tags/bin/TagSearch', [
 
