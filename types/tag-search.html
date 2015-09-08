@@ -121,46 +121,48 @@
             {/if}
         {/if}
 
-        {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
-            {$Pagination->create()}
-        {/if}
+        {if isset($smarty.get.tags)}
+            {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
+                {$Pagination->create()}
+            {/if}
 
-        <div>
-            {foreach $result as $Entry}
-            <article class="quiqqer-tags-search-result-entry">
-                <a href="{url site=$Entry}" class="quiqqer-tags-search-result-entry-link">
-                    {if $Entry->getAttribute('image')}
-                        {image src=$Entry->getAttribute('image')
-                               class="quiqqer-tags-search-entry-image"
-                               width="100"
-                        }
-                    {else}
-                    <div class="quiqqer-tags-search-result-entry-imgplaceholder"
-                         style="background: url('{$Project->getMedia()->getPlaceholder()}') center center no-repeat"
-                            ></div>
-                    {/if}
+            <div>
+                {foreach $result as $Entry}
+                <article class="quiqqer-tags-search-result-entry">
+                    <a href="{url site=$Entry}" class="quiqqer-tags-search-result-entry-link">
+                        {if $Entry->getAttribute('image')}
+                            {image src=$Entry->getAttribute('image')
+                                   class="quiqqer-tags-search-entry-image"
+                                   width="100"
+                            }
+                        {else}
+                        <div class="quiqqer-tags-search-result-entry-imgplaceholder"
+                             style="background: url('{$Project->getMedia()->getPlaceholder()}') center center no-repeat"
+                                ></div>
+                        {/if}
 
-                    <div class="quiqqer-tags-search-result-entry-text">
-                        <h4>{$Entry->getAttribute('title')}</h4>
-                        <p>{$Entry->getAttribute('short')}</p>
+                        <div class="quiqqer-tags-search-result-entry-text">
+                            <h4>{$Entry->getAttribute('title')}</h4>
+                            <p>{$Entry->getAttribute('short')}</p>
+                        </div>
+                    </a>
+
+                    <div class="quiqqer-tags-search-result-entry-taglist">
+                        <span class="quiqqer-tags-search-result-entry-tagText">
+                            {locale group="quiqqer/tags" var="template.tags.search.result.tagList"}
+                        </span>
+                        {control assign=Control control="\QUI\Tags\Controls\SiteTags" Site=$Entry}
+                        {$Control->getBody()}
                     </div>
-                </a>
+                </article>
+                {foreachelse}
+                    {locale group="quiqqer/tags" var="message.types.tag.no.entries.found"}
+                {/foreach}
+            </div>
 
-                <div class="quiqqer-tags-search-result-entry-taglist">
-                    <span class="quiqqer-tags-search-result-entry-tagText">
-                        {locale group="quiqqer/tags" var="template.tags.search.result.tagList"}
-                    </span>
-                    {control assign=Control control="\QUI\Tags\Controls\SiteTags" Site=$Entry}
-                    {$Control->getBody()}
-                </div>
-            </article>
-            {foreachelse}
-                {locale group="quiqqer/tags" var="message.types.tag.no.entries.found"}
-            {/foreach}
-        </div>
-
-        {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
-            {$Pagination->create()}
+            {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
+                {$Pagination->create()}
+            {/if}
         {/if}
     </div>
 
