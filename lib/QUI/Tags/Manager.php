@@ -174,8 +174,6 @@ class Manager
     {
         Permission::checkPermission('tags.create');
 
-        $tag = $this->clearTagName($tag);
-
         // exist tag?
         $tagParams = $this->get($tag);
 
