@@ -18,7 +18,7 @@ class Cron
     /**
      * creates the tag cache
      *
-     * @param Array            $params
+     * @param Array $params
      * @param QUI\Cron\Manager $CronManager
      */
     static function createCache($params, $CronManager)
@@ -32,13 +32,12 @@ class Cron
         }
 
 
-        $Project = QUI::getProject($params['project'], $params['lang']);
+        $Project  = QUI::getProject($params['project'], $params['lang']);
         $DataBase = QUI::getDataBase();
 
-        $tableSites = QUI::getDBProjectTableName('tags_sites', $Project);
-        $tableSiteCache = QUI::getDBProjectTableName('tags_siteCache',
-            $Project);
-        $tableCache = QUI::getDBProjectTableName('tags_cache', $Project);
+        $tableSites     = QUI::getDBProjectTableName('tags_sites', $Project);
+        $tableSiteCache = QUI::getDBProjectTableName('tags_siteCache', $Project);
+        $tableCache     = QUI::getDBProjectTableName('tags_cache', $Project);
 
 
         // get ids
@@ -62,7 +61,7 @@ class Cron
 
                 $entry['id'] = (int)$entry['id'];
 
-                $_str = $entry['id'].'_'.$tag;
+                $_str = $entry['id'] . '_' . $tag;
 
 
                 if (isset($_tmp[$_str])) {
@@ -70,8 +69,7 @@ class Cron
                 }
 
                 $list[$tag][] = $entry['id'];
-                $_tmp[$_str]
-                    = 1; // temp zum prüfen ob schon drinnen, in_array ist zulangsam
+                $_tmp[$_str]  = 1; // temp zum prüfen ob schon drinnen, in_array ist zulangsam
             }
         }
 
@@ -82,12 +80,27 @@ class Cron
         $DataBase->Table()->truncate($tableCache);
 
         foreach ($list as $tag => $entry) {
+
+            $siteIds = array();
+
+            // only active sites
+            foreach ($entry as $siteId) {
+                try {
+                    $Site = $Project->get((int)$siteId);
+
+                    if ($Site->getAttribute('active')) {
+                        $siteIds[] = $siteId;
+                    }
+                } catch (QUI\Exception $Exception) {
+                    continue;
+                }
+            }
+
             $DataBase->insert($tableCache, array(
                 'tag'   => $tag,
-                'sites' => ','.implode(',', $entry).','
+                'sites' => ',' . implode(',', $siteIds) . ','
             ));
         }
-
 
         /**
          * Sites cache

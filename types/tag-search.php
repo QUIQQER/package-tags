@@ -48,8 +48,8 @@ try {
  * Requested tags
  */
 
-$requestList = QUI::getRewrite()->getUrlParamsList();
-$requestTags = array();
+$requestList     = QUI::getRewrite()->getUrlParamsList();
+$requestTags     = array();
 $requestTagNames = array();
 
 if (isset($_GET['tags']) && !empty($_GET['tags'])) {
@@ -59,7 +59,7 @@ if (isset($_GET['tags']) && !empty($_GET['tags'])) {
 foreach ($requestList as $requestTag) {
 
     try {
-        $requestTags[] = $Manager->get($requestTag);
+        $requestTags[]     = $Manager->get($requestTag);
         $requestTagNames[] = $requestTag;
 
     } catch (QUI\Exception $Exception) {
@@ -78,7 +78,7 @@ if (empty($requestTagNames)
     foreach ($defaultTags as $tag) {
 
         try {
-            $requestTags[] = $Manager->get($tag);
+            $requestTags[]     = $Manager->get($tag);
             $requestTagNames[] = $tag;
 
         } catch (QUI\Exception $Exception) {
@@ -97,7 +97,7 @@ $Engine->assign(array(
  * Search
  */
 
-$count = 0;
+$count  = 0;
 $sheets = 0;
 $result = array();
 
