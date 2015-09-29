@@ -13,9 +13,10 @@ define('package/quiqqer/tags/bin/TagSearch', [
 
     'qui/QUI',
     'qui/controls/Control',
+    'qui/controls/buttons/Button',
     'Locale'
 
-], function (QUI, QUIControl, QUILocale) {
+], function (QUI, QUIControl, QUIButton, QUILocale) {
     "use strict";
 
     return new Class({
@@ -43,6 +44,8 @@ define('package/quiqqer/tags/bin/TagSearch', [
             var Menu       = Elm.getElement('.quiqqer-tags-search-menu'),
                 Available  = Elm.getElement('.quiqqer-tags-search-available'),
                 Pool       = Elm.getElement('.quiqqer-tags-search-available-pool'),
+                Selected   = Elm.getElement('.quiqqer-tags-search-pool'),
+                Results    = Elm.getElement('.quiqqer-tags-search-results'),
                 categories = Available.getElements('.quiqqer-tags-search-menu-entry a');
 
             Menu.setStyles({
@@ -52,6 +55,53 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 overflow: 'hidden',
                 opacity : 0
             });
+
+            // hide tag menu
+            if (Selected) {
+                Available.setStyle('display', 'none');
+                Results.setStyle('marginTop', 20);
+
+                new QUIButton({
+                    icon  : 'icon-plus fa fa-plus',
+                    events: {
+                        onClick: function (Btn) {
+
+                            moofx(Results).animate({
+                                marginTop: 0
+                            });
+
+                            Available.setStyles({
+                                display: null,
+                                opacity: 0
+                            });
+
+                            moofx(Available).animate({
+                                opacity : 1
+                            }, {
+                                callback : function() {
+                                    moofx(Menu).animate({
+                                        height : 60,
+                                        opacity: 1
+                                    }, {
+                                        duration: 250,
+                                        equation: 'cubic-bezier(.42,.4,.46,1.29)'
+                                    });
+                                }
+                            });
+
+                            moofx(Btn.getElm()).animate({
+                                opacity : 0
+                            }, {
+                                callback : function() {
+                                    Btn.getElm().destroy();
+                                }
+                            });
+                        }
+                    }
+                }).inject(Selected);
+
+                console.log(Selected);
+            }
 
 
             // create the pool
@@ -162,6 +212,7 @@ define('package/quiqqer/tags/bin/TagSearch', [
             });
 
             categories[0].fireEvent('click');
+
 
             moofx(Menu).animate({
                 height : 60,
