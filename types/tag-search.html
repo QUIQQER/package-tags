@@ -23,7 +23,7 @@
         data-qui="package/quiqqer/tags/bin/TagSearch"
         >
 
-    {if $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')}
+    {if isset($smarty.get.tags) && $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')}
     <h2>
         {locale group="quiqqer/tags" var="template.tags.search.header.selectTags"}
     </h2>
