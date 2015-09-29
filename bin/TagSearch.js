@@ -48,6 +48,7 @@ define('package/quiqqer/tags/bin/TagSearch', [
             Menu.setStyles({
                 display : null,
                 height  : 0,
+                margin  : 0,
                 overflow: 'hidden',
                 opacity : 0
             });
