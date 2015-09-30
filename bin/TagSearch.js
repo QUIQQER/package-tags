@@ -38,7 +38,8 @@ define('package/quiqqer/tags/bin/TagSearch', [
          * event : on import
          */
         $onImport: function () {
-            var Elm = this.getElm();
+            var self = this,
+                Elm  = this.getElm();
 
             // available list
             var Menu       = Elm.getElement('.quiqqer-tags-search-menu'),
@@ -66,41 +67,16 @@ define('package/quiqqer/tags/bin/TagSearch', [
                     events: {
                         onClick: function (Btn) {
 
-                            moofx(Results).animate({
-                                marginTop: 0
-                            });
-
-                            Available.setStyles({
-                                display: null,
-                                opacity: 0
-                            });
-
-                            moofx(Available).animate({
-                                opacity : 1
-                            }, {
-                                callback : function() {
-                                    moofx(Menu).animate({
-                                        height : 60,
-                                        opacity: 1
-                                    }, {
-                                        duration: 250,
-                                        equation: 'cubic-bezier(.42,.4,.46,1.29)'
-                                    });
-                                }
-                            });
-
-                            moofx(Btn.getElm()).animate({
-                                opacity : 0
-                            }, {
-                                callback : function() {
-                                    Btn.getElm().destroy();
-                                }
-                            });
+                            if (Btn.getAttribute('icon') != 'icon-plus fa fa-plus') {
+                                self.hideAvailableTags();
+                                Btn.setAttribute('icon', 'icon-plus fa fa-plus');
+                            } else {
+                                self.showAvailableTags();
+                                Btn.setAttribute('icon', 'icon-minus fa fa-minus');
+                            }
                         }
                     }
                 }).inject(Selected);
-
-                console.log(Selected);
             }
 
 
@@ -220,6 +196,100 @@ define('package/quiqqer/tags/bin/TagSearch', [
             }, {
                 duration: 250,
                 equation: 'cubic-bezier(.42,.4,.46,1.29)'
+            });
+        },
+
+        /**
+         * Show available tag listing
+         */
+        showAvailableTags: function () {
+            var Available = this.getElm().getElement(
+                '.quiqqer-tags-search-available'
+            );
+
+            var Results = this.getElm().getElement(
+                '.quiqqer-tags-search-results'
+            );
+
+            var Menu = this.getElm().getElement(
+                '.quiqqer-tags-search-menu'
+            );
+
+            moofx(Results).animate({
+                marginTop: 0
+            });
+
+            Available.setStyles({
+                display: 'none',
+                height : null,
+                padding: null,
+                margin : null
+            });
+
+            var size = Available.getComputedSize();
+
+            Available.setStyles({
+                display: null,
+                height : 0,
+                margin : 0,
+                opacity: 0,
+                padding: 0
+            });
+
+            moofx(Available).animate({
+                height : size.height,
+                opacity: 1,
+                margin : '20px 0',
+                padding: '40px 0'
+            }, {
+                duration: 250,
+                callback: function () {
+
+                    Available.setStyles({
+                        height: null
+                    });
+
+                    //moofx(Menu).animate({
+                    //    height : 60,
+                    //    opacity: 1
+                    //}, {
+                    //    duration: 250,
+                    //    equation: 'cubic-bezier(.42,.4,.46,1.29)'
+                    //});
+                }
+            });
+        },
+
+        /**
+         *
+         */
+        hideAvailableTags: function () {
+            var Available = this.getElm().getElement(
+                '.quiqqer-tags-search-available'
+            );
+
+            var Results = this.getElm().getElement(
+                '.quiqqer-tags-search-results'
+            );
+
+            var Menu = this.getElm().getElement(
+                '.quiqqer-tags-search-menu'
+            );
+
+            moofx(Results).animate({
+                marginTop: 20
+            });
+
+            moofx(Available).animate({
+                height : 0,
+                margin : 0,
+                opacity: 0,
+                padding: 0
+            }, {
+                duration: 250,
+                callback: function () {
+                    Available.setStyle('display', 'none');
+                }
             });
         }
 
