@@ -38,7 +38,6 @@ class Site
             QUI::getRewrite()->registerPath($url . '/*', $Site);
         }
 
-
         // set tags
         if (!$tags) {
             $tags = '';
@@ -72,7 +71,24 @@ class Site
             );
         }
 
-        $Manager->setSiteTags($Site->getId(), $list);
+
+        if ($Site->getAttribute('active')) {
+            $Manager->setSiteTags($Site->getId(), $list);
+        } else {
+            $Manager->removeSiteFromTags($Site->getId(), $list);
+        }
+    }
+
+    /**
+     * event : on site deactivate
+     *
+     * @param \QUI\Projects\Site $Site
+     *
+     * @throws \QUI\Exception
+     */
+    static function onSiteDeactivate($Site)
+    {
+        self::onSave($Site);
     }
 
     /**
