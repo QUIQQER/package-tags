@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
     <event on="onSiteSave" fire="\QUI\Tags\Site::onSave" />
+    <event on="onSiteActivate" fire="\QUI\Tags\Site::onSave" />
     <event on="onSiteLoad" fire="\QUI\Tags\Site::onLoad" />
     <event on="onSiteDestroy" fire="\QUI\Tags\Site::onDestroy" />
 </events>
