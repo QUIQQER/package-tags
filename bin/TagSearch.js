@@ -211,10 +211,6 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 '.quiqqer-tags-search-results'
             );
 
-            var Menu = this.getElm().getElement(
-                '.quiqqer-tags-search-menu'
-            );
-
             moofx(Results).animate({
                 marginTop: 0
             });
@@ -248,14 +244,6 @@ define('package/quiqqer/tags/bin/TagSearch', [
                     Available.setStyles({
                         height: null
                     });
-
-                    //moofx(Menu).animate({
-                    //    height : 60,
-                    //    opacity: 1
-                    //}, {
-                    //    duration: 250,
-                    //    equation: 'cubic-bezier(.42,.4,.46,1.29)'
-                    //});
                 }
             });
         },
@@ -270,10 +258,6 @@ define('package/quiqqer/tags/bin/TagSearch', [
 
             var Results = this.getElm().getElement(
                 '.quiqqer-tags-search-results'
-            );
-
-            var Menu = this.getElm().getElement(
-                '.quiqqer-tags-search-menu'
             );
 
             moofx(Results).animate({
