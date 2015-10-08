@@ -3,10 +3,10 @@
 $url = $_REQUEST['_url'];
 $url = pathinfo($url);
 
-$siteUrl = $Site->getUrlRewrited();
+$siteUrl = $Site->getLocation();
 
 // tag
-if ($siteUrl != '/' . $_REQUEST['_url']
+if ($siteUrl != $_REQUEST['_url']
     && $siteUrl == '/' . $url['dirname'] . \QUI\Rewrite::URL_DEFAULT_SUFFIX
 ) {
 

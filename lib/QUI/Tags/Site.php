@@ -32,7 +32,7 @@ class Site
         if ($Site->getAttribute('type') == 'types/tag-listing' &&
             $Site->getAttribute('active')
         ) {
-            $url = $Site->getUrlRewrited();
+            $url = $Site->getLocation();
             $url = str_replace(QUI\Rewrite::URL_DEFAULT_SUFFIX, '', $url);
 
             QUI::getRewrite()->registerPath($url . '/*', $Site);
