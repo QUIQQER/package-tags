@@ -29,7 +29,7 @@ class Site
         $Manager = new QUI\Tags\Manager($Project);
 
         // register path
-        if ($Site->getAttribute('type') == 'types/tag-listing' &&
+        if ($Site->getAttribute('type') == 'quiqqer/tags:types/tag-listing' &&
             $Site->getAttribute('active')
         ) {
             $url = $Site->getLocation();
