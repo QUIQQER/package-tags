@@ -1,212 +1,253 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <locales>
-
-    <groups name="quiqqer/tags" datatype="php,js">
-        <locale name="package.title">
-            <de><![CDATA[QUIQQER - TAG's]]></de>
-            <en><![CDATA[QUIQQER - TAG's]]></en>
-        </locale>
-        <locale name="package.description">
-            <de><![CDATA[
-                <p>Tags lassen sich mit "Schlagwörtern" oder „Stichwörtern“ übersetzen.
-                Sie beschreiben einen Inhalt mit einzelnen Wörtern.</p>
-                <p>Für einen Artikel über eine Reise nach Rom wären demnach zum Beispiel
-                die Tags „Italien“, „Reise“ oder „Rom“ passend.</p>
-                <p>Sie können Tags in Ihrem Projekt nutzen, um Ihren Lesern mehr Übersicht zu bieten.</p>
-            ]]></de>
-            <en><![CDATA[
-
-            ]]></en>
-        </locale>
-        
-        <locale name="exception.tag.already.exists">
-            <de><![CDATA[Der tag existiert bereits.]]></de>
-            <en><![CDATA[The tag already exist.]]></en>
-        </locale>
-        <locale name="exception.tag.not.found">
-            <de><![CDATA[Der tag wurde leider nicht gefunden.]]></de>
-            <en><![CDATA[The tag was not found]]></en>
-        </locale>
-        <locale name="exception.limit.tags.to.site">
-            <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Seite wurde nicht gespeichert.]]></de>
-            <en><![CDATA[You can add only [limit] tags the page. The page wasn't saved.]]></en>
-        </locale>
-
-        <locale name="message.no.tags.found">
-            <de><![CDATA[Keine tags gefunden]]></de>
-            <en><![CDATA[No tags found]]></en>
-        </locale>
-        <locale name="message.no.permission.create.tags">
-            <de><![CDATA[Sie haben nicht die nötigen Rechte neue tags anzulegen. Bitte verwenden Sie nur existierende tags.]]></de>
-            <en><![CDATA[You dont have the necessary rights to create new tags. Please only use existing tags.]]></en>
-        </locale>
-
-        <locale name="tag">
-            <de><![CDATA[Tag]]></de>
-            <en><![CDATA[Tag]]></en>
-        </locale>
-
-        <locale name="tag.control.placeholder.addtag">
-            <de><![CDATA[Geben Sie bitte hier Ihren gewünschten tag ein ...]]></de>
-            <en><![CDATA[Please enter here your wanted tag ...]]></en>
-        </locale>
-        <locale name="tag.control.placeholder.limit">
-            <de><![CDATA[Weitere Tags können nicht hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht.]]></de>
-            <en><![CDATA[More tags can not be added. The maximum number of tags has been reached.]]></en>
-        </locale>
-    </groups>
-
-
-    <groups name="quiqqer/tags" datatype="php">
-        <locale name="menu.tags">
-            <de><![CDATA[tags]]></de>
-            <en><![CDATA[tags]]></en>
-        </locale>
-        <locale name="menu.tags.manager">
-            <de><![CDATA[Tag Verwaltung]]></de>
-            <en><![CDATA[Tag Management]]></en>
-        </locale>
-
-        <!-- types -->
-        <locale name="admin.types.tag.listing">
-            <de><![CDATA[QUIQQER : Tag Liste]]></de>
-            <en><![CDATA[QUIQQER : Tag listing]]></en>
-        </locale>
-        <locale name="admin.types.tag.listing.desc">
-            <de><![CDATA[]]></de>
-            <en><![CDATA[]]></en>
-        </locale>
-
-        <locale name="admin.types.tag">
-            <de><![CDATA[QUIQQER : Einzelner tag]]></de>
-            <en><![CDATA[QUIQQER : Single tag]]></en>
-        </locale>
-        <locale name="admin.types.tag.desc">
-            <de><![CDATA[QUIQQER : Einzelner tag]]></de>
-            <en><![CDATA[QUIQQER : Single tag]]></en>
-        </locale>
-
-        <locale name="admin.types.tag.search">
-            <de><![CDATA[QUIQQER : Tag Suche]]></de>
-            <en><![CDATA[QUIQQER : Tag Search]]></en>
-        </locale>
-        <locale name="admin.types.tag.search.desc">
-            <de><![CDATA[QUIQQER : Tag Suche]]></de>
-            <en><![CDATA[QUIQQER : Tag Search]]></en>
-        </locale>
-
-        <locale name="site.panel.category.title">
-            <de><![CDATA[Tags]]></de>
-            <en><![CDATA[Tags]]></en>
-        </locale>
-    </groups>
-
-
     <groups name="quiqqer/tags" datatype="js">
-
-        <!-- panel -->
-        <locale name="panel.manager.title">
-            <de><![CDATA[Tag Verwaltung]]></de>
-            <en><![CDATA[Tag Management]]></en>
+        <locale name="control.tagcontainer.sheet.btn.add">
+            <de><![CDATA[Hinzufügen]]></de>
+            <en><![CDATA[Add]]></en>
+        </locale>
+        <locale name="panel.delete.window.message">
+            <de><![CDATA[<p>Möchten Sie folgende tags wirklich löschen?</p>
+                <p><strong>[tags]</strong></p>]]></de>
+            <en><![CDATA[<p>Do you really want to delete the following tags?</p>
+                <p><strong>[tags]</strong></p>]]></en>
+        </locale>
+        <locale name="panel.delete.window.title">
+            <de><![CDATA[Tag löschen]]></de>
+            <en><![CDATA[Delete a tag]]></en>
+        </locale>
+        <locale name="panel.manager.tag.title">
+            <de><![CDATA[Tag Titel]]></de>
+            <en><![CDATA[Tag title]]></en>
+        </locale>
+        <locale name="panel.add.window.title">
+            <de><![CDATA[Tag hinzufügen]]></de>
+            <en><![CDATA[Add a tag]]></en>
+        </locale>
+        <locale name="site.window.add.tag.title" html="true">
+            <de><![CDATA[<p>Der tag <strong>[tag]</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?]]></de>
+            <en><![CDATA[<p>The tag <strong>[tag]</strong> doesn't exist. Would you add the tag?]]></en>
+        </locale>
+        <locale name="site.table.description">
+            <de><![CDATA[Per klick auf das Tagfeld können Sie der Seite Tags hinzufügen.]]></de>
+            <en><![CDATA[By clicking on the tag field, you can add tags to the site.]]></en>
+        </locale>
+        <locale name="site.table.title">
+            <de><![CDATA[Der Seite zugewiesene Tags]]></de>
+            <en><![CDATA[The page assigned tags]]></en>
+        </locale>
+        <locale name="control.tagcontainer.window.add.title">
+            <de><![CDATA[Tag hinzufügen]]></de>
+            <en><![CDATA[Add a tag]]></en>
+        </locale>
+        <locale name="control.tagcontainer.window.message.no.tags">
+            <de><![CDATA[Keine Tags gefunden]]></de>
+            <en><![CDATA[No tags found.]]></en>
+        </locale>
+        <locale name="control.tagcontainer.sheet.btn.cancel">
+            <de><![CDATA[Abbrechen]]></de>
+            <en><![CDATA[Cancel]]></en>
         </locale>
         <locale name="panel.manager.button.add.tag">
             <de><![CDATA[Tag hinzufügen]]></de>
             <en><![CDATA[Add a tag]]></en>
         </locale>
         <locale name="panel.manager.button.delete.tag">
-            <de><![CDATA[Markierte tags löschen]]></de>
+            <de><![CDATA[Markierte Tags löschen]]></de>
             <en><![CDATA[Delete marked tags]]></en>
         </locale>
         <locale name="panel.manager.image.tag">
             <de><![CDATA[Tag-Bild]]></de>
             <en><![CDATA[Image for the tag]]></en>
         </locale>
-
-        <!-- panel add window -->
-        <locale name="panel.add.window.title">
-            <de><![CDATA[Tag hinzufügen]]></de>
-            <en><![CDATA[Add a tag]]></en>
+        <locale name="panel.manager.title">
+            <de><![CDATA[Tagverwaltung]]></de>
+            <en><![CDATA[Tag Management]]></en>
         </locale>
-        <locale name="panel.manager.tag.title">
-            <de><![CDATA[Tag Titel]]></de>
-            <en><![CDATA[Tag title]]></en>
-        </locale>
-
-        <!-- panel delete window -->
-        <locale name="panel.delete.window.title">
-            <de><![CDATA[Tag löschen]]></de>
-            <en><![CDATA[Delete a tag]]></en>
-        </locale>
-        <locale name="panel.delete.window.message">
-            <de><![CDATA[
-                <p>Möchten Sie folgende tags wirklich löschen?</p>
-                <p><strong>[tags]</strong></p>
-            ]]></de>
-            <en><![CDATA[
-                <p>Do you really want to delete the following tags?</p>
-                <p><strong>[tags]</strong></p>
-            ]]></en>
-        </locale>
-
-        <!-- control add window -->
-        <locale name="control.tagcontainer.window.add.title">
-            <de><![CDATA[Tag hinzufügen]]></de>
-            <en><![CDATA[Add a tag]]></en>
-        </locale>
-        <locale name="control.tagcontainer.window.message.no.tags">
-            <de><![CDATA[Keine Tags gefunden.]]></de>
-            <en><![CDATA[No tags found.]]></en>
-        </locale>
-
-        <locale name="control.tagcontainer.sheet.btn.cancel">
-            <de><![CDATA[Abbrechen]]></de>
-            <en><![CDATA[Cancel]]></en>
-        </locale>
-        <locale name="control.tagcontainer.sheet.btn.add">
-            <de><![CDATA[Hinzufügen]]></de>
-            <en><![CDATA[Add]]></en>
-        </locale>
-
-
-        <!-- site -->
-        <locale name="site.table.title">
-            <de><![CDATA[Der Seite zugewiesene tags]]></de>
-            <en><![CDATA[The page assigned tags]]></en>
-        </locale>
-        <locale name="site.table.description">
-            <de><![CDATA[Per klick auf das Tagfeld können Sie der Seite tags hinzufügen.]]></de>
-            <en><![CDATA[By clicking on the tag field, you can add tags to the site.]]></en>
-        </locale>
-
-        <locale name="site.window.add.tag.title">
-            <de><![CDATA[Tag existiert nicht]]></de>
-            <en><![CDATA[Tag doesn't exist]]></en>
-        </locale>
-        <locale name="site.window.add.tag.title" html="true">
-            <de><![CDATA[<p>Der tag <strong>[tag]</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?]]></de>
-            <en><![CDATA[<p>The tag <strong>[tag]</strong> doesn't exist. Would you add the tag?]]></en>
+        <locale name="control.tags.search.category.no.tags">
+            <de><![CDATA[Keine Tags enthalten]]></de>
+            <en><![CDATA[No tags contained]]></en>
         </locale>
     </groups>
+    <groups name="quiqqer/tags" datatype="php,js">
 
-    <!-- permissions -->
-    <groups name="locale/permissions" datatype="php,js">
-        <locale name="tags._title">
-            <de><![CDATA[Tag Rechte]]></de>
-            <en><![CDATA[Tag permissions]]></en>
+        <locale name="permission.tags._header">
+            <de><![CDATA[Tagverwaltung]]></de>
+            <en><![CDATA[Tag Management]]></en>
         </locale>
-
-        <locale name="tags.create._title">
-            <de><![CDATA[Darf tags erstellen und bearbeiten.]]></de>
-            <en><![CDATA[Can create and edit tags.]]></en>
+        <locale name="permission.tags.siteLimit">
+            <de><![CDATA[Anzahl der Tags, die der Benutzer einer Seite hinzufügen darf.]]></de>
+            <en><![CDATA[Number of tags that can be added to a page by the user]]></en>
         </locale>
-        <locale name="tags.delete._title">
-            <de><![CDATA[Darf tags löschen.]]></de>
+        <locale name="permission.tags.delete">
+            <de><![CDATA[Darf Tags löschen.]]></de>
             <en><![CDATA[Can delete tags.]]></en>
         </locale>
-        <locale name="tags.siteLimit._title">
-            <de><![CDATA[Anzahl der tags die der Benutzer einer Seite hinzufügen darf.]]></de>
-            <en><![CDATA[Anzahl der tags die der Benutzer einer Seite hinzufügen darf.]]></en>
+        <locale name="permission.tags.create">
+            <de><![CDATA[Darf Tags erstellen und bearbeiten.]]></de>
+            <en><![CDATA[Can create and edit tags.]]></en>
+        </locale>
+
+        <locale name="exception.limit.tags.to.site">
+            <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Seite wurde nicht gespeichert.]]></de>
+            <en><![CDATA[You can add only [limit] tags the page. The page wasn't saved.]]></en>
+        </locale>
+        <locale name="exception.tag.title.exist">
+            <de><![CDATA[Ein tag mit dem selben Titel existiert bereits]]></de>
+            <en><![CDATA[A tag with the same title already exist.]]></en>
+        </locale>
+        <locale name="exception.tag.already.exists">
+            <de><![CDATA[Der tag existiert bereits]]></de>
+            <en><![CDATA[The tag already exist.]]></en>
+        </locale>
+        <locale name="exception.tag.not.found">
+            <de><![CDATA[Der tag wurde leider nicht gefunden]]></de>
+            <en><![CDATA[The tag was not found]]></en>
+        </locale>
+        <locale name="tag.control.placeholder.limit">
+            <de><![CDATA[Weitere Tags können nicht hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht]]></de>
+            <en><![CDATA[More tags can not be added. The maximum number of tags has been reached.]]></en>
+        </locale>
+        <locale name="tag.control.placeholder.addtag">
+            <de><![CDATA[Geben Sie bitte hier Ihren gewünschten Tag ein ...]]></de>
+            <en><![CDATA[Please enter here your wanted tag ...]]></en>
+        </locale>
+        <locale name="tag">
+            <de><![CDATA[Tag]]></de>
+            <en><![CDATA[Tag]]></en>
+        </locale>
+        <locale name="message.no.tags.found">
+            <de><![CDATA[Keine Tags gefunden]]></de>
+            <en><![CDATA[No tags found]]></en>
+        </locale>
+        <locale name="message.no.permission.create.tags">
+            <de><![CDATA[Sie haben nicht die nötigen Rechte, neue Tags anzulegen. Bitte verwenden Sie nur die vorhandenen Tags]]></de>
+            <en><![CDATA[You dont have the necessary rights to create new tags. Please only use existing tags.]]></en>
+        </locale>
+        <locale name="package.description">
+            <de><![CDATA[<p>Tags lassen sich mit "Schlagwörtern" oder „Stichwörtern“ übersetzen.
+                Sie beschreiben einen Inhalt mit einzelnen Wörtern.</p>
+                <p>Für einen Artikel über eine Reise nach Rom wären demnach zum Beispiel
+                die Tags „Italien“, „Reise“ oder „Rom“ passend.</p>
+                <p>Sie können Tags in Ihrem Projekt nutzen, um Ihren Lesern mehr Übersicht zu bieten oder ihnen eine einfache Suche nach Inhalten zu ermöglichen.</p>]]></de>
+            <en><![CDATA[]]></en>
+        </locale>
+        <locale name="package.title">
+            <de><![CDATA[QUIQQER - Tags]]></de>
+            <en><![CDATA[QUIQQER - TAG's]]></en>
         </locale>
     </groups>
+    <groups name="quiqqer/tags" datatype="php">
+        <locale name="site.panel.category.title">
+            <de><![CDATA[Tags]]></de>
+            <en><![CDATA[Tags]]></en>
+        </locale>
+        <locale name="admin.types.tag.search.desc">
+            <de><![CDATA[QUIQQER : Tagsuche]]></de>
+            <en><![CDATA[QUIQQER : Tag Search]]></en>
+        </locale>
+        <locale name="admin.types.tag.search">
+            <de><![CDATA[QUIQQER : Tagsuche]]></de>
+            <en><![CDATA[QUIQQER : Tag Search]]></en>
+        </locale>
+        <locale name="admin.types.tag.desc">
+            <de><![CDATA[QUIQQER : Einzelner tag]]></de>
+            <en><![CDATA[QUIQQER : Single tag]]></en>
+        </locale>
+        <locale name="admin.types.tag.listing">
+            <de><![CDATA[QUIQQER : Tagliste]]></de>
+            <en><![CDATA[QUIQQER : Tag listing]]></en>
+        </locale>
+        <locale name="admin.types.tag.listing.desc">
+            <de><![CDATA[]]></de>
+            <en><![CDATA[]]></en>
+        </locale>
+        <locale name="admin.types.tag">
+            <de><![CDATA[QUIQQER : Einzelner Tag]]></de>
+            <en><![CDATA[QUIQQER : Single tag]]></en>
+        </locale>
+        <locale name="menu.tags">
+            <de><![CDATA[Tags]]></de>
+            <en><![CDATA[tags]]></en>
+        </locale>
+        <locale name="menu.tags.manager">
+            <de><![CDATA[Tagverwaltung]]></de>
+            <en><![CDATA[Tag Management]]></en>
+        </locale>
 
+        <locale name="watch.add.tags">
+            <de><![CDATA[Tag [tag] hinzugefügt]]></de>
+            <en><![CDATA[Add tag [tag]]]></en>
+        </locale>
+        <locale name="watch.delete.tags">
+            <de><![CDATA[Tag [tag] gelöscht]]></de>
+            <en><![CDATA[Delete tag [tag]]]></en>
+        </locale>
+        <locale name="watch.edit.tags">
+            <de><![CDATA[Tag [tag] editiert]]></de>
+            <en><![CDATA[Edit tag [tag]]]></en>
+        </locale>
+
+        <locale name="template.tag.header.results">
+            <de><![CDATA[Seiten die den Tag [tag] enthalten]]></de>
+            <en><![CDATA[Pages that contain the tag [tag]]]></en>
+        </locale>
+
+        <locale name="message.types.tag.no.entries.found">
+            <de><![CDATA[Die Tagsuche ergab keine Treffer.]]></de>
+            <en><![CDATA[The Tag search found no results.]]></en>
+        </locale>
+
+        <locale name="message.site.has.no.tags">
+            <de><![CDATA[Die Seite besitzt keine Tags.]]></de>
+            <en><![CDATA[The Page has no tags.]]></en>
+        </locale>
+
+        <locale name="message.site.result">
+            <de><![CDATA[Ergebnisse [start] - [end] von [count] Beiträgen]]></de>
+            <en><![CDATA[Result [start] - [end] of [count] entries]]></en>
+        </locale>
+
+        <locale name="template.tags.search.header.selectTags">
+            <de><![CDATA[Ausgewählte Themen:]]></de>
+            <en><![CDATA[Selected tags:]]></en>
+        </locale>
+        <locale name="template.tags.search.header.availableTags">
+            <de><![CDATA[Vorhandene Themen:]]></de>
+            <en><![CDATA[Existing tags:]]></en>
+        </locale>
+        <locale name="template.tags.search.header.result">
+            <de><![CDATA[Ergebnis:]]></de>
+            <en><![CDATA[Results:]]></en>
+        </locale>
+        <locale name="template.tags.search.result.tagList">
+            <de><![CDATA[Zugewiesene Tags:]]></de>
+            <en><![CDATA[Assigned tags:]]></en>
+        </locale>
+
+        <locale name="quiqqer.tag.search.settings.title">
+            <de><![CDATA[Tag Suche Einstellungen]]></de>
+            <en><![CDATA[Tag search settings]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.limit">
+            <de><![CDATA[Anzahl Ergebnisse je Seite]]></de>
+            <en><![CDATA[Number of results per page]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.showPagination">
+            <de><![CDATA[Blätterfunktion anzeigen]]></de>
+            <en><![CDATA[Show Pagination]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.showAvailableTags">
+            <de><![CDATA[Vorhandene tags anzeigen]]></de>
+            <en><![CDATA[Show available tags]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.showSelectedTags">
+            <de><![CDATA[Ausgewählte tags anzeigen]]></de>
+            <en><![CDATA[Show selected tags]]></en>
+        </locale>
+        <locale name="quiqqer.tag.settings.defaultTags">
+            <de><![CDATA[Vorausgewählte tags]]></de>
+            <en><![CDATA[Preselected tags]]></en>
+        </locale>
+
+    </groups>
 </locales>

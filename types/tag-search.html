@@ -1,4 +1,5 @@
 
+{if $Template->getAttribute('content-header')}
 <section class="content-header grid-100 mobile-grid-100">
     <header>
         <h1>{$Site->getAttribute('title')}</h1>
@@ -10,15 +11,170 @@
     </div>
     {/if}
 </section>
+{/if}
 
-{if $Site->getAttribute('content')}
+{if $Template->getAttribute('content-body') && $Site->getAttribute('content')}
 <section class="content-body grid-100 mobile-grid-100">
     {$Site->getAttribute('content')}
 </section>
 {/if}
 
-<section class="content-template grid-100 mobile-grid-100">
+<section class="content-template grid-100 mobile-grid-100 quiqqer-tags-search"
+        data-qui="package/quiqqer/tags/bin/TagSearch"
+        >
 
-    <!-- Such Ergebnisse -->
+    {if isset($smarty.get.tags) && $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')}
+    <h2>
+        {locale group="quiqqer/tags" var="template.tags.search.header.selectTags"}
+    </h2>
+
+    <div class="quiqqer-tags-search-pool">
+        {foreach $requestTags as $requestTag}
+            {assign var=params value=$requestTagNames}
+            {assign var=key value=array_search($requestTag.tag, $requestTagNames)}
+            {array_unset var=$params key=$key assign=params}
+            {array_sort var=$params assign=params}
+            {assign var=params value=implode('-', $params)}
+
+            <a href="{url site=$Site _get__tags=$params}" class="qui-tags-tag">
+                <span class="fa fa-minus"></span>
+                {$requestTag.title}
+            </a>
+        {/foreach}
+    </div>
+    {/if}
+
+
+    {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')}
+    <div class="quiqqer-tags-search-available">
+
+        <h3>
+            {locale group="quiqqer/tags" var="template.tags.search.header.availableTags"}
+        </h3>
+
+        <div class="quiqqer-tags-search-available-container">
+            <ul class="quiqqer-tags-search-menu grid-parent grid-100" style="display: none">
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site}" data-tag="^[abc]">A B C</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[def]}" data-tag="^[def]">D E F</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[ghi]}" data-tag="^[ghi]">G H I</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[jkl]}" data-tag="^[jkl]">J K L</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[mno]}" data-tag="^[mno]">M N O</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[pqr]}" data-tag="^[pqr]">P Q R</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[stu]}" data-tag="^[stu]">S T U</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[vz]}" data-tag="^[v-z]">V - Z</a>
+                </li>
+                <li class="quiqqer-tags-search-menu-entry">
+                    <a href="{url site=$Site params=[123]}" data-tag="^[^a-zA-Z]">#-0-9</a>
+                </li>
+            </ul>
+
+            <div class="quiqqer-tags-search-available-pool">
+
+                <noscript>
+                {foreach $tags as $tag}
+                    {if !in_array($tag.tag, $requestTagNames)}
+                        {assign var=params value=$requestTagNames}
+                        {$params[] = $tag.tag}
+                        {array_sort var=$params assign=params}
+                        {assign var=params value=implode('-', $params)}
+
+                    <a href="{url site=$Site _get__tags=$params}" class="qui-tags-tag animated">
+                        {$tag.title}
+                    </a>
+                    {/if}
+                {/foreach}
+                </noscript>
+            </div>
+
+        </div>
+    </div>
+    {/if}
+
+    {if isset($smarty.get.tags)}
+    <div class="quiqqer-tags-search-results">
+        {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')
+            && $Site->getAttribute('quiqqer.tag.settings.showSelectedTags')
+        }
+            {if $count}
+            <h3>
+                {locale group="quiqqer/tags" var="template.tags.search.header.result"}
+            </h3>
+
+            <p>
+                {if $max < $count}
+                    {locale group="quiqqer/tags" var="message.site.result" start=$start+1 end=$max count=$count}
+                {else}
+                    {locale group="quiqqer/tags" var="message.site.result" start=$start+1 end=$count count=$count}
+                {/if}
+            </p>
+            {/if}
+        {/if}
+
+        {if $count}
+            {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
+                {$Pagination->create()}
+            {/if}
+
+            <div>
+                {foreach $result as $Entry}
+                <article class="quiqqer-tags-search-result-entry">
+                    <a href="{url site=$Entry}" class="quiqqer-tags-search-result-entry-link">
+                        {if $Entry->getAttribute('image')}
+                            {image src=$Entry->getAttribute('image')
+                                   class="quiqqer-tags-search-entry-image"
+                                   width="100"
+                            }
+                        {else}
+                        <div class="quiqqer-tags-search-result-entry-imgplaceholder"
+                             style="background: url('{$Project->getMedia()->getPlaceholder()}') center center no-repeat"
+                                ></div>
+                        {/if}
+
+                        <div class="quiqqer-tags-search-result-entry-text">
+                            <h4>{$Entry->getAttribute('title')}</h4>
+                            <p>{$Entry->getAttribute('short')}</p>
+                        </div>
+                    </a>
+
+                    <div class="quiqqer-tags-search-result-entry-taglist">
+                        <span class="quiqqer-tags-search-result-entry-tagText">
+                            {locale group="quiqqer/tags" var="template.tags.search.result.tagList"}
+                        </span>
+                        {control assign=Control control="\QUI\Tags\Controls\SiteTags" Site=$Entry}
+                        {$Control->getBody()}
+                    </div>
+                </article>
+                {foreachelse}
+                    <div class="content-message-attention">
+                        {locale group="quiqqer/tags" var="message.types.tag.no.entries.found"}
+                    </div>
+                {/foreach}
+            </div>
+
+            {if $Site->getAttribute('quiqqer.tag.settings.showPagination')}
+                {$Pagination->create()}
+            {/if}
+        {else}
+        <div class="content-message-attention">
+            {locale group="quiqqer/tags" var="message.types.tag.no.entries.found"}
+        </div>
+        {/if}
+    </div>
+    {/if}
 
 </section>

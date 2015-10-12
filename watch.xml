@@ -1,0 +1,5 @@
+<quiqqer>
+    <watch ajax="package_quiqqer_tags_ajax_tag_add" exec="\QUI\Tags\Watch::watchText" />
+    <watch ajax="package_quiqqer_tags_ajax_tag_delete" exec="\QUI\Tags\Watch::watchText" />
+    <watch ajax="package_quiqqer_tags_ajax_tag_edit" exec="\QUI\Tags\Watch::watchText" />
+</quiqqer>

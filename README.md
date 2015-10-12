@@ -1,6 +1,5 @@
-# QUIQQER Tag Package
-
-_German_
+QUIQQER Tags (Themen)
+========
 
 Das Tag Packet erweitert QUIQQER um eine tag Verwaltung.
 
@@ -9,40 +8,50 @@ an die besuchten Seiten frei wählbare Begriffe zu hängen (die Texte werden qua
 Dadurch lassen sich Artikel in unterschiedliche Themenbereiche gleichzeitig einsortieren;
 die starre Hierarchisierung der herkömmlichen Navigations-Rubriken wird somit ergänzt oder ersetzt.
 
+Packetname:
 
-# Installation
-
-```json
-{
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://update.quiqqer.com/"
-        }
-    ]
-}
-
-```
-Package Name:
-
-+ quiqqer/tags
+    quiqqer/tags
 
 
-## Installation dev
+Features
+--------
 
-```json
-{
-    "type": "vcs",
-    "url": "git@dev.quiqqer.com:quiqqer/package-tags.git"
-}
-```
-
-```bash
-php var/composer/composer.phar --working-dir="var/composer/" require "quiqqer/tags:dev-master"
-```
+- Tag Verwaltung
+- Zuweisen einzelner Tags zu Seiten
+- Tag-Suche
+- Taglisten
+- Tag Cache (Cron)
 
 
-## Entwickler
+Installation
+------------
+
+Der Paketname ist: quiqqer/tags
+
+
+Mitwirken
+----------
+
+- Issue Tracker: https://dev.quiqqer.com/quiqqer/package-tags/issues
+- Source Code: https://dev.quiqqer.com/quiqqer/package-tags/tree/master
+
+
+Support
+-------
+
+Falls Sie ein Fehler gefunden haben oder Verbesserungen wünschen,
+Dann können Sie gerne an support@pcsg.de eine E-Mail schreiben.
+
+
+License
+-------
+
+- GPL-2.0+
+
+
+Entwickler
+--------
+
 
 Eine Seite besitzt folgende neue Attribute:
 
@@ -77,4 +86,3 @@ Zeigt eine Tag Liste an. Tags anzeigen von A-Z
 **Attribute**
 + {\QUI\Projects\Project\Site} Site - [optional] Die Liste selbst, wenn keine Liste angegeben wird, wird eine Seite types:tag-listing gesucht
 + {\QUI\Projects\Project} Project - [optional] Project der Liste, wenn kein Projekt angegeben wird, wird das Projekt der Site verwendet
-

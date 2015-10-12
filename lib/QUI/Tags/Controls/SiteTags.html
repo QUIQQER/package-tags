@@ -5,7 +5,6 @@
     {control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
 
 *}
-{assign var=tags value=$Site->getAttribute('quiqqer.tags.tagList')}
 <div class="qui-tags-sitetags">
 
     {if $this->getAttribute('hideTitle') !== true}
@@ -15,16 +14,17 @@
     </span>
     {/if}
 
-    {foreach from=$tags item=tag}
-    {assign var=tagData value=$TagManager->get( $tag )}
-    <a href="{url site=$SearchSite searchstring=$tag}"
+    {foreach $tagList as $tag}
+    <a href="{url site=$SearchSite _get__tags=$tag.tag}"
        class="qui-tags-tag"
     >
-        {if $tagData.title}
-            {$tagData.title}
+        {if $tag.title}
+            {$tag.title}
         {else}
-            {$tag}
+            {$tag.tag}
         {/if}
     </a>
+    {foreachelse}
+        {t}quiqqer/tags message.site.has.no.tags{/t}
     {/foreach}
 </div>

@@ -1,42 +1,3 @@
-@CHARSET "UTF-8";
-
-.quiqqer-tags-menu {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.quiqqer-tags-menu li {
-    list-style-type: none;
-    padding: 0;
-}
-
-.quiqqer-tags-menu-entry {
-    background: #dedede;
-    clear: none !important;
-    float: left;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 11.1% !important;
-}
-
-.quiqqer-tags-menu-entry a {
-    color: #212527;
-    float: left;
-    font-size: 18px;
-    line-height: 60px;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-        -moz-outline: none;
-    width: 100%;
-}
-
-.quiqqer-tags-menu .active a,
-.quiqqer-tags-menu-entry a:hover {
-    background: #333333 !important;
-    color: #fff !important;
-}
 
 /** result list
  * =============================================== */
@@ -48,9 +9,11 @@
 }
 
 .quiqqer-tags-list-result-entry {
+    border-bottom: 1px solid #D0D3D3;
+    float: left;
     list-style-type: none;
     margin: 0;
-    border-bottom: 1px solid #D0D3D3;
+    width: 100%;
 }
 
 .quiqqer-tags-list-result-entry a {
@@ -60,6 +23,7 @@
     width: 100%;
 }
 
+.quiqqer-tags-list-result-entry h2,
 .quiqqer-tags-list-result-entry h3 {
     margin: 0 0 10px;
     padding: 0;

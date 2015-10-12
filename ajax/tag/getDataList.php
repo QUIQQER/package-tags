@@ -5,34 +5,36 @@
  *
  * @param String $projectName - name of the project
  * @param String $projectLang - lang of the project
- * @param String $string - matching string
+ * @param String $string      - matching string
  *
  * @return string
  */
-function package_quiqqer_tags_ajax_tag_getDataList($projectName, $projectLang, $string)
-{
-    $Tags = new \QUI\Tags\Manager(
-        \QUI::getProject( $projectName, $projectLang )
+function package_quiqqer_tags_ajax_tag_getDataList(
+    $projectName,
+    $projectLang,
+    $string
+) {
+    $Tags = new QUI\Tags\Manager(
+        QUI::getProject($projectName, $projectLang)
     );
 
     $result = '';
-    $list   = $Tags->searchTags( $string );
+    $list = $Tags->searchTags($string);
 
-    foreach ( $list as $tag )
-    {
+    foreach ($list as $tag) {
         $value = $tag['tag'];
 
-        if ( !empty( $tag['title'] ) ) {
+        if (!empty($tag['title'])) {
             $value = $tag['title'];
         }
 
-        $result .= '<option value="'. $value .'" data-tag="'. $tag['tag'] .'">';
+        $result .= '<option value="'.$value.'" data-tag="'.$tag['tag'].'">';
     }
 
     return $result;
 }
 
-\QUI::$Ajax->register(
+QUI::$Ajax->register(
     'package_quiqqer_tags_ajax_tag_getDataList',
-    array( 'projectName', 'projectLang', 'string' )
+    array('projectName', 'projectLang', 'string')
 );

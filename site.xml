@@ -4,24 +4,65 @@
     <types>
 
         <type type="types/tag-listing" icon="icon-tag">
-            <locale group="quiqqer/tags" var="admin.types.tag.listing" />
+            <locale group="quiqqer/tags" var="admin.types.tag.listing"/>
             <desc>
-                <locale group="quiqqer/tags" var="admin.types.tag.listing.desc" />
-            </desc>
-        </type>
-
-        <type type="types/tag">
-            <locale group="quiqqer/tags" var="admin.types.tag" />
-            <desc>
-                <locale group="quiqqer/tags" var="admin.types.tag.desc" />
+                <locale group="quiqqer/tags" var="admin.types.tag.listing.desc"/>
             </desc>
         </type>
 
         <type type="types/tag-search">
-            <locale group="quiqqer/tags" var="admin.types.tag.search" />
+            <locale group="quiqqer/tags" var="admin.types.tag.search"/>
             <desc>
-                <locale group="quiqqer/tags" var="admin.types.tag.search.desc" />
+                <locale group="quiqqer/tags" var="admin.types.tag.search.desc"/>
             </desc>
+
+            <!-- extra attributes -->
+            <attributes>
+                <attribute default="10">quiqqer.tag.settings.limit</attribute>
+                <attribute default="1">quiqqer.tag.settings.showPagination</attribute>
+                <attribute default="1">quiqqer.tag.settings.showAvailableTags</attribute>
+                <attribute default="1">quiqqer.tag.settings.showSelectedTags</attribute>
+                <attribute>quiqqer.tag.settings.defaultTags</attribute>
+            </attributes>
+
+            <settings>
+                <category name="tags-tag-search-settings">
+                    <settings>
+                        <title>
+                            <locale group="quiqqer/tags" var="quiqqer.tag.search.settings.title"/>
+                        </title>
+
+                        <input conf="quiqqer.tag.settings.limit" type="number">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.limit"/>
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.showPagination" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showPagination"/>
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.showAvailableTags" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showAvailableTags"/>
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.showSelectedTags" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showSelectedTags"/>
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.defaultTags"
+                               data-qui="package/quiqqer/tags/bin/TagContainer"
+                               data-loaddatalist="1"
+                                >
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.defaultTags"/>
+                            </text>
+                        </input>
+                    </settings>
+                </category>
+            </settings>
         </type>
 
     </types>
@@ -31,7 +72,7 @@
     <window>
         <tab name="quiqqer.tags">
             <text>
-                <locale group="quiqqer/tags" var="site.panel.category.title" />
+                <locale group="quiqqer/tags" var="site.panel.category.title"/>
             </text>
             <image>icon-tags</image>
             <onload require="package/quiqqer/tags/bin/Site"></onload>

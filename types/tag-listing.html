@@ -1,21 +1,80 @@
-<section class="content-header grid-100 mobile-grid-100">
-    <header>
-        <h1>{$Site->getAttribute('title')}</h1>
-    </header>
+{if isset($tag) && $tag}
+    {**
 
-    {if $Site->getAttribute('short')}
-    <div class="content-short">
-        {$Site->getAttribute('short')}
-    </div>
+        TAG
+
+    **}
+    <section class="content-header grid-100 mobile-grid-100">
+        {if $tag.title}
+            <h1>{$tag.title}</h1>
+        {else}
+            <h1>{$tag.tag}</h1>
+        {/if}
+
+        <div class="content-short qui-tags-tag-content">
+            {$tag.desc}
+        </div>
+    </section>
+
+    <section class="content-template grid-100 mobile-grid-100">
+        {if isset($sites) && count($sites)}
+        <header>
+            <h2>{t tag=$tag.title}quiqqer/tags template.tag.header.results{/t}</h2>
+        </header>
+
+            {foreach from=$sites item=Entry}
+            <article class="quiqqer-tags-list-result-entry">
+                <a href="{url site=$Entry}">
+
+                    {if $Entry->getAttribute('image')}
+                        {image src=$Entry->getAttribute('image')
+                            class="qui-tags-tag-list-entry-image"
+                            width="100"
+                        }
+                    {else}
+                    <div class="quiqqer-tags-list-result-entry-imgplaceholder"
+                         style="background: url('{$Project->getMedia()->getPlaceholder()}') center center no-repeat"
+                            ></div>
+                    {/if}
+
+                    <div class="quiqqer-tags-list-result-entry-text">
+                        <h3>{$Entry->getAttribute('title')}</h3>
+                        <p>{$Entry->getAttribute('short')}</p>
+                    </div>
+                </a>
+            </article>
+            {/foreach}
+
+        {else}
+            {t}quiqqer/tags message.types.tag.no.entries.found{/t}
+        {/if}
+    </section>
+
+{else}
+    {**
+
+        TAG LIST
+
+    **}
+    <section class="content-header grid-100 mobile-grid-100">
+        <header>
+            <h1>{$Site->getAttribute('title')}</h1>
+        </header>
+
+        {if $Site->getAttribute('short')}
+        <div class="content-short">
+            {$Site->getAttribute('short')}
+        </div>
+        {/if}
+    </section>
+
+    {if $Site->getAttribute('content')}
+    <section class="content-body grid-100 mobile-grid-100">
+        {$Site->getAttribute('content')}
+    </section>
     {/if}
-</section>
 
-{if $Site->getAttribute('content')}
-<section class="content-body grid-100 mobile-grid-100">
-    {$Site->getAttribute('content')}
-</section>
+    <section class="content-template grid-100 mobile-grid-100">
+        {control control="\QUI\Tags\Controls\TagList"}
+    </section>
 {/if}
-
-<section class="content-template grid-100 mobile-grid-100">
-    {control control="\QUI\Tags\Controls\TagList"}
-</section>

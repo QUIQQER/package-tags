@@ -21,7 +21,7 @@
     margin: 0 5px 5px 0;
     padding: 3px 10px;
     position: relative;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .qui-tags-tag:hover {

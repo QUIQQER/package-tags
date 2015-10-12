@@ -23,21 +23,21 @@ class Cron
      */
     static function createCache($params, $CronManager)
     {
-        if ( !isset( $params['project'] ) ) {
+        if (!isset($params['project'])) {
             return;
         }
 
-        if ( !isset( $params['lang'] ) ) {
+        if (!isset($params['lang'])) {
             return;
         }
 
 
-        $Project  = QUI::getProject( $params['project'], $params['lang'] );
+        $Project  = QUI::getProject($params['project'], $params['lang']);
         $DataBase = QUI::getDataBase();
 
-        $tableSites     = QUI::getDBProjectTableName( 'tags_sites', $Project );
-        $tableSiteCache = QUI::getDBProjectTableName( 'tags_siteCache', $Project );
-        $tableCache     = QUI::getDBProjectTableName( 'tags_cache', $Project );
+        $tableSites     = QUI::getDBProjectTableName('tags_sites', $Project);
+        $tableSiteCache = QUI::getDBProjectTableName('tags_siteCache', $Project);
+        $tableCache     = QUI::getDBProjectTableName('tags_cache', $Project);
 
 
         // get ids
@@ -48,30 +48,28 @@ class Cron
         $list = array();
         $_tmp = array();
 
-        foreach ( $result as $entry )
-        {
-            $tags = explode( ',', $entry['tags'] );
+        foreach ($result as $entry) {
+            $tags = explode(',', $entry['tags']);
 
-            foreach ( $tags as $tag )
-            {
-                if ( empty( $tag ) ) {
+            foreach ($tags as $tag) {
+                if (empty($tag)) {
                     continue;
                 }
 
-                $tag = Manager::clearTagName( $tag );
-                $tag = mb_strtolower( $tag );
+                $tag = Manager::clearTagName($tag);
+                $tag = mb_strtolower($tag);
 
                 $entry['id'] = (int)$entry['id'];
 
-                $_str = $entry['id'] .'_'. $tag;
+                $_str = $entry['id'] . '_' . $tag;
 
 
-                if ( isset( $_tmp[ $_str ] ) ) {
+                if (isset($_tmp[$_str])) {
                     continue;
                 }
 
-                $list[ $tag ][] = $entry['id'];
-                $_tmp[ $_str ]  = 1; // temp zum prüfen ob schon drinnen, in_array ist zulangsam
+                $list[$tag][] = $entry['id'];
+                $_tmp[$_str]  = 1; // temp zum prüfen ob schon drinnen, in_array ist zulangsam
             }
         }
 
@@ -79,45 +77,57 @@ class Cron
         /**
          * Tag cache
          */
-        $DataBase->Table()->truncate( $tableCache );
+        $DataBase->Table()->truncate($tableCache);
 
-        foreach ( $list as $tag => $entry )
-        {
-            $DataBase->insert( $tableCache, array(
+        foreach ($list as $tag => $entry) {
+
+            $siteIds = array();
+
+            // only active sites
+            foreach ($entry as $siteId) {
+                try {
+                    $Site = $Project->get((int)$siteId);
+
+                    if ($Site->getAttribute('active')) {
+                        $siteIds[] = $siteId;
+                    }
+                } catch (QUI\Exception $Exception) {
+                    continue;
+                }
+            }
+
+            $DataBase->insert($tableCache, array(
                 'tag'   => $tag,
-                'sites' => ','. implode(',', $entry) .','
+                'sites' => ',' . implode(',', $siteIds) . ','
             ));
         }
-
 
         /**
          * Sites cache
          */
-        $DataBase->Table()->truncate( $tableSiteCache );
+        $DataBase->Table()->truncate($tableSiteCache);
 
-        foreach ( $result as $entry )
-        {
-            if ( empty( $entry['tags'] ) ) {
+        foreach ($result as $entry) {
+            if (empty($entry['tags'])) {
                 continue;
             }
 
-            if ( $entry['tags'] == ',,' ) {
+            if ($entry['tags'] == ',,') {
                 continue;
             }
 
-            if ( $entry['tags'] == ',' ) {
+            if ($entry['tags'] == ',') {
                 continue;
             }
 
-            try
-            {
-                $Site = $Project->get( (int)$entry['id'] );
+            try {
+                $Site = $Project->get((int)$entry['id']);
 
-                if ( !$Site->getAttribute( 'active' ) ) {
+                if (!$Site->getAttribute('active')) {
                     continue;
                 }
 
-                if ( $Site->getAttribute( 'deleted' ) ) {
+                if ($Site->getAttribute('deleted')) {
                     continue;
                 }
 
@@ -134,8 +144,7 @@ class Cron
                     )
                 );
 
-            } catch ( QUI\Exception $Exception )
-            {
+            } catch (QUI\Exception $Exception) {
 
             }
         }

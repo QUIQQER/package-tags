@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
     <item parent="/extras/"
-          name="tags"
-          icon="icon-tags"
-    >
-        <locale group="quiqqer/tags" var="menu.tags" />
-    </item>
-
-    <item parent="/extras/tags/"
           name="manager"
           require="package/quiqqer/tags/bin/Manager"
           icon="icon-tags"
