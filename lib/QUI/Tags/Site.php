@@ -33,7 +33,7 @@ class Site
             $Site->getAttribute('active')
         ) {
             $url = $Site->getLocation();
-            $url = str_replace(QUI\Rewrite::URL_DEFAULT_SUFFIX, '', $url);
+            $url = str_replace(QUI\Rewrite::getDefaultSuffix(), '', $url);
 
             QUI::getRewrite()->registerPath($url . '/*', $Site);
         }
