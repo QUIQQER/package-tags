@@ -577,7 +577,9 @@ class Manager
             return;
         }
 
-        $siteId = (int)$siteId;
+        $siteId   = (int)$siteId;
+        $Site     = new Edit($this->_Project, $siteId);
+        $isActive = $Site->getAttribute('active');
 
         $list  = array();
         $table = QUI::getDBProjectTableName(
@@ -613,6 +615,12 @@ class Manager
             array('tags' => ',' . implode(',', $list) . ','),
             array('id' => $siteId)
         );
+
+        // if side is not active, dont generate the cache
+        if ($isActive === false) {
+            $this->removeSiteFromTags($siteId, $list);
+            return;
+        }
 
 
         $tableTagCache = QUI::getDBProjectTableName('tags_cache', $this->_Project);

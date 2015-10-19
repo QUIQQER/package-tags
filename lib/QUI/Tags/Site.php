@@ -71,12 +71,7 @@ class Site
             );
         }
 
-
-        if ($Site->getAttribute('active')) {
-            $Manager->setSiteTags($Site->getId(), $list);
-        } else {
-            $Manager->removeSiteFromTags($Site->getId(), $list);
-        }
+        $Manager->setSiteTags($Site->getId(), $list);
     }
 
     /**
