@@ -7,7 +7,7 @@ $siteUrl = $Site->getLocation();
 
 // tag
 if ($siteUrl != $_REQUEST['_url']
-    && $siteUrl == $url['dirname'] . \QUI\Rewrite::URL_DEFAULT_SUFFIX
+    && $siteUrl == $url['dirname'] . \QUI\Rewrite::getDefaultSuffix()
 ) {
 
     try {
