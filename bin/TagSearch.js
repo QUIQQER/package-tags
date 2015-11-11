@@ -226,12 +226,17 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 height  : null,
                 opacity : 0,
                 padding : null,
-                position: 'absolute',
                 margin  : null
             });
 
+            // muss seperat, da absolute die width verändert
+            Available.setStyles({
+                position: 'absolute',
+                width   : Available.getSize().x
+            });
+
             var size = Available.getScrollSize();
-            
+
             Available.setStyles({
                 height  : 0,
                 margin  : 0,
@@ -241,7 +246,7 @@ define('package/quiqqer/tags/bin/TagSearch', [
             });
 
             moofx(Available).animate({
-                height : size.y,
+                height : size.y + 20,
                 opacity: 1,
                 margin : '20px 0',
                 padding: '40px 0'
