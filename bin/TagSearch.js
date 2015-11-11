@@ -7,6 +7,7 @@
  *
  * @require qui/QUI
  * @require qui/controls/Control
+ * @require qui/controls/buttons/Button
  * @require Locale
  */
 define('package/quiqqer/tags/bin/TagSearch', [
@@ -211,9 +212,14 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 '.quiqqer-tags-search-results'
             );
 
+            var Pool = this.getElm().getElement(
+                '.quiqqer-tags-search-available-pool'
+            );
+
             moofx(Results).animate({
                 marginTop: 0
             });
+
 
             Available.setStyles({
                 display: 'none',
@@ -225,7 +231,7 @@ define('package/quiqqer/tags/bin/TagSearch', [
             var size = Available.getComputedSize();
 
             Available.setStyles({
-                display: null,
+                display: 'inline',
                 height : 0,
                 margin : 0,
                 opacity: 0,
@@ -233,7 +239,7 @@ define('package/quiqqer/tags/bin/TagSearch', [
             });
 
             moofx(Available).animate({
-                height : size.height,
+                height : size.totalHeight || size.height,
                 opacity: 1,
                 margin : '20px 0',
                 padding: '40px 0'
@@ -241,15 +247,16 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 duration: 250,
                 callback: function () {
 
-                    Available.setStyles({
-                        height: null
+                    Pool.setStyles({
+                        height  : null,
+                        position: 'relative'
                     });
                 }
             });
         },
 
         /**
-         *
+         * Hide available tag listing
          */
         hideAvailableTags: function () {
             var Available = this.getElm().getElement(
