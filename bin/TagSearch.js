@@ -222,20 +222,22 @@ define('package/quiqqer/tags/bin/TagSearch', [
 
 
             Available.setStyles({
-                display: 'none',
-                height : null,
-                padding: null,
-                margin : null
+                display : 'inline',
+                height  : null,
+                opacity : 0,
+                padding : null,
+                position: 'absolute',
+                margin  : null
             });
 
             var size = Available.getScrollSize();
-
+            
             Available.setStyles({
-                display: 'inline',
-                height : 0,
-                margin : 0,
-                opacity: 0,
-                padding: 0
+                height  : 0,
+                margin  : 0,
+                opacity : 0,
+                padding : 0,
+                position: null
             });
 
             moofx(Available).animate({
