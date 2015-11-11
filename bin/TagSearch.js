@@ -228,7 +228,7 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 margin : null
             });
 
-            var size = Available.getComputedSize();
+            var size = Available.getScrollSize();
 
             Available.setStyles({
                 display: 'inline',
@@ -239,7 +239,7 @@ define('package/quiqqer/tags/bin/TagSearch', [
             });
 
             moofx(Available).animate({
-                height : size.totalHeight || size.height,
+                height : size.y,
                 opacity: 1,
                 margin : '20px 0',
                 padding: '40px 0'
