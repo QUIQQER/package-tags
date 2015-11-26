@@ -9,9 +9,7 @@ $siteUrl = $Site->getLocation();
 if ($siteUrl != $_REQUEST['_url']
     && $siteUrl == $url['dirname'] . \QUI\Rewrite::getDefaultSuffix()
 ) {
-
     try {
-
         $title   = $Site->getAttribute('title');
         $Manager = new \QUI\Tags\Manager($Project);
         $tag     = $Manager->get($url['filename']);
@@ -41,10 +39,8 @@ if ($siteUrl != $_REQUEST['_url']
         ));
 
     } catch (QUI\Exception $Exception) {
-
         QUI::getRewrite()->showErrorHeader(404);
 
         $Site->setAttribute('canonical', $Site->getUrlRewrited());
     }
-
 }
