@@ -45,6 +45,9 @@
 }
 
 .quiqqer-tags-list-result-entry-imgplaceholder {
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
     float: left;
     height: 100px;
     margin: 0 10px 0 0;
