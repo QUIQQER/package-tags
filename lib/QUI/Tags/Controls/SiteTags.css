@@ -29,3 +29,9 @@
     background-color: #FFFFFF;
     text-decoration: none !important;
 }
+
+.qui-tags-sitetags-content {
+    float: left;
+    margin-bottom: 20px;
+    width: 100%;
+}

@@ -18,14 +18,14 @@ class TagList extends QUI\Control
     /**
      * constructor
      *
-     * @param Array $attributes
+     * @param array $attributes
      */
     public function __construct($attributes = array())
     {
         parent::__construct($attributes);
 
         $this->addCSSFile(
-            dirname(__FILE__).'/TagList.css'
+            dirname(__FILE__) . '/TagList.css'
         );
 
         $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
@@ -38,9 +38,9 @@ class TagList extends QUI\Control
      */
     public function getBody()
     {
-        $Engine = QUI::getTemplateManager()->getEngine();
+        $Engine  = QUI::getTemplateManager()->getEngine();
         $Project = $this->_getProject();
-        $Site = $this->_getSite();
+        $Site    = $this->_getSite();
         $Rewrite = QUI::getRewrite();
 
         $urlParams = $Rewrite->getUrlParamsList();
@@ -78,7 +78,7 @@ class TagList extends QUI\Control
         ));
 
 
-        return $Engine->fetch(dirname(__FILE__).'/TagList.html');
+        return $Engine->fetch(dirname(__FILE__) . '/TagList.html');
     }
 
     /**
@@ -86,45 +86,38 @@ class TagList extends QUI\Control
      *
      * @param String $sektor - tag sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
      *
-     * @return Array
+     * @return array
      */
     public function getList($sektor)
     {
         switch ($sektor) {
             default:
             case 'abc':
-                $where
-                    = 'title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%"';
+                $where = 'title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%"';
                 break;
 
             case 'def':
-                $where
-                    = 'title LIKE "d%" OR title LIKE "e%" OR title LIKE "f%"';
+                $where = 'title LIKE "d%" OR title LIKE "e%" OR title LIKE "f%"';
                 break;
 
             case 'ghi':
-                $where
-                    = 'title LIKE "g%" OR title LIKE "h%" OR title LIKE "i%"';
+                $where = 'title LIKE "g%" OR title LIKE "h%" OR title LIKE "i%"';
                 break;
 
             case 'jkl':
-                $where
-                    = 'title LIKE "j%" OR title LIKE "k%" OR title LIKE "l%"';
+                $where = 'title LIKE "j%" OR title LIKE "k%" OR title LIKE "l%"';
                 break;
 
             case 'mno':
-                $where
-                    = 'title LIKE "m%" OR title LIKE "n%" OR title LIKE "o%"';
+                $where = 'title LIKE "m%" OR title LIKE "n%" OR title LIKE "o%"';
                 break;
 
             case 'pqr':
-                $where
-                    = 'title LIKE "p%" OR title LIKE "q%" OR title LIKE "r%"';
+                $where = 'title LIKE "p%" OR title LIKE "q%" OR title LIKE "r%"';
                 break;
 
             case 'stu':
-                $where
-                    = 'title LIKE "s%" OR title LIKE "t%" OR title LIKE "u%"';
+                $where = 'title LIKE "s%" OR title LIKE "t%" OR title LIKE "u%"';
                 break;
 
             case '123':
@@ -132,8 +125,7 @@ class TagList extends QUI\Control
                 break;
 
             case 'vz':
-                $where
-                    = 'title LIKE "v%" OR
+                $where = 'title LIKE "v%" OR
                         title LIKE "w%" OR
                         title LIKE "x%" OR
                         title LIKE "y%" OR
@@ -142,8 +134,7 @@ class TagList extends QUI\Control
         }
 
         return \QUI::getDataBase()->fetch(array(
-            'from' => \QUI::getDBProjectTableName('tags',
-                $this->_getProject()),
+            'from'  => \QUI::getDBProjectTableName('tags', $this->_getProject()),
             'order' => 'title',
             'where' => $where
         ));

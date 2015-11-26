@@ -14,6 +14,12 @@
     </span>
     {/if}
 
+    {if $this->getAttribute('content')}
+    <div class="qui-tags-sitetags-content">
+        {$this->getAttribute('content')}
+    </div>
+    {/if}
+
     {foreach $tagList as $tag}
     <a href="{url site=$SearchSite _get__tags=$tag.tag}"
        class="qui-tags-tag"

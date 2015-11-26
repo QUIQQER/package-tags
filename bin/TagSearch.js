@@ -7,6 +7,7 @@
  *
  * @require qui/QUI
  * @require qui/controls/Control
+ * @require qui/controls/buttons/Button
  * @require Locale
  */
 define('package/quiqqer/tags/bin/TagSearch', [
@@ -211,29 +212,41 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 '.quiqqer-tags-search-results'
             );
 
+            var Pool = this.getElm().getElement(
+                '.quiqqer-tags-search-available-pool'
+            );
+
             moofx(Results).animate({
                 marginTop: 0
             });
 
+
             Available.setStyles({
-                display: 'none',
-                height : null,
-                padding: null,
-                margin : null
+                display : 'inline',
+                height  : null,
+                opacity : 0,
+                padding : null,
+                margin  : null
             });
 
-            var size = Available.getComputedSize();
+            // muss seperat, da absolute die width verändert
+            Available.setStyles({
+                position: 'absolute',
+                width   : Available.getSize().x
+            });
+
+            var size = Available.getScrollSize();
 
             Available.setStyles({
-                display: null,
-                height : 0,
-                margin : 0,
-                opacity: 0,
-                padding: 0
+                height  : 0,
+                margin  : 0,
+                opacity : 0,
+                padding : 0,
+                position: null
             });
 
             moofx(Available).animate({
-                height : size.height,
+                height : size.y + 20,
                 opacity: 1,
                 margin : '20px 0',
                 padding: '40px 0'
@@ -241,15 +254,16 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 duration: 250,
                 callback: function () {
 
-                    Available.setStyles({
-                        height: null
+                    Pool.setStyles({
+                        height  : null,
+                        position: 'relative'
                     });
                 }
             });
         },
 
         /**
-         *
+         * Hide available tag listing
          */
         hideAvailableTags: function () {
             var Available = this.getElm().getElement(

@@ -11,7 +11,7 @@ $types = explode(';', $types);
  * Pagination
  */
 
-$Pagination = new \QUI\Controls\Sheets(array(
+$Pagination = new QUI\Bricks\Controls\Pagination(array(
     'Site'      => $Site,
     'showLimit' => true,
     'limit'     => $Site->getAttribute('quiqqer.tag.settings.limit')
@@ -29,7 +29,7 @@ $Pagination->setGetParams(
  * Tag Manager
  */
 
-$Manager = new \QUI\Tags\Manager($Project);
+$Manager = new QUI\Tags\Manager($Project);
 
 try {
 
@@ -110,6 +110,10 @@ if (!empty($requestTags)) {
     }
 
     $sqlParams = $Pagination->getSQLParams();
+
+    if (!isset($sqlParams['limit'])) {
+        $sqlParams['limit'] = 10;
+    }
 
     $result = $Manager->getSitesFromTags($tags, array(
         'limit' => $sqlParams['limit']
