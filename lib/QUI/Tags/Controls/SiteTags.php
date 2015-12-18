@@ -18,7 +18,7 @@ class SiteTags extends QUI\Control
     /**
      * constructor
      *
-     * @param Array $attributes
+     * @param array $attributes
      */
     public function __construct($attributes = array())
     {
@@ -27,7 +27,7 @@ class SiteTags extends QUI\Control
             'hideTitle' => true
         ));
 
-        parent::setAttributes($attributes);
+        parent::__construct($attributes);
 
         $this->addCSSFile(
             dirname(__FILE__).'/SiteTags.css'
@@ -58,11 +58,9 @@ class SiteTags extends QUI\Control
 
         if (is_array($tags)) {
             foreach ($tags as $tag) {
-
                 try {
                     $tagList[] = $Tags->get($tag);
                 } catch (QUI\Exception $Exception) {
-
                 }
             }
         }
@@ -86,7 +84,6 @@ class SiteTags extends QUI\Control
             $result = QUI\Cache\Manager::get($cacheName);
 
         } catch (QUI\Exception $Exception) {
-
             $result = $Project->getSites(array(
                 'where' => array(
                     'type' => 'quiqqer/tags:types/tag-search'
