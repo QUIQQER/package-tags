@@ -18,10 +18,10 @@ class Cron
     /**
      * creates the tag cache
      *
-     * @param Array $params
+     * @param array $params
      * @param QUI\Cron\Manager $CronManager
      */
-    static function createCache($params, $CronManager)
+    public static function createCache($params, $CronManager)
     {
         if (!isset($params['project'])) {
             return;
@@ -80,7 +80,6 @@ class Cron
         $DataBase->Table()->truncate($tableCache);
 
         foreach ($list as $tag => $entry) {
-
             $siteIds = array();
 
             // only active sites
@@ -97,7 +96,7 @@ class Cron
             }
 
             $DataBase->insert($tableCache, array(
-                'tag'   => $tag,
+                'tag' => $tag,
                 'sites' => ',' . implode(',', $siteIds) . ','
             ));
         }
@@ -135,17 +134,16 @@ class Cron
                 $DataBase->insert(
                     $tableSiteCache,
                     array(
-                        'id'     => $Site->getId(),
-                        'name'   => $Site->getAttribute('name'),
-                        'title'  => $Site->getAttribute('title'),
-                        'tags'   => $entry['tags'],
+                        'id' => $Site->getId(),
+                        'name' => $Site->getAttribute('name'),
+                        'title' => $Site->getAttribute('title'),
+                        'tags' => $entry['tags'],
                         'c_date' => $Site->getAttribute('c_date'),
                         'e_date' => $Site->getAttribute('e_date')
                     )
                 );
 
             } catch (QUI\Exception $Exception) {
-
             }
         }
     }

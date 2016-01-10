@@ -1,7 +1,7 @@
 QUIQQER Tags (Themen)
 ========
 
-Das Tag Packet erweitert QUIQQER um eine tag Verwaltung.
+Das Tag Paket erweitert QUIQQER um eine tag Verwaltung.
 
 Tagging eine Technik, die es jedem Besucher erlaubt,
 an die besuchten Seiten frei wählbare Begriffe zu hängen (die Texte werden quasi etikettiert).
