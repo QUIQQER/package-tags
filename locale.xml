@@ -88,8 +88,8 @@
         </locale>
 
         <locale name="exception.limit.tags.to.site">
-            <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Seite wurde nicht gespeichert.]]></de>
-            <en><![CDATA[You can add only [limit] tags the page. The page wasn't saved.]]></en>
+            <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Tags wurden nicht hinzugefügt.]]></de>
+            <en><![CDATA[You can add only [limit] tags to the page. The tags wasn't saved.]]></en>
         </locale>
         <locale name="exception.tag.title.exist">
             <de><![CDATA[Ein tag mit dem selben Titel existiert bereits]]></de>

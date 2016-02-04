@@ -30,7 +30,7 @@ class SiteTags extends QUI\Control
         parent::__construct($attributes);
 
         $this->addCSSFile(
-            dirname(__FILE__).'/SiteTags.css'
+            dirname(__FILE__) . '/SiteTags.css'
         );
 
         $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
@@ -45,15 +45,15 @@ class SiteTags extends QUI\Control
     {
         /* @var $Site QUI\Projects\Site */
         $Engine = QUI::getTemplateManager()->getEngine();
-        $Site = $this->getAttribute('Site');
+        $Site   = $this->getAttribute('Site');
 
         if (!$Site) {
             $Site = QUI::getRewrite()->getSite();
         }
 
         $Project = $Site->getProject();
-        $Tags = new QUI\Tags\Manager($Project);
-        $tags = $Site->getAttribute('quiqqer.tags.tagList');
+        $Tags    = new QUI\Tags\Manager($Project);
+        $tags    = $Site->getAttribute('quiqqer.tags.tagList');
         $tagList = array();
 
         if (is_array($tags)) {
@@ -67,18 +67,18 @@ class SiteTags extends QUI\Control
 
 
         $Engine->assign(array(
-            'Project'    => $Project,
-            'Site'       => $Site,
-            'Locale'     => QUI::getLocale(),
+            'Project' => $Project,
+            'Site' => $Site,
+            'Locale' => QUI::getLocale(),
             'TagManager' => new QUI\Tags\Manager($Project),
-            'this'       => $this,
-            'tagList'    => $tagList
+            'this' => $this,
+            'tagList' => $tagList
         ));
 
 
         // Sucheseite finden
-        $cacheName = $Project->getName().'/'.$Project->getLang()
-            .'/sites/quiqqer/tags:types/tag-search';
+        $cacheName = $Project->getName() . '/' . $Project->getLang()
+                     . '/sites/quiqqer/tags:types/tag-search';
 
         try {
             $result = QUI\Cache\Manager::get($cacheName);
@@ -103,6 +103,6 @@ class SiteTags extends QUI\Control
             'SearchSite' => $SearchSite
         ));
 
-        return $Engine->fetch(dirname(__FILE__).'/SiteTags.html');
+        return $Engine->fetch(dirname(__FILE__) . '/SiteTags.html');
     }
 }

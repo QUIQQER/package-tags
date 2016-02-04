@@ -59,16 +59,19 @@ class Site
             }
         }
 
-        $User  = \QUI::getUserBySession();
+        $User  = QUI::getUserBySession();
         $limit = $User->getPermission('tags.siteLimit', 'max_integer');
 
         if ($limit < count($list)) {
-            throw new QUI\Exception(
-                QUI::getLocale()
-                    ->get('quiqqer/tags', 'exception.limit.tags.to.site', array(
-                        'limit' => $limit
-                    ))
+            $message = QUI::getLocale()->get(
+                'quiqqer/tags',
+                'exception.limit.tags.to.site',
+                array('limit' => $limit)
             );
+
+            QUI::getMessagesHandler()->addAttention($message);
+
+            throw new QUI\Exception($message);
         }
 
         $Manager->setSiteTags($Site->getId(), $list);
