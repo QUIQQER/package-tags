@@ -22,7 +22,7 @@ class Site
      *
      * @throws \QUI\Exception
      */
-    static function onSave($Site)
+    public static function onSave($Site)
     {
         $Project = $Site->getProject();
         $tags    = $Site->getAttribute('quiqqer.tags.tagList');
@@ -81,7 +81,7 @@ class Site
      *
      * @throws \QUI\Exception
      */
-    static function onSiteDeactivate($Site)
+    public static function onSiteDeactivate($Site)
     {
         self::onSave($Site);
     }
@@ -91,7 +91,7 @@ class Site
      *
      * @param \QUI\Projects\Site $Site
      */
-    static function onLoad($Site)
+    public static function onLoad($Site)
     {
         $Manager = new QUI\Tags\Manager($Site->getProject());
         $tags    = $Manager->getSiteTags($Site->getId());
@@ -104,7 +104,7 @@ class Site
      *
      * @param \QUI\Projects\Site $Site
      */
-    static function onDestroy($Site)
+    public static function onDestroy($Site)
     {
         $Manager = new QUI\Tags\Manager($Site->getProject());
         $Manager->deleteSiteTags($Site->getId());

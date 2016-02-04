@@ -23,17 +23,15 @@ class Watch
      *
      * @return string
      */
-    static function watchText($call, $params, $result)
+    public static function watchText($call, $params, $result)
     {
         switch ($call) {
-
             case 'package_quiqqer_tags_ajax_tag_add':
                 return QUI::getLocale()->get('quiqqer/tags', 'watch.add.tags', array(
                     'tag' => $params['tag']
                 ));
 
             case 'package_quiqqer_tags_ajax_tag_delete':
-
                 $tags = json_decode($params['tags'], true);
 
                 return QUI::getLocale()->get('quiqqer/tags', 'watch.delete.tags', array(

@@ -39,16 +39,16 @@ class TagList extends QUI\Control
     public function getBody()
     {
         $Engine  = QUI::getTemplateManager()->getEngine();
-        $Project = $this->_getProject();
-        $Site    = $this->_getSite();
+        $Project = $this->getProject();
+        $Site    = $this->getSite();
         $Rewrite = QUI::getRewrite();
 
         $urlParams = $Rewrite->getUrlParamsList();
 
         $Engine->assign(array(
             'Project' => $Project,
-            'Site'    => $Site,
-            'Locale'  => QUI::getLocale()
+            'Site' => $Site,
+            'Locale' => QUI::getLocale()
         ));
 
 
@@ -133,8 +133,8 @@ class TagList extends QUI\Control
                 break;
         }
 
-        return \QUI::getDataBase()->fetch(array(
-            'from'  => \QUI::getDBProjectTableName('tags', $this->_getProject()),
+        return QUI::getDataBase()->fetch(array(
+            'from' => QUI::getDBProjectTableName('tags', $this->getProject()),
             'order' => 'title',
             'where' => $where
         ));
@@ -143,36 +143,22 @@ class TagList extends QUI\Control
     /**
      * Return the Project
      *
-     * @return QUI\Projects\Project
-     */
-    protected function _getProject()
-    {
-        if ($this->getAttribute('Project')) {
-            return $this->getAttribute('Project');
-        }
-
-        return QUI::getProjectManager()->get();
-    }
-
-    /**
-     * Return the Project
-     *
      * @return QUI\Projects\Site
      */
-    protected function _getSite()
+    protected function getSite()
     {
         if ($this->getAttribute('Site')) {
             return $this->getAttribute('Site');
         }
 
         // Sucheseite finden
-        $result = $this->_getProject()->getSites(array(
+        $result = $this->getProject()->getSites(array(
             'where' => array(
                 'type' => 'quiqqer/tags:types/tag-listing'
             ),
             'limit' => 1
         ));
 
-        return $this->_getProject()->get($result[0]['id']);
+        return $this->getProject()->get($result[0]['id']);
     }
 }

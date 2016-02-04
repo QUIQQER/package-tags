@@ -120,7 +120,8 @@
             <en><![CDATA[No tags found]]></en>
         </locale>
         <locale name="message.no.permission.create.tags">
-            <de><![CDATA[Sie haben nicht die nötigen Rechte, neue Tags anzulegen. Bitte verwenden Sie nur die vorhandenen Tags]]></de>
+            <de>
+                <![CDATA[Sie haben nicht die nötigen Rechte, neue Tags anzulegen. Bitte verwenden Sie nur die vorhandenen Tags]]></de>
             <en><![CDATA[You dont have the necessary rights to create new tags. Please only use existing tags.]]></en>
         </locale>
         <locale name="package.description">
