@@ -12,9 +12,9 @@ $types = explode(';', $types);
  */
 
 $Pagination = new QUI\Bricks\Controls\Pagination(array(
-    'Site'      => $Site,
+    'Site' => $Site,
     'showLimit' => true,
-    'limit'     => $Site->getAttribute('quiqqer.tag.settings.limit')
+    'limit' => $Site->getAttribute('quiqqer.tag.settings.limit')
 ));
 
 $Pagination->loadFromRequest();
@@ -32,7 +32,6 @@ $Pagination->setGetParams(
 $Manager = new QUI\Tags\Manager($Project);
 
 try {
-
     $tags = $Manager->getList();
 
     $Engine->assign(array(
@@ -40,7 +39,6 @@ try {
     ));
 
 } catch (QUI\Exception $Exception) {
-
 }
 
 
@@ -57,13 +55,11 @@ if (isset($_GET['tags']) && !empty($_GET['tags'])) {
 }
 
 foreach ($requestList as $requestTag) {
-
     try {
         $requestTags[]     = $Manager->get($requestTag);
         $requestTagNames[] = $requestTag;
 
     } catch (QUI\Exception $Exception) {
-
     }
 }
 
@@ -71,25 +67,22 @@ foreach ($requestList as $requestTag) {
 if (empty($requestTagNames)
     && $Site->getAttribute('quiqqer.tag.settings.defaultTags')
 ) {
-
     $defaultTags = $Site->getAttribute('quiqqer.tag.settings.defaultTags');
     $defaultTags = explode(',', $defaultTags);
 
     foreach ($defaultTags as $tag) {
-
         try {
             $requestTags[]     = $Manager->get($tag);
             $requestTagNames[] = $tag;
 
         } catch (QUI\Exception $Exception) {
-
         }
     }
 
 }
 
 $Engine->assign(array(
-    'requestTags'     => $requestTags,
+    'requestTags' => $requestTags,
     'requestTagNames' => $requestTagNames
 ));
 
@@ -102,7 +95,6 @@ $sheets = 0;
 $result = array();
 
 if (!empty($requestTags)) {
-
     $tags = array();
 
     foreach ($requestTags as $requestTag) {
@@ -134,11 +126,11 @@ $Pagination->setAttributes(array(
 $Pagination->setGetParams('tags', implode('-', $requestTagNames));
 
 $Engine->assign(array(
-    'result'     => $result,
-    'Manager'    => $Manager,
-    'count'      => $count,
-    'sheets'     => $Pagination->getAttribute('sheets'),
-    'start'      => $Pagination->getStart(),
-    'max'        => $Pagination->getAttribute('limit'),
+    'result' => $result,
+    'Manager' => $Manager,
+    'count' => $count,
+    'sheets' => $Pagination->getAttribute('sheets'),
+    'start' => $Pagination->getStart(),
+    'max' => $Pagination->getAttribute('limit'),
     'Pagination' => $Pagination
 ));
