@@ -2,7 +2,7 @@
     "name" : "quiqqer/tags",
     "type" : "quiqqer-module",
     "description" : "Tags for QUIQQER.",
-    "version" : "dev-dev",
+    "version" : "0.10.0",
     "license" : "GPL-2.0+",
 
     "authors" : [{
