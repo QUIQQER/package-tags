@@ -64,16 +64,16 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 Results.setStyle('marginTop', 20);
 
                 new QUIButton({
-                    icon  : 'icon-plus fa fa-plus',
+                    icon  : 'fa fa-plus',
                     events: {
                         onClick: function (Btn) {
 
-                            if (Btn.getAttribute('icon') != 'icon-plus fa fa-plus') {
+                            if (Btn.getAttribute('icon') != 'fa fa-plus') {
                                 self.hideAvailableTags();
-                                Btn.setAttribute('icon', 'icon-plus fa fa-plus');
+                                Btn.setAttribute('icon', 'fa fa-plus');
                             } else {
                                 self.showAvailableTags();
-                                Btn.setAttribute('icon', 'icon-minus fa fa-minus');
+                                Btn.setAttribute('icon', 'fa fa-minus');
                             }
                         }
                     }

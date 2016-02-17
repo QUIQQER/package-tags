@@ -3,7 +3,7 @@
     <item parent="/extras/"
           name="manager"
           require="package/quiqqer/tags/bin/Manager"
-          icon="icon-tags"
+          icon="fa fa-tags"
     >
         <locale group="quiqqer/tags" var="menu.tags.manager" />
     </item>

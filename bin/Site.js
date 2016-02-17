@@ -198,7 +198,7 @@ define('package/quiqqer/tags/bin/Site', [
 
             new QUIConfirm({
                 title : Locale.get( lg, 'site.window.add.tag.title' ),
-                icon  : 'icon-tag',
+                icon  : 'fa fa-tag',
                 maxWidth  : 500,
                 maxHeight : 300,
                 events :

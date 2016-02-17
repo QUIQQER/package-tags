@@ -3,7 +3,7 @@
 
     <types>
 
-        <type type="types/tag-listing" icon="icon-tag">
+        <type type="types/tag-listing" icon="fa fa-tag">
             <locale group="quiqqer/tags" var="admin.types.tag.listing"/>
             <desc>
                 <locale group="quiqqer/tags" var="admin.types.tag.listing.desc"/>
@@ -74,7 +74,7 @@
             <text>
                 <locale group="quiqqer/tags" var="site.panel.category.title"/>
             </text>
-            <image>icon-tags</image>
+            <image>fa fa-tags</image>
             <onload require="package/quiqqer/tags/bin/Site"></onload>
         </tab>
     </window>

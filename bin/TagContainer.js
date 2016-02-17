@@ -623,7 +623,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
 
                                     new Element('div', {
                                         'class'   : 'qui-tags-tag',
-                                        html      : '<span class="icon-tag fa fa-tag"></span>' +
+                                        html      : '<span class="fa fa-tag"></span>' +
                                                     '<span class="qui-tags-tag-value">' + title + '</span>',
                                         'data-tag': tag
                                     }).inject(TagContainer);
@@ -681,13 +681,13 @@ define('package/quiqqer/tags/bin/TagContainer', [
 
             var Tag = new Element('div', {
                 'class'   : 'qui-tags-tag',
-                html      : '<span class="icon-tag fa fa-tag"></span>' +
+                html      : '<span class="fa fa-tag"></span>' +
                             '<span class="qui-tags-tag-value">' + title + '</span>' +
-                            '<span class="icon-remove fa fa-remove"></span>',
+                            '<span class="fa fa-remove"></span>',
                 'data-tag': tag
             });
 
-            Tag.getElement('.icon-remove').addEvent('click', function (event) {
+            Tag.getElement('.fa-remove').addEvent('click', function (event) {
                 event.stop();
 
                 self.removeTag(this.getParent().get('data-tag'));

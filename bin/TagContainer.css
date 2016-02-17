@@ -47,19 +47,19 @@
     text-decoration: none;
 }
 
-.qui-tags-tag .icon-tag {
+.qui-tags-tag .fa-tag {
     color: #99a2a6;
     margin-right: 10px;
 }
 
-.qui-tags-tag .icon-remove {
+.qui-tags-tag .fa-remove {
     color: #99a2a6;
     cursor: pointer;
     margin-left: 5px;
     padding: 0 5px;
 }
 
-.qui-tags-tag .icon-remove:hover {
+.qui-tags-tag .fa-remove:hover {
     background: #666666;
     color: #FFFFFF;
 }
