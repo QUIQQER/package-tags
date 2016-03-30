@@ -134,17 +134,18 @@
                 {foreach $result as $Entry}
                 <article class="quiqqer-tags-search-result-entry">
                     <a href="{url site=$Entry}" class="quiqqer-tags-search-result-entry-link">
-                        {if $Entry->getAttribute('image')}
-                            {image src=$Entry->getAttribute('image')
-                                   class="quiqqer-tags-search-entry-image"
-                                   width="100"
-                            }
-                        {else}
-                        <div class="quiqqer-tags-search-result-entry-imgplaceholder"
-                             style="background: url('{$Project->getMedia()->getPlaceholder()}') center center no-repeat"
-                                ></div>
-                        {/if}
+                        <div class="quiqqer-tags-search-entry-image-div">
+                            {if $Entry->getAttribute('image_site')}
+                                {image src=$Entry->getAttribute('image_site')
+                                       class="quiqqer-tags-search-entry-image-img"
+                                       width="100"
+                                }
+                            {else}
+                            <img src="{$Project->getMedia()->getPlaceholder()}" class="quiqqer-tags-search-entry-image-img"
+                                 alt="Quiqqer Placeholder" width="100"/>
 
+                            {/if}
+                        </div>
                         <div class="quiqqer-tags-search-result-entry-text">
                             <h4>{$Entry->getAttribute('title')}</h4>
                             <p>{$Entry->getAttribute('short')}</p>
