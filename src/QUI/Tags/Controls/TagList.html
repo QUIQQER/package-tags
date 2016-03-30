@@ -33,15 +33,13 @@
     {foreach from=$tags item=tag}
     <article class="grid-100 mobile-grid-100 grid-parent quiqqer-tags-list-result-entry">
         <a href="{url site=$Site params=$tag.tag paramAsSites=true}">
-            {if $tag.image}
             <div class="quiqqer-tags-list-result-image-div">
+            {if $tag.image}
                 {image src=$tag.image class="quiqqer-tags-list-result-image-img" width="100"}
             {else}
                 <img src="{$Project->getMedia()->getPlaceholder()}" class="quiqqer-tags-list-result-image-img" width="100"/>
-            </div>
             {/if}
-
-            {*image image=$Project->getMedia()->getPlaceholder()*}
+            </div>
 
             <div class="quiqqer-tags-list-result-entry-text">
                 <h3>
