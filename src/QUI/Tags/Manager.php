@@ -9,7 +9,7 @@ namespace QUI\Tags;
 use QUI;
 use QUI\Utils\Security\Orthos;
 use QUI\Projects\Site\Edit;
-use QUI\Rights\Permission;
+use QUI\Permissions\Permission;
 use QUI\Utils\Grid;
 
 /**
