@@ -61,13 +61,22 @@ class Manager
         $title = Orthos::removeHTML($tag);
         $title = Orthos::clearFormRequest($title);
 
-        $tag = $this->clearTagName($tag);
-
-        if ($this->existsTag($tag)) {
+        if ($this->existsTagTitle($title)) {
             throw new QUI\Exception(
                 QUI::getLocale()
                     ->get('quiqqer/tags', 'exception.tag.already.exists')
             );
+        }
+
+        $tag = $this->clearTagName($tag);
+
+        // if tag name exists -> append (increasing) number
+        if ($this->existsTag($tag)) {
+            $i = 1;
+
+            do {
+                $tag .= (string)$i++;
+            } while ($this->existsTag($tag));
         }
 
         QUI::getDataBase()->insert(
@@ -216,7 +225,6 @@ class Manager
             }
         }
 
-
         QUI::getDataBase()->update(
             QUI::getDBProjectTableName('tags', $this->Project),
             $tagParams,
@@ -237,6 +245,25 @@ class Manager
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => array(
                 'tag' => $tag
+            ),
+            'limit' => 1
+        ));
+
+        return isset($result[0]);
+    }
+
+    /**
+     * Checks if a tag with a specific title exists
+     *
+     * @param string $title
+     * @return boolean
+     */
+    public function existsTagTitle($title)
+    {
+        $result = QUI::getDataBase()->fetch(array(
+            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'where' => array(
+                'title' => $title
             ),
             'limit' => 1
         ));
@@ -278,6 +305,44 @@ class Manager
         $this->tags[$tag] = $result[0];
 
         return $result[0];
+    }
+
+    /**
+     * Return a tag by title
+     *
+     * @param string $title
+     * @return array - tag attributes
+     * @throws QUI\Exception
+     */
+    public function getByTitle($title)
+    {
+        $result = QUI::getDataBase()->fetch(array(
+            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'where' => array(
+                'title' => $title
+            ),
+            'limit' => 1
+        ));
+
+        if (!isset($result[0])) {
+            throw new QUI\Exception(
+                QUI::getLocale()->get(
+                    'quiqqer/tags',
+                    'exception.tag.not.found'
+                ),
+                404
+            );
+        }
+
+        $tagData = $result[0];
+
+        if (isset($this->tags[$tagData['tag']])) {
+            return $this->tags[$tagData['tag']];
+        }
+
+        $this->tags[$tagData['tag']] = $tagData;
+
+        return $tagData;
     }
 
     /**
