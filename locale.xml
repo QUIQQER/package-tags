@@ -67,6 +67,32 @@
             <de><![CDATA[Keine Tags enthalten]]></de>
             <en><![CDATA[No tags contained]]></en>
         </locale>
+        <locale name="panel.showtagsites.title">
+            <de><![CDATA[Liste der Seiten, die dem Tag "[tag]" zugeordnet sind]]></de>
+            <en><![CDATA[List of sites associated with the tag "[tag]"]]></en>
+        </locale>
+
+        <!-- Control: TagSites -->
+        <locale name="controls.sites.table.btns.opensitepanel">
+            <de><![CDATA[Seiten-Panel öffnen]]></de>
+            <en><![CDATA[Open site panel]]></en>
+        </locale>
+        <locale name="controls.sites.table.column.id">
+            <de><![CDATA[Seiten-ID]]></de>
+            <en><![CDATA[Site ID]]></en>
+        </locale>
+        <locale name="controls.sites.table.column.title">
+            <de><![CDATA[Seiten-Titel]]></de>
+            <en><![CDATA[Site title]]></en>
+        </locale>
+        <locale name="controls.sites.table.column.url">
+            <de><![CDATA[URL]]></de>
+            <en><![CDATA[URL]]></en>
+        </locale>
+        <locale name="panel.manager.button.showtagsites">
+            <de><![CDATA[Verknüpfte Seiten anzeigen]]></de>
+            <en><![CDATA[Show associated sites]]></en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
 

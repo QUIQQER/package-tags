@@ -10,7 +10,7 @@
  * @require qui/controls/buttons/Select
  * @require controls/grid/Grid
  * @require Ajax
- * @require Locale
+ * @require QUILocale
  * @require Projects
  * @require css!package/quiqqer/tags/bin/Manager.css
  */
@@ -21,6 +21,7 @@ define('package/quiqqer/tags/bin/Manager', [
     'qui/controls/windows/Confirm',
     'qui/controls/buttons/Select',
     'controls/grid/Grid',
+    'package/quiqqer/tags/bin/TagSites',
     'utils/Controls',
     'Ajax',
     'Locale',
@@ -28,7 +29,7 @@ define('package/quiqqer/tags/bin/Manager', [
 
     'css!package/quiqqer/tags/bin/Manager.css'
 
-], function (QUI, QUIPanel, QUIConfirm, QUISelect, Grid, ControlUtils, Ajax, Locale, Projects) {
+], function (QUI, QUIPanel, QUIConfirm, QUISelect, Grid, TagSites, ControlUtils, Ajax, QUILocale, Projects) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -48,7 +49,7 @@ define('package/quiqqer/tags/bin/Manager', [
         ],
 
         options: {
-            title: Locale.get(lg, 'panel.manager.title')
+            title: QUILocale.get(lg, 'panel.manager.title')
         },
 
         initialize: function (options) {
@@ -90,7 +91,7 @@ define('package/quiqqer/tags/bin/Manager', [
             this.addButton({type: 'seperator'});
 
             this.addButton({
-                text     : Locale.get(lg, 'panel.manager.button.add.tag'),
+                text     : QUILocale.get(lg, 'panel.manager.button.add.tag'),
                 textimage: 'fa fa-plus',
                 name     : 'add-tag',
                 disabled : true,
@@ -102,13 +103,29 @@ define('package/quiqqer/tags/bin/Manager', [
             });
 
             this.addButton({
-                text     : Locale.get(lg, 'panel.manager.button.delete.tag'),
+                text     : QUILocale.get(lg, 'panel.manager.button.delete.tag'),
                 textimage: 'fa fa-trash',
                 name     : 'delete-tag',
                 disabled : true,
                 events   : {
                     onClick: function () {
                         self.openDeleteWindow();
+                    }
+                }
+            });
+
+            this.addButton({type: 'seperator'});
+
+            this.addButton({
+                text     : QUILocale.get(lg, 'panel.manager.button.showtagsites'),
+                textimage: 'fa fa-file-text-o',
+                name     : 'showtagsites',
+                disabled : true,
+                events   : {
+                    onClick: function () {
+                        self.showTagSites(
+                            self.$Grid.getSelectedData()[0].tag
+                        );
                     }
                 }
             });
@@ -120,18 +137,18 @@ define('package/quiqqer/tags/bin/Manager', [
 
             this.$Grid = new Grid(Container, {
                 columnModel      : [{
-                    header   : Locale.get(lg, 'tag'),
+                    header   : QUILocale.get(lg, 'tag'),
                     dataIndex: 'tag',
                     dataType : 'string',
                     width    : 200,
                     hidden   : true
                 }, {
-                    header   : Locale.get(lg, 'panel.manager.tag.title'),
+                    header   : QUILocale.get(lg, 'panel.manager.tag.title'),
                     dataIndex: 'title',
                     dataType : 'string',
                     width    : 200
                 }, {
-                    header   : Locale.get('quiqqer/system', 'description'),
+                    header   : QUILocale.get('quiqqer/system', 'description'),
                     dataIndex: 'desc',
                     dataType : 'string',
                     width    : 300
@@ -149,6 +166,7 @@ define('package/quiqqer/tags/bin/Manager', [
 
                 onClick: function () {
                     self.getButtons('delete-tag').enable();
+                    self.getButtons('showtagsites').enable();
                 },
 
                 onRefresh: function () {
@@ -249,6 +267,7 @@ define('package/quiqqer/tags/bin/Manager', [
             Ajax.get('package_quiqqer_tags_ajax_project_getList', function (result) {
                 self.$Grid.setData(result);
                 self.getButtons('delete-tag').disable();
+                self.getButtons('showtagsites').disable();
                 self.Loader.hide();
             }, {
                 'package'  : 'quiqqer/tags',
@@ -362,19 +381,19 @@ define('package/quiqqer/tags/bin/Manager', [
             var self = this;
 
             new QUIConfirm({
-                title    : Locale.get(lg, 'panel.add.window.title'),
+                title    : QUILocale.get(lg, 'panel.add.window.title'),
                 icon     : 'fa fa-plus',
                 maxWidth : 400,
                 maxHeight: 500,
                 autoclose: false,
 
                 cancel_button: {
-                    text     : Locale.get('quiqqer/system', 'cancel'),
+                    text     : QUILocale.get('quiqqer/system', 'cancel'),
                     textimage: 'fa fa-remove'
                 },
 
                 ok_button: {
-                    text     : Locale.get('quiqqer/system', 'save'),
+                    text     : QUILocale.get('quiqqer/system', 'save'),
                     textimage: 'fa fa-save'
                 },
 
@@ -390,22 +409,22 @@ define('package/quiqqer/tags/bin/Manager', [
                             'html',
 
 //                            '<label for="field-tag">'+
-//                                Locale.get( lg, 'tag' ) +
+//                                QUILocale.get( lg, 'tag' ) +
 //                            '</label>'+
                             '<input type="hidden" name="tag" id="field-tag" />' +
 
                             '<label for="field-title">' +
-                            Locale.get(lg, 'panel.manager.tag.title') +
+                            QUILocale.get(lg, 'panel.manager.tag.title') +
                             '</label>' +
                             '<input type="text" name="title" id="field-title" />' +
 
                             '<label for="field-desc">' +
-                            Locale.get(lg, 'panel.manager.image.tag') +
+                            QUILocale.get(lg, 'panel.manager.image.tag') +
                             '</label>' +
                             '<input name="image" id="field-image" class="media-image" type="text" />' +
 
                             '<label for="field-desc">' +
-                            Locale.get('quiqqer/system', 'description') +
+                            QUILocale.get('quiqqer/system', 'description') +
                             '</label>' +
                             '<textarea name="desc" id="field-desc"></textarea>'
                         );
@@ -501,7 +520,7 @@ define('package/quiqqer/tags/bin/Manager', [
 
 
             new QUIConfirm({
-                title    : Locale.get(lg, 'panel.delete.window.title'),
+                title    : QUILocale.get(lg, 'panel.delete.window.title'),
                 icon     : 'fa fa-plus',
                 maxWidth : 600,
                 maxHeight: 300,
@@ -513,7 +532,7 @@ define('package/quiqqer/tags/bin/Manager', [
                         Content.set(
                             'html',
 
-                            Locale.get(lg, 'panel.delete.window.message', {
+                            QUILocale.get(lg, 'panel.delete.window.message', {
                                 tags: tags.join(', ')
                             })
                         );
@@ -526,6 +545,31 @@ define('package/quiqqer/tags/bin/Manager', [
                     }
                 }
             }).open();
+        },
+
+        /**
+         * Shows list with all sites the tag is associated with
+         *
+         * @param {string} tag
+         */
+        showTagSites: function (tag) {
+            this.createSheet({
+                title : QUILocale.get(lg, 'panel.showtagsites.title', {
+                    tag: tag
+                }),
+                events: {
+                    onShow : function (Sheet) {
+                        Sheet.getContent().setStyle('padding', 20);
+
+                        new TagSites({
+                            tag: tag
+                        }).inject(Sheet.getContent());
+                    },
+                    onClose: function (Sheet) {
+                        Sheet.destroy();
+                    }
+                }
+            }).show();
         }
     });
 });
