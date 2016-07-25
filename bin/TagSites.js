@@ -202,7 +202,7 @@ define('package/quiqqer/tags/bin/TagSites', [
 
             var self = this;
             var Btns = this.$Grid.getAttribute('buttons');
-            Btns.openSitePanel.enable();
+            Btns.openSitePanel.disable();
 
             var GridOptions = {
                 sortOn : ResultGrid.getAttribute('sortOn'),
