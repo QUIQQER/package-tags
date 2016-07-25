@@ -68,8 +68,8 @@
             <en><![CDATA[No tags contained]]></en>
         </locale>
         <locale name="panel.showtagsites.title">
-            <de><![CDATA[Liste der Seiten, die dem Tag "[tag]" zugeordnet sind]]></de>
-            <en><![CDATA[List of sites associated with the tag "[tag]"]]></en>
+            <de><![CDATA[Liste der Seiten, denen der Tag "[tag]" zugeordnet ist]]></de>
+            <en><![CDATA[List of sites the tag "[tag]" is associated with]]></en>
         </locale>
 
         <!-- Control: TagSites -->
@@ -90,8 +90,8 @@
             <en><![CDATA[URL]]></en>
         </locale>
         <locale name="panel.manager.button.showtagsites">
-            <de><![CDATA[Verknüpfte Seiten anzeigen]]></de>
-            <en><![CDATA[Show associated sites]]></en>
+            <de><![CDATA[Seiten mit diesem Tag anzeigen]]></de>
+            <en><![CDATA[Show sites with this tag]]></en>
         </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
