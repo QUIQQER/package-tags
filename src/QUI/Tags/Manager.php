@@ -364,9 +364,23 @@ class Manager
 
         $Grid = new Grid();
 
+        $order = 'tag ASC';
+
+        if (isset($params['sortOn']) &&
+            !empty($params['sortOn'])
+        ) {
+            $order = '`' . $params['sortOn'] . '`';
+
+            if (isset($params['sortBy']) &&
+                !empty($params['sortBy'])
+            ) {
+                $order .= ' ' . $params['sortBy'];
+            }
+        }
+
         $params = array_merge($Grid->parseDBParams($params), array(
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-            'order' => 'tag'
+            'order' => $order
         ));
 
         return QUI::getDataBase()->fetch($params);

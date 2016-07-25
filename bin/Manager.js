@@ -154,7 +154,8 @@ define('package/quiqqer/tags/bin/Manager', [
                     width    : 300
                 }],
                 pagination       : true,
-                multipleSelection: true
+                multipleSelection: true,
+                serverSort       : true
             });
 
             this.$Grid.addEvents({
@@ -275,7 +276,9 @@ define('package/quiqqer/tags/bin/Manager', [
                 projectLang: this.$lang,
                 gridParams : JSON.encode({
                     perPage: this.$Grid.options.perPage,
-                    page   : this.$Grid.options.page
+                    page   : this.$Grid.options.page,
+                    sortOn : this.$Grid.getAttribute('sortOn'),
+                    sortBy : this.$Grid.getAttribute('sortBy')
                 })
             });
         },
