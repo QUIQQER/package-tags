@@ -27,14 +27,17 @@ function package_quiqqer_tags_ajax_tag_getSites($projectName, $projectLang, $tag
 
     $tagSites = array();
 
-    if (empty($siteIds)) {
-        return $tagSites;
-    }
-
     $searchParams = Orthos::clearArray(json_decode($searchParams, true));
     $Grid         = new Grid($searchParams);
     $gridParams   = $Grid->parseDBParams($searchParams);
     $order        = '';
+
+    if (empty($siteIds)) {
+        return $Grid->parseResult(
+            array(),
+            0
+        );
+    }
 
     if (isset($searchParams['sortOn']) &&
         !empty($searchParams['sortOn'])
