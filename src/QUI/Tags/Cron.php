@@ -57,7 +57,7 @@ class Cron
                 }
 
                 $tag = Manager::clearTagName($tag);
-                $tag = mb_strtolower($tag);
+//                $tag = mb_strtolower($tag);
 
                 $entry['id'] = (int)$entry['id'];
 
@@ -73,11 +73,10 @@ class Cron
             }
         }
 
-
         /**
          * Tag cache
          */
-        $DataBase->Table()->truncate($tableCache);
+        $DataBase->table()->truncate($tableCache);
 
         foreach ($list as $tag => $entry) {
             $siteIds = array();
@@ -105,7 +104,7 @@ class Cron
         /**
          * Sites cache
          */
-        $DataBase->Table()->truncate($tableSiteCache);
+        $DataBase->table()->truncate($tableSiteCache);
 
         foreach ($result as $entry) {
             if (empty($entry['tags'])) {
