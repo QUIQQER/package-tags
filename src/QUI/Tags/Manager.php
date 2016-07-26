@@ -641,6 +641,30 @@ class Manager
      */
 
     /**
+     * Adds a single tag to a site
+     *
+     * @param integer $siteId - ID of Site
+     * @param string $tag - Tag name
+     *
+     * @return void
+     */
+    public function addTagToSite($siteId, $tag)
+    {
+        $siteTags = $this->getSiteTags($siteId);
+
+        if (in_array($tag, $siteTags)) {
+            return;
+        }
+
+        if (!$this->existsTag($tag)) {
+            return;
+        }
+
+        $siteTags[] = $tag;
+        $this->setSiteTags($siteId, $siteTags);
+    }
+
+    /**
      * Set tags to a site
      *
      * @param string $siteId - id of the Site ID
@@ -742,7 +766,6 @@ class Manager
         if (!is_array($tags)) {
             return;
         }
-
 
         // cleanup tag cache
         $tableTagCache = QUI::getDBProjectTableName(
