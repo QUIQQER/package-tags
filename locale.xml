@@ -19,6 +19,10 @@
             <de><![CDATA[Tag Titel]]></de>
             <en><![CDATA[Tag title]]></en>
         </locale>
+        <locale name="panel.manager.tag.count">
+            <de><![CDATA[Anzahl Seiten]]></de>
+            <en><![CDATA[Site count]]></en>
+        </locale>
         <locale name="panel.add.window.title">
             <de><![CDATA[Tag hinzufügen]]></de>
             <en><![CDATA[Add a tag]]></en>

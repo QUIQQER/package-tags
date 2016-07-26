@@ -97,7 +97,8 @@ class Cron
 
             $DataBase->insert($tableCache, array(
                 'tag' => $tag,
-                'sites' => ',' . implode(',', $siteIds) . ','
+                'sites' => ',' . implode(',', $siteIds) . ',',
+                'count' => count($siteIds)
             ));
         }
 

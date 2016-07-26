@@ -152,6 +152,11 @@ define('package/quiqqer/tags/bin/Manager', [
                     dataIndex: 'desc',
                     dataType : 'string',
                     width    : 300
+                }, {
+                    header   : QUILocale.get(lg, 'panel.manager.tag.count'),
+                    dataIndex: 'count',
+                    dataType : 'number',
+                    width    : 75
                 }],
                 pagination       : true,
                 multipleSelection: true,
@@ -258,12 +263,32 @@ define('package/quiqqer/tags/bin/Manager', [
         loadProject: function (project, lang) {
             var self = this;
 
-            this.Loader.show();
-
             this.$project = project;
             this.$lang    = lang;
 
             this.getButtons('add-tag').enable();
+
+            var GridParams = {
+                perPage: this.$Grid.options.perPage,
+                page   : this.$Grid.options.page,
+                sortOn : this.$Grid.getAttribute('sortOn'),
+                sortBy : this.$Grid.getAttribute('sortBy')
+            };
+
+            switch (this.$Grid.getAttribute('sortOn')) {
+                case 'count':
+                    this.$Grid.setAttribute('serverSort', false);
+                    this.$Grid.sort(2, 'count');
+                    this.$Grid.setAttribute('serverSort', true);
+                    
+                    return;
+                    break;
+
+                default:
+                    GridParams.sortOn = this.$Grid.getAttribute('sortOn');
+            }
+
+            this.Loader.show();
 
             Ajax.get('package_quiqqer_tags_ajax_project_getList', function (result) {
                 self.$Grid.setData(result);
@@ -274,12 +299,7 @@ define('package/quiqqer/tags/bin/Manager', [
                 'package'  : 'quiqqer/tags',
                 projectName: this.$project,
                 projectLang: this.$lang,
-                gridParams : JSON.encode({
-                    perPage: this.$Grid.options.perPage,
-                    page   : this.$Grid.options.page,
-                    sortOn : this.$Grid.getAttribute('sortOn'),
-                    sortBy : this.$Grid.getAttribute('sortBy')
-                })
+                gridParams : JSON.encode(GridParams)
             });
         },
 
