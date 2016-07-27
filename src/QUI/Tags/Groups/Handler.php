@@ -36,11 +36,11 @@ class Handler
     /**
      * Create a new tag group
      *
-     * @param string $title
      * @param Project $Project
+     * @param string $title
      * @return Group
      */
-    public static function create($title, Project $Project)
+    public static function create(Project $Project, $title)
     {
         QUI::getDataBase()->insert(
             self::table($Project),
@@ -51,14 +51,16 @@ class Handler
 
         $gid = QUI::getDataBase()->getPDO()->lastInsertId();
 
-        return self::get($gid, $Project);
+        return self::get($Project, $gid);
     }
 
     /**
-     * @param integer $groupId
+     * Delete a tag group
+     *
      * @param Project $Project
+     * @param integer $groupId
      */
-    public static function delete($groupId, Project $Project)
+    public static function delete(Project $Project, $groupId)
     {
         $project = $Project->getName();
         $lang    = $Project->getLang();
@@ -81,12 +83,12 @@ class Handler
     /**
      * Return the group
      *
-     * @param integer $groupId - ID of the tag group
      * @param Project $Project
+     * @param integer $groupId - ID of the tag group
      * @return Group
      * @throws QUI\Tags\Exception
      */
-    public static function get($groupId, Project $Project)
+    public static function get(Project $Project, $groupId)
     {
         $project = $Project->getName();
         $lang    = $Project->getLang();
@@ -103,5 +105,82 @@ class Handler
         self::$groups[$project][$lang][$groupId] = $Group;
 
         return self::$groups[$project][$lang][$groupId];
+    }
+
+    /**
+     * Return a list of Tag groups
+     * if $params is empty, all groups are returned
+     *
+     * @param Project $Project
+     * @param array $params - array $params - query parameter
+     *                              $queryParams['where'],
+     *                              $queryParams['where_or'],
+     *                              $queryParams['limit']
+     *                              $queryParams['order']
+     * @return array
+     *
+     * @throws QUI\Tags\Exception
+     */
+    public static function getGroups(Project $Project, $params = array())
+    {
+        $result   = array();
+        $groupIds = self::getGroupIds($Project, $params);
+
+        foreach ($groupIds as $groupId) {
+            $result[] = self::get($Project, $groupId);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return a list of Tag group ids
+     * if $params is empty, all group ids are returned
+     *
+     * @param Project $Project
+     * @param array $params - query parameter
+     *                              $queryParams['where'],
+     *                              $queryParams['where_or'],
+     *                              $queryParams['limit']
+     *                              $queryParams['order']
+     * @return array
+     */
+    public static function getGroupIds(Project $Project, $params = array())
+    {
+        $query = array(
+            'from' => self::table($Project)
+        );
+
+        if (isset($params['where'])) {
+            $query['where_or'] = $params['where'];
+        }
+
+        if (isset($params['where_or'])) {
+            $query['where_or'] = $params['where_or'];
+        }
+
+        if (isset($params['limit'])) {
+            $query['limit'] = $params['limit'];
+        }
+
+        if (isset($params['order'])) {
+            $query['order'] = $params['order'];
+        }
+
+        if (isset($params['debug'])) {
+            $query['debug'] = $params['debug'];
+        }
+
+        $result = array();
+        $data   = QUI::getDataBase()->fetch($query);
+
+        foreach ($data as $entry) {
+            try {
+                $result[] = $entry['id'];
+            } catch (QUI\Exception $Exception) {
+            }
+        }
+
+        return $result;
     }
 }

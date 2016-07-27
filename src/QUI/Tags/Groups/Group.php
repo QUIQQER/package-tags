@@ -62,7 +62,7 @@ class Group
     public function __construct($groupId, Project $Project)
     {
         $result = QUI::getDataBase()->fetch(array(
-            'from'  => Handler::table($this->Project),
+            'from'  => Handler::table($Project),
             'where' => array(
                 'id' => (int)$groupId
             ),
@@ -76,11 +76,12 @@ class Group
             ));
         }
 
+        $this->Project = $Project;
         $this->id      = (int)$groupId;
         $this->title   = $result[0]['title'];
         $this->desc    = $result[0]['desc'];
         $this->image   = $result[0]['image'];
-        $this->Manager = new QUI\Tags\Manager($Project);
+        $this->Manager = new QUI\Tags\Manager($this->Project);
 
         if (!isset($result[0]['tags'])) {
             return;
@@ -149,12 +150,35 @@ class Group
         return false;
     }
 
+
+    /**
+     * @param string|QUI\Projects\Media\Image $Image
+     *
+     * @throws QUI\Tags\Exception
+     * @throws QUI\Exception
+     */
+    public function setImage($Image)
+    {
+        if (is_string($Image)) {
+            $Image = QUI\Projects\Media\Utils::getImageByUrl($Image);
+        }
+
+        if (!QUI\Projects\Media\Utils::isImage($Image)) {
+            throw new QUI\Tags\Exception(array(
+                'quiqqer/tags',
+                'exception.taggroup.no.image'
+            ));
+        }
+
+        $this->image = $Image->getUrl();
+    }
+
     /**
      * Delete the group
      */
     public function delete()
     {
-        Handler::delete($this->getId(), $this->Project);
+        Handler::delete($this->Project, $this->getId());
     }
 
     /**
@@ -212,5 +236,21 @@ class Group
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * Return the group as an array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'id'    => $this->id,
+            'title' => $this->title,
+            'desc'  => $this->desc,
+            'image' => $this->image,
+            'tags'  => $this->tags
+        );
     }
 }

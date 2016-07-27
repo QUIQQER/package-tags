@@ -9,7 +9,12 @@
  * @require qui/controls/buttons/Button
  * @require qui/controls/windows/Confirm
  * @require controls/grid/Grid
+ * @require controls/projects/Select
  * @require Locale
+ * @require Ajax
+ * @require Mustache
+ * @require text!package/quiqqer/tags/bin/groups/Panel.createGroup.html
+ * @require css!package/quiqqer/tags/bin/groups/Panel.css
  */
 define('package/quiqqer/tags/bin/groups/Panel', [
 
@@ -18,14 +23,16 @@ define('package/quiqqer/tags/bin/groups/Panel', [
     'qui/controls/buttons/Button',
     'qui/controls/windows/Confirm',
     'controls/grid/Grid',
+    'controls/projects/Select',
     'Locale',
     'Ajax',
     'Mustache',
+    'Projects',
 
     'text!package/quiqqer/tags/bin/groups/Panel.createGroup.html',
     'css!package/quiqqer/tags/bin/groups/Panel.css'
 
-], function (QUI, QUIPanel, QUIButton, QUIConfirm, Grid, QUILocale, QUIAjax, Mustache, templateCreateGroup) {
+], function (QUI, QUIPanel, QUIButton, QUIConfirm, Grid, ProjectSelect, QUILocale, QUIAjax, Mustache, Projects, templateCreateGroup) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -40,6 +47,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
             '$onCreate',
             '$onResize',
             '$onInject',
+            'dataRefresh',
             'openCreateGroupDialog'
         ],
 
@@ -57,13 +65,40 @@ define('package/quiqqer/tags/bin/groups/Panel', [
 
             this.parent(options);
 
-            this.$Grid = null;
+            this.$Grid    = null;
+            this.$Project = null;
+
+            this.$Projects = new ProjectSelect({
+                emptyselect: false,
+                events     : {
+                    onChange: function (value) {
+                        this.$setValue(value);
+                        this.dataRefresh()
+                    }.bind(this),
+                    onLoad  : function (Select) {
+                        this.$setValue(Select.getValue());
+                        this.dataRefresh().then(function () {
+                            this.Loader.hide();
+                        }.bind(this));
+                    }.bind(this)
+                }
+            });
 
             this.addEvents({
                 onCreate: this.$onCreate,
                 onResize: this.$onResize,
                 onInject: this.$onInject
             });
+        },
+
+        /**
+         * Set internal project select value
+         *
+         * @param {string} selectValue
+         */
+        $setValue: function (selectValue) {
+            var values    = selectValue.split(',');
+            this.$Project = Projects.get(values[0], values[1]);
         },
 
         /**
@@ -89,6 +124,12 @@ define('package/quiqqer/tags/bin/groups/Panel', [
          * event : on create
          */
         $onCreate: function () {
+            this.addButton(this.$Projects);
+
+            this.addButton({
+                type: 'seperator'
+            });
+
             // buttons
             this.addButton({
                 name     : 'add',
@@ -132,6 +173,8 @@ define('package/quiqqer/tags/bin/groups/Panel', [
          * event : on inject
          */
         $onInject: function () {
+            this.Loader.show();
+
             var GridContainer = new Element('div', {
                 style: {
                     'float': 'left',
@@ -166,9 +209,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
             });
 
             this.$Grid.addEvents({
-                onRefresh: function () {
-                    this.fireEvent('refresh', [this, this.$Grid.options]);
-                }.bind(this),
+                onRefresh: this.dataRefresh,
 
                 onDblClick: function () {
                     this.fireEvent('dblClick', [this, this.getSelected()]);
@@ -182,9 +223,44 @@ define('package/quiqqer/tags/bin/groups/Panel', [
         },
 
         /**
+         * Refresh the data
+         *
+         * @return {Promise}
+         */
+        dataRefresh: function () {
+            this.Loader.show();
+
+            var options = this.$Grid.options;
+
+            return new Promise(function (resolve, reject) {
+                QUIAjax.get('package_quiqqer_tags_ajax_groups_get', function (result) {
+
+                    console.log(result);
+
+                    this.Loader.hide();
+
+                    resolve();
+
+                }.bind(this), {
+                    'package': 'quiqqer/tags',
+                    onError  : reject,
+                    project  : this.$Project.encode(),
+                    params   : JSON.encode({
+                        sheet : options.page,
+                        limit : options.perPage,
+                        sortOn: options.sortOn,
+                        sortBy: options.sortBy
+                    })
+                });
+            }.bind(this));
+        },
+
+        /**
          * Opens the tag group create dialog
          */
         openCreateGroupDialog: function () {
+            var self = this;
+
             new QUIConfirm({
                 title    : QUILocale.get(lg, 'tag.groups.window.create.title'),
                 icon     : 'fa fa-group',
@@ -216,8 +292,16 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                     onSubmit: function (Win) {
                         Win.Loader.show();
 
-                        QUIAjax.post('', function () {
+                        var Content = Win.getContent();
 
+                        QUIAjax.post('package_quiqqer_tags_ajax_groups_create', function () {
+                            Win.Loader.hide();
+                            self.dataRefresh();
+                        }, {
+                            'package': 'quiqqer/tags',
+                            project  : self.$Project.encode(),
+                            title    : Content.getElement('[name="title"]').value,
+                            image    : Content.getElement('[name="image"]').value
                         });
                     }
                 }
