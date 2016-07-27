@@ -97,6 +97,18 @@
             <de><![CDATA[Seiten mit diesem Tag anzeigen]]></de>
             <en><![CDATA[Show sites with this tag]]></en>
         </locale>
+
+        <!-- Control: TagSites -->
+        <locale name="tag.groups.panel.title">
+            <de><![CDATA[Tag-Gruppen]]></de>
+            <en><![CDATA[Tag group]]></en>
+        </locale>
+
+        <locale name="tag.groups.window.create.title">
+            <de><![CDATA[Tag-Gruppen anlegen]]></de>
+            <en><![CDATA[Create Tag group]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
 
@@ -201,8 +213,12 @@
             <en><![CDATA[tags]]></en>
         </locale>
         <locale name="menu.tags.manager">
-            <de><![CDATA[Tagverwaltung]]></de>
-            <en><![CDATA[Tag Management]]></en>
+            <de><![CDATA[Tag-Verwaltung]]></de>
+            <en><![CDATA[Tag management]]></en>
+        </locale>
+        <locale name="menu.tags.groups">
+            <de><![CDATA[Tag-Gruppen]]></de>
+            <en><![CDATA[Tag groups]]></en>
         </locale>
 
         <locale name="watch.add.tags">

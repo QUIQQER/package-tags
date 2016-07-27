@@ -3,9 +3,9 @@
 /**
  * Get inner html for a datalist
  *
- * @param String $projectName - name of the project
- * @param String $projectLang - lang of the project
- * @param String $tags        - JSON Array
+ * @param string $projectName - name of the project
+ * @param string $projectLang - lang of the project
+ * @param string $tags - JSON Array
  *
  * @return string
  */
@@ -19,7 +19,7 @@ function package_quiqqer_tags_ajax_tag_clearTagList(
     );
 
     $result = array();
-    $tags = json_decode($tags, true);
+    $tags   = json_decode($tags, true);
 
     if (!is_array($tags)) {
         $tags = array();
@@ -27,13 +27,10 @@ function package_quiqqer_tags_ajax_tag_clearTagList(
 
     foreach ($tags as $tag) {
         try {
-
             if ($Tags->existsTag($tag)) {
                 $result[] = $Tags->get($tag);
             }
-
         } catch (QUI\Exception $Exception) {
-
         }
     }
 

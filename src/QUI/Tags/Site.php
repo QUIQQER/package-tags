@@ -71,7 +71,7 @@ class Site
 
             QUI::getMessagesHandler()->addAttention($message);
 
-            throw new QUI\Exception($message);
+            throw new QUI\Tags\Exception($message);
         }
 
         $Manager->setSiteTags($Site->getId(), $list);

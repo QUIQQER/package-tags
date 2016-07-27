@@ -3,30 +3,29 @@
 /**
  * Add a tag
  *
- * @param String $projectName - name of the project
- * @param String $projectLang - lang of the project
- * @param String $tag         - wanted tag
- * @param String $tagParams   - JSON Array, Tag attributes
+ * @param string $projectName - name of the project
+ * @param string $projectLang - lang of the project
+ * @param string $tag - wanted tag
+ * @param string $tagParams - JSON Array, Tag attributes
  *
- * @return Array
+ * @return array
  */
-function package_quiqqer_tags_ajax_tag_edit(
-    $projectName,
-    $projectLang,
-    $tag,
-    $tagParams
-) {
-    $Tags = new QUI\Tags\Manager(
-        QUI::getProject($projectName, $projectLang)
-    );
-
-    $tagParams = json_decode($tagParams, true);
-
-    $Tags->edit($tag, $tagParams);
-}
-
-QUI::$Ajax->register(
+QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_edit',
+    function (
+        $projectName,
+        $projectLang,
+        $tag,
+        $tagParams
+    ) {
+        $Tags = new QUI\Tags\Manager(
+            QUI::getProject($projectName, $projectLang)
+        );
+
+        $tagParams = json_decode($tagParams, true);
+
+        $Tags->edit($tag, $tagParams);
+    },
     array('projectName', 'projectLang', 'tag', 'tagParams'),
     'Permission::checkUser'
 );

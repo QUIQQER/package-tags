@@ -10,16 +10,14 @@ use QUI\Tags\Controls\TagList;
  *
  * @return array
  */
-function package_quiqqer_tags_ajax_search_getTagsBySektor($project, $sektor)
-{
-    $TagList = new TagList(array(
-        'Project' => QUI::getProjectManager()->decode($project)
-    ));
-
-    return $TagList->getList($sektor);
-}
-
-QUI::$Ajax->register(
+QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_search_getTagsBySektor',
+    function ($project, $sektor) {
+        $TagList = new TagList(array(
+            'Project' => QUI::getProjectManager()->decode($project)
+        ));
+
+        return $TagList->getList($sektor);
+    },
     array('project', 'sektor')
 );

@@ -52,7 +52,7 @@ class Manager
      * @param array $params
      *
      * @return string - Tag
-     * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
     public function add($tag, $params)
     {
@@ -62,10 +62,10 @@ class Manager
         $title = Orthos::clearFormRequest($title);
 
         if ($this->existsTagTitle($title)) {
-            throw new QUI\Exception(
-                QUI::getLocale()
-                    ->get('quiqqer/tags', 'exception.tag.already.exists')
-            );
+            throw new QUI\Tags\Exception(array(
+                'quiqqer/tags',
+                'exception.tag.already.exists'
+            ));
         }
 
         $tag = $this->clearTagName($tag);
@@ -177,7 +177,7 @@ class Manager
      * @param string $tag
      * @param array $params
      *
-     * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
     public function edit($tag, $params)
     {
@@ -215,7 +215,7 @@ class Manager
 
         foreach ($result as $tagEntry) {
             if ($tagEntry['tag'] != $tag) {
-                throw new QUI\Exception(
+                throw new QUI\Tags\Exception(
                     QUI::getLocale()->get(
                         'quiqqer/tags',
                         'exception.tag.title.exist'
@@ -275,8 +275,9 @@ class Manager
      * Return a tag
      *
      * @param string $tag
+     * @return array
      *
-     * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
     public function get($tag)
     {
@@ -293,8 +294,8 @@ class Manager
         ));
 
         if (!isset($result[0])) {
-            throw new QUI\Exception(
-                QUI::getLocale()->get(
+            throw new QUI\Tags\Exception(
+                array(
                     'quiqqer/tags',
                     'exception.tag.not.found'
                 ),
@@ -325,8 +326,8 @@ class Manager
         ));
 
         if (!isset($result[0])) {
-            throw new QUI\Exception(
-                QUI::getLocale()->get(
+            throw new QUI\Tags\Exception(
+                array(
                     'quiqqer/tags',
                     'exception.tag.not.found'
                 ),
