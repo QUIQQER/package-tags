@@ -1,0 +1,14 @@
+.quiqqer-tags-group-container .field-container-item {
+    width: 160px;
+}
+
+.quiqqer-tags-group-container textarea[name="desc"] {
+    height: 160px;
+}
+
+.quiqqer-tags-group-container {
+    left: 0;
+    opacity: 0;
+    position: relative;
+    top: 0;
+}

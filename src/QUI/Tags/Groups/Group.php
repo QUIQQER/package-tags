@@ -164,7 +164,7 @@ class Group
      */
     public function setTitle($title)
     {
-        $this->title = Orthos::removeHTML($title);
+        $this->title = trim(Orthos::removeHTML($title));
     }
 
     /**
@@ -175,7 +175,7 @@ class Group
      */
     public function setDescription($description)
     {
-        $this->desc = Orthos::removeHTML($description);
+        $this->desc = trim(Orthos::removeHTML($description));
     }
 
     /**
@@ -232,20 +232,15 @@ class Group
         }
 
         // tags
-
-        QUI\System\Log::writeRecursive($this->getTags());
-
         $tags = array_map(function ($tag) {
             return $tag['tag'];
         }, $this->getTags());
-
-        QUI\System\Log::writeRecursive($tags);
 
         // database
         QUI::getDataBase()->update(
             Handler::table($this->Project),
             array(
-                'title' => Orthos::removeHTML($this->getTitle()),
+                'title' => $this->getTitle(),
                 'desc'  => $this->getDescription(),
                 'image' => $image,
                 'tags'  => implode($tags, ',')
