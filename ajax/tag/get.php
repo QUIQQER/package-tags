@@ -18,5 +18,5 @@ QUI::$Ajax->registerFunction(
 
         return $Tags->get($tag);
     },
-    array('projectName', 'projectLang', 'tag', 'tagParams')
+    array('projectName', 'projectLang', 'tag')
 );

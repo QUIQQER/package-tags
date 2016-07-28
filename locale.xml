@@ -109,6 +109,15 @@
             <en><![CDATA[Create Tag group]]></en>
         </locale>
 
+        <locale name="tag.groups.group.title">
+            <de><![CDATA[Tag-Gruppe: [group] (#[id])]]></de>
+            <en><![CDATA[Tag group: [group] (#[id])]]></en>
+        </locale>
+        <locale name="control.tags.group.tagCategory">
+            <de><![CDATA[Zugewiesene Tags]]></de>
+            <en><![CDATA[Assigned tags]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
 
@@ -294,6 +303,11 @@
         <locale name="quiqqer.tag.settings.defaultTags">
             <de><![CDATA[Vorausgewählte tags]]></de>
             <en><![CDATA[Preselected tags]]></en>
+        </locale>
+
+        <locale name="message.group.successful.save">
+            <de><![CDATA[Tag-Gruppe wurde erfolgreich gespeichert.]]></de>
+            <en><![CDATA[Tag group has been successfully saved.]]></en>
         </locale>
 
     </groups>

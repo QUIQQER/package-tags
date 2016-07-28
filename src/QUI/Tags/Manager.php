@@ -536,14 +536,14 @@ class Manager
      * Search similar tags
      *
      * @param string $search - Search string
+     * @param array $queryParams - optional, query params order, limit
      *
      * @return array
      */
-    public function searchTags($search)
+    public function searchTags($search, $queryParams = array())
     {
         $search = mb_strtolower($search);
-
-        $result = QUI::getDataBase()->fetch(array(
+        $query  = array(
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => array(
                 'tag' => array(
@@ -551,11 +551,20 @@ class Manager
                     'type'  => 'LIKE%'
                 )
             )
-        ));
+        );
+
+        if (isset($queryParams['order'])) {
+            $query['order'] = $queryParams['order'];
+        }
+
+        if (isset($queryParams['limit'])) {
+            $query['limit'] = $queryParams['limit'];
+        }
+
+        $result = QUI::getDataBase()->fetch($query);
 
         return $result;
     }
-
 
     /**
      * Return all site ids that have the tags

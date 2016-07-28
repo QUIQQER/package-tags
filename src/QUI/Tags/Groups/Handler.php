@@ -55,6 +55,40 @@ class Handler
     }
 
     /**
+     * Count the tag groups
+     *
+     * @param Project $Project
+     * @param array $queryParams
+     * @return int
+     */
+    public static function count(Project $Project, $queryParams = array())
+    {
+        $query = array(
+            'from'  => self::table($Project),
+            'count' => array(
+                'select' => 'id',
+                'as'     => 'count'
+            )
+        );
+
+        if (isset($queryParams['where'])) {
+            $query['where'] = $queryParams['where'];
+        }
+
+        if (isset($queryParams['where_or'])) {
+            $query['where_or'] = $queryParams['where_or'];
+        }
+
+        $data = QUI::getDataBase()->fetch($query);
+
+        if (isset($data[0]) && isset($data[0]['count'])) {
+            return (int)$data[0]['count'];
+        }
+
+        return 0;
+    }
+
+    /**
      * Delete a tag group
      *
      * @param Project $Project

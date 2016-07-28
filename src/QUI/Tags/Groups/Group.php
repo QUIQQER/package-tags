@@ -7,6 +7,7 @@ namespace QUI\Tags\Groups;
 
 use QUI;
 use QUI\Projects\Project;
+use QUI\Utils\Security\Orthos;
 
 /**
  * Class Group
@@ -30,17 +31,17 @@ class Group
     /**
      * @var string
      */
-    protected $desc;
+    protected $desc = '';
 
     /**
      * @var string
      */
-    protected $title;
+    protected $title = '';
 
     /**
      * @var string
      */
-    protected $image;
+    protected $image = '';
 
     /**
      * @var array
@@ -78,10 +79,15 @@ class Group
 
         $this->Project = $Project;
         $this->id      = (int)$groupId;
-        $this->title   = $result[0]['title'];
-        $this->desc    = $result[0]['desc'];
-        $this->image   = $result[0]['image'];
         $this->Manager = new QUI\Tags\Manager($this->Project);
+
+        $this->setTitle($result[0]['title']);
+        $this->setDescription($result[0]['desc']);
+
+        try {
+            $this->setImage($result[0]['image']);
+        } catch (QUI\Exception $Exception) {
+        }
 
         if (!isset($result[0]['tags'])) {
             return;
@@ -91,7 +97,7 @@ class Group
 
         foreach ($tags as $tag) {
             try {
-                $this->tags[] = $this->Manager->get($tag);
+                $this->addTag($tag);
             } catch (QUI\Tags\Exception $Exception) {
             }
         }
@@ -150,8 +156,31 @@ class Group
         return false;
     }
 
+    /**
+     * Set the tag group title
+     * no html allowed
+     *
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = Orthos::removeHTML($title);
+    }
 
     /**
+     * Set the tag group description
+     * no html allowed
+     *
+     * @param $description
+     */
+    public function setDescription($description)
+    {
+        $this->desc = Orthos::removeHTML($description);
+    }
+
+    /**
+     * Set the tag group image
+     *
      * @param string|QUI\Projects\Media\Image $Image
      *
      * @throws QUI\Tags\Exception
@@ -159,6 +188,11 @@ class Group
      */
     public function setImage($Image)
     {
+        if (empty($Image)) {
+            $this->image = '';
+            return;
+        }
+
         if (is_string($Image)) {
             $Image = QUI\Projects\Media\Utils::getImageByUrl($Image);
         }
@@ -186,8 +220,8 @@ class Group
      */
     public function save()
     {
+        // image
         $image = '';
-        $tags  = array();
 
         if (QUI\Projects\Media\Utils::isMediaUrl($this->image)) {
             try {
@@ -197,10 +231,21 @@ class Group
             }
         }
 
+        // tags
+
+        QUI\System\Log::writeRecursive($this->getTags());
+
+        $tags = array_map(function ($tag) {
+            return $tag['tag'];
+        }, $this->getTags());
+
+        QUI\System\Log::writeRecursive($tags);
+
+        // database
         QUI::getDataBase()->update(
             Handler::table($this->Project),
             array(
-                'title' => QUI\Utils\Security\Orthos::cleanHTML($this->getTitle()),
+                'title' => Orthos::removeHTML($this->getTitle()),
                 'desc'  => $this->getDescription(),
                 'image' => $image,
                 'tags'  => implode($tags, ',')
@@ -219,12 +264,21 @@ class Group
      */
     public function addTag($tag)
     {
+        if (empty($tag)) {
+            return;
+        }
+
         try {
-            $this->tags[] = $this->Manager->get($tag);
+            $tagData = $this->Manager->get($tag);
         } catch (QUI\Tags\Exception $Exception) {
             throw $Exception;
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::writeException($Exception);
+            return;
+        }
+
+        if (!isset($this->tags[$tagData['tag']])) {
+            $this->tags[$tagData['tag']] = $tagData;
         }
     }
 
@@ -235,7 +289,7 @@ class Group
      */
     public function getTags()
     {
-        return $this->tags;
+        return array_values($this->tags);
     }
 
     /**
@@ -245,12 +299,27 @@ class Group
      */
     public function toArray()
     {
+        $tags = array_map(function ($tag) {
+            return $tag['tag'];
+        }, $this->getTags());
+
         return array(
-            'id'    => $this->id,
-            'title' => $this->title,
-            'desc'  => $this->desc,
-            'image' => $this->image,
-            'tags'  => $this->tags
+            'id'        => $this->id,
+            'title'     => $this->title,
+            'desc'      => $this->desc,
+            'image'     => $this->image,
+            'tags'      => implode(',', $tags),
+            'countTags' => count($this->tags)
         );
+    }
+
+    /**
+     * Return the group as json
+     *
+     * @return string
+     */
+    public function toJSON()
+    {
+        return json_encode($this->toArray());
     }
 }
