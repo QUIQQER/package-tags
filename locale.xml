@@ -39,6 +39,10 @@
             <de><![CDATA[Der Seite zugewiesene Tags]]></de>
             <en><![CDATA[The page assigned tags]]></en>
         </locale>
+        <locale name="site.table.groups.title">
+            <de><![CDATA[Der Seite zugewiesene Tag-Gruppen]]></de>
+            <en><![CDATA[The page assigned tag groups]]></en>
+        </locale>
         <locale name="control.tagcontainer.window.add.title">
             <de><![CDATA[Tag hinzufügen]]></de>
             <en><![CDATA[Add a tag]]></en>
@@ -166,6 +170,10 @@
         <locale name="tag.control.placeholder.addtag">
             <de><![CDATA[Geben Sie bitte hier Ihren gewünschten Tag ein ...]]></de>
             <en><![CDATA[Please enter here your wanted tag ...]]></en>
+        </locale>
+        <locale name="tag.control.placeholder.addgroup">
+            <de><![CDATA[Geben Sie bitte hier Ihre gewünschte Tag-Gruppe ein ...]]></de>
+            <en><![CDATA[Please enter here your wanted tag group ...]]></en>
         </locale>
         <locale name="tag">
             <de><![CDATA[Tag]]></de>

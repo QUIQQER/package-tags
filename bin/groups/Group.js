@@ -61,7 +61,7 @@ define('package/quiqqer/tags/bin/groups/Group', [
 
         initialize: function (options) {
             this.setAttributes({
-                icon: 'fa fa-group'
+                icon: 'fa fa-tags'
             });
 
             this.parent(options);

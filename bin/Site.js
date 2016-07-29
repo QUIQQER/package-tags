@@ -8,12 +8,13 @@
  * @require qui/controls/Control
  * @require qui/controls/loader/Loader
  * @require qui/controls/windows/Confirm
- * @require package/quiqqer/tags/bin/TagContainer
+ * @require package/quiqqer/tags/bin/tags/Select
  * @require Ajax
  * @require Locale
+ * @require Mustache
+ * @require text!package/quiqqer/tags/bin/Site.Settings.html
  * @require css!URL_OPT_DIR/quiqqer/tags/bin/Site.css
  */
-
 define('package/quiqqer/tags/bin/Site', [
 
     'qui/QUI',
@@ -21,13 +22,16 @@ define('package/quiqqer/tags/bin/Site', [
     'qui/controls/loader/Loader',
     'qui/controls/windows/Confirm',
     'package/quiqqer/tags/bin/tags/Select',
-
+    'package/quiqqer/tags/bin/groups/Select',
     'Ajax',
     'Locale',
+    'Mustache',
 
+    'text!package/quiqqer/tags/bin/Site.Settings.html',
     'css!package/quiqqer/tags/bin/Site.css'
 
-], function (QUI, QUIControl, QUILoader, QUIConfirm, TagContainer, Ajax, Locale) {
+], function (QUI, QUIControl, QUILoader, QUIConfirm, TagSelect, TagGroupSelect,
+             QUIAjax, QUILocale, Mustache, templateSiteSettings) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -40,7 +44,8 @@ define('package/quiqqer/tags/bin/Site', [
         Binds: [
             '$onInject',
             '$onDestroy',
-            '$onTagAdd'
+            '$onSelectChange',
+            '$onGroupSelectChange'
         ],
 
         options: {
@@ -52,6 +57,9 @@ define('package/quiqqer/tags/bin/Site', [
 
             this.$Site    = options.Site;
             this.$Project = this.$Site.getProject();
+
+            this.$TagGroupSelect = null;
+            this.$TagSelect      = null;
 
             this.addEvents({
                 onInject : this.$onInject,
@@ -67,29 +75,36 @@ define('package/quiqqer/tags/bin/Site', [
         create: function () {
             this.$Elm = new Element('div', {
                 'class': 'qui-tags qui-box',
-                html   : '<table class="data-table">' +
-                         '<thead><tr><th>' +
-                         Locale.get(lg, 'site.table.title') +
-                         '</th></tr></thead>' +
-                         '<tbody>' +
-                         '<tr><td class="odd"></td></tr>' +
-                         '</tbody>' +
-                         '</table>'
+                html   : Mustache.render(templateSiteSettings, {
+                    titleTags  : QUILocale.get(lg, 'site.table.title'),
+                    titleGroups: QUILocale.get(lg, 'site.table.groups.title')
+                })
             });
 
             var projectName = this.$Project.getName(),
                 projectLang = this.$Project.getLang();
 
-            this.$Container = new TagContainer({
-                project    : projectName,
+            this.$TagSelect = new TagSelect({
+                projectName: projectName,
                 projectLang: projectLang,
                 events     : {
-                    onChange: this.$onTagAdd
+                    onChange: this.$onSelectChange
                 },
                 styles     : {
-                    width: '100%'
+                    height: 200
                 }
-            }).inject(this.$Elm.getElement('.odd'));
+            }).inject(this.$Elm.getElement('.package-quiqqer-tags-sitetags'));
+
+            this.$TagGroupSelect = new TagGroupSelect({
+                projectName: projectName,
+                projectLang: projectLang,
+                events     : {
+                    onChange: this.$onGroupSelectChange
+                },
+                styles     : {
+                    height: 200
+                }
+            }).inject(this.$Elm.getElement('.package-quiqqer-tags-sitetaggroups'));
 
             return this.$Elm;
         },
@@ -98,10 +113,12 @@ define('package/quiqqer/tags/bin/Site', [
          * event : on inject
          */
         $onInject: function () {
-            this.$Container.refresh();
+            this.$TagSelect.refresh();
 
-            var tags = this.$Site.getAttribute('quiqqer.tags.tagList');
+            var tags   = this.$Site.getAttribute('quiqqer.tags.tagList');
+            var groups = this.$Site.getAttribute('quiqqer.tags.tagGroups');
 
+            // tags
             if (typeOf(tags) === 'string') {
                 tags = tags.split(',');
             }
@@ -111,7 +128,20 @@ define('package/quiqqer/tags/bin/Site', [
             }
 
             for (var i = 0, len = tags.length; i < len; i++) {
-                this.$Container.addTag(tags[i]);
+                this.$TagSelect.addTag(tags[i]);
+            }
+
+            // groups
+            if (typeOf(groups) === 'string') {
+                groups = groups.split(',');
+            }
+
+            if (typeOf(groups) !== 'array') {
+                groups = [];
+            }
+
+            for (i = 0, len = groups.length; i < len; i++) {
+                this.$TagGroupSelect.addTagGroup(groups[i]);
             }
         },
 
@@ -122,96 +152,22 @@ define('package/quiqqer/tags/bin/Site', [
         $onDestroy: function () {
             this.$Site.setAttribute(
                 'quiqqer.tags.tagList',
-                this.$Container.getTags().join(',')
+                this.$TagSelect.getTags()
             );
         },
 
         /**
-         * event on tag adding via tag container
-         *
-         * @param {Object} Container - TagContainer
-         * @param {String} tag
+         * event on select change
          */
-        $onTagAdd: function (Container, tag) {
-            var self = this;
-
-            this.$Container.Loader.show();
-
-            Ajax.get('package_quiqqer_tags_ajax_tag_exists', function (result) {
-                if (result) {
-                    self.$Container.Loader.hide();
-                    return;
-                }
-
-                self.addTagWindow(tag);
-
-            }, {
-                'package'  : 'quiqqer/tags',
-                projectName: this.$Project.getName(),
-                projectLang: this.$Project.getLang(),
-                tag        : tag
-            });
+        $onSelectChange: function () {
+            this.$Site.setAttribute('quiqqer.tags.tagList', this.$TagSelect.getTags());
         },
 
         /**
-         * Add the tag to the repository and to the site
-         *
-         * @param {String} tag
+         * event on group select change
          */
-        addTag: function (tag) {
-            var self = this;
-
-            this.$Container.Loader.show();
-
-            Ajax.get('package_quiqqer_tags_ajax_tag_add', function () {
-                self.$Container.addTag(tag);
-                self.$Container.Loader.hide();
-
-            }, {
-                'package'  : 'quiqqer/tags',
-                projectName: this.$Project.getName(),
-                projectLang: this.$Project.getLang(),
-                tag        : tag
-            });
-        },
-
-        /**
-         * opens the add tag window
-         *
-         * @param {String} tag - tag to add
-         */
-        addTagWindow: function (tag) {
-            var self = this;
-
-            new QUIConfirm({
-                title    : Locale.get(lg, 'site.window.add.tag.title'),
-                icon     : 'fa fa-tag',
-                maxWidth : 500,
-                maxHeight: 300,
-                events   : {
-                    onOpen: function () {
-                        var Content = this.getContent();
-
-                        Content.set(
-                            'html',
-                            Locale.get(lg, 'site.window.add.tag.title', {
-                                tag: tag
-                            })
-                        );
-                    },
-
-                    onCancel: function () {
-                        self.$Container.removeTag(tag);
-                        self.$Container.Loader.hide();
-                    },
-
-                    onSubmit: function () {
-                        self.$Container.removeTag(tag);
-                        self.addTag(tag);
-                        self.$Container.Loader.hide();
-                    }
-                }
-            }).open();
+        $onGroupSelectChange: function () {
+            this.$Site.setAttribute('quiqqer.tags.tagGroups', this.$TagGroupSelect.getTags());
         }
     });
 });

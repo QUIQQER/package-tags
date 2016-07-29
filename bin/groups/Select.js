@@ -1,7 +1,7 @@
 /**
- * Makes an input field to a tag selection field
+ * Makes an input field to a tag group selection field
  *
- * @module package/quiqqer/tags/bin/tags/Select
+ * @module package/quiqqer/tags/bin/groups/Select
  * @author www.pcsg.de (Henning Leutz)
  *
  * @require qui/QUI
@@ -11,10 +11,10 @@
  * @require Ajax
  * @require Projects
  *
- * @event onAddTag [ this, id ]
+ * @event onAddTagGroup [ this, id ]
  * @event onChange [ this ]
  */
-define('package/quiqqer/tags/bin/tags/Select', [
+define('package/quiqqer/tags/bin/groups/Select', [
 
     'qui/QUI',
     'qui/controls/elements/Select',
@@ -29,7 +29,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
     var lg = 'quiqqer/tags';
 
     /**
-     * @class package/quiqqer/tags/bin/tags/Select
+     * @class package/quiqqer/tags/bin/groups/Select
      *
      * @param {Object} options
      * @param {HTMLInputElement} [Input]  - (optional), if no input given, one would be created
@@ -39,13 +39,12 @@ define('package/quiqqer/tags/bin/tags/Select', [
     return new Class({
 
         Extends: QUIElementSelect,
-        Type   : 'package/quiqqer/tags/bin/tags/Select',
+        Type   : 'package/quiqqer/tags/bin/groups/Select',
 
         Binds: [
             '$onSearchButtonClick',
             '$onCreate',
-            'tagSearch',
-            'showCreateTagDialog'
+            'tagGroupSearch'
         ],
 
         options: {
@@ -56,14 +55,14 @@ define('package/quiqqer/tags/bin/tags/Select', [
         initialize: function (options) {
             this.parent(options);
 
-            this.setAttribute('Search', this.tagSearch);
-            this.setAttribute('icon', 'fa fa-tag');
-            this.setAttribute('showIds', false);
-            this.setAttribute('child', 'package/quiqqer/tags/bin/tags/SelectItem');
+            this.setAttribute('Search', this.tagGroupSearch);
+            this.setAttribute('icon', 'fa fa-tags');
+            this.setAttribute('showIds', true);
+            this.setAttribute('child', 'package/quiqqer/tags/bin/groups/SelectItem');
 
             this.setAttribute(
                 'placeholder',
-                QUILocale.get(lg, 'tag.control.placeholder.addtag')
+                QUILocale.get(lg, 'tag.control.placeholder.addgroup')
             );
 
             this.$Project = Projects.get(
@@ -78,31 +77,18 @@ define('package/quiqqer/tags/bin/tags/Select', [
         },
 
         /**
-         * Search tags
+         * Search tag groups
          *
          * @param {String} value
          * @returns {Promise}
          */
-        tagSearch: function (value) {
+        tagGroupSearch: function (value) {
             return new Promise(function (resolve) {
-                QUIAjax.get('package_quiqqer_tags_ajax_search_search', function (result) {
-                    var list = [];
-
-                    for (var i = 0, len = result.length; i < len; i++) {
-                        list.push({
-                            id   : result[i].tag,
-                            title: result[i].title
-                        });
-                    }
-
-                    resolve(list);
-
-                }, {
-                    'package'  : 'quiqqer/tags',
-                    projectName: this.$Project.getName(),
-                    projectLang: this.$Project.getLang(),
-                    search     : value,
-                    params     : JSON.encode({
+                QUIAjax.get('package_quiqqer_tags_ajax_groups_search_search', resolve, {
+                    'package': 'quiqqer/tags',
+                    project  : this.$Project.encode(),
+                    search   : value,
+                    params   : JSON.encode({
                         limit: 10
                     })
                 });
@@ -119,7 +105,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
             Btn.setAttribute('icon', 'fa fa-spinner fa-spin');
 
             require([
-                'package/quiqqer/tags/bin/search/Window'
+                'package/quiqqer/tags/bin/groups/search/Window'
             ], function (Window) {
                 new Window({
                     projectName: self.$Project.getName(),
@@ -151,26 +137,26 @@ define('package/quiqqer/tags/bin/tags/Select', [
                         return;
                     }
 
-                    this.addTag(this.$Search.value).catch(function () {
-                        this.showCreateTagDialog(this.$Search.value);
+                    this.addTagGroup(this.$Search.value).catch(function () {
+                        this.showCreateTagGroupDialog(this.$Search.value);
                     }.bind(this));
                 }
             }.bind(this));
         },
 
         /**
-         * Add a tag
+         * Add a taggroup
          *
-         * @param {String} tag - name of the tag
+         * @param {Number} id - ID of the group
          * @returns {*}
          */
-        addTag: function (tag) {
+        addTagGroup: function (id) {
             return new Promise(function (resolve, reject) {
                 this.Loader.show();
 
                 QUIAjax.get([
                     'ajax_permissions_session_hasPermission',
-                    'package_quiqqer_tags_ajax_tag_exists'
+                    'package_quiqqer_tags_ajax_groups_exists'
                 ], function (hasPermission, tagExists) {
                     if (!hasPermission && !tagExists) {
                         QUI.getMessageHandler(function (MH) {
@@ -191,71 +177,70 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     }
 
                     this.Loader.hide();
-                    this.addItem(tag);
+                    this.addItem(id);
 
                     resolve();
 
                 }.bind(this), {
-                    'package'  : 'quiqqer/tags',
-                    permission : 'tags.create',
-                    projectName: this.$Project.getName(),
-                    projectLang: this.$Project.getLang(),
-                    tag        : tag,
-                    showError  : false
+                    'package' : 'quiqqer/tags',
+                    permission: 'tag.group.create',
+                    project   : this.$Project.encode(),
+                    groupId   : id,
+                    showError : false
                 });
             }.bind(this));
         },
 
         /**
-         * Add multiple tags
+         * Add multiple tag groups
          *
-         * @param {String|Array} tags - comma seperated tag list or array list
+         * @param {String|Array} taggroups - comma seperated tag group list or array list
          */
-        addTags: function (tags) {
-            if (typeOf(tags) === 'string') {
-                tags = tags.split(',');
+        addTagGroups: function (taggroups) {
+            if (typeOf(taggroups) === 'string') {
+                taggroups = taggroups.split(',');
             }
 
-            for (var i = 0, len = tags.length; i < len; i++) {
-                this.addTag(tags[i]);
+            for (var i = 0, len = taggroups.length; i < len; i++) {
+                this.addTagGroup(taggroups[i]);
             }
         },
 
         /**
-         * Create a new tag in the project
+         * Create a new tag group in the project
          *
-         * @param {String} tag
+         * @param {String} title
          * @returns {Promise}
          */
-        createTag: function (tag) {
+        createTagGroup: function (title) {
             return new Promise(function (resolve, reject) {
                 this.Loader.show();
 
-                QUIAjax.get('package_quiqqer_tags_ajax_tag_add', function () {
+                QUIAjax.get('package_quiqqer_tags_ajax_groups_create', function () {
 
                     this.Loader.hide();
                     resolve();
 
                 }.bind(this), {
-                    'package'  : 'quiqqer/tags',
-                    permission : 'tags.create',
-                    projectName: this.$Project.getName(),
-                    projectLang: this.$Project.getLang(),
-                    tag        : tag,
-                    showError  : false,
-                    onError    : reject
+                    'package' : 'quiqqer/tags',
+                    permission: 'tag.group.create',
+                    project   : this.$Project.encode(),
+                    title     : title,
+                    showError : false,
+                    onError   : reject
                 });
             }.bind(this));
         },
 
         /**
+         * Opens the create tag group dialog
          *
-         * @param {String} tag
+         * @param {String} title - title of the tag group
          */
-        showCreateTagDialog: function (tag) {
+        showCreateTagGroupDialog: function (title) {
             var self      = this;
             var Container = new Element('div', {
-                html      : QUILocale.get(lg, 'site.window.add.tag.title', {
+                html      : QUILocale.get(lg, 'site.window.add.taggroup.title', {
                     tag: tag
                 }),
                 styles    : {
@@ -294,8 +279,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 text  : QUILocale.get('quiqqer/system', 'save'),
                 events: {
                     onClick: function () {
-                        self.createTag(tag).then(function () {
-                            return self.addTag(tag);
+                        self.createTagGroup(title).then(function () {
+                            return self.addTagGroup(title);
                         }).then(function () {
                             hide();
                         }).catch(hide);
@@ -331,6 +316,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
         /**
          * return the value, alias for getValue()
+         *
          * @returns {String}
          */
         getTags: function () {

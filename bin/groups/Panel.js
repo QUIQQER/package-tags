@@ -272,7 +272,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
 
             new QUIConfirm({
                 title    : QUILocale.get(lg, 'tag.groups.window.create.title'),
-                icon     : 'fa fa-group',
+                icon     : 'fa fa-tags',
                 maxWidth : 450,
                 maxHeight: 300,
                 autoclose: false,

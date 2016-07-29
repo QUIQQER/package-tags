@@ -10,7 +10,7 @@
     <item parent="/extras/tags/"
           name="manager"
           require="package/quiqqer/tags/bin/Manager"
-          icon="fa fa-tags"
+          icon="fa fa-tag"
     >
         <locale group="quiqqer/tags" var="menu.tags.manager"/>
     </item>
@@ -18,7 +18,7 @@
     <item parent="/extras/tags/"
           name="groups"
           require="package/quiqqer/tags/bin/groups/Panel"
-          icon="fa fa-group"
+          icon="fa fa-tags"
     >
         <locale group="quiqqer/tags" var="menu.tags.groups"/>
     </item>

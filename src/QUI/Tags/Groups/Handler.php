@@ -115,6 +115,37 @@ class Handler
     }
 
     /**
+     * Search groups
+     *
+     * @param Project $Project
+     * @param string $search - search string
+     * @param array $queryParams -  optional, query params order, limit
+     * @return array
+     */
+    public static function search(Project $Project, $search, $queryParams = array())
+    {
+        $query = array(
+            'from'  => self::table($Project),
+            'where' => array(
+                'title' => array(
+                    'value' => $search,
+                    'type'  => 'LIKE%'
+                )
+            )
+        );
+
+        if (isset($queryParams['order'])) {
+            $query['order'] = $queryParams['order'];
+        }
+
+        if (isset($queryParams['limit'])) {
+            $query['limit'] = $queryParams['limit'];
+        }
+
+        return QUI::getDataBase()->fetch($query);
+    }
+
+    /**
      * Return the group
      *
      * @param Project $Project
@@ -139,6 +170,25 @@ class Handler
         self::$groups[$project][$lang][$groupId] = $Group;
 
         return self::$groups[$project][$lang][$groupId];
+    }
+
+    /**
+     * Exists the group id?
+     *
+     * @param Project $Project
+     * @param integer $groupId
+     * @return bool
+     */
+    public static function exists(Project $Project, $groupId)
+    {
+        try {
+            self::get($Project, $groupId);
+
+            return true;
+        } catch (QUI\Tags\Exception $Exception) {
+        }
+
+        return false;
     }
 
     /**

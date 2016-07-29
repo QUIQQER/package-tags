@@ -1,23 +1,23 @@
 /**
- * @module package/quiqqer/tags/bin/tags/SelectItem
+ * @module package/quiqqer/tags/bin/groups/SelectItem
  * @author www.pcsg.de (Henning Leutz)
  *
  * @require qui/controls/Control
- * @require css!package/quiqqer/tags/bin/tags/SelectItem.css
+ * @require css!package/quiqqer/tags/bin/groups/SelectItem.css
  */
-define('package/quiqqer/tags/bin/tags/SelectItem', [
+define('package/quiqqer/tags/bin/groups/SelectItem', [
 
     'qui/controls/Control',
     'Ajax',
 
-    'css!package/quiqqer/tags/bin/tags/SelectItem.css'
+    'css!package/quiqqer/tags/bin/groups/SelectItem.css'
 
 ], function (QUIControl, QUIAjax) {
     "use strict";
 
     return new Class({
         Extends: QUIControl,
-        Type   : 'package/quiqqer/tags/bin/tags/SelectItem',
+        Type   : 'package/quiqqer/tags/bin/groups/SelectItem',
 
         Binds: [
             '$onInject'
@@ -52,15 +52,15 @@ define('package/quiqqer/tags/bin/tags/SelectItem', [
                 Elm  = this.parent();
 
             Elm.set({
-                'class': 'quiqqer-tags-selectItem smooth',
-                html   : '<span class="quiqqer-tags-selectItem-icon fa fa-tag"></span>' +
-                         '<span class="quiqqer-tags-selectItem-text">&nbsp;</span>' +
-                         '<span class="quiqqer-tags-selectItem-destroy fa fa-remove"></span>'
+                'class': 'quiqqer-tags-groups-selectItem smooth',
+                html   : '<span class="quiqqer-tags-groups-selectItem-icon fa fa-tags"></span>' +
+                         '<span class="quiqqer-tags-groups-selectItem-text">&nbsp;</span>' +
+                         '<span class="quiqqer-tags-groups-selectItem-destroy fa fa-remove"></span>'
             });
 
-            this.$Icon    = Elm.getElement('.quiqqer-tags-selectItem-icon');
-            this.$Text    = Elm.getElement('.quiqqer-tags-selectItem-text');
-            this.$Destroy = Elm.getElement('.quiqqer-tags-selectItem-destroy');
+            this.$Icon    = Elm.getElement('.quiqqer-tags-groups-selectItem-icon');
+            this.$Text    = Elm.getElement('.quiqqer-tags-groups-selectItem-text');
+            this.$Destroy = Elm.getElement('.quiqqer-tags-groups-selectItem-destroy');
 
             this.$Destroy.addEvent('click', function () {
                 self.destroy();
@@ -97,14 +97,16 @@ define('package/quiqqer/tags/bin/tags/SelectItem', [
                 projectLang = this.getAttribute('projectLang');
             }
 
-            QUIAjax.get('package_quiqqer_tags_ajax_tag_get', function (data) {
+            QUIAjax.get('package_quiqqer_tags_ajax_groups_get', function (data) {
                 self.$Text.set('html', data.title);
             }, {
-                'package'  : 'quiqqer/tags',
-                projectName: projectName,
-                projectLang: projectLang,
-                tag        : this.getAttribute('id'),
-                onError    : function () {
+                'package': 'quiqqer/tags',
+                project  : JSON.encode({
+                    name: projectName,
+                    lang: projectLang
+                }),
+                groupId  : this.getAttribute('id'),
+                onError  : function () {
                     self.$Icon.removeClass('fa-tags');
                     self.$Icon.addClass('fa-bolt');
                     self.$Text.set('html', '...');
