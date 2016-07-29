@@ -280,7 +280,7 @@ define('package/quiqqer/tags/bin/Manager', [
                     this.$Grid.setAttribute('serverSort', false);
                     this.$Grid.sort(2, 'count');
                     this.$Grid.setAttribute('serverSort', true);
-                    
+
                     return;
                     break;
 

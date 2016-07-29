@@ -18,6 +18,5 @@ QUI::$Ajax->registerFunction(
 
         return $Tags->existsTag($tag);
     },
-    'package_quiqqer_tags_ajax_tag_exists',
     array('projectName', 'projectLang', 'tag')
 );

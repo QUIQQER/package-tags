@@ -118,6 +118,11 @@
             <en><![CDATA[Assigned tags]]></en>
         </locale>
 
+        <locale name="control.tags.search.window.title">
+            <de><![CDATA[Tag-Suche]]></de>
+            <en><![CDATA[Tag search]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
 

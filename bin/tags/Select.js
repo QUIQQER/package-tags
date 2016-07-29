@@ -15,11 +15,12 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
     'qui/QUI',
     'qui/controls/elements/Select',
+    'qui/controls/buttons/Button',
     'Locale',
     'Ajax',
     'Projects'
 
-], function (QUI, QUIElementSelect, QUILocale, QUIAjax, Projects) {
+], function (QUI, QUIElementSelect, QUIButton, QUILocale, QUIAjax, Projects) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -39,7 +40,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
         Binds: [
             '$onSearchButtonClick',
-            'tagSearch'
+            '$onCreate',
+            'tagSearch',
+            'showCreateTagDialog'
         ],
 
         options: {
@@ -66,7 +69,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
             );
 
             this.addEvents({
-                onSearchButtonClick: this.$onSearchButtonClick
+                onSearchButtonClick: this.$onSearchButtonClick,
+                onCreate           : this.$onCreate
             });
         },
 
@@ -113,9 +117,11 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
             require([
                 'package/quiqqer/tags/bin/search/Window'
-            ], function (Search) {
-                new Search({
-                    events: {
+            ], function (Window) {
+                new Window({
+                    projectName: self.$Project.getName(),
+                    projectLang: self.$Project.getLang(),
+                    events     : {
                         onSubmit: function (Win, values) {
                             for (var i = 0, len = values.length; i < len; i++) {
                                 self.addItem(values[i]);
@@ -129,13 +135,72 @@ define('package/quiqqer/tags/bin/tags/Select', [
         },
 
         /**
+         * event : on create
+         */
+        $onCreate: function () {
+            this.$Search.addEvent('keyup', function (event) {
+                if (event.key === 'enter') {
+                    var Active = this.$DropDown.getElement(
+                        '.qui-elements-list-dropdown-entry-hover'
+                    );
+
+                    if (Active) {
+                        return;
+                    }
+
+                    this.addTag(this.$Search.value).catch(function () {
+                        this.showCreateTagDialog(this.$Search.value);
+                    }.bind(this));
+                }
+            }.bind(this));
+        },
+
+        /**
          * Add a tag
          *
          * @param {String} tag - name of the tag
          * @returns {*}
          */
         addTag: function (tag) {
-            return this.addItem(tag);
+            return new Promise(function (resolve, reject) {
+                this.Loader.show();
+
+                QUIAjax.get([
+                    'ajax_permissions_session_hasPermission',
+                    'package_quiqqer_tags_ajax_tag_exists'
+                ], function (hasPermission, tagExists) {
+                    if (!hasPermission && !tagExists) {
+                        QUI.getMessageHandler(function (MH) {
+                            MH.addError(
+                                QUILocale.get(lg, 'message.no.permission.create.tags'),
+                                this.getElm()
+                            );
+                        });
+
+                        this.Loader.hide();
+                        return;
+                    }
+
+                    if (!tagExists) {
+                        reject();
+                        this.Loader.hide();
+                        return;
+                    }
+
+                    this.Loader.hide();
+                    this.addItem(tag);
+
+                    resolve();
+
+                }.bind(this), {
+                    'package'  : 'quiqqer/tags',
+                    permission : 'tags.create',
+                    projectName: this.$Project.getName(),
+                    projectLang: this.$Project.getLang(),
+                    tag        : tag,
+                    showError  : false
+                });
+            }.bind(this));
         },
 
         /**
@@ -151,6 +216,114 @@ define('package/quiqqer/tags/bin/tags/Select', [
             for (var i = 0, len = tags.length; i < len; i++) {
                 this.addTag(tags[i]);
             }
+        },
+
+        /**
+         * Create a new tag in the project
+         *
+         * @param {String} tag
+         * @returns {Promise}
+         */
+        createTag: function (tag) {
+            return new Promise(function (resolve, reject) {
+                this.Loader.show();
+
+                QUIAjax.get('package_quiqqer_tags_ajax_tag_add', function () {
+
+                    this.Loader.hide();
+                    resolve();
+
+                }.bind(this), {
+                    'package'  : 'quiqqer/tags',
+                    permission : 'tags.create',
+                    projectName: this.$Project.getName(),
+                    projectLang: this.$Project.getLang(),
+                    tag        : tag,
+                    showError  : false,
+                    onError    : reject
+                });
+            }.bind(this));
+        },
+
+        /**
+         *
+         * @param {String} tag
+         */
+        showCreateTagDialog: function (tag) {
+            var self      = this;
+            var Container = new Element('div', {
+                html      : QUILocale.get(lg, 'site.window.add.tag.title', {
+                    tag: tag
+                }),
+                styles    : {
+                    background: '#FFFFFF',
+                    border    : '1px solid #dedede',
+                    height    : '100%',
+                    left      : 0,
+                    opacity   : 0,
+                    outline   : 'none',
+                    padding   : 20,
+                    position  : 'absolute',
+                    textAlign : 'center',
+                    top       : -50,
+                    width     : '100%'
+                },
+                'tabindex': -1
+            }).inject(this.getElm());
+
+            var hide = function () {
+                moofx(Container).animate({
+                    opacity: 0,
+                    top    : -50
+                }, {
+                    duration: 200,
+                    callback: function () {
+                        QUI.Controls.getControlsInElement(Container).each(function (Control) {
+                            Control.destroy();
+                        });
+
+                        Container.destroy();
+                    }
+                });
+            };
+
+            new QUIButton({
+                text  : QUILocale.get('quiqqer/system', 'save'),
+                events: {
+                    onClick: function () {
+                        self.createTag(tag).then(function () {
+                            return self.addTag(tag);
+                        }).then(function () {
+                            hide();
+                        }).catch(hide);
+                    }
+                },
+                styles: {
+                    'float': 'none',
+                    margin : '10px 5px 0 0'
+                }
+            }).inject(Container);
+
+            new QUIButton({
+                text  : QUILocale.get('quiqqer/system', 'cancel'),
+                events: {
+                    onClick: hide
+                },
+                styles: {
+                    'float': 'none',
+                    margin : '10px 0 0 5px'
+                }
+            }).inject(Container);
+
+            moofx(Container).animate({
+                opacity: 1,
+                top    : 0
+            }, {
+                duration: 250,
+                callback: function () {
+                    Container.focus();
+                }
+            });
         },
 
         /**
