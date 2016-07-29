@@ -16,6 +16,8 @@
  *
  * @event onAdd [ {self}, {String} tag ]
  * @event onRemove [ {self}, {String} tag ]
+ *
+ * @deprecated use package/quiqqer/tags/bin/tags/Select
  */
 define('package/quiqqer/tags/bin/TagContainer', [
 

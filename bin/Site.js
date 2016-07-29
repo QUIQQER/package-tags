@@ -20,7 +20,7 @@ define('package/quiqqer/tags/bin/Site', [
     'qui/controls/Control',
     'qui/controls/loader/Loader',
     'qui/controls/windows/Confirm',
-    'package/quiqqer/tags/bin/TagContainer',
+    'package/quiqqer/tags/bin/tags/Select',
 
     'Ajax',
     'Locale',
@@ -81,13 +81,12 @@ define('package/quiqqer/tags/bin/Site', [
                 projectLang = this.$Project.getLang();
 
             this.$Container = new TagContainer({
-                loadDatalist: true,
-                project     : projectName,
-                projectLang : projectLang,
-                events      : {
-                    onAdd: this.$onTagAdd
+                project    : projectName,
+                projectLang: projectLang,
+                events     : {
+                    onChange: this.$onTagAdd
                 },
-                styles      : {
+                styles     : {
                     width: '100%'
                 }
             }).inject(this.$Elm.getElement('.odd'));

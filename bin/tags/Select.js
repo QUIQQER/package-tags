@@ -6,7 +6,10 @@
  *
  * @require qui/QUI
  * @require qui/controls/Control
+ * @require qui/controls/buttons/Button
  * @require Locale
+ * @require Ajax
+ * @require Projects
  *
  * @event onAddTag [ this, id ]
  * @event onChange [ this ]

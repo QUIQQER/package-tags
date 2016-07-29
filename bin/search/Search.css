@@ -1,0 +1,52 @@
+.quiqqer-tags-search {
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+
+.quiqqer-tags-search-no-result {
+    padding: 10px;
+}
+
+.quiqer-tags-search-select {
+    width: 100%;
+}
+
+.quiqer-tags-search-result {
+    margin-top: 10px;
+    float: left;
+    height: calc(100% - 40px);
+    overflow: auto;
+    width: 100%;
+}
+
+.quiqer-tags-search-result-entry {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    float: left;
+    line-height: 30px;
+    width: 100%;
+}
+
+.quiqer-tags-search-result-entry:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.quiqer-tags-search-result-entry__select {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.quiqer-tags-search-result-entry-icon {
+    float: left;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+}
+
+.quiqer-tags-search-result-entry-title {
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: calc(100% - 30px);
+}

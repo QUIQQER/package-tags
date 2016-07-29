@@ -431,9 +431,6 @@ define('package/quiqqer/tags/bin/Manager', [
                         Content.set(
                             'html',
 
-//                            '<label for="field-tag">'+
-//                                QUILocale.get( lg, 'tag' ) +
-//                            '</label>'+
                             '<input type="hidden" name="tag" id="field-tag" />' +
 
                             '<label for="field-title">' +
@@ -458,23 +455,17 @@ define('package/quiqqer/tags/bin/Manager', [
                             Img   = Content.getElement('[name="image"]');
 
                         ControlUtils.parse(Content).then(function () {
-
-                            QUI.Controls
-                                .getControlsInElement(Content)
-                                .each(function (Control) {
-                                    if ("setProject" in Control) {
-                                        Control.setProject(
-                                            Projects.get(self.$project, self.$lang)
-                                        );
-                                    }
-                                });
-
-                            if (Tag) {
-                                Tag.focus();
-                            }
+                            QUI.Controls.getControlsInElement(Content).each(function (Control) {
+                                if ("setProject" in Control) {
+                                    Control.setProject(
+                                        Projects.get(self.$project, self.$lang)
+                                    );
+                                }
+                            });
 
                             if (typeof tag === 'undefined') {
                                 Win.Loader.hide();
+                                Title.focus();
                                 return;
                             }
 
@@ -483,6 +474,8 @@ define('package/quiqqer/tags/bin/Manager', [
                                 Title.value = data.title;
                                 Desc.value  = data.desc;
                                 Img.value   = data.image;
+
+                                Title.focus();
 
                                 var quiid        = Img.getParent().get('data-quiid');
                                 var ImageControl = QUI.Controls.getById(quiid);
