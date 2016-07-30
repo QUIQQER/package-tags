@@ -1,7 +1,11 @@
 <?php
 
 /**
- * Get inner html for a datalist
+ * This file contains package_quiqqer_tags_ajax_tag_clearTagList
+ */
+
+/**
+ * Clear the list, return only existing tags
  *
  * @param string $projectName - name of the project
  * @param string $projectLang - lang of the project
@@ -9,7 +13,6 @@
  *
  * @return string
  */
-
 QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_clearTagList',
     function (

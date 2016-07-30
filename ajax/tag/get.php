@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * This file contains package_quiqqer_tags_ajax_tag_get
+ */
+
+/**
  * Add a tag
  *
  * @param string $projectName - name of the project

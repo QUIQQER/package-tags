@@ -5,7 +5,7 @@
  */
 
 /**
- * Get inner html for a datalist
+ * Search tags
  *
  * @param string $projectName - name of the project
  * @param string $projectLang - lang of the project

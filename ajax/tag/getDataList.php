@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * This file contains package_quiqqer_tags_ajax_tag_getDataList
+ */
+
+/**
  * Get inner html for a datalist
  *
  * @param string $projectName - name of the project

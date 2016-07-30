@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <locales>
     <groups name="quiqqer/tags" datatype="js">
+
         <locale name="control.tagcontainer.sheet.btn.add">
             <de><![CDATA[Hinzufügen]]></de>
             <en><![CDATA[Add]]></en>
         </locale>
+
         <locale name="panel.delete.window.message">
             <de><![CDATA[<p>Möchten Sie folgende tags wirklich löschen?</p>
                 <p><strong>[tags]</strong></p>]]></de>
@@ -127,9 +129,13 @@
             <en><![CDATA[Tag search]]></en>
         </locale>
 
+        <locale name="control.grouptags.search.window.title">
+            <de><![CDATA[Tag-Gruppen-Suche]]></de>
+            <en><![CDATA[Tag group search]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
-
         <locale name="permission.tags._header">
             <de><![CDATA[Tagverwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
@@ -145,6 +151,19 @@
         <locale name="permission.tags.create">
             <de><![CDATA[Darf Tags erstellen und bearbeiten.]]></de>
             <en><![CDATA[Can create and edit tags.]]></en>
+        </locale>
+
+        <locale name="menu.tag.settings.title">
+            <de><![CDATA[Tags]]></de>
+            <en><![CDATA[Tags]]></en>
+        </locale>
+        <locale name="window.tag.settings.title">
+            <de><![CDATA[Tag Einstellungen]]></de>
+            <en><![CDATA[Tag settings]]></en>
+        </locale>
+        <locale name="settings.window.tags.useGroups">
+            <de><![CDATA[Tag Gruppen verwenden]]></de>
+            <en><![CDATA[Use tag groups]]></en>
         </locale>
 
         <locale name="exception.limit.tags.to.site">
@@ -182,6 +201,10 @@
         <locale name="message.no.tags.found">
             <de><![CDATA[Keine Tags gefunden]]></de>
             <en><![CDATA[No tags found]]></en>
+        </locale>
+        <locale name="message.no.tag.groups.found">
+            <de><![CDATA[Keine Tag-Gruppen gefunden]]></de>
+            <en><![CDATA[No tag groups found]]></en>
         </locale>
         <locale name="message.no.permission.create.tags">
             <de>

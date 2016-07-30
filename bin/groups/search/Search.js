@@ -1,5 +1,5 @@
 /**
- * @module package/quiqqer/tags/bin/search/Search
+ * @module package/quiqqer/tags/bin/groups/search/Search
  * @author www.pcsg.de (Henning Leutz)
  *
  * @require qui/QUI
@@ -7,11 +7,11 @@
  * @require Locale
  * @require Ajax
  * @require Projects
- * @require text!package/quiqqer/tags/bin/search/Search.html
- * @require text!package/quiqqer/tags/bin/search/Search.Tag.html
- * @require css!package/quiqqer/tags/bin/search/Search.css
+ * @require text!package/quiqqer/tags/bin/groups/search/Search.html
+ * @require text!package/quiqqer/tags/bin/groups/search/Search.Tag.html
+ * @require css!package/quiqqer/tags/bin/groups/search/Search.css
  */
-define('package/quiqqer/tags/bin/search/Search', [
+define('package/quiqqer/tags/bin/groups/search/Search', [
 
     'qui/QUI',
     'qui/controls/Control',
@@ -20,9 +20,9 @@ define('package/quiqqer/tags/bin/search/Search', [
     'Projects',
     'Mustache',
 
-    'text!package/quiqqer/tags/bin/search/Search.html',
-    'text!package/quiqqer/tags/bin/search/Search.Tag.html',
-    'css!package/quiqqer/tags/bin/search/Search.css'
+    'text!package/quiqqer/tags/bin/groups/search/Search.html',
+    'text!package/quiqqer/tags/bin/groups/search/Search.Tag.html',
+    'css!package/quiqqer/tags/bin/groups/search/Search.css'
 
 ], function (QUI, QUIControl, QUILocale, QUIAjax, Projects, Mustache, templateSearch, templateSearchTag) {
     "use strict";
@@ -31,7 +31,7 @@ define('package/quiqqer/tags/bin/search/Search', [
 
     return new Class({
         Extends: QUIControl,
-        Type   : 'package/quiqqer/tags/bin/search/Search',
+        Type   : 'package/quiqqer/tags/bin/groups/search/Search',
 
         Binds: [
             '$onInject',
@@ -52,10 +52,7 @@ define('package/quiqqer/tags/bin/search/Search', [
             );
 
             this.$Select = null;
-            this.$Search = null;
             this.$Result = null;
-
-            this.$searchtimer = false;
 
             this.addEvents({
                 onInject: this.$onInject
@@ -70,37 +67,15 @@ define('package/quiqqer/tags/bin/search/Search', [
         create: function () {
             this.$Elm = new Element('div', {
                 'class': 'quiqqer-tags-search',
-                html   : Mustache.render(templateSearch, {
-                    searchPlaceholder: QUILocale.get(lg, 'tag.control.placeholder.addtag')
-                })
+                html   : templateSearch
             });
 
-            this.$Select = this.$Elm.getElement('.quiqqer-tags-search-select');
-            this.$Search = this.$Elm.getElement('.quiqqer-tags-search-freetext');
-            this.$Result = this.$Elm.getElement('.quiqqer-tags-search-result');
+            this.$Select = this.$Elm.getElement('.quiqqer-tags-groups-search-select');
+            this.$Result = this.$Elm.getElement('.quiqqer-tags-groups-search-result');
 
             this.$Select.addEvent('change', function (event) {
                 this.getTagsBySektor(event.target.value).then(this.$renderResult);
             }.bind(this));
-
-            var searchtrigger = function () {
-                var value = this.$Search.value;
-
-                if (value === '') {
-                    this.$Select.disabled = false;
-                    this.getTagsBySektor(value).then(this.$renderResult);
-                    return;
-                }
-
-                this.$Select.disabled = true;
-                this.$executeSearch();
-
-            }.bind(this);
-
-            this.$Search.addEvent('keyup', searchtrigger);
-            this.$Search.addEvent('change', searchtrigger);
-            this.$Search.addEvent('search', searchtrigger);
-            this.$Search.addEvent('blur', searchtrigger);
 
             return this.$Elm;
         },
@@ -113,19 +88,6 @@ define('package/quiqqer/tags/bin/search/Search', [
         },
 
         /**
-         * Execute a search with delay 200 ms
-         */
-        $executeSearch: function () {
-            if (this.$searchtimer) {
-                clearTimeout(this.$searchtimer);
-            }
-
-            this.$searchtimer = (function () {
-                this.search(this.$Search.value).then(this.$renderResult);
-            }).delay(200, this);
-        },
-
-        /**
          * Search tags by the window select value
          *
          * @param {String} sektor
@@ -133,30 +95,10 @@ define('package/quiqqer/tags/bin/search/Search', [
          */
         getTagsBySektor: function (sektor) {
             return new Promise(function (resolve) {
-                QUIAjax.get('package_quiqqer_tags_ajax_search_getTagsBySektor', resolve, {
+                QUIAjax.get('package_quiqqer_tags_ajax_groups_search_getBySektor', resolve, {
                     'package': 'quiqqer/tags',
                     project  : this.$Project.encode(),
                     sektor   : sektor
-                });
-            }.bind(this));
-        },
-
-        /**
-         * Search tags, use limit 20
-         *
-         * @param value
-         * @returns {Promise}
-         */
-        search: function (value) {
-            return new Promise(function (resolve) {
-                QUIAjax.get('package_quiqqer_tags_ajax_search_search', resolve, {
-                    'package'  : 'quiqqer/tags',
-                    projectName: this.$Project.getName(),
-                    projectLang: this.$Project.getLang(),
-                    search     : value,
-                    params     : JSON.encode({
-                        limit: 20
-                    })
                 });
             }.bind(this));
         },
@@ -166,9 +108,9 @@ define('package/quiqqer/tags/bin/search/Search', [
          *
          * @return {Array} - list of selected tags
          */
-        getSelectedTags: function () {
+        getSelectedGroupTags: function () {
             return this.$Result.getElements(
-                '.quiqqer-tags-search-result-entry__select'
+                '.quiqqer-tags-groups-search-result-entry__select'
             ).map(function (Elm) {
                 return Elm.get('data-tag');
             });
@@ -180,7 +122,7 @@ define('package/quiqqer/tags/bin/search/Search', [
          * @return {Array} - list of selected tags
          */
         submit: function () {
-            var selected = this.getSelectedTags();
+            var selected = this.getSelectedGroupTags();
 
             if (!selected.length) {
                 return selected;
@@ -201,7 +143,7 @@ define('package/quiqqer/tags/bin/search/Search', [
                 this.$Result.set(
                     'html',
                     '<div class="quiqqer-tags-search-no-result">' +
-                    QUILocale.get(lg, 'control.tagcontainer.window.message.no.tags') +
+                    QUILocale.get(lg, 'message.no.tag.groups.found') +
                     '</div>'
                 );
                 return;
@@ -214,11 +156,11 @@ define('package/quiqqer/tags/bin/search/Search', [
 
 
             var onClick = function () {
-                if (this.hasClass('quiqqer-tags-search-result-entry__select')) {
-                    this.removeClass('quiqqer-tags-search-result-entry__select');
+                if (this.hasClass('quiqqer-tags-groups-search-result-entry__select')) {
+                    this.removeClass('quiqqer-tags-groups-search-result-entry__select');
                     self.fireEvent('unSelect', [self, this.get('data-tag')]);
                 } else {
-                    this.addClass('quiqqer-tags-search-result-entry__select');
+                    this.addClass('quiqqer-tags-groups-search-result-entry__select');
                     self.fireEvent('select', [self, this.get('data-tag')]);
                 }
 
@@ -229,10 +171,10 @@ define('package/quiqqer/tags/bin/search/Search', [
                 event.stop();
 
                 self.$Result.getElements(
-                    '.quiqqer-tags-search-result-entry__select'
-                ).removeClass('quiqqer-tags-search-result-entry__select');
+                    '.quiqqer-tags-groups-search-result-entry__select'
+                ).removeClass('quiqqer-tags-groups-search-result-entry__select');
 
-                this.addClass('quiqqer-tags-search-result-entry__select');
+                this.addClass('quiqqer-tags-groups-search-result-entry__select');
                 self.submit();
             };
 
@@ -247,7 +189,7 @@ define('package/quiqqer/tags/bin/search/Search', [
                 }
 
                 new Element('div', {
-                    'class'   : 'quiqqer-tags-search-result-entry',
+                    'class'   : 'quiqqer-tags-groups-search-result-entry',
                     html      : Mustache.render(templateSearchTag, {
                         title: title
                     }),

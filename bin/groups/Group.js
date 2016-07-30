@@ -216,6 +216,7 @@ define('package/quiqqer/tags/bin/groups/Group', [
                 Content.set('html', Mustache.render(templateGroupInformation, {
                     tableHeader: QUILocale.get('quiqqer/system', 'information'),
                     title      : QUILocale.get('quiqqer/system', 'title'),
+                    project    : QUILocale.get('quiqqer/system', 'project'),
                     image      : QUILocale.get('quiqqer/system', 'image'),
                     desc       : QUILocale.get('quiqqer/system', 'description')
                 }));
@@ -225,6 +226,13 @@ define('package/quiqqer/tags/bin/groups/Group', [
                     image: this.$data.image,
                     desc : this.$data.desc
                 }, Content.getElement('form'));
+
+                var ProjectContainer = Content.getElement('.quiqqer-tags-group-project'),
+                    projectFlag      = '<img src="' + URL_BIN_DIR + '16x16/flags/' + this.$Project.getLang() + '.png" />',
+                    projectText      = projectFlag + this.$Project.getName();
+
+                ProjectContainer.set('html', projectText);
+
 
                 return ControlUtils.parse(Content).then(function () {
                     QUI.Controls.getControlsInElement(Content).each(function (Control) {

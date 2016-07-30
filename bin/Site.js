@@ -95,6 +95,10 @@ define('package/quiqqer/tags/bin/Site', [
                 }
             }).inject(this.$Elm.getElement('.package-quiqqer-tags-sitetags'));
 
+            var GroupContainer = this.$Elm.getElement(
+                '.package-quiqqer-tags-sitetaggroups'
+            );
+
             this.$TagGroupSelect = new TagGroupSelect({
                 projectName: projectName,
                 projectLang: projectLang,
@@ -104,7 +108,9 @@ define('package/quiqqer/tags/bin/Site', [
                 styles     : {
                     height: 200
                 }
-            }).inject(this.$Elm.getElement('.package-quiqqer-tags-sitetaggroups'));
+            }).inject(GroupContainer);
+
+            GroupContainer.getParent('table').setStyle('display', 'none');
 
             return this.$Elm;
         },
@@ -114,6 +120,7 @@ define('package/quiqqer/tags/bin/Site', [
          */
         $onInject: function () {
             this.$TagSelect.refresh();
+            this.$TagGroupSelect.refresh();
 
             var tags   = this.$Site.getAttribute('quiqqer.tags.tagList');
             var groups = this.$Site.getAttribute('quiqqer.tags.tagGroups');
@@ -142,6 +149,10 @@ define('package/quiqqer/tags/bin/Site', [
 
             for (i = 0, len = groups.length; i < len; i++) {
                 this.$TagGroupSelect.addTagGroup(groups[i]);
+            }
+
+            if (QUIQQER_TAGS_USE_GROUPS) {
+                this.$TagGroupSelect.getElm().getParent('table').setStyle('display', null);
             }
         },
 

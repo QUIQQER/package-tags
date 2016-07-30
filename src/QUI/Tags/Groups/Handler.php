@@ -146,6 +146,66 @@ class Handler
     }
 
     /**
+     * Return a tag group list by its sektor (title)
+     *
+     * @param Project $Project
+     * @param string $sektor - group sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
+     *
+     * @return array
+     */
+    public static function getBySektor(Project $Project, $sektor)
+    {
+        switch ($sektor) {
+            default:
+            case 'abc':
+                $where = 'title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%"';
+                break;
+
+            case 'def':
+                $where = 'title LIKE "d%" OR title LIKE "e%" OR title LIKE "f%"';
+                break;
+
+            case 'ghi':
+                $where = 'title LIKE "g%" OR title LIKE "h%" OR title LIKE "i%"';
+                break;
+
+            case 'jkl':
+                $where = 'title LIKE "j%" OR title LIKE "k%" OR title LIKE "l%"';
+                break;
+
+            case 'mno':
+                $where = 'title LIKE "m%" OR title LIKE "n%" OR title LIKE "o%"';
+                break;
+
+            case 'pqr':
+                $where = 'title LIKE "p%" OR title LIKE "q%" OR title LIKE "r%"';
+                break;
+
+            case 'stu':
+                $where = 'title LIKE "s%" OR title LIKE "t%" OR title LIKE "u%"';
+                break;
+
+            case '123':
+                $where = 'title REGEXP \'^[^A-Za-z]\'';
+                break;
+
+            case 'vz':
+                $where = 'title LIKE "v%" OR
+                        title LIKE "w%" OR
+                        title LIKE "x%" OR
+                        title LIKE "y%" OR
+                        title LIKE "z%"';
+                break;
+        }
+
+        return QUI::getDataBase()->fetch(array(
+            'from'  => self::table($Project),
+            'order' => 'title',
+            'where' => $where
+        ));
+    }
+
+    /**
      * Return the group
      *
      * @param Project $Project

@@ -47,8 +47,8 @@ class TagList extends QUI\Control
 
         $Engine->assign(array(
             'Project' => $Project,
-            'Site' => $Site,
-            'Locale' => QUI::getLocale()
+            'Site'    => $Site,
+            'Locale'  => QUI::getLocale()
         ));
 
 
@@ -134,7 +134,7 @@ class TagList extends QUI\Control
         }
 
         return QUI::getDataBase()->fetch(array(
-            'from' => QUI::getDBProjectTableName('tags', $this->getProject()),
+            'from'  => QUI::getDBProjectTableName('tags', $this->getProject()),
             'order' => 'title',
             'where' => $where
         ));

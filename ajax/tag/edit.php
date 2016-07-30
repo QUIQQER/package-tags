@@ -1,7 +1,11 @@
 <?php
 
 /**
- * Add a tag
+ * This file contains package_quiqqer_tags_ajax_tag_edit
+ */
+
+/**
+ * Edit a tag
  *
  * @param string $projectName - name of the project
  * @param string $projectLang - lang of the project

@@ -1,7 +1,11 @@
 <?php
 
 /**
- * Add a tag
+ * this file contains package_quiqqer_tags_ajax_project_getList
+ */
+
+/**
+ * Return a tag list from the project
  *
  * @param String $projectName - name of the project
  * @param String $projectLang - lang of the project
@@ -16,13 +20,13 @@ QUI::$Ajax->registerFunction(
         $projectLang,
         $gridParams
     ) {
-        $Tags = new \QUI\Tags\Manager(
-            \QUI::getProject($projectName, $projectLang)
+        $Tags = new QUI\Tags\Manager(
+            QUI::getProject($projectName, $projectLang)
         );
 
         $gridParams = json_decode($gridParams, true);
 
-        $Grid   = new \QUI\Utils\Grid($gridParams);
+        $Grid   = new QUI\Utils\Grid($gridParams);
         $result = $Tags->getList($gridParams);
 
         return $Grid->parseResult($result, $Tags->count());

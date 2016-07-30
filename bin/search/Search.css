@@ -8,19 +8,34 @@
     padding: 10px;
 }
 
-.quiqer-tags-search-select {
-    width: 100%;
+/** form fields
+ ========================================= */
+
+.quiqqer-tags-search-select {
+    float: left;
+    width: 33.333%;
 }
 
-.quiqer-tags-search-result {
-    margin-top: 10px;
+.quiqqer-tags-search-freetext {
+    float: left;
+    margin-left: 10px;
+    width: calc(66.666% - 10px);
+}
+
+/** result
+ ========================================= */
+
+.quiqqer-tags-search-result {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    clear: both;
     float: left;
     height: calc(100% - 40px);
+    margin-top: 20px;
     overflow: auto;
     width: 100%;
 }
 
-.quiqer-tags-search-result-entry {
+.quiqqer-tags-search-result-entry {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
     float: left;
@@ -28,22 +43,22 @@
     width: 100%;
 }
 
-.quiqer-tags-search-result-entry:hover {
+.quiqqer-tags-search-result-entry:hover {
     background: rgba(0, 0, 0, 0.2);
 }
 
-.quiqer-tags-search-result-entry__select {
+.quiqqer-tags-search-result-entry__select {
     background: rgba(0, 0, 0, 0.1);
 }
 
-.quiqer-tags-search-result-entry-icon {
+.quiqqer-tags-search-result-entry-icon {
     float: left;
     line-height: 30px;
     text-align: center;
     width: 30px;
 }
 
-.quiqer-tags-search-result-entry-title {
+.quiqqer-tags-search-result-entry-title {
     float: left;
     overflow: hidden;
     text-overflow: ellipsis;

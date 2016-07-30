@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * This file contains package_quiqqer_tags_ajax_tag_getSites
+ */
+
 use QUI\Tags\Manager;
 use QUI\Utils\Grid;
 use QUI\Utils\Security\Orthos;

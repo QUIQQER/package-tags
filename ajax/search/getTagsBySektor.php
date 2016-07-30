@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * This file contains package_quiqqer_tags_ajax_search_getTagsBySektor
+ */
 use QUI\Tags\Controls\TagList;
 
 /**
