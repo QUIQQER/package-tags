@@ -121,7 +121,15 @@ class TagList extends QUI\Control
                 break;
 
             case '123':
-                $where = 'title REGEXP \'^[^A-Za-z]\'';
+                $where = 'title REGEXP \'^[0-9]\'';
+                break;
+
+            case 'special':
+                $where = 'title REGEXP \'^[^A-Za-z0-9]\'';
+                break;
+
+            case 'all':
+                $where = '';
                 break;
 
             case 'vz':

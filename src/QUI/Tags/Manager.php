@@ -356,15 +356,7 @@ class Manager
      */
     public function getList($params = array())
     {
-//        if (empty($params)) {
-//            return QUI::getDataBase()->fetch(array(
-//                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-//                'order' => 'tag'
-//            ));
-//        }
-
-        $Grid = new Grid();
-
+        $Grid  = new Grid();
         $order = 'tag ASC';
 
         if (isset($params['sortOn']) &&
