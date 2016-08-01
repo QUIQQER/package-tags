@@ -174,28 +174,27 @@ define('package/quiqqer/tags/bin/groups/Group', [
         save: function () {
             this.Loader.show();
 
-            this.$unloadData();
+            this.$unloadData().then(function () {
 
-            return new Promise(function (resolve) {
-
-                QUIAjax.post('package_quiqqer_tags_ajax_groups_save', function () {
-
-                    this.Loader.hide();
-                    this.refresh();
-
-                    resolve();
-
-                }.bind(this), {
-                    'package': 'quiqqer/tags',
-                    project  : this.$Project.encode(),
-                    groupId  : this.getAttribute('groupId'),
-                    data     : JSON.encode(this.$data),
-                    onError  : function () {
+                return new Promise(function (resolve) {
+                    QUIAjax.post('package_quiqqer_tags_ajax_groups_save', function () {
                         this.Loader.hide();
-                    }.bind(this)
-                });
+                        this.refresh();
+                        resolve();
+                    }.bind(this), {
+                        'package': 'quiqqer/tags',
+                        project  : this.$Project.encode(),
+                        groupId  : this.getAttribute('groupId'),
+                        data     : JSON.encode(this.$data),
+                        onError  : function () {
+                            this.Loader.hide();
+                        }.bind(this)
+                    });
+                }.bind(this));
 
-            }.bind(this));
+            }.bind(this)).catch(function () {
+                // nothing
+            });
         },
 
         /**
@@ -214,17 +213,21 @@ define('package/quiqqer/tags/bin/groups/Group', [
                 var Content = this.getContent();
 
                 Content.set('html', Mustache.render(templateGroupInformation, {
-                    tableHeader: QUILocale.get('quiqqer/system', 'information'),
-                    title      : QUILocale.get('quiqqer/system', 'title'),
-                    project    : QUILocale.get('quiqqer/system', 'project'),
-                    image      : QUILocale.get('quiqqer/system', 'image'),
-                    desc       : QUILocale.get('quiqqer/system', 'description')
+                    tableHeader : QUILocale.get('quiqqer/system', 'information'),
+                    title       : QUILocale.get('quiqqer/system', 'title'),
+                    workingtitle: QUILocale.get('quiqqer/system', 'workingtitle'),
+                    project     : QUILocale.get('quiqqer/system', 'project'),
+                    image       : QUILocale.get('quiqqer/system', 'image'),
+                    desc        : QUILocale.get('quiqqer/system', 'description'),
+                    priority    : QUILocale.get('quiqqer/system', 'priority')
                 }));
 
                 QUIFormUtils.setDataToForm({
-                    title: this.$data.title,
-                    image: this.$data.image,
-                    desc : this.$data.desc
+                    title       : this.$data.title,
+                    workingtitle: this.$data.workingtitle,
+                    image       : this.$data.image,
+                    desc        : this.$data.desc,
+                    priority    : this.$data.priority
                 }, Content.getElement('form'));
 
                 var ProjectContainer = Content.getElement('.quiqqer-tags-group-project'),
@@ -246,6 +249,9 @@ define('package/quiqqer/tags/bin/groups/Group', [
                     this.$loadCategory();
                     this.Loader.hide();
                 }.bind(this));
+
+            }.bind(this)).catch(function () {
+                this.Loader.hide();
             }.bind(this));
         },
 
@@ -293,6 +299,11 @@ define('package/quiqqer/tags/bin/groups/Group', [
 
                 this.$loadCategory();
                 this.Loader.hide();
+
+            }.bind(this)).catch(function () {
+
+                this.getCategory('information').setActive();
+                this.Loader.hide();
             }.bind(this));
         },
 
@@ -302,30 +313,31 @@ define('package/quiqqer/tags/bin/groups/Group', [
          * @returns {Promise}
          */
         $unloadCategory: function () {
-            return new Promise(function (resolve) {
-                this.$unloadData();
-
+            return this.$unloadData().then(function () {
                 var Container = this.getContent().getElement(
                     '.quiqqer-tags-group-container'
                 );
 
-                if (!Container) {
-                    return resolve();
-                }
-
-                moofx(Container).animate({
-                    opacity: 0,
-                    top    : -50
-                }, {
-                    duration: 250,
-                    callback: function () {
-                        QUI.Controls.getControlsInElement(Container).each(function (Control) {
-                            Control.destroy();
-                        });
-
-                        resolve();
+                return new Promise(function (resolve) {
+                    if (!Container) {
+                        return resolve();
                     }
-                });
+
+                    moofx(Container).animate({
+                        opacity: 0,
+                        top    : -50
+                    }, {
+                        duration: 250,
+                        callback: function () {
+                            QUI.Controls.getControlsInElement(Container).each(function (Control) {
+                                Control.destroy();
+                            });
+
+                            resolve();
+                        }
+                    });
+
+                }.bind(this));
             }.bind(this));
         },
 
@@ -354,16 +366,46 @@ define('package/quiqqer/tags/bin/groups/Group', [
 
         /**
          * unload data from category
+         *
+         * @return {Promise}
          */
         $unloadData: function () {
-            var Form = this.getContent().getElement('form'),
-                data = QUIFormUtils.getFormData(Form);
+            return new Promise(function (resolve, reject) {
 
-            for (var key in data) {
-                if (data.hasOwnProperty(key)) {
-                    this.$data[key] = data[key];
+                var Form = this.getContent().getElement('form'),
+                    data = QUIFormUtils.getFormData(Form);
+
+                if (!Form) {
+                    return resolve();
                 }
-            }
+
+                for (var i = 0, len = Form.elements.length; i < len; i++) {
+                    if (!("checkValidity" in Form.elements[i])) {
+                        continue;
+                    }
+
+                    if (Form.elements[i].checkValidity()) {
+                        continue;
+                    }
+
+                    // chrome validate message
+                    if ("reportValidity" in Form.elements[i]) {
+                        Form.elements[i].reportValidity();
+                        reject(Form.elements[i].validationMessage);
+                        return;
+                    }
+                }
+
+
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        this.$data[key] = data[key];
+                    }
+                }
+
+                resolve();
+
+            }.bind(this));
         }
     });
 });

@@ -24,6 +24,16 @@
             <td>
                 <label class="field-container">
                     <span class="field-container-item">
+                        {{workingtitle}}
+                    </span>
+                    <input name="workingtitle" class="field-container-field field-title"/>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="field-container">
+                    <span class="field-container-item">
                         {{project}}
                     </span>
                     <div class="field-container-field quiqqer-tags-group-project"></div>
@@ -37,6 +47,16 @@
                         {{image}}
                     </span>
                     <input name="image" class="media-image field-container-field field-title"/>
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="field-container">
+                    <span class="field-container-item">
+                        {{priority}}
+                    </span>
+                    <input name="priority" type="number" max="9999" min="0" class="field-container-field field-title"/>
                 </label>
             </td>
         </tr>

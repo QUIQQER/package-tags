@@ -41,7 +41,22 @@ class Group
     /**
      * @var string
      */
+    protected $workingtitle = '';
+
+    /**
+     * @var string
+     */
     protected $image = '';
+
+    /**
+     * @var int
+     */
+    protected $priority = 1;
+
+    /**
+     * @var bool
+     */
+    protected $generated = false;
 
     /**
      * @var array
@@ -82,7 +97,10 @@ class Group
         $this->Manager = new QUI\Tags\Manager($this->Project);
 
         $this->setTitle($result[0]['title']);
+        $this->setWorkingTitle($result[0]['workingtitle']);
         $this->setDescription($result[0]['desc']);
+        $this->setPriority($result[0]['priority']);
+        $this->setGenerateStatus($result[0]['generated']);
 
         try {
             $this->setImage($result[0]['image']);
@@ -124,6 +142,26 @@ class Group
     }
 
     /**
+     * Return the group working title
+     *
+     * @return string
+     */
+    public function getWorkingTitle()
+    {
+        return $this->workingtitle;
+    }
+
+    /**
+     * Return the group priority
+     *
+     * @return integer
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
      * Return the group description
      *
      * @return string
@@ -157,6 +195,16 @@ class Group
     }
 
     /**
+     * Is the group generated?
+     *
+     * @return bool
+     */
+    public function isGenerated()
+    {
+        return $this->generated ? true : false;
+    }
+
+    /**
      * Set the tag group title
      * no html allowed
      *
@@ -168,14 +216,46 @@ class Group
     }
 
     /**
+     * Set the tag group working title
+     * no html allowed
+     *
+     * @param string $title
+     */
+    public function setWorkingTitle($title)
+    {
+        $this->workingtitle = trim(Orthos::removeHTML($title));
+    }
+
+    /**
      * Set the tag group description
      * no html allowed
      *
-     * @param $description
+     * @param string $description
      */
     public function setDescription($description)
     {
         $this->desc = trim(Orthos::removeHTML($description));
+    }
+
+    /**
+     *  Set the tag group priority
+     *
+     * @param integer $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = (int)$priority;
+    }
+
+    /**
+     * Set the genereated status
+     * Is the group generated?
+     *
+     * @param bool $status
+     */
+    public function setGenerateStatus($status)
+    {
+        $this->generated = $status ? true : false;
     }
 
     /**
@@ -240,10 +320,13 @@ class Group
         QUI::getDataBase()->update(
             Handler::table($this->Project),
             array(
-                'title' => $this->getTitle(),
-                'desc'  => $this->getDescription(),
-                'image' => $image,
-                'tags'  => implode($tags, ',')
+                'title'        => $this->getTitle(),
+                'workingtitle' => $this->getWorkingTitle(),
+                'desc'         => $this->getDescription(),
+                'image'        => $image,
+                'priority'     => $this->getPriority(),
+                'tags'         => implode($tags, ','),
+                'generated'    => $this->isGenerated() ? 1 : 0
             ),
             array(
                 'id' => $this->getId()
@@ -299,12 +382,15 @@ class Group
         }, $this->getTags());
 
         return array(
-            'id'        => $this->id,
-            'title'     => $this->title,
-            'desc'      => $this->desc,
-            'image'     => $this->image,
-            'tags'      => implode(',', $tags),
-            'countTags' => count($this->tags)
+            'id'           => $this->id,
+            'title'        => $this->title,
+            'workingtitle' => $this->workingtitle,
+            'desc'         => $this->desc,
+            'image'        => $this->image,
+            'priority'     => $this->priority,
+            'tags'         => implode(',', $tags),
+            'countTags'    => count($this->tags),
+            'generated'    => $this->isGenerated()
         );
     }
 

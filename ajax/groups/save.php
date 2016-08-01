@@ -24,12 +24,20 @@ QUI::$Ajax->registerFunction(
             $Group->setTitle($data['title']);
         }
 
+        if (isset($data['workingtitle'])) {
+            $Group->setWorkingTitle($data['workingtitle']);
+        }
+
         if (isset($data['description'])) {
             $Group->setDescription($data['description']);
         }
 
         if (isset($data['image'])) {
             $Group->setImage($data['image']);
+        }
+
+        if (isset($data['priority'])) {
+            $Group->setPriority($data['priority']);
         }
 
         if (isset($data['tags'])) {
