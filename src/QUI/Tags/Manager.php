@@ -206,6 +206,10 @@ class Manager
             $tagParams['url'] = Orthos::clearFormRequest($tagParams['url']);
         }
 
+        if (isset($params['generated'])) {
+            $tagParams['generated'] = $tagParams['generated'] ? 1 : 0;
+        }
+
         $result = QUI::getDataBase()->fetch(array(
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => array(

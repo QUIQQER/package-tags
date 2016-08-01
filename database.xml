@@ -9,6 +9,7 @@
             <field type="text">desc</field>
             <field type="text">image</field>
             <field type="varchar( 20 )">url</field>
+            <field type="int( 1 )">generated</field>
         </table>
 
         <table name="tags_groups" no-auto-update="1" no-site-reference="1">
