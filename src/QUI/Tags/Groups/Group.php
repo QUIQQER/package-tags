@@ -254,7 +254,7 @@ class Group
     /**
      * Add a tag to the group
      *
-     * @param $tag
+     * @param string $tag - Tag
      * @throws QUI\Tags\Exception
      */
     public function addTag($tag)
