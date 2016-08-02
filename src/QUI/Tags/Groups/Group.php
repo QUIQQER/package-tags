@@ -398,6 +398,42 @@ class Group
     }
 
     /**
+     * Remove a tag from the group
+     *
+     * @param string $tag
+     * @return void
+     */
+    public function removeTag($tag)
+    {
+        $tags = $this->getTags();
+
+        if (isset($tags[$tag])) {
+            unset($tags[$tag]);
+        }
+
+        $this->tags = $tags;
+    }
+
+    /**
+     * Remove all tags with specific generator from the group
+     *
+     * @param string $generator - tag generator
+     * @return void
+     */
+    public function removeTagsByGenerator($generator)
+    {
+        $tags = $this->getTags();
+
+        foreach ($tags as $tag => $tagData) {
+            if ($tagData['generator'] == $generator) {
+                unset($tags[$tag]);
+            }
+        }
+
+        $this->tags = $tags;
+    }
+
+    /**
      * Return the tags from the group
      *
      * @return array
