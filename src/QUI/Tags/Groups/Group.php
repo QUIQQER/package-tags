@@ -59,6 +59,11 @@ class Group
     protected $generated = false;
 
     /**
+     * @var string
+     */
+    protected $generator = '';
+
+    /**
      * @var array
      */
     protected $tags = array();
@@ -101,6 +106,7 @@ class Group
         $this->setDescription($result[0]['desc']);
         $this->setPriority($result[0]['priority']);
         $this->setGenerateStatus($result[0]['generated']);
+        $this->setGenerator($result[0]['generator']);
 
         try {
             $this->setImage($result[0]['image']);
@@ -205,6 +211,16 @@ class Group
     }
 
     /**
+     * Return generator of this tag group
+     *
+     * @return string
+     */
+    public function getGenerator()
+    {
+        return $this->generator;
+    }
+
+    /**
      * Set the tag group title
      * no html allowed
      *
@@ -255,7 +271,27 @@ class Group
      */
     public function setGenerateStatus($status)
     {
+        // cannot set to false if a generator is set
+        if (!$status && !empty($this->generator)) {
+            return;
+        }
+
         $this->generated = $status ? true : false;
+    }
+
+    /**
+     * Set string describing the generator of the tags (e.g. package name)
+     *
+     * @param string $generator
+     */
+    public function setGenerator($generator)
+    {
+        if (!is_string($generator)) {
+            return;
+        }
+
+        $this->generator = $generator;
+        $this->generated = true;
     }
 
     /**
@@ -326,7 +362,8 @@ class Group
                 'image'        => $image,
                 'priority'     => $this->getPriority(),
                 'tags'         => implode($tags, ','),
-                'generated'    => $this->isGenerated() ? 1 : 0
+                'generated'    => $this->isGenerated() ? 1 : 0,
+                'generator'    => $this->getGenerator()
             ),
             array(
                 'id' => $this->getId()
