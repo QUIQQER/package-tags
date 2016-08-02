@@ -122,8 +122,9 @@ define('package/quiqqer/tags/bin/Site', [
             this.$TagSelect.refresh();
             this.$TagGroupSelect.refresh();
 
-            var tags   = this.$Site.getAttribute('quiqqer.tags.tagList');
-            var groups = this.$Site.getAttribute('quiqqer.tags.tagGroups');
+            var tags     = this.$Site.getAttribute('quiqqer.tags.tagList');
+            var groups   = this.$Site.getAttribute('quiqqer.tags.tagGroups');
+            var promises = [];
 
             // tags
             if (typeOf(tags) === 'string') {
@@ -134,8 +135,18 @@ define('package/quiqqer/tags/bin/Site', [
                 tags = [];
             }
 
+
             for (var i = 0, len = tags.length; i < len; i++) {
-                this.$TagSelect.addTag(tags[i]);
+                if (tags[i] !== '') {
+                    promises.push(this.$TagSelect.addTag(tags[i]));
+                }
+            }
+
+            // wenn fehler passiert, wird der tag einfach nicht mitaufgenommen
+            if (promises.length) {
+                Promise.all(promises).catch(function (err) {
+                    console.error(err);
+                });
             }
 
             // groups
@@ -148,7 +159,9 @@ define('package/quiqqer/tags/bin/Site', [
             }
 
             for (i = 0, len = groups.length; i < len; i++) {
-                this.$TagGroupSelect.addTagGroup(groups[i]);
+                if (groups[i] !== '') {
+                    this.$TagGroupSelect.addTagGroup(groups[i]);
+                }
             }
 
             if (QUIQQER_TAGS_USE_GROUPS) {

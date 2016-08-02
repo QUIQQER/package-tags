@@ -13,6 +13,8 @@
  * @require Locale
  * @require Ajax
  * @require Mustache
+ * @require Projects
+ * @require package/quiqqer/tags/bin/groups/Group
  * @require text!package/quiqqer/tags/bin/groups/Panel.createGroup.html
  * @require css!package/quiqqer/tags/bin/groups/Panel.css
  */
@@ -203,10 +205,20 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                     dataType : 'text',
                     width    : 200
                 }, {
-                    header   : QUILocale.get('quiqqer/system', 'description'),
-                    dataIndex: 'description',
+                    header   : QUILocale.get('quiqqer/system', 'workingtitle'),
+                    dataIndex: 'workingtitle',
                     dataType : 'text',
                     width    : 200
+                }, {
+                    header   : QUILocale.get('quiqqer/system', 'priority'),
+                    dataIndex: 'priority',
+                    dataType : 'number',
+                    width    : 100
+                }, {
+                    header   : QUILocale.get(lg, 'tag.groups.grid.generate'),
+                    dataIndex: 'generatedIcon',
+                    dataType : 'node',
+                    width    : 60
                 }]
             });
 
@@ -244,6 +256,18 @@ define('package/quiqqer/tags/bin/groups/Panel', [
 
             return new Promise(function (resolve, reject) {
                 QUIAjax.get('package_quiqqer_tags_ajax_groups_list', function (result) {
+
+                    var iconOk = new Element('span', {
+                        'class': 'fa fa-check'
+                    });
+
+                    var iconFalse = new Element('span', {
+                        'class': 'fa fa-remove'
+                    });
+
+                    for (var i = 0, len = result.data.length; i < len; i++) {
+                        result.data[i].generatedIcon = result.data[i].generated ? iconOk.clone() : iconFalse.clone();
+                    }
 
                     this.$Grid.setData(result);
                     this.Loader.hide();
@@ -304,7 +328,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                         var Content = Win.getContent();
 
                         QUIAjax.post('package_quiqqer_tags_ajax_groups_create', function () {
-                            Win.Loader.hide();
+                            Win.close();
                             self.dataRefresh();
                         }, {
                             'package': 'quiqqer/tags',

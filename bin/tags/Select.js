@@ -210,15 +210,21 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * Add multiple tags
          *
          * @param {String|Array} tags - comma seperated tag list or array list
+         * @return {Promise}
          */
         addTags: function (tags) {
             if (typeOf(tags) === 'string') {
                 tags = tags.split(',');
             }
 
+            var promises = [];
+
+
             for (var i = 0, len = tags.length; i < len; i++) {
-                this.addTag(tags[i]);
+                promises.push(this.addTag(tags[i]));
             }
+
+            return Promise.all(promises);
         },
 
         /**

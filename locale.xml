@@ -104,6 +104,11 @@
             <en><![CDATA[Show sites with this tag]]></en>
         </locale>
 
+        <locale name="tag.groups.grid.generate">
+            <de><![CDATA[Generiert]]></de>
+            <en><![CDATA[Generate]]></en>
+        </locale>
+
         <!-- Control: TagSites -->
         <locale name="tag.groups.panel.title">
             <de><![CDATA[Tag-Gruppen]]></de>
@@ -223,6 +228,53 @@
             <de><![CDATA[QUIQQER - Tags]]></de>
             <en><![CDATA[QUIQQER - TAG's]]></en>
         </locale>
+
+
+        <locale name="filter.abc">
+            <de><![CDATA[A B C]]></de>
+            <en><![CDATA[A B C]]></en>
+        </locale>
+        <locale name="filter.def">
+            <de><![CDATA[D E F]]></de>
+            <en><![CDATA[D E F]]></en>
+        </locale>
+        <locale name="filter.ghi">
+            <de><![CDATA[G H I]]></de>
+            <en><![CDATA[G H I]]></en>
+        </locale>
+        <locale name="filter.jkl">
+            <de><![CDATA[J K L]]></de>
+            <en><![CDATA[J K L]]></en>
+        </locale>
+        <locale name="filter.mno">
+            <de><![CDATA[M N O]]></de>
+            <en><![CDATA[M N O]]></en>
+        </locale>
+        <locale name="filter.pqr">
+            <de><![CDATA[P Q R]]></de>
+            <en><![CDATA[P Q R]]></en>
+        </locale>
+        <locale name="filter.stu">
+            <de><![CDATA[S T U]]></de>
+            <en><![CDATA[S T U]]></en>
+        </locale>
+        <locale name="filter.vz">
+            <de><![CDATA[V - Z]]></de>
+            <en><![CDATA[V - Z]]></en>
+        </locale>
+        <locale name="filter.123">
+            <de><![CDATA[0 - 9]]></de>
+            <en><![CDATA[0 - 9]]></en>
+        </locale>
+        <locale name="filter.special">
+            <de><![CDATA[Sonderzeichen]]></de>
+            <en><![CDATA[Special character]]></en>
+        </locale>
+        <locale name="filter.all">
+            <de><![CDATA[Alle]]></de>
+            <en><![CDATA[all]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php">
         <locale name="site.panel.category.title">

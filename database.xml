@@ -21,6 +21,8 @@
             <field type="text">tags</field>
             <field type="int( 4 )">priority</field>
             <field type="int( 1 )">generated</field>
+
+            <auto_increment>id</auto_increment>
         </table>
 
         <table name="tags_cache" no-auto-update="1" no-site-reference="1">

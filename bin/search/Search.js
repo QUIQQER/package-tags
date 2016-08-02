@@ -71,7 +71,18 @@ define('package/quiqqer/tags/bin/search/Search', [
             this.$Elm = new Element('div', {
                 'class': 'quiqqer-tags-search',
                 html   : Mustache.render(templateSearch, {
-                    searchPlaceholder: QUILocale.get(lg, 'tag.control.placeholder.addtag')
+                    searchPlaceholder: QUILocale.get(lg, 'tag.control.placeholder.addtag'),
+                    textABC          : QUILocale.get(lg, 'filter.abc'),
+                    textDEF          : QUILocale.get(lg, 'filter.def'),
+                    textGHI          : QUILocale.get(lg, 'filter.ghi'),
+                    textJKL          : QUILocale.get(lg, 'filter.jkl'),
+                    textMNO          : QUILocale.get(lg, 'filter.mno'),
+                    textPQR          : QUILocale.get(lg, 'filter.pqr'),
+                    textSTU          : QUILocale.get(lg, 'filter.stu'),
+                    textVZ           : QUILocale.get(lg, 'filter.vz'),
+                    text123          : QUILocale.get(lg, 'filter.123'),
+                    textSpecial      : QUILocale.get(lg, 'filter.special'),
+                    textAll          : QUILocale.get(lg, 'filter.all')
                 })
             });
 
