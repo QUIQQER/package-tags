@@ -149,6 +149,7 @@ define('package/quiqqer/tags/bin/Site', [
                 });
             }
 
+
             // groups
             if (typeOf(groups) === 'string') {
                 groups = groups.split(',');
@@ -158,10 +159,19 @@ define('package/quiqqer/tags/bin/Site', [
                 groups = [];
             }
 
+            promises = [];
+
             for (i = 0, len = groups.length; i < len; i++) {
                 if (groups[i] !== '') {
-                    this.$TagGroupSelect.addTagGroup(groups[i]);
+                    promises.push(this.$TagGroupSelect.addTagGroup(groups[i]));
                 }
+            }
+
+            // wenn fehler passiert, wird die tag gruppe einfach nicht mitaufgenommen
+            if (promises.length) {
+                Promise.all(promises).catch(function (err) {
+                    console.error(err);
+                });
             }
 
             if (QUIQQER_TAGS_USE_GROUPS) {

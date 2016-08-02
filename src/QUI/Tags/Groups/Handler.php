@@ -196,6 +196,14 @@ class Handler
                         title LIKE "y%" OR
                         title LIKE "z%"';
                 break;
+
+            case 'special':
+                $where = 'title REGEXP \'^[^A-Za-z0-9]\'';
+                break;
+
+            case 'all':
+                $where = '';
+                break;
         }
 
         return QUI::getDataBase()->fetch(array(

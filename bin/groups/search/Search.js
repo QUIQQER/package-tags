@@ -124,7 +124,7 @@ define('package/quiqqer/tags/bin/groups/search/Search', [
             return this.$Result.getElements(
                 '.quiqqer-tags-groups-search-result-entry__select'
             ).map(function (Elm) {
-                return Elm.get('data-tag');
+                return Elm.get('data-id');
             });
         },
 
@@ -193,20 +193,23 @@ define('package/quiqqer/tags/bin/groups/search/Search', [
 
             for (i = 0, len = result.length; i < len; i++) {
                 tagData = result[i];
-                tag     = tagData.tag;
-                title   = tag;
+                title   = '';
 
-                if (tagData.title !== '') {
+                if (tagData.workingtitle !== '') {
+                    title = tagData.workingtitle;
+                }
+                
+                if (title === '') {
                     title = tagData.title;
                 }
 
                 new Element('div', {
-                    'class'   : 'quiqqer-tags-groups-search-result-entry',
-                    html      : Mustache.render(templateSearchTag, {
+                    'class'  : 'quiqqer-tags-groups-search-result-entry',
+                    html     : Mustache.render(templateSearchTag, {
                         title: title
                     }),
-                    'data-tag': tag,
-                    events    : {
+                    'data-id': tagData.id,
+                    events   : {
                         click   : onClick,
                         dblclick: onDblClick
                     }

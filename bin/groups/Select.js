@@ -148,7 +148,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
          * Add a taggroup
          *
          * @param {Number} id - ID of the group
-         * @returns {*}
+         * @returns {Promise}
          */
         addTagGroup: function (id) {
             return new Promise(function (resolve, reject) {
@@ -195,15 +195,20 @@ define('package/quiqqer/tags/bin/groups/Select', [
          * Add multiple tag groups
          *
          * @param {String|Array} taggroups - comma seperated tag group list or array list
+         * @return {Promise}
          */
         addTagGroups: function (taggroups) {
             if (typeOf(taggroups) === 'string') {
                 taggroups = taggroups.split(',');
             }
 
+            var promises = [];
+
             for (var i = 0, len = taggroups.length; i < len; i++) {
-                this.addTagGroup(taggroups[i]);
+                promises.push(this.addTagGroup(taggroups[i]));
             }
+
+            return Promise.all(promises);
         },
 
         /**

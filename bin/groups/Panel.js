@@ -312,6 +312,9 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                         }));
 
                         QUI.parse(Content).then(function () {
+
+                            Content.getElement('[name="title"]').focus();
+
                             return new Promise(function (resolve) {
                                 require(['utils/Controls'], function (Utils) {
                                     Utils.parse(Content).then(resolve);
