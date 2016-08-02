@@ -10,6 +10,7 @@
             <field type="text">image</field>
             <field type="varchar( 20 )">url</field>
             <field type="int( 1 )">generated</field>
+            <field type="varchar( 255 )">generator</field>
         </table>
 
         <table name="tags_groups" no-auto-update="1" no-site-reference="1">
@@ -21,6 +22,7 @@
             <field type="text">tags</field>
             <field type="int( 4 )">priority</field>
             <field type="int( 1 )">generated</field>
+            <field type="varchar( 255 )">generator</field>
 
             <auto_increment>id</auto_increment>
         </table>
