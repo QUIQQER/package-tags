@@ -210,6 +210,10 @@ class Manager
             $tagParams['generated'] = $tagParams['generated'] ? 1 : 0;
         }
 
+        if (isset($params['generator']) && is_string($params['generator'])) {
+            $tagParams['generator'] = $params['generator'];
+        }
+
         $result = QUI::getDataBase()->fetch(array(
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => array(
@@ -325,6 +329,44 @@ class Manager
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => array(
                 'title' => $title
+            ),
+            'limit' => 1
+        ));
+
+        if (!isset($result[0])) {
+            throw new QUI\Tags\Exception(
+                array(
+                    'quiqqer/tags',
+                    'exception.tag.not.found'
+                ),
+                404
+            );
+        }
+
+        $tagData = $result[0];
+
+        if (isset($this->tags[$tagData['tag']])) {
+            return $this->tags[$tagData['tag']];
+        }
+
+        $this->tags[$tagData['tag']] = $tagData;
+
+        return $tagData;
+    }
+
+    /**
+     * Return a tag by generator
+     *
+     * @param string $generator
+     * @return array - tag attributes
+     * @throws QUI\Exception
+     */
+    public function getByGenerator($generator)
+    {
+        $result = QUI::getDataBase()->fetch(array(
+            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'where' => array(
+                'generator' => $generator
             ),
             'limit' => 1
         ));
