@@ -398,6 +398,22 @@ class Group
     }
 
     /**
+     * Add multiple tags to the group
+     *
+     * @param array $tags - tags
+     */
+    public function addTags($tags)
+    {
+        foreach ($tags as $tag) {
+            try {
+                $this->addTag($tag);
+            } catch (\Exception $Exception) {
+                // do not add tag
+            }
+        }
+    }
+
+    /**
      * Remove a tag from the group
      *
      * @param string $tag
