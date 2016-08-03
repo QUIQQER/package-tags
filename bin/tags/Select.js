@@ -19,11 +19,12 @@ define('package/quiqqer/tags/bin/tags/Select', [
     'qui/QUI',
     'qui/controls/elements/Select',
     'qui/controls/buttons/Button',
+    'qui/controls/loader/Loader',
     'Locale',
     'Ajax',
     'Projects'
 
-], function (QUI, QUIElementSelect, QUIButton, QUILocale, QUIAjax, Projects) {
+], function (QUI, QUIElementSelect, QUIButton, QUILoader, QUILocale, QUIAjax, Projects) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -70,6 +71,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 this.getAttribute('projectName'),
                 this.getAttribute('projectLang')
             );
+
+            this.Loader = new QUILoader();
 
             this.addEvents({
                 onSearchButtonClick: this.$onSearchButtonClick,
@@ -156,6 +159,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     }.bind(this));
                 }
             }.bind(this));
+
+            this.Loader.inject(this.getElm());
         },
 
         /**

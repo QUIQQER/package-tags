@@ -149,7 +149,6 @@ define('package/quiqqer/tags/bin/Site', [
                 });
             }
 
-
             // groups
             if (typeOf(groups) === 'string') {
                 groups = groups.split(',');
