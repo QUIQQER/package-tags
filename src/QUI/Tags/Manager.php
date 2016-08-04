@@ -430,6 +430,10 @@ class Manager
             $tags[] = $row['tag'];
         }
 
+        if (empty($result)) {
+            return $tags;
+        }
+
         // get count
         $countResult = QUI::getDataBase()->fetch(array(
             'select' => array(
