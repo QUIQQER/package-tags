@@ -20,6 +20,8 @@ QUI::$Ajax->registerFunction(
         $projectLang,
         $gridParams
     ) {
+        ini_set('display_errors', 1);
+
         $Tags = new QUI\Tags\Manager(
             QUI::getProject($projectName, $projectLang)
         );
