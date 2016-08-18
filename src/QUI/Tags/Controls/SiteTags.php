@@ -82,7 +82,6 @@ class SiteTags extends QUI\Control
 
         try {
             $result = QUI\Cache\Manager::get($cacheName);
-
         } catch (QUI\Exception $Exception) {
             $result = $Project->getSites(array(
                 'where' => array(

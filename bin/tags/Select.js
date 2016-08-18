@@ -127,10 +127,11 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 new Window({
                     projectName: self.$Project.getName(),
                     projectLang: self.$Project.getLang(),
+                    selected   : self.getTags().split(','),
                     events     : {
                         onSubmit: function (Win, values) {
                             for (var i = 0, len = values.length; i < len; i++) {
-                                self.addItem(values[i]);
+                                self.addTag(values[i]);
                             }
                         }
                     }
@@ -167,9 +168,19 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * Add a tag
          *
          * @param {String} tag - name of the tag
-         * @returns {*}
+         * @returns {Promise}
          */
         addTag: function (tag) {
+            // filter duplicates
+            var found = this.getTags().split(',').filter(function (val) {
+                return val === tag;
+            });
+
+            // found some tags
+            if (found.length) {
+                return Promise.resolve();
+            }
+
             return new Promise(function (resolve, reject) {
                 this.Loader.show();
 

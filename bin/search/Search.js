@@ -40,7 +40,8 @@ define('package/quiqqer/tags/bin/search/Search', [
 
         options: {
             projectName: false,
-            projectLang: false
+            projectLang: false,
+            selected   : []
         },
 
         initialize: function (options) {
@@ -55,7 +56,16 @@ define('package/quiqqer/tags/bin/search/Search', [
             this.$Search = null;
             this.$Result = null;
 
+            this.$selected    = {};
             this.$searchtimer = false;
+
+            if (this.getAttribute('selected')) {
+                var selected = this.getAttribute('selected');
+
+                for (var i = 0, len = selected.length; i < len; i++) {
+                    this.$selected[selected[i]] = true;
+                }
+            }
 
             this.addEvents({
                 onInject: this.$onInject
@@ -182,11 +192,7 @@ define('package/quiqqer/tags/bin/search/Search', [
          * @return {Array} - list of selected tags
          */
         getSelectedTags: function () {
-            return this.$Result.getElements(
-                '.quiqqer-tags-search-result-entry__select'
-            ).map(function (Elm) {
-                return Elm.get('data-tag');
-            });
+            return Object.keys(this.$selected);
         },
 
         /**
@@ -224,19 +230,29 @@ define('package/quiqqer/tags/bin/search/Search', [
 
             this.$Result.set('html', '');
 
-            var i, len, tag, title, tagData;
+            var i, len, tag, title, tagData, Tag;
             var self = this;
 
 
             var onClick = function () {
+                var tag = this.get('data-tag');
+
                 if (this.hasClass('quiqqer-tags-search-result-entry__select')) {
+                    if (tag in self.$selected) {
+                        delete self.$selected[tag];
+                    }
+
                     this.removeClass('quiqqer-tags-search-result-entry__select');
-                    self.fireEvent('unSelect', [self, this.get('data-tag')]);
-                } else {
-                    this.addClass('quiqqer-tags-search-result-entry__select');
-                    self.fireEvent('select', [self, this.get('data-tag')]);
+                    self.fireEvent('unSelect', [self, tag]);
+                    self.fireEvent('change', [self]);
+
+                    return;
                 }
 
+                self.$selected[tag] = true;
+
+                this.addClass('quiqqer-tags-search-result-entry__select');
+                self.fireEvent('select', [self, tag]);
                 self.fireEvent('change', [self]);
             };
 
@@ -251,7 +267,6 @@ define('package/quiqqer/tags/bin/search/Search', [
                 self.submit();
             };
 
-
             for (i = 0, len = result.length; i < len; i++) {
                 tagData = result[i];
                 tag     = tagData.tag;
@@ -261,7 +276,7 @@ define('package/quiqqer/tags/bin/search/Search', [
                     title = tagData.title;
                 }
 
-                new Element('div', {
+                Tag = new Element('div', {
                     'class'   : 'quiqqer-tags-search-result-entry',
                     html      : Mustache.render(templateSearchTag, {
                         title: title
@@ -272,6 +287,10 @@ define('package/quiqqer/tags/bin/search/Search', [
                         dblclick: onDblClick
                     }
                 }).inject(this.$Result);
+
+                if (tag in this.$selected) {
+                    Tag.addClass('quiqqer-tags-search-result-entry__select');
+                }
             }
         }
     });

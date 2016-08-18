@@ -25,10 +25,8 @@ QUI::$Ajax->registerFunction(
         foreach ($tags as $tag) {
             try {
                 $Tags->deleteTag($tag);
-
             } catch (QUI\Database\Exception $Exception) {
                 QUI\System\Log::addDebug($Exception->getMessage());
-
             } catch (QUI\Exception $Exception) {
                 QUI::getMessagesHandler()->addError($Exception->getMessage());
             }

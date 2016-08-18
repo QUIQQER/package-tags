@@ -95,7 +95,7 @@ class Cron
             }
 
             $DataBase->insert($tableCache, array(
-                'tag' => $tag,
+                'tag'   => $tag,
                 'sites' => ',' . implode(',', $siteIds) . ',',
                 'count' => count($siteIds)
             ));
@@ -130,19 +130,17 @@ class Cron
                     continue;
                 }
 
-
                 $DataBase->insert(
                     $tableSiteCache,
                     array(
-                        'id' => $Site->getId(),
-                        'name' => $Site->getAttribute('name'),
-                        'title' => $Site->getAttribute('title'),
-                        'tags' => $entry['tags'],
+                        'id'     => $Site->getId(),
+                        'name'   => $Site->getAttribute('name'),
+                        'title'  => $Site->getAttribute('title'),
+                        'tags'   => $entry['tags'],
                         'c_date' => $Site->getAttribute('c_date'),
                         'e_date' => $Site->getAttribute('e_date')
                     )
                 );
-
             } catch (QUI\Exception $Exception) {
             }
         }

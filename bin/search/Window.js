@@ -40,7 +40,8 @@ define('package/quiqqer/tags/bin/search/Window', [
             maxWidth   : 400,
             icon       : 'fa fa-search',
             title      : QUILocale.get(lg, 'control.tags.search.window.title'),
-            autoclose  : true
+            autoclose  : true,
+            selected   : []
         },
 
         initialize: function (options) {
@@ -72,6 +73,7 @@ define('package/quiqqer/tags/bin/search/Window', [
             this.$Search = new Search({
                 projectName: this.getAttribute('projectName'),
                 projectLang: this.getAttribute('projectLang'),
+                selected   : this.getAttribute('selected'),
                 events     : {
                     onChange: function (Search) {
                         if (Search.getSelectedTags().length) {
