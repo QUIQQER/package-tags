@@ -585,9 +585,13 @@ class Manager
     {
         $search = mb_strtolower($search);
         $query  = array(
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-            'where' => array(
-                'tag' => array(
+            'from'     => QUI::getDBProjectTableName('tags', $this->Project),
+            'where_or' => array(
+                'tag'   => array(
+                    'value' => $search,
+                    'type'  => '%LIKE%'
+                ),
+                'title' => array(
                     'value' => $search,
                     'type'  => '%LIKE%'
                 )

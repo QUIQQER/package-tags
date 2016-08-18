@@ -99,19 +99,23 @@ define('package/quiqqer/tags/bin/search/Search', [
 
                 if (value === '') {
                     this.$Select.disabled = false;
-                    this.getTagsBySektor(value).then(this.$renderResult);
+                    this.getTagsBySektor(this.$Select.value).then(this.$renderResult);
                     return;
                 }
 
                 this.$Select.disabled = true;
                 this.$executeSearch();
-
             }.bind(this);
 
             this.$Search.addEvent('keyup', searchtrigger);
             this.$Search.addEvent('change', searchtrigger);
-            this.$Search.addEvent('search', searchtrigger);
-            this.$Search.addEvent('blur', searchtrigger);
+
+            try {
+                this.$Search.addEventListener('search', function () {
+                    searchtrigger();
+                });
+            } catch (e) {
+            }
 
             return this.$Elm;
         },
