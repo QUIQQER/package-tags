@@ -154,7 +154,6 @@ class Manager
 
         try {
             $Statement->execute();
-
         } catch (\PDOException $Exception) {
             throw new QUI\Database\Exception(
                 $Exception->getMessage(),
@@ -590,7 +589,7 @@ class Manager
             'where' => array(
                 'tag' => array(
                     'value' => $search,
-                    'type'  => 'LIKE%'
+                    'type'  => '%LIKE%'
                 )
             )
         );
@@ -716,7 +715,6 @@ class Manager
                 $Child->load('quiqqer/tags');
 
                 $result[] = $Child;
-
             } catch (QUI\Exception $Exception) {
             }
         }
