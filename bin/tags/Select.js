@@ -76,7 +76,15 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
             this.addEvents({
                 onSearchButtonClick: this.$onSearchButtonClick,
-                onCreate           : this.$onCreate
+                onCreate           : this.$onCreate,
+                onSetAttribute     : function (attr, value) {
+                    if (attr == 'projectLang') {
+                        this.$Project = Projects.get(
+                            this.getAttribute('projectName'),
+                            value
+                        );
+                    }
+                }.bind(this)
             });
         },
 
@@ -87,6 +95,10 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * @returns {Promise}
          */
         tagSearch: function (value) {
+            if (!this.$Project) {
+                return Promise.reject('No project available');
+            }
+
             return new Promise(function (resolve) {
                 QUIAjax.get('package_quiqqer_tags_ajax_search_search', function (result) {
                     var list = [];
@@ -179,6 +191,10 @@ define('package/quiqqer/tags/bin/tags/Select', [
             // found some tags
             if (found.length) {
                 return Promise.resolve();
+            }
+
+            if (!this.$Project) {
+                return Promise.reject('No project available');
             }
 
             return new Promise(function (resolve, reject) {
