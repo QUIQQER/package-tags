@@ -29,7 +29,7 @@ define('package/quiqqer/tags/bin/groups/Group', [
     'utils/Controls',
     'package/quiqqer/tags/bin/tags/Select',
 
-    'text!package/quiqqer/tags/bin/groups/Group.information.html.html',
+    'text!package/quiqqer/tags/bin/groups/Group.information.html',
     'css!package/quiqqer/tags/bin/groups/Group.css'
 
 ], function (QUI, QUIPanel, QUIButton, QUIFormUtils, QUILocale, QUIAjax,
