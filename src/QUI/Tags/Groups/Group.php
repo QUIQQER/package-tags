@@ -456,7 +456,13 @@ class Group
      */
     public function getTags()
     {
-        return array_values($this->tags);
+        $tags = array_values($this->tags);
+
+        usort($tags, function ($a, $b) {
+            return strcmp($a["title"], $b["title"]);
+        });
+
+        return $tags;
     }
 
     /**
