@@ -11,7 +11,7 @@
  * @require Ajax
  * @require Projects
  *
- * @event onAddTag [ this, id ]
+ * @event onAddTag [ this, tag ]
  * @event onChange [ this ]
  */
 define('package/quiqqer/tags/bin/tags/Select', [
@@ -84,6 +84,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
                             value
                         );
                     }
+                }.bind(this),
+                onAddItem: function(Control, tag) {
+                    this.fireEvent('addTag', [this, tag]);
                 }.bind(this)
             });
         },
@@ -202,8 +205,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
                 QUIAjax.get([
                     'ajax_permissions_session_hasPermission',
-                    'package_quiqqer_tags_ajax_tag_exists'
-                ], function (hasPermission, tagExists) {
+                    'package_quiqqer_tags_ajax_tag_exists',
+                    'package_quiqqer_tags_ajax_tag_getData'
+                ], function (hasPermission, tagExists, TagData) {
                     if (!hasPermission && !tagExists) {
                         QUI.getMessageHandler(function (MH) {
                             MH.addError(
@@ -223,10 +227,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     }
 
                     this.Loader.hide();
-                    this.addItem(tag);
+                    this.addItem(TagData.tag);
 
                     resolve();
-
                 }.bind(this), {
                     'package'  : 'quiqqer/tags',
                     permission : 'tags.create',
