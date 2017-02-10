@@ -39,9 +39,10 @@ define('package/quiqqer/tags/bin/search/Search', [
         ],
 
         options: {
-            projectName: false,
-            projectLang: false,
-            selected   : []
+            projectName   : false,
+            projectLang   : false,
+            selected      : [],
+            dblClickSubmit: true    // determines if tag selection can be submitted by double click
         },
 
         initialize: function (options) {
@@ -257,6 +258,10 @@ define('package/quiqqer/tags/bin/search/Search', [
             };
 
             var onDblClick = function (event) {
+                if (!self.getAttribute('dblClickSubmit')) {
+                    return;
+                }
+
                 event.stop();
 
                 self.$Result.getElements(
