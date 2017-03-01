@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+.qui-tags-sites-container {
+    float: left;
+    height: 100%;
+    width: 100%;
+}
+
+.qui-tags-sites-container-list {
+    float: left;
+    height: 100%;
+    width: 100%;
+}

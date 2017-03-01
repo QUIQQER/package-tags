@@ -25,19 +25,18 @@ if ($siteUrl != $_REQUEST['_url']
         }
 
         $TagSite = new QUI\Projects\Site\Virtual(array(
-            'id' => $Site->getId(),
-            'name' => $tag['tag'],
-            'url' => URL_DIR . $_REQUEST['_url'],
+            'id'    => $Site->getId(),
+            'name'  => $tag['tag'],
+            'url'   => URL_DIR . $_REQUEST['_url'],
             'title' => $tag['title']
         ), $Project, $Site);
 
         QUI::getRewrite()->addSiteToPath($TagSite);
 
         $Engine->assign(array(
-            'tag' => $tag,
+            'tag'   => $tag,
             'sites' => $Manager->getSitesFromTags(array($tag['tag']))
         ));
-
     } catch (QUI\Exception $Exception) {
         QUI::getRewrite()->showErrorHeader(404);
 

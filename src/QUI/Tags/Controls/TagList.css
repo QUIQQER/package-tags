@@ -67,20 +67,32 @@
 
 .quiqqer-tags-list-result-entry-text {
     float: left;
-    width: calc( 100% - 110px )
+    width: calc( 100% - 120px )
 }
 
 .quiqqer-tags-list-result-header-link:hover {
     text-decoration: underline;
 }
 
-.quiqqer-tags-list-result-image {
+.quiqqer-tags-list-result-image-div {
     float: left;
-    margin: 0 10px 0 0;
-    max-width: 100%;
+    width: 120px;
+    height: 80px;
+    text-align: center;
+    transform-style: preserve-3d;
 }
 
-.quiqqer-tags-list-result-entry-imgplaceholder {
+.quiqqer-tags-list-result-image-img {
+    max-width: 100px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*.quiqqer-tags-list-result-entry-imgplaceholder {
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
@@ -88,4 +100,4 @@
     height: 100px;
     margin: 0 10px 0 0;
     width: 100px;
-}
+}*/

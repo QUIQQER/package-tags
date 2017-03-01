@@ -9,7 +9,7 @@ namespace QUI\Tags;
 use QUI;
 use QUI\Utils\Security\Orthos;
 use QUI\Projects\Site\Edit;
-use QUI\Rights\Permission;
+use QUI\Permissions\Permission;
 use QUI\Utils\Grid;
 
 /**
@@ -52,7 +52,7 @@ class Manager
      * @param array $params
      *
      * @return string - Tag
-     * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
     public function add($tag, $params)
     {
@@ -61,13 +61,22 @@ class Manager
         $title = Orthos::removeHTML($tag);
         $title = Orthos::clearFormRequest($title);
 
+        if ($this->existsTagTitle($title)) {
+            throw new QUI\Tags\Exception(array(
+                'quiqqer/tags',
+                'exception.tag.already.exists'
+            ));
+        }
+
         $tag = $this->clearTagName($tag);
 
+        // if tag name exists -> append (increasing) number
         if ($this->existsTag($tag)) {
-            throw new QUI\Exception(
-                QUI::getLocale()
-                    ->get('quiqqer/tags', 'exception.tag.already.exists')
-            );
+            $i = 1;
+
+            do {
+                $tag .= (string)$i++;
+            } while ($this->existsTag($tag));
         }
 
         QUI::getDataBase()->insert(
@@ -145,7 +154,6 @@ class Manager
 
         try {
             $Statement->execute();
-
         } catch (\PDOException $Exception) {
             throw new QUI\Database\Exception(
                 $Exception->getMessage(),
@@ -168,7 +176,7 @@ class Manager
      * @param string $tag
      * @param array $params
      *
-     * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
     public function edit($tag, $params)
     {
@@ -197,6 +205,14 @@ class Manager
             $tagParams['url'] = Orthos::clearFormRequest($tagParams['url']);
         }
 
+        if (isset($params['generated'])) {
+            $tagParams['generated'] = $tagParams['generated'] ? 1 : 0;
+        }
+
+        if (isset($params['generator']) && is_string($params['generator'])) {
+            $tagParams['generator'] = $params['generator'];
+        }
+
         $result = QUI::getDataBase()->fetch(array(
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => array(
@@ -206,7 +222,7 @@ class Manager
 
         foreach ($result as $tagEntry) {
             if ($tagEntry['tag'] != $tag) {
-                throw new QUI\Exception(
+                throw new QUI\Tags\Exception(
                     QUI::getLocale()->get(
                         'quiqqer/tags',
                         'exception.tag.title.exist'
@@ -215,7 +231,6 @@ class Manager
                 );
             }
         }
-
 
         QUI::getDataBase()->update(
             QUI::getDBProjectTableName('tags', $this->Project),
@@ -245,11 +260,31 @@ class Manager
     }
 
     /**
+     * Checks if a tag with a specific title exists
+     *
+     * @param string $title
+     * @return boolean
+     */
+    public function existsTagTitle($title)
+    {
+        $result = QUI::getDataBase()->fetch(array(
+            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'where' => array(
+                'title' => $title
+            ),
+            'limit' => 1
+        ));
+
+        return isset($result[0]);
+    }
+
+    /**
      * Return a tag
      *
      * @param string $tag
+     * @return array
      *
-     * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
     public function get($tag)
     {
@@ -266,8 +301,8 @@ class Manager
         ));
 
         if (!isset($result[0])) {
-            throw new QUI\Exception(
-                QUI::getLocale()->get(
+            throw new QUI\Tags\Exception(
+                array(
                     'quiqqer/tags',
                     'exception.tag.not.found'
                 ),
@@ -281,6 +316,82 @@ class Manager
     }
 
     /**
+     * Return a tag by title
+     *
+     * @param string $title
+     * @return array - tag attributes
+     * @throws QUI\Exception
+     */
+    public function getByTitle($title)
+    {
+        $result = QUI::getDataBase()->fetch(array(
+            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'where' => array(
+                'title' => $title
+            ),
+            'limit' => 1
+        ));
+
+        if (!isset($result[0])) {
+            throw new QUI\Tags\Exception(
+                array(
+                    'quiqqer/tags',
+                    'exception.tag.not.found'
+                ),
+                404
+            );
+        }
+
+        $tagData = $result[0];
+
+        if (isset($this->tags[$tagData['tag']])) {
+            return $this->tags[$tagData['tag']];
+        }
+
+        $this->tags[$tagData['tag']] = $tagData;
+
+        return $tagData;
+    }
+
+    /**
+     * Return a tag by generator
+     *
+     * @param string $generator
+     * @return array - tag attributes
+     * @throws QUI\Exception
+     */
+    public function getByGenerator($generator)
+    {
+        $result = QUI::getDataBase()->fetch(array(
+            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'where' => array(
+                'generator' => $generator
+            ),
+            'limit' => 1
+        ));
+
+        if (!isset($result[0])) {
+            throw new QUI\Tags\Exception(
+                array(
+                    'quiqqer/tags',
+                    'exception.tag.not.found'
+                ),
+                404
+            );
+        }
+
+        $tagData = $result[0];
+
+        if (isset($this->tags[$tagData['tag']])) {
+            return $this->tags[$tagData['tag']];
+        }
+
+        $this->tags[$tagData['tag']] = $tagData;
+
+        return $tagData;
+    }
+
+    /**
      * Return all tags from a project
      * if params set, the return is an grid result array
      *
@@ -290,21 +401,68 @@ class Manager
      */
     public function getList($params = array())
     {
-        if (empty($params)) {
-            return QUI::getDataBase()->fetch(array(
-                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-                'order' => 'tag'
-            ));
-        }
+        $Grid  = new Grid();
+        $order = 'tag ASC';
 
-        $Grid = new Grid();
+        if (isset($params['sortOn']) &&
+            !empty($params['sortOn'])
+        ) {
+            $order = '`' . $params['sortOn'] . '`';
+
+            if (isset($params['sortBy']) &&
+                !empty($params['sortBy'])
+            ) {
+                $order .= ' ' . $params['sortBy'];
+            }
+        }
 
         $params = array_merge($Grid->parseDBParams($params), array(
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-            'order' => 'tag'
+            'order' => $order
         ));
 
-        return QUI::getDataBase()->fetch($params);
+        $result    = QUI::getDataBase()->fetch($params);
+        $tags      = array();
+        $tagsCount = array();
+
+        foreach ($result as $row) {
+            $tags[] = $row['tag'];
+        }
+
+        if (empty($result)) {
+            return $tags;
+        }
+
+        // get count
+        $countResult = QUI::getDataBase()->fetch(array(
+            'select' => array(
+                'tag',
+                'count'
+            ),
+            'from'   => QUI::getDBProjectTableName('tags_cache', $this->Project),
+            'where'  => array(
+                'tag' => array(
+                    'type'  => 'IN',
+                    'value' => $tags
+                )
+            )
+        ));
+
+        foreach ($countResult as $row) {
+            $tagsCount[$row['tag']] = $row['count'];
+        }
+
+        foreach ($result as $k => $row) {
+            if (isset($tagsCount[$row['tag']])) {
+                $row['count'] = $tagsCount[$row['tag']];
+            } else {
+                $row['count'] = 0;
+            }
+
+            $result[$k] = $row;
+        }
+
+        return $result;
     }
 
     /**
@@ -419,26 +577,39 @@ class Manager
      * Search similar tags
      *
      * @param string $search - Search string
+     * @param array $queryParams - optional, query params order, limit
      *
      * @return array
      */
-    public function searchTags($search)
+    public function searchTags($search, $queryParams = array())
     {
         $search = mb_strtolower($search);
-
-        $result = QUI::getDataBase()->fetch(array(
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-            'where' => array(
-                'tag' => array(
+        $query  = array(
+            'from'     => QUI::getDBProjectTableName('tags', $this->Project),
+            'where_or' => array(
+                'tag'   => array(
                     'value' => $search,
-                    'type'  => 'LIKE%'
+                    'type'  => '%LIKE%'
+                ),
+                'title' => array(
+                    'value' => $search,
+                    'type'  => '%LIKE%'
                 )
             )
-        ));
+        );
+
+        if (isset($queryParams['order'])) {
+            $query['order'] = $queryParams['order'];
+        }
+
+        if (isset($queryParams['limit'])) {
+            $query['limit'] = $queryParams['limit'];
+        }
+
+        $result = QUI::getDataBase()->fetch($query);
 
         return $result;
     }
-
 
     /**
      * Return all site ids that have the tags
@@ -548,7 +719,6 @@ class Manager
                 $Child->load('quiqqer/tags');
 
                 $result[] = $Child;
-
             } catch (QUI\Exception $Exception) {
             }
         }
@@ -560,6 +730,53 @@ class Manager
     /**
      * site methods
      */
+
+    /**
+     * Adds a single tag to a site
+     *
+     * @param integer $siteId - ID of Site
+     * @param string $tag - Tag name
+     *
+     * @return void
+     */
+    public function addTagToSite($siteId, $tag)
+    {
+        if (!$this->existsTag($tag)) {
+            return;
+        }
+
+        $siteTags = $this->getSiteTags($siteId);
+
+        if (in_array($tag, $siteTags)) {
+            return;
+        }
+
+        $siteTags[] = $tag;
+
+        $this->setSiteTags($siteId, $siteTags);
+    }
+
+    /**
+     * Removes a single tag from a Site
+     *
+     * @param integer $siteId - ID of Site
+     * @param string $tag - Tag name
+     *
+     * @return void
+     */
+    public function removeTagFromSite($siteId, $tag)
+    {
+        $siteTags = $this->getSiteTags($siteId);
+
+        if (!in_array($tag, $siteTags)) {
+            return;
+        }
+
+        $k = array_search($tag, $siteTags);
+        unset($siteTags[$k]);
+
+        $this->setSiteTags($siteId, $siteTags);
+    }
 
     /**
      * Set tags to a site
@@ -589,7 +806,6 @@ class Manager
             }
         }
 
-
         // entry exists?
         $result = QUI::getDataBase()->fetch(array(
             'from'  => $table,
@@ -605,7 +821,6 @@ class Manager
             ));
         }
 
-
         QUI::getDataBase()->update(
             $table,
             array('tags' => ',' . implode(',', $list) . ','),
@@ -613,11 +828,10 @@ class Manager
         );
 
         // if side is not active, dont generate the cache
-        if ($isActive === false) {
+        if ($isActive == false) {
             $this->removeSiteFromTags($siteId, $list);
             return;
         }
-
 
         $tableTagCache = QUI::getDBProjectTableName('tags_cache', $this->Project);
 
@@ -634,7 +848,8 @@ class Manager
             if (!isset($result[0])) {
                 QUI::getDataBase()->insert($tableTagCache, array(
                     'tag'   => $tag,
-                    'sites' => ',' . $siteId . ','
+                    'sites' => ',' . $siteId . ',',
+                    'count' => 1
                 ));
 
                 continue;
@@ -645,7 +860,8 @@ class Manager
             }
 
             QUI::getDataBase()->update($tableTagCache, array(
-                'sites' => $result[0]['sites'] . $siteId . ','
+                'sites' => $result[0]['sites'] . $siteId . ',',
+                'count' => count($result[0]['sites']) + 1
             ), array(
                 'tag' => $tag
             ));
@@ -664,7 +880,6 @@ class Manager
             return;
         }
 
-
         // cleanup tag cache
         $tableTagCache = QUI::getDBProjectTableName(
             'tags_cache',
@@ -678,7 +893,6 @@ class Manager
                 $list[] = $tag;
             }
         }
-
 
         // update cache of tags
         foreach ($list as $tag) {
@@ -706,7 +920,8 @@ class Manager
             );
 
             QUI::getDataBase()->update($tableTagCache, array(
-                'sites' => $result[0]['sites']
+                'sites' => $result[0]['sites'],
+                'count' => count($result[0]['sites'])
             ), array(
                 'tag' => $tag
             ));
@@ -756,5 +971,30 @@ class Manager
         $tags = explode(',', $tags);
 
         return $tags;
+    }
+
+    /**
+     * Get number of sites a tag is associated with
+     *
+     * @param string $tag
+     * @return integer
+     */
+    public function getTagCount($tag)
+    {
+        $result = array(
+            'select' => array(
+                'count'
+            ),
+            'from'   => QUI::getDBProjectTableName('tags_cache', $this->Project),
+            'where'  => array(
+                'tag' => $tag
+            )
+        );
+
+        if (empty($result)) {
+            return 0;
+        }
+
+        return $result[0]['count'];
     }
 }

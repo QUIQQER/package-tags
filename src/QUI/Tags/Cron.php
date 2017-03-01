@@ -57,7 +57,7 @@ class Cron
                 }
 
                 $tag = Manager::clearTagName($tag);
-                $tag = mb_strtolower($tag);
+//                $tag = mb_strtolower($tag);
 
                 $entry['id'] = (int)$entry['id'];
 
@@ -73,11 +73,10 @@ class Cron
             }
         }
 
-
         /**
          * Tag cache
          */
-        $DataBase->Table()->truncate($tableCache);
+        $DataBase->table()->truncate($tableCache);
 
         foreach ($list as $tag => $entry) {
             $siteIds = array();
@@ -96,15 +95,16 @@ class Cron
             }
 
             $DataBase->insert($tableCache, array(
-                'tag' => $tag,
-                'sites' => ',' . implode(',', $siteIds) . ','
+                'tag'   => $tag,
+                'sites' => ',' . implode(',', $siteIds) . ',',
+                'count' => count($siteIds)
             ));
         }
 
         /**
          * Sites cache
          */
-        $DataBase->Table()->truncate($tableSiteCache);
+        $DataBase->table()->truncate($tableSiteCache);
 
         foreach ($result as $entry) {
             if (empty($entry['tags'])) {
@@ -130,19 +130,17 @@ class Cron
                     continue;
                 }
 
-
                 $DataBase->insert(
                     $tableSiteCache,
                     array(
-                        'id' => $Site->getId(),
-                        'name' => $Site->getAttribute('name'),
-                        'title' => $Site->getAttribute('title'),
-                        'tags' => $entry['tags'],
+                        'id'     => $Site->getId(),
+                        'name'   => $Site->getAttribute('name'),
+                        'title'  => $Site->getAttribute('title'),
+                        'tags'   => $entry['tags'],
                         'c_date' => $Site->getAttribute('c_date'),
                         'e_date' => $Site->getAttribute('e_date')
                     )
                 );
-
             } catch (QUI\Exception $Exception) {
             }
         }

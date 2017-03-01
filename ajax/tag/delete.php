@@ -1,37 +1,37 @@
 <?php
 
 /**
- * Add a tag
- *
- * @param String $projectName - name of the project
- * @param String $projectLang - lang of the project
- * @param String $tags        - JSON Array, list of tags to be deleted
- *
- * @return Array
+ * This file contains package_quiqqer_tags_ajax_tag_delete
  */
-function package_quiqqer_tags_ajax_tag_delete($projectName, $projectLang, $tags)
-{
-    $Tags = new QUI\Tags\Manager(
-        QUI::getProject($projectName, $projectLang)
-    );
 
-    $tags = json_decode($tags, true);
-
-    foreach ($tags as $tag) {
-        try {
-            $Tags->deleteTag($tag);
-
-        } catch (QUI\Database\Exception $Exception) {
-            QUI\System\Log::addDebug($Exception->getMessage());
-
-        } catch (QUI\Exception $Exception) {
-            QUI::getMessagesHandler()->addError($Exception->getMessage());
-        }
-    }
-}
-
-QUI::$Ajax->register(
+/**
+ * Delete a tag(s)
+ *
+ * @param string $projectName - name of the project
+ * @param string $projectLang - lang of the project
+ * @param string $tags - JSON Array, list of tags to be deleted
+ *
+ * @return array
+ */
+QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_delete',
+    function ($projectName, $projectLang, $tags) {
+        $Tags = new QUI\Tags\Manager(
+            QUI::getProject($projectName, $projectLang)
+        );
+
+        $tags = json_decode($tags, true);
+
+        foreach ($tags as $tag) {
+            try {
+                $Tags->deleteTag($tag);
+            } catch (QUI\Database\Exception $Exception) {
+                QUI\System\Log::addDebug($Exception->getMessage());
+            } catch (QUI\Exception $Exception) {
+                QUI::getMessagesHandler()->addError($Exception->getMessage());
+            }
+        }
+    },
     array('projectName', 'projectLang', 'tags'),
     'Permission::checkUser'
 );

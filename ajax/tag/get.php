@@ -1,24 +1,26 @@
 <?php
 
 /**
+ * This file contains package_quiqqer_tags_ajax_tag_get
+ */
+
+/**
  * Add a tag
  *
- * @param String $projectName - name of the project
- * @param String $projectLang - lang of the project
- * @param String $tag         - wanted tag
+ * @param string $projectName - name of the project
+ * @param string $projectLang - lang of the project
+ * @param string $tag - wanted tag
  *
- * @return Array
+ * @return array
  */
-function package_quiqqer_tags_ajax_tag_get($projectName, $projectLang, $tag)
-{
-    $Tags = new QUI\Tags\Manager(
-        QUI::getProject($projectName, $projectLang)
-    );
-
-    return $Tags->get($tag);
-}
-
-QUI::$Ajax->register(
+QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_get',
-    array('projectName', 'projectLang', 'tag', 'tagParams')
+    function ($projectName, $projectLang, $tag) {
+        $Tags = new QUI\Tags\Manager(
+            QUI::getProject($projectName, $projectLang)
+        );
+
+        return $Tags->get($tag);
+    },
+    array('projectName', 'projectLang', 'tag')
 );

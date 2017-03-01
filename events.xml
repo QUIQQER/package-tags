@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <events>
-    <event on="onSiteSave" fire="\QUI\Tags\Site::onSave" />
-    <event on="onSiteActivate" fire="\QUI\Tags\Site::onSave" />
-    <event on="onSiteDeactivate" fire="\QUI\Tags\Site::onSiteDeactivate" />
-    <event on="onSiteLoad" fire="\QUI\Tags\Site::onLoad" />
-    <event on="onSiteDestroy" fire="\QUI\Tags\Site::onDestroy" />
+    <event on="onSiteSave" fire="\QUI\Tags\Site::onSave"/>
+    <event on="onSiteActivate" fire="\QUI\Tags\Site::onSave"/>
+    <event on="onSiteDeactivate" fire="\QUI\Tags\Site::onSiteDeactivate"/>
+    <event on="onSiteLoad" fire="\QUI\Tags\Site::onLoad"/>
+    <event on="onSiteDestroy" fire="\QUI\Tags\Site::onDestroy"/>
+    <event on="onAdminLoadFooter" fire="\QUI\Tags\EventHandler::onAdminLoadFooter"/>
 </events>

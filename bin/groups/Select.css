@@ -1,0 +1,87 @@
+@CHARSET "UTF-8";
+
+.qui-quiqqer-tags-groups-select {
+    float: left;
+    padding: 2px;
+    position: relative;
+    width: 100%;
+}
+
+.field-container > .qui-quiqqer-tags-groups-select {
+    max-width: none;
+    padding: 0;
+}
+
+.qui-quiqqer-tags-groups-select-list {
+    background: #fff;
+    border: 1px solid #dedede;
+    border-radius: 3px;
+    float: left;
+    height: calc(100% - 30px);
+    overflow: auto;
+    width: 100%;
+}
+
+.qui-quiqqer-tags-groups-select-list-search {
+    clear: both;
+    float: left;
+    height: 30px;
+    padding-left: 30px;
+    width: calc(100% - 50px);
+}
+
+.qui-quiqqer-tags-groups-select-list-search-loader {
+    bottom: 2px;
+    height: 30px;
+    left: 2px;
+    line-height: 30px;
+    position: absolute;
+    text-align: center;
+    width: 30px;
+}
+
+.field-container-field > .qui-quiqqer-tags-groups-select {
+    max-width: none;
+    padding: 0;
+}
+
+.field-container-field > .qui-quiqqer-tags-groups-select .qui-quiqqer-tags-groups-select-list {
+    border-radius: 0;
+    border-width: 0 0 1px 0;
+}
+
+.field-container-field > .qui-quiqqer-tags-groups-select .qui-products-list-search {
+    border: none;
+}
+
+/** DropDown
+ ======================================================= */
+
+.qui-quiqqer-tags-groups-select-list-dropdown {
+    background: #fff;
+    border: 1px solid #dedede;
+    max-height: 300px;
+    overflow: auto;
+    padding: 5px;
+    position: absolute;
+    width: 200px;
+    z-index: 10;
+}
+
+.qui-quiqqer-tags-groups-select-list-dropdown .mark {
+    color: red;
+    font-weight: bold;
+}
+
+.qui-quiqqer-tags-groups-select-list-dropdown-entry {
+    clear: both;
+    cursor: pointer;
+    float: left;
+    padding: 5px;
+    width: 100%;
+}
+
+.qui-quiqqer-tags-groups-select-list-dropdown-entry-hover {
+    background: #2F8FC6;
+    color: #FFFFFF;
+}

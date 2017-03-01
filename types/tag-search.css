@@ -121,7 +121,7 @@
 
 .quiqqer-tags-search-result-entry-text {
     float: left;
-    width: calc( 100% - 110px )
+    width: calc( 100% - 120px )
 }
 
 .quiqqer-tags-search-result-entry-header-link:hover {
@@ -158,6 +158,34 @@
     float: left;
 }
 
+.quiqqer-tags-search-entry-image-div {
+    float: left;
+    width: 120px;
+    height: 80px;
+    text-align: center;
+    transform-style: preserve-3d;
+}
+
+.quiqqer-tags-search-entry-image-img {
+    max-width: 100px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*.quiqqer-tags-list-result-entry-imgplaceholder {
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    float: left;
+    height: 100px;
+    margin: 0 10px 0 0;
+    width: 100px;
+}*/
+
 
 /** tag
  * ========================================== */
@@ -167,7 +195,7 @@
     border: 1px solid #D6D9D9;
     border-radius: 3px;
         -webkit-border-radius: 3px;
-    color: #99A2A6 !important;
+    color: #99A2A6;
     cursor: pointer;
     float: left;
     margin: 0 5px 5px 0;

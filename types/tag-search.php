@@ -12,9 +12,9 @@ $types = explode(';', $types);
  */
 
 $Pagination = new QUI\Bricks\Controls\Pagination(array(
-    'Site' => $Site,
+    'Site'      => $Site,
     'showLimit' => true,
-    'limit' => $Site->getAttribute('quiqqer.tag.settings.limit')
+    'limit'     => $Site->getAttribute('quiqqer.tag.settings.limit')
 ));
 
 $Pagination->loadFromRequest();
@@ -37,7 +37,6 @@ try {
     $Engine->assign(array(
         'tags' => $tags
     ));
-
 } catch (QUI\Exception $Exception) {
 }
 
@@ -58,7 +57,6 @@ foreach ($requestList as $requestTag) {
     try {
         $requestTags[]     = $Manager->get($requestTag);
         $requestTagNames[] = $requestTag;
-
     } catch (QUI\Exception $Exception) {
     }
 }
@@ -74,15 +72,13 @@ if (empty($requestTagNames)
         try {
             $requestTags[]     = $Manager->get($tag);
             $requestTagNames[] = $tag;
-
         } catch (QUI\Exception $Exception) {
         }
     }
-
 }
 
 $Engine->assign(array(
-    'requestTags' => $requestTags,
+    'requestTags'     => $requestTags,
     'requestTagNames' => $requestTagNames
 ));
 
@@ -126,11 +122,11 @@ $Pagination->setAttributes(array(
 $Pagination->setGetParams('tags', implode('-', $requestTagNames));
 
 $Engine->assign(array(
-    'result' => $result,
-    'Manager' => $Manager,
-    'count' => $count,
-    'sheets' => $Pagination->getAttribute('sheets'),
-    'start' => $Pagination->getStart(),
-    'max' => $Pagination->getAttribute('limit'),
+    'result'     => $result,
+    'Manager'    => $Manager,
+    'count'      => $count,
+    'sheets'     => $Pagination->getAttribute('sheets'),
+    'start'      => $Pagination->getStart(),
+    'max'        => $Pagination->getAttribute('limit'),
     'Pagination' => $Pagination
 ));

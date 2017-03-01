@@ -16,6 +16,8 @@
  *
  * @event onAdd [ {self}, {String} tag ]
  * @event onRemove [ {self}, {String} tag ]
+ *
+ * @deprecated use package/quiqqer/tags/bin/tags/Select
  */
 define('package/quiqqer/tags/bin/TagContainer', [
 
@@ -50,7 +52,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
             editable        : true,
             datalist        : false,
             styles          : false,
-            loadDatalist    : false,
+            loadDatalist    : true,
             limit           : false,
             inputPosition   : 'top',   // input position bottom or top
             tagWindowOnClick: true, // click at the tag container opens a tag add window
@@ -152,6 +154,11 @@ define('package/quiqqer/tags/bin/TagContainer', [
                             this.value = '';
                             this.focus();
                         }).delay(100, this);
+                    },
+                    keyup : function (event) {
+                        if (event.key == 'enter') {
+                            //this.fireEvent('change');
+                        }
                     }
                 }
             }).inject(this.$Elm);
@@ -445,6 +452,46 @@ define('package/quiqqer/tags/bin/TagContainer', [
         },
 
         /**
+         * Add multiple tags
+         *
+         * @param {String|Array} tags
+         */
+        addTags: function (tags) {
+            if (typeOf(tags) == 'string') {
+                tags = tags.split(',');
+            }
+
+            Ajax.get([
+                'ajax_permissions_session_hasPermission',
+                'package_quiqqer_tags_ajax_tag_clearTagList'
+            ], function (hasPermission, tagList) {
+                if (!hasPermission) {
+                    QUI.getMessageHandler(function (MH) {
+                        MH.addError(
+                            Locale.get(lg, 'message.no.permission.create.tags'),
+                            this.getElm()
+                        );
+                    });
+
+                    this.Loader.hide();
+                    return;
+                }
+
+                // add tags
+                for (var i = 0, len = tagList.length; i < len; i++) {
+                    this.$createTag(tagList[i]).inject(this.$Container);
+                }
+
+            }.bind(this), {
+                'package'  : 'quiqqer/tags',
+                projectName: this.getProject(),
+                projectLang: this.getProjectLang(),
+                tags       : JSON.encode(tags),
+                showError  : false
+            });
+        },
+
+        /**
          * Show the add tag sheet
          */
         showAddTag: function (tag) {
@@ -505,6 +552,16 @@ define('package/quiqqer/tags/bin/TagContainer', [
             this.$Elm.getElements('[data-tag="' + tag + '"]').destroy();
 
             this.fireEvent('remove', [this, tag]);
+            this.refresh();
+        },
+
+        /**
+         * Delete all tags | clear the tag list
+         */
+        clear: function () {
+            this.$Elm.getElements('.qui-tags-tag').destroy();
+
+            this.fireEvent('clear', [this]);
             this.refresh();
         },
 
@@ -577,14 +634,14 @@ define('package/quiqqer/tags/bin/TagContainer', [
                             'html',
 
                             '<select class="qui-tags-container-window-select">' +
-                                '<option value="abc">A B C</option>' +
-                                '<option value="def">D E F</option>' +
-                                '<option value="ghi">G H I</option>' +
-                                '<option value="jkl">J K L</option>' +
-                                '<option value="mno">M N O</option>' +
-                                '<option value="pqr">P Q R</option>' +
-                                '<option value="stu">S T U</option>' +
-                                '<option value="vz">V - Z</option>' +
+                            '<option value="abc">A B C</option>' +
+                            '<option value="def">D E F</option>' +
+                            '<option value="ghi">G H I</option>' +
+                            '<option value="jkl">J K L</option>' +
+                            '<option value="mno">M N O</option>' +
+                            '<option value="pqr">P Q R</option>' +
+                            '<option value="stu">S T U</option>' +
+                            '<option value="vz">V - Z</option>' +
                             '</select>' +
                             '<div class="qui-tags-container-window-container"></div>'
                         );
@@ -623,7 +680,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
 
                                     new Element('div', {
                                         'class'   : 'qui-tags-tag',
-                                        html      : '<span class="icon-tag fa fa-tag"></span>' +
+                                        html      : '<span class="fa fa-tag"></span>' +
                                                     '<span class="qui-tags-tag-value">' + title + '</span>',
                                         'data-tag': tag
                                     }).inject(TagContainer);
@@ -681,13 +738,13 @@ define('package/quiqqer/tags/bin/TagContainer', [
 
             var Tag = new Element('div', {
                 'class'   : 'qui-tags-tag',
-                html      : '<span class="icon-tag fa fa-tag"></span>' +
+                html      : '<span class="fa fa-tag"></span>' +
                             '<span class="qui-tags-tag-value">' + title + '</span>' +
-                            '<span class="icon-remove fa fa-remove"></span>',
+                            '<span class="fa fa-remove"></span>',
                 'data-tag': tag
             });
 
-            Tag.getElement('.icon-remove').addEvent('click', function (event) {
+            Tag.getElement('.fa-remove').addEvent('click', function (event) {
                 event.stop();
 
                 self.removeTag(this.getParent().get('data-tag'));

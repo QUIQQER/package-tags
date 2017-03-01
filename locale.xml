@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <locales>
     <groups name="quiqqer/tags" datatype="js">
+
         <locale name="control.tagcontainer.sheet.btn.add">
             <de><![CDATA[Hinzufügen]]></de>
             <en><![CDATA[Add]]></en>
         </locale>
+
         <locale name="panel.delete.window.message">
             <de><![CDATA[<p>Möchten Sie folgende tags wirklich löschen?</p>
                 <p><strong>[tags]</strong></p>]]></de>
@@ -18,6 +20,10 @@
         <locale name="panel.manager.tag.title">
             <de><![CDATA[Tag Titel]]></de>
             <en><![CDATA[Tag title]]></en>
+        </locale>
+        <locale name="panel.manager.tag.count">
+            <de><![CDATA[Anzahl Seiten]]></de>
+            <en><![CDATA[Site count]]></en>
         </locale>
         <locale name="panel.add.window.title">
             <de><![CDATA[Tag hinzufügen]]></de>
@@ -34,6 +40,10 @@
         <locale name="site.table.title">
             <de><![CDATA[Der Seite zugewiesene Tags]]></de>
             <en><![CDATA[The page assigned tags]]></en>
+        </locale>
+        <locale name="site.table.groups.title">
+            <de><![CDATA[Der Seite zugewiesene Tag-Gruppen]]></de>
+            <en><![CDATA[The page assigned tag groups]]></en>
         </locale>
         <locale name="control.tagcontainer.window.add.title">
             <de><![CDATA[Tag hinzufügen]]></de>
@@ -67,9 +77,70 @@
             <de><![CDATA[Keine Tags enthalten]]></de>
             <en><![CDATA[No tags contained]]></en>
         </locale>
+        <locale name="panel.showtagsites.title">
+            <de><![CDATA[Liste der Seiten, denen der Tag "[tag]" zugeordnet ist]]></de>
+            <en><![CDATA[List of sites the tag "[tag]" is associated with]]></en>
+        </locale>
+
+        <!-- Control: TagSites -->
+        <locale name="controls.sites.table.btns.opensitepanel">
+            <de><![CDATA[Seiten-Panel öffnen]]></de>
+            <en><![CDATA[Open site panel]]></en>
+        </locale>
+        <locale name="controls.sites.table.column.id">
+            <de><![CDATA[Seiten-ID]]></de>
+            <en><![CDATA[Site ID]]></en>
+        </locale>
+        <locale name="controls.sites.table.column.title">
+            <de><![CDATA[Seiten-Titel]]></de>
+            <en><![CDATA[Site title]]></en>
+        </locale>
+        <locale name="controls.sites.table.column.url">
+            <de><![CDATA[URL]]></de>
+            <en><![CDATA[URL]]></en>
+        </locale>
+        <locale name="panel.manager.button.showtagsites">
+            <de><![CDATA[Seiten mit diesem Tag anzeigen]]></de>
+            <en><![CDATA[Show sites with this tag]]></en>
+        </locale>
+
+        <locale name="tag.groups.grid.generate">
+            <de><![CDATA[Generiert]]></de>
+            <en><![CDATA[Generate]]></en>
+        </locale>
+
+        <!-- Control: TagSites -->
+        <locale name="tag.groups.panel.title">
+            <de><![CDATA[Tag-Gruppen]]></de>
+            <en><![CDATA[Tag group]]></en>
+        </locale>
+
+        <locale name="tag.groups.window.create.title">
+            <de><![CDATA[Tag-Gruppen anlegen]]></de>
+            <en><![CDATA[Create Tag group]]></en>
+        </locale>
+
+        <locale name="tag.groups.group.title">
+            <de><![CDATA[Tag-Gruppe: [group] (#[id])]]></de>
+            <en><![CDATA[Tag group: [group] (#[id])]]></en>
+        </locale>
+        <locale name="control.tags.group.tagCategory">
+            <de><![CDATA[Zugewiesene Tags]]></de>
+            <en><![CDATA[Assigned tags]]></en>
+        </locale>
+
+        <locale name="control.tags.search.window.title">
+            <de><![CDATA[Tag-Suche]]></de>
+            <en><![CDATA[Tag search]]></en>
+        </locale>
+
+        <locale name="control.grouptags.search.window.title">
+            <de><![CDATA[Tag-Gruppen-Suche]]></de>
+            <en><![CDATA[Tag group search]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
-
         <locale name="permission.tags._header">
             <de><![CDATA[Tagverwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
@@ -85,6 +156,19 @@
         <locale name="permission.tags.create">
             <de><![CDATA[Darf Tags erstellen und bearbeiten.]]></de>
             <en><![CDATA[Can create and edit tags.]]></en>
+        </locale>
+
+        <locale name="menu.tag.settings.title">
+            <de><![CDATA[Tags]]></de>
+            <en><![CDATA[Tags]]></en>
+        </locale>
+        <locale name="window.tag.settings.title">
+            <de><![CDATA[Tag Einstellungen]]></de>
+            <en><![CDATA[Tag settings]]></en>
+        </locale>
+        <locale name="settings.window.tags.useGroups">
+            <de><![CDATA[Tag Gruppen verwenden]]></de>
+            <en><![CDATA[Use tag groups]]></en>
         </locale>
 
         <locale name="exception.limit.tags.to.site">
@@ -111,6 +195,10 @@
             <de><![CDATA[Geben Sie bitte hier Ihren gewünschten Tag ein ...]]></de>
             <en><![CDATA[Please enter here your wanted tag ...]]></en>
         </locale>
+        <locale name="tag.control.placeholder.addgroup">
+            <de><![CDATA[Geben Sie bitte hier Ihre gewünschte Tag-Gruppe ein ...]]></de>
+            <en><![CDATA[Please enter here your wanted tag group ...]]></en>
+        </locale>
         <locale name="tag">
             <de><![CDATA[Tag]]></de>
             <en><![CDATA[Tag]]></en>
@@ -118,6 +206,10 @@
         <locale name="message.no.tags.found">
             <de><![CDATA[Keine Tags gefunden]]></de>
             <en><![CDATA[No tags found]]></en>
+        </locale>
+        <locale name="message.no.tag.groups.found">
+            <de><![CDATA[Keine Tag-Gruppen gefunden]]></de>
+            <en><![CDATA[No tag groups found]]></en>
         </locale>
         <locale name="message.no.permission.create.tags">
             <de>
@@ -136,6 +228,53 @@
             <de><![CDATA[QUIQQER - Tags]]></de>
             <en><![CDATA[QUIQQER - TAG's]]></en>
         </locale>
+
+
+        <locale name="filter.abc">
+            <de><![CDATA[A B C]]></de>
+            <en><![CDATA[A B C]]></en>
+        </locale>
+        <locale name="filter.def">
+            <de><![CDATA[D E F]]></de>
+            <en><![CDATA[D E F]]></en>
+        </locale>
+        <locale name="filter.ghi">
+            <de><![CDATA[G H I]]></de>
+            <en><![CDATA[G H I]]></en>
+        </locale>
+        <locale name="filter.jkl">
+            <de><![CDATA[J K L]]></de>
+            <en><![CDATA[J K L]]></en>
+        </locale>
+        <locale name="filter.mno">
+            <de><![CDATA[M N O]]></de>
+            <en><![CDATA[M N O]]></en>
+        </locale>
+        <locale name="filter.pqr">
+            <de><![CDATA[P Q R]]></de>
+            <en><![CDATA[P Q R]]></en>
+        </locale>
+        <locale name="filter.stu">
+            <de><![CDATA[S T U]]></de>
+            <en><![CDATA[S T U]]></en>
+        </locale>
+        <locale name="filter.vz">
+            <de><![CDATA[V - Z]]></de>
+            <en><![CDATA[V - Z]]></en>
+        </locale>
+        <locale name="filter.123">
+            <de><![CDATA[0 - 9]]></de>
+            <en><![CDATA[0 - 9]]></en>
+        </locale>
+        <locale name="filter.special">
+            <de><![CDATA[Sonderzeichen]]></de>
+            <en><![CDATA[Special character]]></en>
+        </locale>
+        <locale name="filter.all">
+            <de><![CDATA[Alle]]></de>
+            <en><![CDATA[all]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php">
         <locale name="site.panel.category.title">
@@ -171,8 +310,12 @@
             <en><![CDATA[tags]]></en>
         </locale>
         <locale name="menu.tags.manager">
-            <de><![CDATA[Tagverwaltung]]></de>
-            <en><![CDATA[Tag Management]]></en>
+            <de><![CDATA[Tag-Verwaltung]]></de>
+            <en><![CDATA[Tag management]]></en>
+        </locale>
+        <locale name="menu.tags.groups">
+            <de><![CDATA[Tag-Gruppen]]></de>
+            <en><![CDATA[Tag groups]]></en>
         </locale>
 
         <locale name="watch.add.tags">
@@ -248,6 +391,11 @@
         <locale name="quiqqer.tag.settings.defaultTags">
             <de><![CDATA[Vorausgewählte tags]]></de>
             <en><![CDATA[Preselected tags]]></en>
+        </locale>
+
+        <locale name="message.group.successful.save">
+            <de><![CDATA[Tag-Gruppe wurde erfolgreich gespeichert.]]></de>
+            <en><![CDATA[Tag group has been successfully saved.]]></en>
         </locale>
 
     </groups>

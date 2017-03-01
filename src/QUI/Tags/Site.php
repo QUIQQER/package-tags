@@ -60,7 +60,7 @@ class Site
         }
 
         $User  = QUI::getUserBySession();
-        $limit = $User->getPermission('tags.siteLimit', 'max_integer');
+        $limit = $User->getPermission('tags.siteLimit', 'maxInteger');
 
         if ($limit < count($list)) {
             $message = QUI::getLocale()->get(
@@ -71,7 +71,7 @@ class Site
 
             QUI::getMessagesHandler()->addAttention($message);
 
-            throw new QUI\Exception($message);
+            throw new QUI\Tags\Exception($message);
         }
 
         $Manager->setSiteTags($Site->getId(), $list);

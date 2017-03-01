@@ -67,12 +67,12 @@ class SiteTags extends QUI\Control
 
 
         $Engine->assign(array(
-            'Project' => $Project,
-            'Site' => $Site,
-            'Locale' => QUI::getLocale(),
+            'Project'    => $Project,
+            'Site'       => $Site,
+            'Locale'     => QUI::getLocale(),
             'TagManager' => new QUI\Tags\Manager($Project),
-            'this' => $this,
-            'tagList' => $tagList
+            'this'       => $this,
+            'tagList'    => $tagList
         ));
 
 
@@ -82,7 +82,6 @@ class SiteTags extends QUI\Control
 
         try {
             $result = QUI\Cache\Manager::get($cacheName);
-
         } catch (QUI\Exception $Exception) {
             $result = $Project->getSites(array(
                 'where' => array(

@@ -1,24 +1,26 @@
 <?php
 
 /**
+ * This file contains package_quiqqer_tags_ajax_tag_exists
+ */
+
+/**
  * Exists a tag?
  *
- * @param String $projectName - name of the project
- * @param String $projectLang - lang of the project
- * @param String $tag         - wanted tag
+ * @param string $projectName - name of the project
+ * @param string $projectLang - lang of the project
+ * @param string $tag - wanted tag
  *
- * @return Bool
+ * @return bool
  */
-function package_quiqqer_tags_ajax_tag_exists($projectName, $projectLang, $tag)
-{
-    $Tags = new QUI\Tags\Manager(
-        QUI::getProject($projectName, $projectLang)
-    );
-
-    return $Tags->existsTag($tag);
-}
-
-QUI::$Ajax->register(
+QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_exists',
+    function ($projectName, $projectLang, $tag) {
+        $Tags = new QUI\Tags\Manager(
+            QUI::getProject($projectName, $projectLang)
+        );
+
+        return $Tags->existsTag($tag);
+    },
     array('projectName', 'projectLang', 'tag')
 );

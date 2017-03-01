@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+    <!-- global extra attributes for all sites -->
+    <attributes>
+        <attribute>quiqqer.tags.tagList</attribute>
+        <attribute>quiqqer.tags.tagGroups</attribute>
+    </attributes>
 
     <types>
 
-        <type type="types/tag-listing" icon="icon-tag">
+        <type type="types/tag-listing" icon="fa fa-tag">
             <locale group="quiqqer/tags" var="admin.types.tag.listing"/>
             <desc>
                 <locale group="quiqqer/tags" var="admin.types.tag.listing.desc"/>
@@ -53,9 +58,8 @@
                             </text>
                         </input>
                         <input conf="quiqqer.tag.settings.defaultTags"
-                               data-qui="package/quiqqer/tags/bin/TagContainer"
-                               data-loaddatalist="1"
-                                >
+                               data-qui="package/quiqqer/tags/bin/tags/Select"
+                        >
                             <text>
                                 <locale group="quiqqer/tags" var="quiqqer.tag.settings.defaultTags"/>
                             </text>
@@ -74,7 +78,7 @@
             <text>
                 <locale group="quiqqer/tags" var="site.panel.category.title"/>
             </text>
-            <image>icon-tags</image>
+            <image>fa fa-tags</image>
             <onload require="package/quiqqer/tags/bin/Site"></onload>
         </tab>
     </window>
