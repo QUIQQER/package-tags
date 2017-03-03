@@ -53,9 +53,10 @@ define('package/quiqqer/tags/bin/search/Search', [
                 this.getAttribute('projectLang')
             );
 
-            this.$Select = null;
-            this.$Search = null;
-            this.$Result = null;
+            this.$Select      = null;
+            this.$SelectGroup = null;
+            this.$Search      = null;
+            this.$Result      = null;
 
             this.$selected    = {};
             this.$searchtimer = false;
@@ -82,27 +83,33 @@ define('package/quiqqer/tags/bin/search/Search', [
             this.$Elm = new Element('div', {
                 'class': 'quiqqer-tags-search',
                 html   : Mustache.render(templateSearch, {
-                    searchPlaceholder: QUILocale.get(lg, 'tag.control.placeholder.addtag'),
-                    textABC          : QUILocale.get(lg, 'filter.abc'),
-                    textDEF          : QUILocale.get(lg, 'filter.def'),
-                    textGHI          : QUILocale.get(lg, 'filter.ghi'),
-                    textJKL          : QUILocale.get(lg, 'filter.jkl'),
-                    textMNO          : QUILocale.get(lg, 'filter.mno'),
-                    textPQR          : QUILocale.get(lg, 'filter.pqr'),
-                    textSTU          : QUILocale.get(lg, 'filter.stu'),
-                    textVZ           : QUILocale.get(lg, 'filter.vz'),
-                    text123          : QUILocale.get(lg, 'filter.123'),
-                    textSpecial      : QUILocale.get(lg, 'filter.special'),
-                    textAll          : QUILocale.get(lg, 'filter.all')
+                    searchPlaceholder   : QUILocale.get(lg, 'tag.control.placeholder.addtag'),
+                    textABC             : QUILocale.get(lg, 'filter.abc'),
+                    textDEF             : QUILocale.get(lg, 'filter.def'),
+                    textGHI             : QUILocale.get(lg, 'filter.ghi'),
+                    textJKL             : QUILocale.get(lg, 'filter.jkl'),
+                    textMNO             : QUILocale.get(lg, 'filter.mno'),
+                    textPQR             : QUILocale.get(lg, 'filter.pqr'),
+                    textSTU             : QUILocale.get(lg, 'filter.stu'),
+                    textVZ              : QUILocale.get(lg, 'filter.vz'),
+                    text123             : QUILocale.get(lg, 'filter.123'),
+                    textSpecial         : QUILocale.get(lg, 'filter.special'),
+                    textAll             : QUILocale.get(lg, 'filter.all'),
+                    groupSelectOptionAll: QUILocale.get(lg, 'filter.groups.all')
                 })
             });
 
-            this.$Select = this.$Elm.getElement('.quiqqer-tags-search-select');
-            this.$Search = this.$Elm.getElement('.quiqqer-tags-search-freetext');
-            this.$Result = this.$Elm.getElement('.quiqqer-tags-search-result');
+            this.$Select      = this.$Elm.getElement('.quiqqer-tags-search-select');
+            this.$SelectGroup = this.$Elm.getElement('.quiqqer-tags-search-group-select');
+            this.$Search      = this.$Elm.getElement('.quiqqer-tags-search-freetext');
+            this.$Result      = this.$Elm.getElement('.quiqqer-tags-search-result');
 
             this.$Select.addEvent('change', function (event) {
                 this.getTagsBySektor(event.target.value).then(this.$renderResult);
+            }.bind(this));
+
+            this.$SelectGroup.addEvent('change', function () {
+                this.getTagsBySektor(this.$Select.value).then(this.$renderResult);
             }.bind(this));
 
             var searchtrigger = function () {
@@ -135,6 +142,33 @@ define('package/quiqqer/tags/bin/search/Search', [
          * event: on inject
          */
         $onInject: function () {
+            var self = this;
+
+            if (!QUIQQER_TAGS_USE_GROUPS) {
+                this.$SelectGroup.setStyle('display', 'none');
+            } else {
+                this.$SelectGroup.disabled = true;
+
+                QUIAjax.get('package_quiqqer_tags_ajax_groups_list', function (tagGroups) {
+
+                    for (var i = 0, len = tagGroups.data.length; i < len; i++) {
+                        var TagGroup = tagGroups.data[i];
+
+                        new Element('option', {
+                            value: TagGroup.id,
+                            html : TagGroup.title + ' (' + TagGroup.countTags + ')'
+                        }).inject(
+                            self.$SelectGroup
+                        );
+                    }
+
+                    self.$SelectGroup.disabled = false;
+                }, {
+                    'package': 'quiqqer/tags',
+                    project  : this.$Project.encode()
+                });
+            }
+
             this.getTagsBySektor(this.$Select.value).then(this.$renderResult);
         },
 
@@ -162,7 +196,8 @@ define('package/quiqqer/tags/bin/search/Search', [
                 QUIAjax.get('package_quiqqer_tags_ajax_search_getTagsBySektor', resolve, {
                     'package': 'quiqqer/tags',
                     project  : this.$Project.encode(),
-                    sektor   : sektor
+                    sektor   : sektor,
+                    groupId  : this.$SelectGroup.value == 'all' ? null : this.$SelectGroup.value
                 });
             }.bind(this));
         },

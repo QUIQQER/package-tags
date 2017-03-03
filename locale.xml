@@ -119,6 +119,14 @@
             <de><![CDATA[Tag-Gruppen anlegen]]></de>
             <en><![CDATA[Create Tag group]]></en>
         </locale>
+        <locale name="tag.groups.window.delete.title">
+            <de><![CDATA[Tag-Gruppen löschen]]></de>
+            <en><![CDATA[Delete tag groups]]></en>
+        </locale>
+        <locale name="tag.groups.window.delete.info" html="true">
+            <de><![CDATA[Sind Sie sicher, dass Sie die folgenden Tag-Gruppen unwiderruflich löschen wollen?<br><br>[groups]]]></de>
+            <en><![CDATA[Are you sure you want to irrevocably delete the following tag groups?<br><br>[groups]]]></en>
+        </locale>
 
         <locale name="tag.groups.group.title">
             <de><![CDATA[Tag-Gruppe: [group] (#[id])]]></de>
@@ -274,9 +282,23 @@
             <de><![CDATA[Alle]]></de>
             <en><![CDATA[all]]></en>
         </locale>
+        <locale name="filter.groups.all">
+            <de><![CDATA[Alle Gruppen]]></de>
+            <en><![CDATA[All groups]]></en>
+        </locale>
 
     </groups>
     <groups name="quiqqer/tags" datatype="php">
+        <!-- Ajax -->
+        <locale name="message.ajax.groups.delete.error" html="true">
+            <de><![CDATA[Beim Löschen der Tag-Gruppen ist ein Fehler aufgetreten:<br><br>[error]]]></de>
+            <en><![CDATA[An error occurred while deleting the tag groups:<br><br>[error]]]></en>
+        </locale>
+        <locale name="message.ajax.groups.delete.success">
+            <de><![CDATA[Die Tag-Gruppen wurden erfolgreich gelöscht.]]></de>
+            <en><![CDATA[The tag groups have been deleted successfully.]]></en>
+        </locale>
+
         <locale name="site.panel.category.title">
             <de><![CDATA[Tags]]></de>
             <en><![CDATA[Tags]]></en>

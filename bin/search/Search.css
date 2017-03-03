@@ -16,6 +16,11 @@
     width: 33.333%;
 }
 
+.quiqqer-tags-search-group-select {
+    margin-top: 10px;
+    width: 100%;
+}
+
 .quiqqer-tags-search-freetext {
     float: left;
     margin-left: 10px;
