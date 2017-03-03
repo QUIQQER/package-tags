@@ -34,14 +34,15 @@ define('package/quiqqer/tags/bin/search/Window', [
         ],
 
         options: {
-            projectName: false,
-            projectLang: false,
-            maxHeight  : 600,
-            maxWidth   : 400,
-            icon       : 'fa fa-search',
-            title      : QUILocale.get(lg, 'control.tags.search.window.title'),
-            autoclose  : true,
-            selected   : []
+            projectName   : false,
+            projectLang   : false,
+            maxHeight     : 600,
+            maxWidth      : 400,
+            icon          : 'fa fa-search',
+            title         : QUILocale.get(lg, 'control.tags.search.window.title'),
+            autoclose     : true,
+            selected      : [],
+            dblClickSubmit: true // can submit tag selection with double click
         },
 
         initialize: function (options) {
@@ -71,10 +72,11 @@ define('package/quiqqer/tags/bin/search/Window', [
             SubmitButton.disable();
 
             this.$Search = new Search({
-                projectName: this.getAttribute('projectName'),
-                projectLang: this.getAttribute('projectLang'),
-                selected   : this.getAttribute('selected'),
-                events     : {
+                projectName   : this.getAttribute('projectName'),
+                projectLang   : this.getAttribute('projectLang'),
+                selected      : this.getAttribute('selected'),
+                dblClickSubmit: this.getAttribute('dblClickSubmit'),
+                events        : {
                     onChange: function (Search) {
                         if (Search.getSelectedTags().length) {
                             SubmitButton.enable();

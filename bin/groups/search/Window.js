@@ -34,13 +34,14 @@ define('package/quiqqer/tags/bin/groups/search/Window', [
         ],
 
         options: {
-            projectName: false,
-            projectLang: false,
-            maxHeight  : 600,
-            maxWidth   : 400,
-            icon       : 'fa fa-search',
-            title      : QUILocale.get(lg, 'control.grouptags.search.window.title'),
-            autoclose  : true
+            projectName   : false,
+            projectLang   : false,
+            maxHeight     : 600,
+            maxWidth      : 400,
+            icon          : 'fa fa-search',
+            title         : QUILocale.get(lg, 'control.grouptags.search.window.title'),
+            autoclose     : true,
+            dblClickSubmit: true // can submit tag group selection with double click
         },
 
         initialize: function (options) {
@@ -70,9 +71,10 @@ define('package/quiqqer/tags/bin/groups/search/Window', [
             SubmitButton.disable();
 
             this.$Search = new Search({
-                projectName: this.getAttribute('projectName'),
-                projectLang: this.getAttribute('projectLang'),
-                events     : {
+                projectName   : this.getAttribute('projectName'),
+                projectLang   : this.getAttribute('projectLang'),
+                dblClickSubmit: this.getAttribute('dblClickSubmit'),
+                events        : {
                     onChange: function (Search) {
                         if (Search.getSelectedGroupTags().length) {
                             SubmitButton.enable();
