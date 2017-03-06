@@ -214,6 +214,11 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                     dataType : 'text',
                     width    : 200
                 }, {
+                    header   : QUILocale.get('quiqqer/system', 'description'),
+                    dataIndex: 'desc',
+                    dataType : 'text',
+                    width    : 250
+                }, {
                     header   : QUILocale.get('quiqqer/system', 'priority'),
                     dataIndex: 'priority',
                     dataType : 'number',
@@ -315,7 +320,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 title    : QUILocale.get(lg, 'tag.groups.window.create.title'),
                 icon     : 'fa fa-tags',
                 maxWidth : 450,
-                maxHeight: 300,
+                maxHeight: 350,
                 autoclose: false,
                 events   : {
                     onOpen: function (Win) {
@@ -324,8 +329,9 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                         var Content = Win.getContent();
 
                         Content.set('html', Mustache.render(templateCreateGroup, {
-                            title: QUILocale.get('quiqqer/system', 'title'),
-                            image: QUILocale.get('quiqqer/system', 'image')
+                            title      : QUILocale.get('quiqqer/system', 'title'),
+                            image      : QUILocale.get('quiqqer/system', 'image'),
+                            description: QUILocale.get('quiqqer/system', 'description')
                         }));
 
                         QUI.parse(Content).then(function () {
@@ -354,7 +360,8 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                             'package': 'quiqqer/tags',
                             project  : self.$Project.encode(),
                             title    : Content.getElement('[name="title"]').value,
-                            image    : Content.getElement('[name="image"]').value
+                            image    : Content.getElement('[name="image"]').value,
+                            desc     : Content.getElement('[name="desc"]').value
                         });
                     }
                 }
@@ -399,7 +406,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 closeButton: true,
                 content    : false,
                 events     : {
-                    onOpen: function() {
+                    onOpen  : function () {
                         Popup.getContent().set(
                             'html',
                             QUILocale.get(lg, 'tag.groups.window.delete.info', {

@@ -111,6 +111,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
                 'package/quiqqer/tags/bin/groups/search/Window'
             ], function (Window) {
                 new Window({
+                    multiselect: self.getAttribute('multiple'),
                     projectName: self.$Project.getName(),
                     projectLang: self.$Project.getLang(),
                     events     : {
@@ -329,7 +330,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
          *
          * @returns {String}
          */
-        getTags: function () {
+        getTagGroupIds: function () {
             return this.getValue();
         }
     });

@@ -20,11 +20,14 @@ define('package/quiqqer/tags/bin/search/Search', [
     'Projects',
     'Mustache',
 
+    'package/quiqqer/tags/bin/groups/SelectMap',
+
     'text!package/quiqqer/tags/bin/search/Search.html',
     'text!package/quiqqer/tags/bin/search/Search.Tag.html',
     'css!package/quiqqer/tags/bin/search/Search.css'
 
-], function (QUI, QUIControl, QUILocale, QUIAjax, Projects, Mustache, templateSearch, templateSearchTag) {
+], function (QUI, QUIControl, QUILocale, QUIAjax, Projects, Mustache,
+             GroupSelectMap, templateSearch, templateSearchTag) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -99,17 +102,14 @@ define('package/quiqqer/tags/bin/search/Search', [
                 })
             });
 
-            this.$Select      = this.$Elm.getElement('.quiqqer-tags-search-select');
-            this.$SelectGroup = this.$Elm.getElement('.quiqqer-tags-search-group-select');
-            this.$Search      = this.$Elm.getElement('.quiqqer-tags-search-freetext');
-            this.$Result      = this.$Elm.getElement('.quiqqer-tags-search-result');
+            this.$Select       = this.$Elm.getElement('.quiqqer-tags-search-select');
+            this.$GroupTreeElm = this.$Elm.getElement('.quiqqer-tags-search-tree');
+            this.$ListElm      = this.$Elm.getElement('.quiqqer-tags-search-list');
+            this.$Search       = this.$Elm.getElement('.quiqqer-tags-search-freetext');
+            this.$Result       = this.$Elm.getElement('.quiqqer-tags-search-result');
 
             this.$Select.addEvent('change', function (event) {
                 this.getTagsBySektor(event.target.value).then(this.$renderResult);
-            }.bind(this));
-
-            this.$SelectGroup.addEvent('change', function () {
-                this.getTagsBySektor(this.$Select.value).then(this.$renderResult);
             }.bind(this));
 
             var searchtrigger = function () {
@@ -145,31 +145,24 @@ define('package/quiqqer/tags/bin/search/Search', [
             var self = this;
 
             if (!QUIQQER_TAGS_USE_GROUPS) {
-                this.$SelectGroup.setStyle('display', 'none');
+                this.$GroupTreeElm.setStyle('display', 'none');
+                this.$ListElm.setStyle('width', '100%');
+                this.getTagsBySektor(this.$Select.value).then(this.$renderResult);
             } else {
-                this.$SelectGroup.disabled = true;
-
-                QUIAjax.get('package_quiqqer_tags_ajax_groups_list', function (tagGroups) {
-
-                    for (var i = 0, len = tagGroups.data.length; i < len; i++) {
-                        var TagGroup = tagGroups.data[i];
-
-                        new Element('option', {
-                            value: TagGroup.id,
-                            html : TagGroup.title + ' (' + TagGroup.countTags + ')'
-                        }).inject(
-                            self.$SelectGroup
-                        );
+                this.$SelectGroup = new GroupSelectMap({
+                    Project : this.$Project,
+                    multiple: false,
+                    events  : {
+                        onChange: function () {
+                            self.getTagsBySektor(self.$Select.value).then(self.$renderResult);
+                        },
+                        onLoaded: function () {
+                            self.getTagsBySektor(self.$Select.value).then(self.$renderResult);
+                            self.$SelectGroup.select('all');
+                        }
                     }
-
-                    self.$SelectGroup.disabled = false;
-                }, {
-                    'package': 'quiqqer/tags',
-                    project  : this.$Project.encode()
-                });
+                }).inject(this.$GroupTreeElm);
             }
-
-            this.getTagsBySektor(this.$Select.value).then(this.$renderResult);
         },
 
         /**
@@ -192,12 +185,22 @@ define('package/quiqqer/tags/bin/search/Search', [
          * @return {Promise}
          */
         getTagsBySektor: function (sektor) {
+            var groupId = null;
+
+            if (this.$SelectGroup) {
+                var groupIds = this.$SelectGroup.getSelectedGroupIds();
+
+                if (groupIds.length) {
+                    groupId = groupIds[0];
+                }
+            }
+
             return new Promise(function (resolve) {
                 QUIAjax.get('package_quiqqer_tags_ajax_search_getTagsBySektor', resolve, {
                     'package': 'quiqqer/tags',
                     project  : this.$Project.encode(),
                     sektor   : sektor,
-                    groupId  : this.$SelectGroup.value == 'all' ? null : this.$SelectGroup.value
+                    groupId  : groupId
                 });
             }.bind(this));
         },

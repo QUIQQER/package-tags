@@ -114,6 +114,10 @@
             <de><![CDATA[Tag-Gruppen]]></de>
             <en><![CDATA[Tag group]]></en>
         </locale>
+        <locale name="tag.groups.panel.template.parent">
+            <de><![CDATA[Eltern-Tag-Gruppe]]></de>
+            <en><![CDATA[Parent tag group]]></en>
+        </locale>
 
         <locale name="tag.groups.window.create.title">
             <de><![CDATA[Tag-Gruppen anlegen]]></de>
@@ -136,6 +140,10 @@
             <de><![CDATA[Zugewiesene Tags]]></de>
             <en><![CDATA[Assigned tags]]></en>
         </locale>
+        <locale name="controls.groups.map.category.all">
+            <de><![CDATA[Alle Tag-Gruppen]]></de>
+            <en><![CDATA[All tag groups]]></en>
+        </locale>
 
         <locale name="control.tags.search.window.title">
             <de><![CDATA[Tag-Suche]]></de>
@@ -145,6 +153,14 @@
         <locale name="control.grouptags.search.window.title">
             <de><![CDATA[Tag-Gruppen-Suche]]></de>
             <en><![CDATA[Tag group search]]></en>
+        </locale>
+        <locale name="control.grouptags.search.window.info">
+            <de><![CDATA[Bitte wählen Sie eine Tag-Gruppe aus.]]></de>
+            <en><![CDATA[Please choose tag group.]]></en>
+        </locale>
+        <locale name="control.grouptags.search.window.info.multiselect" html="true">
+            <de><![CDATA[Bitte wählen Sie eine oder mehrere Tag-Gruppen aus.<br><i>(Mehrfachauswahl mit Strg + Klick)</i>]]></de>
+            <en><![CDATA[Please choose one or more tag groups.<br><i>(Multi-select with Ctrl + click)</i>]]></en>
         </locale>
 
     </groups>
@@ -166,6 +182,7 @@
             <en><![CDATA[Can create and edit tags.]]></en>
         </locale>
 
+        <!-- Settings -->
         <locale name="menu.tag.settings.title">
             <de><![CDATA[Tags]]></de>
             <en><![CDATA[Tags]]></en>
@@ -177,6 +194,14 @@
         <locale name="settings.window.tags.useGroups">
             <de><![CDATA[Tag Gruppen verwenden]]></de>
             <en><![CDATA[Use tag groups]]></en>
+        </locale>
+        <locale name="settings.window.tags.getTagsRecursive.text">
+            <de><![CDATA[Kinder von Tags einer Tag-Gruppe anzeigen]]></de>
+            <en><![CDATA[Show children of tags of a tag group]]></en>
+        </locale>
+        <locale name="settings.window.tags.getTagsRecursive.description">
+            <de><![CDATA[Bei der Auswahl einer Tag-Gruppe zum Filtern einer Tag-Liste sollen auch alle Tags der Tag-Gruppen-Kinder und ihrer Tag-Gruppen-Kinder angezeigt werden (bis zur tiefsten Ebene).]]></de>
+            <en><![CDATA[On choosing a tag group to filter a tag list all children of the tag groups and their children should be shown (up to the lowest level).]]></en>
         </locale>
 
         <locale name="exception.limit.tags.to.site">
@@ -298,6 +323,10 @@
             <de><![CDATA[Die Tag-Gruppen wurden erfolgreich gelöscht.]]></de>
             <en><![CDATA[The tag groups have been deleted successfully.]]></en>
         </locale>
+        <locale name="message.group.save.error" html="true">
+            <de><![CDATA[Beim Speichern der Tag-Gruppe #[tagGroupId] ist ein Fehler aufgetreten:<br><br>[error]]]></de>
+            <en><![CDATA[An error occurred while saving the tag group #[tagGroupId]:<br><br>[error]]]></en>
+        </locale>
 
         <locale name="site.panel.category.title">
             <de><![CDATA[Tags]]></de>
@@ -418,6 +447,26 @@
         <locale name="message.group.successful.save">
             <de><![CDATA[Tag-Gruppe wurde erfolgreich gespeichert.]]></de>
             <en><![CDATA[Tag group has been successfully saved.]]></en>
+        </locale>
+
+        <!-- Class: Manager -->
+        <locale name="exception.manager.cannot.delete.group.with.children">
+            <de><![CDATA[Tag-Gruppen, die noch andere Tag-Gruppen enthalten, können nicht gelöscht werden. Bitte löschen Sie zuerst alle Tag-Gruppen-Kinder dieser Tag-Gruppe, um sie zu löschen zu können.]]></de>
+            <en><![CDATA[Tag groups that contain other tag groups cannot be deleted. Please delete all tag group children from this group to be able to delete it.]]></en>
+        </locale>
+
+        <!-- Class: Groups\Group -->
+        <locale name="exception.groups.group.parent.does.not.exist">
+            <de><![CDATA[Die Tag-Gruppe #[tagGroupId] kann nicht als Eltern-Tag-Gruppe zugewiesen werden, da sie nicht exisitert.]]></de>
+            <en><![CDATA[The tag group #[tagGroupId] cannot be assigned as a parent tag group because it does not exist.]]></en>
+        </locale>
+        <locale name="exception.groups.group.cannot.be.its.own.parent">
+            <de><![CDATA[Eine Tag-Gruppe kann nicht ihre eigene Eltern-Tag-Gruppe sein.]]></de>
+            <en><![CDATA[A tag group cannot be its own parent tag group.]]></en>
+        </locale>
+        <locale name="exception.groups.group.parent.cannot.be.child">
+            <de><![CDATA[Die Tag-Gruppe #[childTagGroupId] ist ein Kind der Tag-Gruppe #[tagGroupId] und kann daher nicht als Eltern-Gruppe gesetzt werden.]]></de>
+            <en><![CDATA[The tag group #[childTagGroupId] is a child of the tag group #[tagGroupId] and thus cannot be set as a parent group.]]></en>
         </locale>
 
     </groups>

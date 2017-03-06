@@ -18,9 +18,12 @@ define('package/quiqqer/tags/bin/groups/search/Window', [
     'Locale',
     'Ajax',
     'Projects',
-    'package/quiqqer/tags/bin/groups/search/Search'
+    'package/quiqqer/tags/bin/groups/search/Search',
+    'package/quiqqer/tags/bin/groups/SelectMap',
 
-], function (QUI, QUIConfirm, QUILocale, QUIAjax, Projects, Search) {
+    'css!package/quiqqer/tags/bin/groups/search/Window.css'
+
+], function (QUI, QUIConfirm, QUILocale, QUIAjax, Projects, Search, GroupSelectMap) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -41,7 +44,8 @@ define('package/quiqqer/tags/bin/groups/search/Window', [
             icon          : 'fa fa-search',
             title         : QUILocale.get(lg, 'control.grouptags.search.window.title'),
             autoclose     : true,
-            dblClickSubmit: true // can submit tag group selection with double click
+            dblClickSubmit: true, // can submit tag group selection with double click,
+            multiselect   : true   // allows selection of multiple tag groups
         },
 
         initialize: function (options) {
@@ -52,7 +56,8 @@ define('package/quiqqer/tags/bin/groups/search/Window', [
                 this.getAttribute('projectLang')
             );
 
-            this.$Search = null;
+            this.$Search    = null;
+            this.$SelectMap = null;
 
             this.addEvents({
                 onOpen: this.$onOpen
@@ -64,43 +69,69 @@ define('package/quiqqer/tags/bin/groups/search/Window', [
          */
         $onOpen: function () {
             var self         = this,
-                SubmitButton = this.getButton('submit');
+                SubmitButton = this.getButton('submit'),
+                Content      = this.getContent();
 
-            this.getContent().set('html', '');
+            var infoText = QUILocale.get(lg, 'control.grouptags.search.window.info');
+
+            if (this.getAttribute('multiselect')) {
+                infoText = QUILocale.get(lg, 'control.grouptags.search.window.info.multiselect');
+            }
+
+            Content.set(
+                'html',
+                '<div class="quiqqer-tags-search-window-info">' +
+                    '<p>' + infoText + '</p>' +
+                '</div>' +
+                '<div class="quiqqer-tags-search-window-tree"></div>'
+            );
 
             SubmitButton.disable();
 
-            this.$Search = new Search({
-                projectName   : this.getAttribute('projectName'),
-                projectLang   : this.getAttribute('projectLang'),
-                dblClickSubmit: this.getAttribute('dblClickSubmit'),
-                events        : {
-                    onChange: function (Search) {
-                        if (Search.getSelectedGroupTags().length) {
-                            SubmitButton.enable();
-                        } else {
-                            SubmitButton.disable();
-                        }
-                    },
-
-                    onSubmit: function () {
-                        self.submit();
+            this.$SelectMap = new GroupSelectMap({
+                Project    : this.$Project,
+                multiselect: this.getAttribute('multiselect'),
+                events     : {
+                    onChange: function () {
+                        SubmitButton.enable();
                     }
                 }
-            }).inject(this.getContent());
+            }).inject(
+                Content.getElement('.quiqqer-tags-search-window-tree')
+            );
+
+            //this.$Search = new Search({
+            //    projectName   : this.getAttribute('projectName'),
+            //    projectLang   : this.getAttribute('projectLang'),
+            //    dblClickSubmit: this.getAttribute('dblClickSubmit'),
+            //    events        : {
+            //        onChange: function (Search) {
+            //            if (Search.getSelectedGroupTags().length) {
+            //                SubmitButton.enable();
+            //            } else {
+            //                SubmitButton.disable();
+            //            }
+            //        },
+            //
+            //        onSubmit: function () {
+            //            self.submit();
+            //        }
+            //    }
+            //}).inject(this.getContent());
         },
 
         /**
          * Submit the window
          */
         submit: function () {
-            var selected = this.$Search.getSelectedGroupTags();
+            //var selected = this.$Search.getSelectedGroupTags();
+            var selected = this.$SelectMap.getSelectedGroupIds();
 
             if (!selected.length) {
-                return;
+                this.fireEvent('submit', [this, false]);
+            } else {
+                this.fireEvent('submit', [this, selected]);
             }
-
-            this.fireEvent('submit', [this, selected]);
 
             if (this.getAttribute('autoclose')) {
                 this.close();

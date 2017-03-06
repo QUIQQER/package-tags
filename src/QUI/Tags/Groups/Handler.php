@@ -23,6 +23,13 @@ class Handler
     protected static $groups = array();
 
     /**
+     * Category tree runtime cache
+     *
+     * @var array
+     */
+    protected static $trees = array();
+
+    /**
      * Return the tag groups table name
      *
      * @param Project $Project
@@ -93,16 +100,38 @@ class Handler
      *
      * @param Project $Project
      * @param integer $groupId
+     * @return void
+     *
+     * @throws QUI\Tags\Exception
      */
     public static function delete(Project $Project, $groupId)
     {
         $project = $Project->getName();
         $lang    = $Project->getLang();
+        $groupId = (int)$groupId;
+
+        // check if group has children
+        $result = QUI::getDataBase()->fetch(array(
+            'count' => 1,
+            'from'  => self::table($Project),
+            'where' => array(
+                'parentId' => $groupId
+            )
+        ));
+
+        $hasChildren = boolval((int)current(current($result)));
+
+        if ($hasChildren) {
+            throw new QUI\Tags\Exception(array(
+                'quiqqer/tags',
+                'exception.manager.cannot.delete.group.with.children'
+            ));
+        }
 
         QUI::getDataBase()->delete(
             self::table($Project),
             array(
-                'id' => (int)$groupId
+                'id' => $groupId
             )
         );
 
@@ -334,5 +363,142 @@ class Handler
         }
 
         return $result;
+    }
+
+    /**
+     * Get complete hierarchial tag group tree from a project
+     *
+     * @param Project $Project
+     * @return array
+     */
+    public static function getTree(Project $Project)
+    {
+        $project = $Project->getName();
+        $lang    = $Project->getLang();
+
+        if (isset(self::$trees[$project][$lang])) {
+            return self::$trees[$project][$lang];
+        }
+
+        if (!isset(self::$trees[$project])) {
+            self::$trees[$project] = array();
+        }
+
+        $result = QUI::getDataBase()->fetch(array(
+            'select' => array(
+                'id',
+                'title',
+                'parentId'
+            ),
+            'from'   => self::table($Project)
+        ));
+
+        $groups = array();
+
+        foreach ($result as $row) {
+            $row['children'] = array();
+
+            if (empty($row['parentId'])) {
+                $row['parentId'] = false;
+            }
+
+            $groups[] = $row;
+        }
+
+        self::$trees[$project][$lang] = self::buildTree($groups);
+
+        return self::$trees[$project][$lang];
+    }
+
+    /**
+     * Build hierarchical group tree
+     *
+     * @param array $groups
+     * @param bool $parentId (optional) - parent id of group (branch)
+     * @return array
+     */
+    protected static function buildTree(&$groups, $parentId = false)
+    {
+        $tree = array();
+
+        foreach ($groups as $group) {
+            if ($group['parentId'] != $parentId) {
+                continue;
+            }
+
+            $group['children'] = self::buildTree($groups, $group['id']);
+            $tree[]            = $group;
+        }
+
+        return $tree;
+    }
+
+    /**
+     * Get IDs of all children (recursive) of a tag group
+     *
+     * @param Project $Project
+     * @param int $groupId - tag group ID
+     * @param $groupId
+     * @return array
+     */
+    public static function getTagGroupChildrenIds(Project $Project, $groupId)
+    {
+        $tree = self::getTree($Project);
+        $groupNode = self::searchTree($tree, (int)$groupId);
+
+        // group has no children
+        if (empty($groupNode)) {
+            return array();
+        }
+
+        return self::getChildrenIdsFromNode($groupNode['children']);
+    }
+
+    /**
+     * Get all children IDs from a tree nide
+     *
+     * @param array $node - tree nide
+     * @param array $children (optional) - array that includes children ids
+     * @return array
+     */
+    protected static function getChildrenIdsFromNode($node, &$children = array())
+    {
+        foreach ($node as $k => $item) {
+            $children[] = $item['id'];
+
+            if (!empty($item['children'])) {
+                self::getChildrenIdsFromNode($item['children'], $children);
+            }
+        }
+
+        return $children;
+    }
+
+    /**
+     * Search tag group tree for a specific node and return this node
+     *
+     * @param array $tree - the tree to search in
+     * @param int $nodeId - ID of the node to search for
+     * @return array|false
+     */
+    protected static function searchTree($tree, $nodeId)
+    {
+        foreach ($tree as $k => $node) {
+            if ($node['id'] == $nodeId) {
+                return $node;
+            }
+        }
+
+        foreach ($tree as $k => $node) {
+            if (!empty($node['children'])) {
+                $resultNode = self::searchTree($node['children'], $nodeId);
+
+                if ($resultNode !== false) {
+                    return $resultNode;
+                }
+            }
+        }
+
+        return false;
     }
 }

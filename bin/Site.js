@@ -200,7 +200,7 @@ define('package/quiqqer/tags/bin/Site', [
          * event on group select change
          */
         $onGroupSelectChange: function () {
-            this.$Site.setAttribute('quiqqer.tags.tagGroups', this.$TagGroupSelect.getTags());
+            this.$Site.setAttribute('quiqqer.tags.tagGroups', this.$TagGroupSelect.getTagGroupIds());
         }
     });
 });

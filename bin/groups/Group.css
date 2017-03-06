@@ -16,3 +16,13 @@
 .quiqqer-tags-group-project img {
     margin-right: 10px;
 }
+
+.quiqqer-tags-groupsCreate-description {
+    clear: both;
+    float: left;
+}
+
+.quiqqer-tags-groupsCreate textarea {
+    margin-top: 5px;
+    width: 100%;
+}

@@ -4,6 +4,21 @@
     width: 100%;
 }
 
+.quiqqer-tags-search-list {
+    float: left;
+    height: 100%;
+    width: 60%;
+}
+
+.quiqqer-tags-search-tree {
+    border-right: 1px solid #dedede;
+    float: left;
+    height: 100%;
+    margin-right: 15px;
+    overflow: auto;
+    width: calc(40% - 15px);
+}
+
 .quiqqer-tags-search-no-result {
     padding: 10px;
 }

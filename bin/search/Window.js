@@ -37,7 +37,7 @@ define('package/quiqqer/tags/bin/search/Window', [
             projectName   : false,
             projectLang   : false,
             maxHeight     : 600,
-            maxWidth      : 400,
+            maxWidth      : QUIQQER_TAGS_USE_GROUPS ? 800 : 400,
             icon          : 'fa fa-search',
             title         : QUILocale.get(lg, 'control.tags.search.window.title'),
             autoclose     : true,
@@ -65,9 +65,10 @@ define('package/quiqqer/tags/bin/search/Window', [
          */
         $onOpen: function () {
             var self         = this,
-                SubmitButton = this.getButton('submit');
+                SubmitButton = this.getButton('submit'),
+                Content      = this.getContent();
 
-            this.getContent().set('html', '');
+            Content.set('html', '');
 
             SubmitButton.disable();
 
@@ -89,7 +90,7 @@ define('package/quiqqer/tags/bin/search/Window', [
                         self.submit();
                     }
                 }
-            }).inject(this.getContent());
+            }).inject(Content);
         },
 
         /**

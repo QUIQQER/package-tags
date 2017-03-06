@@ -69,6 +69,13 @@ class Group
     protected $tags = array();
 
     /**
+     * ID of parent tag group
+     *
+     * @var null|int - null if no parent set; ID otherwise
+     */
+    protected $parentId = null;
+
+    /**
      * @var null|QUI\Tags\Manager
      */
     protected $Manager = null;
@@ -90,7 +97,7 @@ class Group
             'limit' => 1
         ));
 
-        if (!isset($result[0])) {
+        if (empty($result)) {
             throw new QUI\Tags\Exception(array(
                 'quiqqer/tags',
                 'exception.group.not.found'
@@ -101,23 +108,29 @@ class Group
         $this->id      = (int)$groupId;
         $this->Manager = new QUI\Tags\Manager($this->Project);
 
-        $this->setTitle($result[0]['title']);
-        $this->setWorkingTitle($result[0]['workingtitle']);
-        $this->setDescription($result[0]['desc']);
-        $this->setPriority($result[0]['priority']);
-        $this->setGenerateStatus($result[0]['generated']);
-        $this->setGenerator($result[0]['generator']);
+        $data = $result[0];
+
+        $this->setTitle($data['title']);
+        $this->setWorkingTitle($data['workingtitle']);
+        $this->setDescription($data['desc']);
+        $this->setPriority($data['priority']);
+        $this->setGenerateStatus($data['generated']);
+        $this->setGenerator($data['generator']);
+
+        if (!empty($data['parentId'])) {
+            $this->parentId = (int)$data['parentId'];
+        }
 
         try {
-            $this->setImage($result[0]['image']);
+            $this->setImage($data['image']);
         } catch (QUI\Exception $Exception) {
         }
 
-        if (!isset($result[0]['tags'])) {
+        if (!isset($data['tags'])) {
             return;
         }
 
-        $tags = explode(',', $result[0]['tags']);
+        $tags = explode(',', $data['tags']);
 
         foreach ($tags as $tag) {
             try {
@@ -324,6 +337,98 @@ class Group
     }
 
     /**
+     * Set the parent tag group of this tag group
+     *
+     * @param int $groupId - ID of parent tag group
+     * @return void
+     *
+     * @throws QUI\Tags\Exception
+     */
+    public function setParentGroup($groupId)
+    {
+        $groupId = (int)$groupId;
+
+        if ($this->parentId === $groupId) {
+            return;
+        }
+
+        if ($groupId === $this->id) {
+            throw new QUI\Tags\Exception(array(
+                'quiqqer/tags',
+                'exception.groups.group.cannot.be.its.own.parent'
+            ));
+        }
+
+        if (!Handler::exists($this->Project, $groupId)) {
+            throw new QUI\Tags\Exception(array(
+                'quiqqer/tags',
+                'exception.groups.group.parent.does.not.exist',
+                array(
+                    'tagGroupId' => $groupId
+                )
+            ));
+        }
+
+        if (in_array($groupId, $this->getChildrenIds())) {
+            throw new QUI\Tags\Exception(array(
+                'quiqqer/tags',
+                'exception.groups.group.parent.cannot.be.child',
+                array(
+                    'childTagGroupId' => $groupId,
+                    'tagGroupId'      => $this->id
+                )
+            ));
+        }
+
+        QUI::getDataBase()->update(
+            Handler::table($this->Project),
+            array(
+                'parentId' => $groupId
+            ),
+            array(
+                'id' => $this->id
+            )
+        );
+
+        $this->parentId = $groupId;
+    }
+
+    /**
+     * Get IDs of all child tag groups
+     *
+     * @return array
+     */
+    public function getChildrenIds()
+    {
+        return Handler::getTagGroupChildrenIds($this->Project, $this->id);
+    }
+
+    /**
+     * Removes the current parent tag group from this tag group.
+     * This makes the tag group parentless.
+     *
+     * @return void
+     */
+    public function removeParentGroup()
+    {
+        if (is_null($this->parentId)) {
+            return;
+        }
+
+        QUI::getDataBase()->update(
+            Handler::table($this->Project),
+            array(
+                'parentId' => null
+            ),
+            array(
+                'id' => $this->id
+            )
+        );
+
+        $this->parentId = null;
+    }
+
+    /**
      * Delete the group
      */
     public function delete()
@@ -485,7 +590,8 @@ class Group
             'priority'     => $this->priority,
             'tags'         => implode(',', $tags),
             'countTags'    => count($this->tags),
-            'generated'    => $this->isGenerated()
+            'generated'    => $this->isGenerated(),
+            'parentId'     => $this->parentId
         );
     }
 
