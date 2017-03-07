@@ -405,6 +405,8 @@ class Handler
             $groups[] = $row;
         }
 
+        $groups = self::sortGroupsAlphabetically($groups);
+
         self::$trees[$project][$lang] = self::buildTree($groups);
 
         return self::$trees[$project][$lang];
@@ -430,7 +432,25 @@ class Handler
             $tree[]            = $group;
         }
 
+        $tree = self::sortGroupsAlphabetically($tree);
+
         return $tree;
+    }
+
+    /**
+     * Sort tag groups alphabetically
+     *
+     * @param array $groups
+     * @return array - alphabetically sorted array
+     */
+    protected static function sortGroupsAlphabetically($groups)
+    {
+
+        usort($groups, function ($a, $b) {
+            return strnatcasecmp($a['title'], $b['title']);
+        });
+
+        return $groups;
     }
 
     /**
