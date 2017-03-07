@@ -10,12 +10,31 @@
     width: 100%;
 }
 
-.quiqqer-tags-groupsCreate input {
-    width: calc(100% - 100px);
-}
-
 .quiqqer-tags-groupsCreate-title {
     float: left;
     line-height: 30px;
     width: 100px;
+}
+
+.quiqqer-tags-groupsCreate-description {
+    clear: both;
+    float: left;
+}
+
+.quiqqer-tags-groupsCreate label > span {
+    width: 100px;
+}
+
+.quiqqer-tags-groupsCreate textarea {
+    margin-top: 5px;
+    width: 100%;
+}
+
+.quiqqer-tags-groupsCreate-input {
+    float: left;
+    min-width: 300px;
+}
+
+.quiqqer-tags-groupsCreate input {
+    width: 100%;
 }

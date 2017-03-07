@@ -445,7 +445,6 @@ class Handler
      */
     protected static function sortGroupsAlphabetically($groups)
     {
-
         usort($groups, function ($a, $b) {
             return strnatcasecmp($a['title'], $b['title']);
         });

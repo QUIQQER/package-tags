@@ -320,7 +320,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 title    : QUILocale.get(lg, 'tag.groups.window.create.title'),
                 icon     : 'fa fa-tags',
                 maxWidth : 450,
-                maxHeight: 350,
+                maxHeight: 325,
                 autoclose: false,
                 events   : {
                     onOpen: function (Win) {
