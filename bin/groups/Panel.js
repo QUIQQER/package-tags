@@ -52,7 +52,8 @@ define('package/quiqqer/tags/bin/groups/Panel', [
             '$onResize',
             '$onInject',
             'dataRefresh',
-            'openCreateGroupDialog'
+            'openCreateGroupDialog',
+            '$openDeleteDialog'
         ],
 
         options: {
@@ -128,6 +129,8 @@ define('package/quiqqer/tags/bin/groups/Panel', [
          * event : on create
          */
         $onCreate: function () {
+            var self = this;
+
             this.addButton(this.$Projects);
 
             this.addButton({
@@ -151,7 +154,10 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 disabled : true,
                 events   : {
                     onClick: function () {
-
+                        self.openGroup(
+                            self.$Project,
+                            self.$Grid.getSelectedData()[0].id
+                        );
                     }
                 }
             });
@@ -166,9 +172,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 textimage: 'fa fa-trash',
                 disabled : true,
                 events   : {
-                    onClick: function () {
-
-                    }
+                    onClick: self.$openDeleteDialog
                 }
             });
         },
@@ -210,6 +214,11 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                     dataType : 'text',
                     width    : 200
                 }, {
+                    header   : QUILocale.get('quiqqer/system', 'description'),
+                    dataIndex: 'desc',
+                    dataType : 'text',
+                    width    : 250
+                }, {
                     header   : QUILocale.get('quiqqer/system', 'priority'),
                     dataIndex: 'priority',
                     dataType : 'number',
@@ -233,6 +242,16 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 }.bind(this),
 
                 onClick: function () {
+                    var selected = this.$Grid.getSelectedData();
+
+                    if (selected.length < 2) {
+                        this.getButtons('edit').enable();
+                    } else {
+                        this.getButtons('edit').disable();
+                    }
+
+                    this.getButtons('delete').enable();
+
                     this.fireEvent('click', [this, this.$Grid.getSelectedData()]);
                 }.bind(this)
             });
@@ -249,6 +268,9 @@ define('package/quiqqer/tags/bin/groups/Panel', [
             if (!this.$Grid || !this.$Project) {
                 return Promise.resolve();
             }
+
+            this.getButtons('edit').disable();
+            this.getButtons('delete').disable();
 
             this.Loader.show();
 
@@ -298,7 +320,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 title    : QUILocale.get(lg, 'tag.groups.window.create.title'),
                 icon     : 'fa fa-tags',
                 maxWidth : 450,
-                maxHeight: 300,
+                maxHeight: 325,
                 autoclose: false,
                 events   : {
                     onOpen: function (Win) {
@@ -307,8 +329,9 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                         var Content = Win.getContent();
 
                         Content.set('html', Mustache.render(templateCreateGroup, {
-                            title: QUILocale.get('quiqqer/system', 'title'),
-                            image: QUILocale.get('quiqqer/system', 'image')
+                            title      : QUILocale.get('quiqqer/system', 'title'),
+                            image      : QUILocale.get('quiqqer/system', 'image'),
+                            description: QUILocale.get('quiqqer/system', 'description')
                         }));
 
                         QUI.parse(Content).then(function () {
@@ -337,7 +360,8 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                             'package': 'quiqqer/tags',
                             project  : self.$Project.encode(),
                             title    : Content.getElement('[name="title"]').value,
-                            image    : Content.getElement('[name="image"]').value
+                            image    : Content.getElement('[name="image"]').value,
+                            desc     : Content.getElement('[name="desc"]').value
                         });
                     }
                 }
@@ -356,6 +380,82 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 projectLang: Project.getLang(),
                 groupId    : groupId
             }).inject(this.getParent());
+        },
+
+        /**
+         * Opens the delete group(s) dialog
+         */
+        $openDeleteDialog: function () {
+            var self         = this;
+            var selectedRows = self.$Grid.getSelectedData();
+            var groupIds     = [];
+            var groupTitles  = [];
+
+            for (var i = 0, len = selectedRows.length; i < len; i++) {
+                groupIds.push(selectedRows[i].id);
+                groupTitles.push(selectedRows[i].title);
+            }
+
+            // open popup
+            var Popup = new QUIConfirm({
+                title      : QUILocale.get(
+                    lg, 'tag.groups.window.delete.title'
+                ),
+                maxHeight  : 300,
+                maxWidth   : 500,
+                closeButton: true,
+                content    : false,
+                events     : {
+                    onOpen  : function () {
+                        Popup.getContent().set(
+                            'html',
+                            QUILocale.get(lg, 'tag.groups.window.delete.info', {
+                                groups: groupTitles.join('<br>')
+                            })
+                        );
+                    },
+                    onSubmit: function () {
+                        Popup.Loader.show();
+
+                        self.deleteGroups(groupIds).then(function (success) {
+                            Popup.Loader.hide();
+
+                            if (!success) {
+                                return;
+                            }
+
+                            Popup.close();
+                            self.dataRefresh();
+                        });
+                    }
+                }
+            });
+
+            Popup.open();
+        },
+
+        /**
+         * Delete one or more groups
+         *
+         * @param {Array} groupIds
+         * @return {Promise}
+         */
+        deleteGroups: function (groupIds) {
+            var self = this;
+
+            return new Promise(function (resolve, reject) {
+                QUIAjax.post(
+                    'package_quiqqer_tags_ajax_groups_delete',
+                    resolve, {
+                        'package': 'quiqqer/tags',
+                        project  : self.$Project.encode(),
+                        groupIds : JSON.encode(groupIds),
+                        onError  : reject
+                    }
+                );
+            });
+
+
         }
     });
 });

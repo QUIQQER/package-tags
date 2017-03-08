@@ -8,6 +8,10 @@
                     <type><![CDATA[bool]]></type>
                     <defaultvalue>0</defaultvalue>
                 </conf>
+                <conf name="getTagsRecursive">
+                    <type><![CDATA[bool]]></type>
+                    <defaultvalue>0</defaultvalue>
+                </conf>
             </section>
         </config>
 
@@ -35,6 +39,14 @@
                             <text>
                                 <locale group="quiqqer/tags" var="settings.window.tags.useGroups"/>
                             </text>
+                        </input>
+                        <input conf="tags.getTagsRecursive" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="settings.window.tags.getTagsRecursive.text"/>
+                            </text>
+                            <description>
+                                <locale group="quiqqer/tags" var="settings.window.tags.getTagsRecursive.description"/>
+                            </description>
                         </input>
                     </settings>
 

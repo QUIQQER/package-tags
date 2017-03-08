@@ -28,12 +28,13 @@ define('package/quiqqer/tags/bin/groups/Group', [
     'Projects',
     'utils/Controls',
     'package/quiqqer/tags/bin/tags/Select',
+    'package/quiqqer/tags/bin/groups/Select',
 
     'text!package/quiqqer/tags/bin/groups/Group.information.html',
     'css!package/quiqqer/tags/bin/groups/Group.css'
 
 ], function (QUI, QUIPanel, QUIButton, QUIFormUtils, QUILocale, QUIAjax,
-             Mustache, Projects, ControlUtils, Tags, templateGroupInformation) {
+             Mustache, Projects, ControlUtils, Tags, GroupSelect, templateGroupInformation) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -66,7 +67,8 @@ define('package/quiqqer/tags/bin/groups/Group', [
 
             this.parent(options);
 
-            this.$data = null;
+            this.$data              = null;
+            this.$ParentGroupSelect = null;
 
             this.$Project = Projects.get(
                 this.getAttribute('projectName'),
@@ -175,10 +177,20 @@ define('package/quiqqer/tags/bin/groups/Group', [
             this.Loader.show();
 
             this.$unloadData().then(function () {
+                var previousParentId = this.$data.parentId;
+                this.$data.parentId  = this.$ParentGroupSelect.getTagGroupIds();
 
                 return new Promise(function (resolve) {
-                    QUIAjax.post('package_quiqqer_tags_ajax_groups_save', function () {
+                    QUIAjax.post('package_quiqqer_tags_ajax_groups_save', function (newGroupData) {
                         this.Loader.hide();
+
+                        if (newGroupData) {
+                            this.$data = newGroupData;
+                            this.$ParentGroupSelect.addItem(this.$data.parentId ? this.$data.parentId : 'all');
+                        } else {
+                            this.$ParentGroupSelect.addItem(previousParentId ? previousParentId : 'all');
+                        }
+
                         this.refresh();
                         resolve();
                     }.bind(this), {
@@ -219,7 +231,8 @@ define('package/quiqqer/tags/bin/groups/Group', [
                     project     : QUILocale.get('quiqqer/system', 'project'),
                     image       : QUILocale.get('quiqqer/system', 'image'),
                     desc        : QUILocale.get('quiqqer/system', 'description'),
-                    priority    : QUILocale.get('quiqqer/system', 'priority')
+                    priority    : QUILocale.get('quiqqer/system', 'priority'),
+                    parent      : QUILocale.get('quiqqer/tags', 'tag.groups.panel.template.parent')
                 }));
 
                 QUIFormUtils.setDataToForm({
@@ -236,6 +249,20 @@ define('package/quiqqer/tags/bin/groups/Group', [
 
                 ProjectContainer.set('html', projectText);
 
+                this.$ParentGroupSelect = new GroupSelect({
+                    projectName: this.$Project.getName(),
+                    projectLang: this.$Project.getLang(),
+                    multiple   : false,
+                    max        : 1
+                }).inject(
+                    Content.getElement('.quiqqer-tags-group-parent')
+                );
+
+                if (!this.$data.parentId) {
+                    this.$ParentGroupSelect.addItem('all');
+                } else {
+                    this.$ParentGroupSelect.addItem(this.$data.parentId);
+                }
 
                 return ControlUtils.parse(Content).then(function () {
                     QUI.Controls.getControlsInElement(Content).each(function (Control) {
@@ -330,6 +357,10 @@ define('package/quiqqer/tags/bin/groups/Group', [
                         duration: 250,
                         callback: function () {
                             QUI.Controls.getControlsInElement(Container).each(function (Control) {
+                                if (Control.getType() == 'package/quiqqer/tags/bin/groups/Select') {
+                                    return;
+                                }
+
                                 Control.destroy();
                             });
 
@@ -395,7 +426,6 @@ define('package/quiqqer/tags/bin/groups/Group', [
                         return;
                     }
                 }
-
 
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
