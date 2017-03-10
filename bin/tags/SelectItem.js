@@ -54,8 +54,8 @@ define('package/quiqqer/tags/bin/tags/SelectItem', [
             Elm.set({
                 'class': 'quiqqer-tags-selectItem smooth',
                 html   : '<span class="quiqqer-tags-selectItem-icon fa fa-tag"></span>' +
-                         '<span class="quiqqer-tags-selectItem-text">&nbsp;</span>' +
-                         '<span class="quiqqer-tags-selectItem-destroy fa fa-remove"></span>'
+                '<span class="quiqqer-tags-selectItem-text">&nbsp;</span>' +
+                '<span class="quiqqer-tags-selectItem-destroy fa fa-remove"></span>'
             });
 
             this.$Icon    = Elm.getElement('.quiqqer-tags-selectItem-icon');

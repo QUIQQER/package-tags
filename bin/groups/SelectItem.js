@@ -9,11 +9,14 @@ define('package/quiqqer/tags/bin/groups/SelectItem', [
 
     'qui/controls/Control',
     'Ajax',
+    'Locale',
 
     'css!package/quiqqer/tags/bin/groups/SelectItem.css'
 
-], function (QUIControl, QUIAjax) {
+], function (QUIControl, QUIAjax, QUILocale) {
     "use strict";
+
+    var lg = 'quiqqer/tags';
 
     return new Class({
         Extends: QUIControl,
@@ -54,8 +57,8 @@ define('package/quiqqer/tags/bin/groups/SelectItem', [
             Elm.set({
                 'class': 'quiqqer-tags-groups-selectItem smooth',
                 html   : '<span class="quiqqer-tags-groups-selectItem-icon fa fa-tags"></span>' +
-                         '<span class="quiqqer-tags-groups-selectItem-text">&nbsp;</span>' +
-                         '<span class="quiqqer-tags-groups-selectItem-destroy fa fa-remove"></span>'
+                '<span class="quiqqer-tags-groups-selectItem-text">&nbsp;</span>' +
+                '<span class="quiqqer-tags-groups-selectItem-destroy fa fa-remove"></span>'
             });
 
             this.$Icon    = Elm.getElement('.quiqqer-tags-groups-selectItem-icon');
@@ -95,6 +98,13 @@ define('package/quiqqer/tags/bin/groups/SelectItem', [
 
             if (this.getAttribute('projectLang')) {
                 projectLang = this.getAttribute('projectLang');
+            }
+
+            var groupId = this.getAttribute('id');
+
+            if (groupId === 'all') {
+                this.$Text.set('html', QUILocale.get(lg, 'controls.groups.map.category.all'));
+                return;
             }
 
             QUIAjax.get('package_quiqqer_tags_ajax_groups_get', function (data) {

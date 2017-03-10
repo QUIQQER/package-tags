@@ -85,10 +85,23 @@ define('package/quiqqer/tags/bin/tags/Select', [
                         );
                     }
                 }.bind(this),
-                onAddItem: function(Control, tag) {
+                onAddItem          : function (Control, tag) {
                     this.fireEvent('addTag', [this, tag]);
                 }.bind(this)
             });
+        },
+
+        /**
+         * Set the project
+         *
+         * @param {Object} Project - classes/projects/Project
+         */
+        setProject: function (Project) {
+            if (typeOf(Project) === 'classes/projects/Project') {
+                this.$Project = Project;
+                this.setAttribute('projectName', this.$Project.getName());
+                this.setAttribute('projectLang', this.$Project.getLang());
+            }
         },
 
         /**

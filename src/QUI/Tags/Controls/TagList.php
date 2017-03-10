@@ -7,6 +7,7 @@
 namespace QUI\Tags\Controls;
 
 use QUI;
+use QUI\Tags\Groups\Handler as TagGroupsHandler;
 
 /**
  * tag list control
@@ -85,39 +86,40 @@ class TagList extends QUI\Control
      * Return a tag list by its sektor (title)
      *
      * @param String $sektor - tag sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
+     * @param int $groupId (optional) - limit results to a specific tag group
      *
      * @return array
      */
-    public function getList($sektor)
+    public function getList($sektor, $groupId = null)
     {
         switch ($sektor) {
             default:
             case 'abc':
-                $where = 'title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%"';
+                $where = '(title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%")';
                 break;
 
             case 'def':
-                $where = 'title LIKE "d%" OR title LIKE "e%" OR title LIKE "f%"';
+                $where = '(title LIKE "d%" OR title LIKE "e%" OR title LIKE "f%")';
                 break;
 
             case 'ghi':
-                $where = 'title LIKE "g%" OR title LIKE "h%" OR title LIKE "i%"';
+                $where = '(title LIKE "g%" OR title LIKE "h%" OR title LIKE "i%")';
                 break;
 
             case 'jkl':
-                $where = 'title LIKE "j%" OR title LIKE "k%" OR title LIKE "l%"';
+                $where = '(title LIKE "j%" OR title LIKE "k%" OR title LIKE "l%")';
                 break;
 
             case 'mno':
-                $where = 'title LIKE "m%" OR title LIKE "n%" OR title LIKE "o%"';
+                $where = '(title LIKE "m%" OR title LIKE "n%" OR title LIKE "o%")';
                 break;
 
             case 'pqr':
-                $where = 'title LIKE "p%" OR title LIKE "q%" OR title LIKE "r%"';
+                $where = '(title LIKE "p%" OR title LIKE "q%" OR title LIKE "r%")';
                 break;
 
             case 'stu':
-                $where = 'title LIKE "s%" OR title LIKE "t%" OR title LIKE "u%"';
+                $where = '(title LIKE "s%" OR title LIKE "t%" OR title LIKE "u%")';
                 break;
 
             case '123':
@@ -133,12 +135,34 @@ class TagList extends QUI\Control
                 break;
 
             case 'vz':
-                $where = 'title LIKE "v%" OR
+                $where = '(title LIKE "v%" OR
                         title LIKE "w%" OR
                         title LIKE "x%" OR
                         title LIKE "y%" OR
-                        title LIKE "z%"';
+                        title LIKE "z%")';
                 break;
+        }
+
+        if (!is_null($groupId)) {
+            $TagGroup  = TagGroupsHandler::get($this->getProject(), $groupId);
+            $tags      = array();
+            $groupTags = $TagGroup->getTags();
+
+            if (empty($groupTags)) {
+                return array();
+            }
+
+            foreach ($groupTags as $tagData) {
+                $tags[] = $tagData['tag'];
+            }
+
+            $tags = array_unique($tags);
+
+            if (empty($where)) {
+                $where .= '`tag` IN (\'' . implode('\',\'', $tags) . '\')';
+            } else {
+                $where .= ' AND `tag` IN (\'' . implode('\',\'', $tags) . '\')';
+            }
         }
 
         return QUI::getDataBase()->fetch(array(

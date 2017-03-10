@@ -34,14 +34,15 @@ define('package/quiqqer/tags/bin/search/Window', [
         ],
 
         options: {
-            projectName: false,
-            projectLang: false,
-            maxHeight  : 600,
-            maxWidth   : 400,
-            icon       : 'fa fa-search',
-            title      : QUILocale.get(lg, 'control.tags.search.window.title'),
-            autoclose  : true,
-            selected   : []
+            projectName   : false,
+            projectLang   : false,
+            maxHeight     : 600,
+            maxWidth      : QUIQQER_TAGS_USE_GROUPS ? 800 : 400,
+            icon          : 'fa fa-search',
+            title         : QUILocale.get(lg, 'control.tags.search.window.title'),
+            autoclose     : true,
+            selected      : [],
+            dblClickSubmit: true // can submit tag selection with double click
         },
 
         initialize: function (options) {
@@ -64,17 +65,19 @@ define('package/quiqqer/tags/bin/search/Window', [
          */
         $onOpen: function () {
             var self         = this,
-                SubmitButton = this.getButton('submit');
+                SubmitButton = this.getButton('submit'),
+                Content      = this.getContent();
 
-            this.getContent().set('html', '');
+            Content.set('html', '');
 
             SubmitButton.disable();
 
             this.$Search = new Search({
-                projectName: this.getAttribute('projectName'),
-                projectLang: this.getAttribute('projectLang'),
-                selected   : this.getAttribute('selected'),
-                events     : {
+                projectName   : this.getAttribute('projectName'),
+                projectLang   : this.getAttribute('projectLang'),
+                selected      : this.getAttribute('selected'),
+                dblClickSubmit: this.getAttribute('dblClickSubmit'),
+                events        : {
                     onChange: function (Search) {
                         if (Search.getSelectedTags().length) {
                             SubmitButton.enable();
@@ -87,7 +90,7 @@ define('package/quiqqer/tags/bin/search/Window', [
                         self.submit();
                     }
                 }
-            }).inject(this.getContent());
+            }).inject(Content);
         },
 
         /**

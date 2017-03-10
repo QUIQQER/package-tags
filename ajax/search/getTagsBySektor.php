@@ -10,17 +10,22 @@ use QUI\Tags\Controls\TagList;
  *
  * @param String $project
  * @param String $sektor
+ * @param int $groupId (optional) - limit results to a specific tag group
  *
  * @return array
  */
 QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_search_getTagsBySektor',
-    function ($project, $sektor) {
+    function ($project, $sektor, $groupId = null) {
         $TagList = new TagList(array(
             'Project' => QUI::getProjectManager()->decode($project)
         ));
 
-        return $TagList->getList($sektor);
+        if (empty($groupId)) {
+            $groupId = null;
+        }
+
+        return $TagList->getList($sektor, $groupId);
     },
-    array('project', 'sektor')
+    array('project', 'sektor', 'groupId')
 );

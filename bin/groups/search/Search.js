@@ -39,8 +39,9 @@ define('package/quiqqer/tags/bin/groups/search/Search', [
         ],
 
         options: {
-            projectName: false,
-            projectLang: false
+            projectName   : false,
+            projectLang   : false,
+            dblClickSubmit: true // can submit tag group selection with double click
         },
 
         initialize: function (options) {
@@ -180,6 +181,10 @@ define('package/quiqqer/tags/bin/groups/search/Search', [
             };
 
             var onDblClick = function (event) {
+                if (!self.getAttribute('dblClickSubmit')) {
+                    return;
+                }
+
                 event.stop();
 
                 self.$Result.getElements(
@@ -198,7 +203,7 @@ define('package/quiqqer/tags/bin/groups/search/Search', [
                 if (tagData.workingtitle !== '') {
                     title = tagData.workingtitle;
                 }
-                
+
                 if (title === '') {
                     title = tagData.title;
                 }
