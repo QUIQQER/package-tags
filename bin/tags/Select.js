@@ -99,6 +99,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
         setProject: function (Project) {
             if (typeOf(Project) === 'classes/projects/Project') {
                 this.$Project = Project;
+                this.setAttribute('projectName', this.$Project.getName());
+                this.setAttribute('projectLang', this.$Project.getLang());
             }
         },
 
