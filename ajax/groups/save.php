@@ -43,10 +43,7 @@ QUI::$Ajax->registerFunction(
 
             if (isset($data['tags'])) {
                 $tags = explode(',', $data['tags']);
-
-                foreach ($tags as $tag) {
-                    $Group->addTag($tag);
-                }
+                $Group->setTags($tags);
             }
 
             $Group->save();
