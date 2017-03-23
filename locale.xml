@@ -312,6 +312,15 @@
             <en><![CDATA[All groups]]></en>
         </locale>
 
+        <locale name="bricks.tags.title">
+            <de><![CDATA[Tags: Liste]]></de>
+            <en><![CDATA[Tags: Liste]]></en>
+        </locale>
+        <locale name="bricks.tags.description">
+            <de><![CDATA[]]></de>
+            <en><![CDATA[]]></en>
+        </locale>
+
     </groups>
     <groups name="quiqqer/tags" datatype="php">
         <!-- Ajax -->
@@ -468,6 +477,5 @@
             <de><![CDATA[Die Tag-Gruppe #[childTagGroupId] ist ein Kind der Tag-Gruppe #[tagGroupId] und kann daher nicht als Eltern-Gruppe gesetzt werden.]]></de>
             <en><![CDATA[The tag group #[childTagGroupId] is a child of the tag group #[tagGroupId] and thus cannot be set as a parent group.]]></en>
         </locale>
-
     </groups>
 </locales>
