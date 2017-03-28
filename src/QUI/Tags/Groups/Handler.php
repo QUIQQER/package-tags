@@ -344,7 +344,9 @@ class Handler
             $query['limit'] = $params['limit'];
         }
 
-        if (isset($params['order'])) {
+        if (isset($params['order'])
+            && !empty($params['order'])
+        ) {
             $query['order'] = $params['order'];
         }
 
@@ -462,7 +464,7 @@ class Handler
      */
     public static function getTagGroupChildrenIds(Project $Project, $groupId)
     {
-        $tree = self::getTree($Project);
+        $tree      = self::getTree($Project);
         $groupNode = self::searchTree($tree, (int)$groupId);
 
         // group has no children

@@ -519,6 +519,21 @@ class Group
     }
 
     /**
+     * Set tags to group (overwrites all previous tags!)
+     *
+     * @param array $tags
+     * @return void
+     */
+    public function setTags($tags)
+    {
+        $this->tags = array();
+
+        foreach ($tags as $tag) {
+            $this->addTag($tag);
+        }
+    }
+
+    /**
      * Remove a tag from the group
      *
      * @param string $tag

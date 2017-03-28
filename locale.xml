@@ -128,7 +128,8 @@
             <en><![CDATA[Delete tag groups]]></en>
         </locale>
         <locale name="tag.groups.window.delete.info" html="true">
-            <de><![CDATA[Sind Sie sicher, dass Sie die folgenden Tag-Gruppen unwiderruflich löschen wollen?<br><br>[groups]]]></de>
+            <de>
+                <![CDATA[Sind Sie sicher, dass Sie die folgenden Tag-Gruppen unwiderruflich löschen wollen?<br><br>[groups]]]></de>
             <en><![CDATA[Are you sure you want to irrevocably delete the following tag groups?<br><br>[groups]]]></en>
         </locale>
 
@@ -159,7 +160,8 @@
             <en><![CDATA[Please choose tag group.]]></en>
         </locale>
         <locale name="control.grouptags.search.window.info.multiselect" html="true">
-            <de><![CDATA[Bitte wählen Sie eine oder mehrere Tag-Gruppen aus.<br><i>(Mehrfachauswahl mit Strg + Klick)</i>]]></de>
+            <de>
+                <![CDATA[Bitte wählen Sie eine oder mehrere Tag-Gruppen aus.<br><i>(Mehrfachauswahl mit Strg + Klick)</i>]]></de>
             <en><![CDATA[Please choose one or more tag groups.<br><i>(Multi-select with Ctrl + click)</i>]]></en>
         </locale>
 
@@ -200,8 +202,10 @@
             <en><![CDATA[Show children of tags of a tag group]]></en>
         </locale>
         <locale name="settings.window.tags.getTagsRecursive.description">
-            <de><![CDATA[Bei der Auswahl einer Tag-Gruppe zum Filtern einer Tag-Liste sollen auch alle Tags der Tag-Gruppen-Kinder und ihrer Tag-Gruppen-Kinder angezeigt werden (bis zur tiefsten Ebene).]]></de>
-            <en><![CDATA[On choosing a tag group to filter a tag list all children of the tag groups and their children should be shown (up to the lowest level).]]></en>
+            <de>
+                <![CDATA[Bei der Auswahl einer Tag-Gruppe zum Filtern einer Tag-Liste sollen auch alle Tags der Tag-Gruppen-Kinder und ihrer Tag-Gruppen-Kinder angezeigt werden (bis zur tiefsten Ebene).]]></de>
+            <en>
+                <![CDATA[On choosing a tag group to filter a tag list all children of the tag groups and their children should be shown (up to the lowest level).]]></en>
         </locale>
 
         <locale name="exception.limit.tags.to.site">
@@ -312,6 +316,51 @@
             <en><![CDATA[All groups]]></en>
         </locale>
 
+        <locale name="bricks.tags.title">
+            <de><![CDATA[Tags: Liste]]></de>
+            <en><![CDATA[Tags: List]]></en>
+        </locale>
+        <locale name="bricks.tags.description">
+            <de><![CDATA[]]></de>
+            <en><![CDATA[]]></en>
+        </locale>
+
+        <locale name="quiqqer/tags:types/tag-listing.title">
+            <de><![CDATA[Tag-Liste]]></de>
+            <en><![CDATA[Tag List]]></en>
+        </locale>
+        <locale name="quiqqer/tags:types/tag-listing.description" html="true">
+            <de><![CDATA[
+            Dieser Seitentyp listet alle Tags inkl. Beschreibung und zugehörigem Icon in einer Liste auf.
+            Klickt der Nutzer auf einen Tag, landet er auf einer Suchergebnis-Seite mit allen Seiten, denen dieser Tag zugewiesen ist.
+            ]]></de>
+            <en><![CDATA[
+            This page type lists all tags including description and associated icon in a list.
+            If the user clicks on a tag, he ends up on a search result page with all pages to which this tag is assigned.
+            ]]></en>
+        </locale>
+        <locale name="quiqqer/tags:types/tag-search.title">
+            <de><![CDATA[Tag-Suche]]></de>
+            <en><![CDATA[Tag Search]]></en>
+        </locale>
+        <locale name="quiqqer/tags:types/tag-search.description" html="true">
+            <de><![CDATA[
+            Über die Tag-Suche kann der Nutzer Inhalte zu verschiedenen relevanten Themen finden, ohne selbst Suchbegriffe eingeben zu müssen.
+            Diese Themen können als Tags vom Seitenbetreiber nach Belieben für jede Unterseite festgelegt werden.
+            Der Nutzer kann die Tag-Suche sowohl mit einem als auch mit mehreren ausgewählten Tags ausführen, um die Ergebnisse genauer einzugrenzen.
+            In der Ergebnisliste werden alle Unterseiten angezeigt, die intern mit den gesuchten Tags markiert sind.
+            Die Tag-Suche lässt sich in den Einstellungen durch den Seitenbetreiber konfigurieren,
+            um beispielsweise bestimmte Tags vorauszuwählen oder die Darstellung anzupassen.
+            ]]></de>
+            <en><![CDATA[
+            Through the tag search the user can find content on various relevant topics without having to enter search terms themselves.
+            These topics can be defined as tags by the site operator at will for each bottom side.
+            The user can perform the tag search with both one and several selected tags to further narrow down the results.
+            In the list of results all sub-pages are marked internally with the searched tags.
+            The tag search can be configured in the settings by the page operator,
+            For example, to pre-select certain tags or to adjust the display.
+            ]]></en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php">
         <!-- Ajax -->
@@ -451,23 +500,28 @@
 
         <!-- Class: Manager -->
         <locale name="exception.manager.cannot.delete.group.with.children">
-            <de><![CDATA[Tag-Gruppen, die noch andere Tag-Gruppen enthalten, können nicht gelöscht werden. Bitte löschen Sie zuerst alle Tag-Gruppen-Kinder dieser Tag-Gruppe, um sie zu löschen zu können.]]></de>
-            <en><![CDATA[Tag groups that contain other tag groups cannot be deleted. Please delete all tag group children from this group to be able to delete it.]]></en>
+            <de>
+                <![CDATA[Tag-Gruppen, die noch andere Tag-Gruppen enthalten, können nicht gelöscht werden. Bitte löschen Sie zuerst alle Tag-Gruppen-Kinder dieser Tag-Gruppe, um sie zu löschen zu können.]]></de>
+            <en>
+                <![CDATA[Tag groups that contain other tag groups cannot be deleted. Please delete all tag group children from this group to be able to delete it.]]></en>
         </locale>
 
         <!-- Class: Groups\Group -->
         <locale name="exception.groups.group.parent.does.not.exist">
-            <de><![CDATA[Die Tag-Gruppe #[tagGroupId] kann nicht als Eltern-Tag-Gruppe zugewiesen werden, da sie nicht exisitert.]]></de>
-            <en><![CDATA[The tag group #[tagGroupId] cannot be assigned as a parent tag group because it does not exist.]]></en>
+            <de>
+                <![CDATA[Die Tag-Gruppe #[tagGroupId] kann nicht als Eltern-Tag-Gruppe zugewiesen werden, da sie nicht exisitert.]]></de>
+            <en>
+                <![CDATA[The tag group #[tagGroupId] cannot be assigned as a parent tag group because it does not exist.]]></en>
         </locale>
         <locale name="exception.groups.group.cannot.be.its.own.parent">
             <de><![CDATA[Eine Tag-Gruppe kann nicht ihre eigene Eltern-Tag-Gruppe sein.]]></de>
             <en><![CDATA[A tag group cannot be its own parent tag group.]]></en>
         </locale>
         <locale name="exception.groups.group.parent.cannot.be.child">
-            <de><![CDATA[Die Tag-Gruppe #[childTagGroupId] ist ein Kind der Tag-Gruppe #[tagGroupId] und kann daher nicht als Eltern-Gruppe gesetzt werden.]]></de>
-            <en><![CDATA[The tag group #[childTagGroupId] is a child of the tag group #[tagGroupId] and thus cannot be set as a parent group.]]></en>
+            <de>
+                <![CDATA[Die Tag-Gruppe #[childTagGroupId] ist ein Kind der Tag-Gruppe #[tagGroupId] und kann daher nicht als Eltern-Gruppe gesetzt werden.]]></de>
+            <en>
+                <![CDATA[The tag group #[childTagGroupId] is a child of the tag group #[tagGroupId] and thus cannot be set as a parent group.]]></en>
         </locale>
-
     </groups>
 </locales>
