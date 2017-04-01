@@ -1,14 +1,14 @@
 QUIQQER Tags (Themen)
 ========
 
-Das Tag Paket erweitert QUIQQER um eine tag Verwaltung.
+Das Tag-Paket erweitert QUIQQER um eine Tag-Verwaltung.
 
-Tagging eine Technik, die es jedem Besucher erlaubt,
-an die besuchten Seiten frei wählbare Begriffe zu hängen (die Texte werden quasi etikettiert).
+Tagging ist eine Technik, die es jedem Besucher erlaubt, an die besuchten Seiten 
+frei wählbare Begriffe zu hängen (die Texte werden quasi etikettiert).
 Dadurch lassen sich Artikel in unterschiedliche Themenbereiche gleichzeitig einsortieren;
 die starre Hierarchisierung der herkömmlichen Navigations-Rubriken wird somit ergänzt oder ersetzt.
 
-Packetname:
+Paketname:
 
     quiqqer/tags
 
@@ -16,7 +16,7 @@ Packetname:
 Features
 --------
 
-- Tag Verwaltung
+- Tag-Verwaltung
 - Zuweisen einzelner Tags zu Seiten
 - Tag-Suche
 - Taglisten
@@ -39,8 +39,10 @@ Mitwirken
 Support
 -------
 
-Falls Sie ein Fehler gefunden haben oder Verbesserungen wünschen,
-Dann können Sie gerne an support@pcsg.de eine E-Mail schreiben.
+Falls Sie Fehler gefunden, Wünsche oder Verbesserungsvorschläge haben, 
+können Sie uns gern per Mail an support@pcsg.de darüber informieren.  
+Wir werden versuchen auf Ihre Wünsche einzugehen bzw. diese an die 
+zuständigen Entwickler des Projektes weiterleiten.
 
 
 License
@@ -76,13 +78,13 @@ Listet die Tags einer Seite auf
 
 **Attribute**
 + {\QUI\Projects\Project\Site} Site - Seite für die die Tags angezeigt werden soll
-+ {Bool} hideTitle - [optional] zeigt den Titel vor den Tags an oder nicht an
++ {Bool} hideTitle - [optional]  Einstellung, um den Titel vor den Tags anzuzeigen oder auszublenden.
 
 
 ### {control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
 
-Zeigt eine Tag Liste an. Tags anzeigen von A-Z
+Zeigt eine Tagliste an. Tags anzeigen von A-Z
 
 **Attribute**
 + {\QUI\Projects\Project\Site} Site - [optional] Die Liste selbst, wenn keine Liste angegeben wird, wird eine Seite types:tag-listing gesucht
-+ {\QUI\Projects\Project} Project - [optional] Project der Liste, wenn kein Projekt angegeben wird, wird das Projekt der Site verwendet
++ {\QUI\Projects\Project} Project - [optional] Projekt der Liste, wenn kein Projekt angegeben wird, wird das Projekt der Site verwendet
