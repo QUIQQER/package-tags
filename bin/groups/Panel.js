@@ -134,7 +134,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
             this.addButton(this.$Projects);
 
             this.addButton({
-                type: 'seperator'
+                type: 'separator'
             });
 
             // buttons
@@ -163,7 +163,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
             });
 
             this.addButton({
-                type: 'seperator'
+                type: 'separator'
             });
 
             this.addButton({
