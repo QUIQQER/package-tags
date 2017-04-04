@@ -88,7 +88,7 @@ define('package/quiqqer/tags/bin/Manager', [
 
             // button line
             this.addButton(this.$Projects);
-            this.addButton({type: 'seperator'});
+            this.addButton({type: 'separator'});
 
             this.addButton({
                 text     : QUILocale.get(lg, 'panel.manager.button.add.tag'),
@@ -114,7 +114,7 @@ define('package/quiqqer/tags/bin/Manager', [
                 }
             });
 
-            this.addButton({type: 'seperator'});
+            this.addButton({type: 'separator'});
 
             this.addButton({
                 text     : QUILocale.get(lg, 'panel.manager.button.showtagsites'),
