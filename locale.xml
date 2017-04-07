@@ -183,6 +183,18 @@
             <de><![CDATA[Darf Tags erstellen und bearbeiten.]]></de>
             <en><![CDATA[Can create and edit tags.]]></en>
         </locale>
+        <locale name="permission.tags.group._header">
+            <de><![CDATA[Tag Gruppen]]></de>
+            <en><![CDATA[Tag groups]]></en>
+        </locale>
+        <locale name="permission.tags.group.create">
+            <de><![CDATA[Darf Tags Gruppen erstellen.]]></de>
+            <en><![CDATA[Can create tag groups.]]></en>
+        </locale>
+        <locale name="permission.tags.group.delete">
+            <de><![CDATA[Darf Tag Gruppen löschen.]]></de>
+            <en><![CDATA[Can delete tag group.]]></en>
+        </locale>
 
         <!-- Settings -->
         <locale name="menu.tag.settings.title">
