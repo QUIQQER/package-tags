@@ -3,6 +3,7 @@
 /**
  * This file contains QUI\Tags\Groups\Handler
  */
+
 namespace QUI\Tags\Groups;
 
 use QUI;
@@ -45,10 +46,13 @@ class Handler
      *
      * @param Project $Project
      * @param string $title
+     * @param QUI\Interfaces\Users\User|null $User
      * @return Group
      */
-    public static function create(Project $Project, $title)
+    public static function create(Project $Project, $title, $User = null)
     {
+        QUI\Permissions\Permission::checkPermission('tags.group.create', $User);
+
         QUI::getDataBase()->insert(
             self::table($Project),
             array(
@@ -100,12 +104,15 @@ class Handler
      *
      * @param Project $Project
      * @param integer $groupId
+     * @param QUI\Interfaces\Users\User|null $User - optional
      * @return void
      *
      * @throws QUI\Tags\Exception
      */
-    public static function delete(Project $Project, $groupId)
+    public static function delete(Project $Project, $groupId, $User = null)
     {
+        QUI\Permissions\Permission::checkPermission('tags.group.delete', $User);
+
         $project = $Project->getName();
         $lang    = $Project->getLang();
         $groupId = (int)$groupId;

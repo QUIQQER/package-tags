@@ -189,7 +189,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
 
                 }.bind(this), {
                     'package' : 'quiqqer/tags',
-                    permission: 'tag.group.create',
+                    permission: 'tags.group.create',
                     project   : this.$Project.encode(),
                     groupId   : id,
                     showError : false
@@ -234,7 +234,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
 
                 }.bind(this), {
                     'package' : 'quiqqer/tags',
-                    permission: 'tag.group.create',
+                    permission: 'tags.group.create',
                     project   : this.$Project.encode(),
                     title     : title,
                     showError : false,
@@ -252,7 +252,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
             var self      = this;
             var Container = new Element('div', {
                 html      : QUILocale.get(lg, 'site.window.add.taggroup.title', {
-                    tag: tag
+                    tag: title
                 }),
                 styles    : {
                     background: '#FFFFFF',
