@@ -40,15 +40,13 @@ class TagList extends QUI\Control
     public function getBody()
     {
         $Engine  = QUI::getTemplateManager()->getEngine();
-        $Project = $this->getProject();
-        $Site    = $this->getSite();
         $Rewrite = QUI::getRewrite();
 
         $urlParams = $Rewrite->getUrlParamsList();
 
         $Engine->assign(array(
-            'Project' => $Project,
-            'Site'    => $Site,
+            'Project' => $this->getProject(),
+            'Site'    => $this->getSite(),
             'Locale'  => QUI::getLocale()
         ));
 
@@ -173,7 +171,7 @@ class TagList extends QUI\Control
     }
 
     /**
-     * Return the Project
+     * Return the Tag Search Site
      *
      * @return QUI\Projects\Site
      */
@@ -183,7 +181,24 @@ class TagList extends QUI\Control
             return $this->getAttribute('Site');
         }
 
-        // Sucheseite finden
+        $Project      = $this->getProject();
+        $language     = $Project->getLang();
+        $tagSearchIds = $Project->getConfig('tags.tagSearchId');
+
+        if ($tagSearchIds) {
+            $tagSearchIds = json_decode($tagSearchIds, true);
+
+            if ($tagSearchIds[$language]) {
+                try {
+                    $Site = QUI\Projects\Site\Utils::getSiteByLink($tagSearchIds[$language]);
+                    $this->setAttribute('Site', $Site);
+
+                    return $Site;
+                } catch (QUI\Exception $Exception) {
+                }
+            }
+        }
+
         $result = $this->getProject()->getSites(array(
             'where' => array(
                 'type' => 'quiqqer/tags:types/tag-listing'

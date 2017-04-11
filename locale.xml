@@ -167,6 +167,21 @@
 
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
+        <locale name="package.title">
+            <de><![CDATA[QUIQQER - Tags]]></de>
+            <en><![CDATA[QUIQQER - TAG's]]></en>
+        </locale>
+        <locale name="package.description" html="true">
+            <de><![CDATA[
+                <p>Tags lassen sich mit "Schlagwörtern" oder „Stichwörtern“ übersetzen.
+                Sie beschreiben einen Inhalt mit einzelnen Wörtern.</p>
+                <p>Für einen Artikel über eine Reise nach Rom wären demnach zum Beispiel
+                die Tags „Italien“, „Reise“ oder „Rom“ passend.</p>
+                <p>Sie können Tags in Ihrem Projekt nutzen, um Ihren Lesern mehr Übersicht zu bieten oder ihnen eine einfache Suche nach Inhalten zu ermöglichen.</p>
+            ]]></de>
+            <en><![CDATA[]]></en>
+        </locale>
+
         <locale name="permission.tags._header">
             <de><![CDATA[Tagverwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
@@ -261,23 +276,24 @@
             <en><![CDATA[No tag groups found]]></en>
         </locale>
         <locale name="message.no.permission.create.tags">
-            <de>
-                <![CDATA[Sie haben nicht die nötigen Rechte, neue Tags anzulegen. Bitte verwenden Sie nur die vorhandenen Tags]]></de>
-            <en><![CDATA[You dont have the necessary rights to create new tags. Please only use existing tags.]]></en>
-        </locale>
-        <locale name="package.description">
-            <de><![CDATA[<p>Tags lassen sich mit "Schlagwörtern" oder „Stichwörtern“ übersetzen.
-                Sie beschreiben einen Inhalt mit einzelnen Wörtern.</p>
-                <p>Für einen Artikel über eine Reise nach Rom wären demnach zum Beispiel
-                die Tags „Italien“, „Reise“ oder „Rom“ passend.</p>
-                <p>Sie können Tags in Ihrem Projekt nutzen, um Ihren Lesern mehr Übersicht zu bieten oder ihnen eine einfache Suche nach Inhalten zu ermöglichen.</p>]]></de>
-            <en><![CDATA[]]></en>
-        </locale>
-        <locale name="package.title">
-            <de><![CDATA[QUIQQER - Tags]]></de>
-            <en><![CDATA[QUIQQER - TAG's]]></en>
+            <de><![CDATA[
+            Sie haben nicht die nötigen Rechte, neue Tags anzulegen.
+            Bitte verwenden Sie nur die vorhandenen Tags
+            ]]></de>
+            <en><![CDATA[
+            You dont have the necessary rights to create new tags.
+            Please only use existing tags.
+            ]]></en>
         </locale>
 
+        <locale name="project.settings.title">
+            <de><![CDATA[Tags]]></de>
+            <en><![CDATA[Tags]]></en>
+        </locale>
+        <locale name="project.settings.tagSearchId.title">
+            <de><![CDATA[Standard Tag-Suche]]></de>
+            <en><![CDATA[Default tag search]]></en>
+        </locale>
 
         <locale name="filter.abc">
             <de><![CDATA[A B C]]></de>

@@ -56,4 +56,42 @@
         </window>
 
     </settings>
+
+    <!-- Project Settings -->
+    <project>
+
+        <settings>
+            <config>
+                <section name="tags">
+                    <conf name="tagSearchId">
+                        <type><![CDATA[string]]></type>
+                    </conf>
+                </section>
+            </config>
+
+            <window>
+                <categories>
+                    <category name="tags">
+                        <text>
+                            <locale group="quiqqer/tags" var="project.settings.title"/>
+                        </text>
+                        <icon>fa fa-tags</icon>
+
+                        <settings title="tags.tagSearchId" name="tags.tagSearchId">
+                            <title>
+                                <locale group="quiqqer/tags" var="project.settings.title"/>
+                            </title>
+                            <input conf="tags.tagSearchId" data-qui="controls/projects/project/SiteSelect">
+                                <text>
+                                    <locale group="quiqqer/tags" var="project.settings.tagSearchId.title"/>
+                                </text>
+                            </input>
+                        </settings>
+                    </category>
+                </categories>
+
+            </window>
+        </settings>
+
+    </project>
 </quiqqer>
