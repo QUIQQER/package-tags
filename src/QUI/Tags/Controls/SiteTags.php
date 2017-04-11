@@ -65,43 +65,73 @@ class SiteTags extends QUI\Control
             }
         }
 
-
         $Engine->assign(array(
             'Project'    => $Project,
             'Site'       => $Site,
             'Locale'     => QUI::getLocale(),
             'TagManager' => new QUI\Tags\Manager($Project),
             'this'       => $this,
-            'tagList'    => $tagList
-        ));
-
-
-        // Sucheseite finden
-        $cacheName = $Project->getName() . '/' . $Project->getLang()
-                     . '/sites/quiqqer/tags:types/tag-search';
-
-        try {
-            $result = QUI\Cache\Manager::get($cacheName);
-        } catch (QUI\Exception $Exception) {
-            $result = $Project->getSites(array(
-                'where' => array(
-                    'type' => 'quiqqer/tags:types/tag-search'
-                )
-            ));
-
-            QUI\Cache\Manager::set($cacheName, $result, 60);
-        }
-
-        $SearchSite = $Site;
-
-        if (isset($result[0])) {
-            $SearchSite = $result[0];
-        }
-
-        $Engine->assign(array(
-            'SearchSite' => $SearchSite
+            'tagList'    => $tagList,
+            'SearchSite' => $this->getSearchSite()
         ));
 
         return $Engine->fetch(dirname(__FILE__) . '/SiteTags.html');
+    }
+
+    /**
+     * Return the global tag search site
+     *
+     * @return mixed|QUI\Projects\Site|QUI\Projects\Site\Edit
+     */
+    protected function getSearchSite()
+    {
+        $Site = $this->getAttribute('Site');
+
+        if (!$Site) {
+            $Site = QUI::getRewrite()->getSite();
+        }
+
+        $Project   = $Site->getProject();
+        $cacheName = $Project->getName() . '/' . $Project->getLang() . '/sites/quiqqer/tags:types/tag-search';
+
+        try {
+            return $Project->get(
+                QUI\Cache\Manager::get($cacheName)
+            );
+        } catch (QUI\Exception $Exception) {
+        }
+
+        $language     = $Project->getLang();
+        $tagSearchIds = $Project->getConfig('tags.tagSearchId');
+
+        if ($tagSearchIds) {
+            $tagSearchIds = json_decode($tagSearchIds, true);
+
+            if ($tagSearchIds[$language]) {
+                try {
+                    $Site = QUI\Projects\Site\Utils::getSiteByLink($tagSearchIds[$language]);
+
+                    QUI\Cache\Manager::set($cacheName, $Site->getId());
+
+                    return $Site;
+                } catch (QUI\Exception $Exception) {
+                }
+            }
+        }
+
+        $result = $Project->getSites(array(
+            'where' => array(
+                'type' => 'quiqqer/tags:types/tag-search'
+            ),
+            'limit' => 1
+        ));
+
+        if (isset($result[0])) {
+            QUI\Cache\Manager::set($cacheName, $result[0]->getId());
+
+            return $result[0];
+        }
+
+        return $Site;
     }
 }
