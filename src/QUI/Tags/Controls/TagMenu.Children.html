@@ -1,0 +1,24 @@
+<ul class="quiqqer-tags-tagmenu-list-children">
+    {foreach $tags as $tag}
+    <li>
+        <label class="quiqqer-tags-tagmenu-list-li-label">
+            <span class="quiqqer-tags-tagmenu-list-li-label-checkbox">
+                <input type="checkbox" value="{$tag['tag']}"/>
+            </span>
+            {if $tagSearchUrl}
+            <a href="{$tagSearchUrl}?tags={$tag['tag']}"
+               class="quiqqer-tags-tagmenu-list-li-label-link"
+            >
+                {$tag['title']}
+            </a>
+            {else}
+            <a href="#"
+               class="quiqqer-tags-tagmenu-list-li-label-link"
+            >
+                {$tag['title']}
+            </a>
+            {/if}
+        </label>
+    </li>
+    {/foreach}
+</ul>
