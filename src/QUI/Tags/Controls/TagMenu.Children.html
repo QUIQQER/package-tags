@@ -3,7 +3,7 @@
     <li>
         <label class="quiqqer-tags-tagmenu-list-li-label">
             <span class="quiqqer-tags-tagmenu-list-li-label-checkbox">
-                <input type="checkbox" value="{$tag['tag']}"/>
+                <input type="checkbox" value="{$tag['tag']}" data-title="{$tag['title']}"/>
             </span>
             {if $tagSearchUrl}
             <a href="{$tagSearchUrl}?tags={$tag['tag']}"

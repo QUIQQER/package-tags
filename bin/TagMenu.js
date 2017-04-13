@@ -25,7 +25,8 @@ define('package/quiqqer/tags/bin/TagMenu', [
             '$change'
         ],
 
-        initialize: function () {
+        initialize: function (options) {
+            this.parent(options);
 
             this.$tagElms = [];
 
@@ -42,7 +43,7 @@ define('package/quiqqer/tags/bin/TagMenu', [
 
             this.$Elm = this.getElm();
 
-            // parse all tag group elements and make them toggable
+            // parse all tag group elements and make them toggleable
             var tagGroupIconElms = this.$Elm.getElements(
                 '.quiqqer-tags-tagmenu-list-li-label-icon'
             );
@@ -50,23 +51,30 @@ define('package/quiqqer/tags/bin/TagMenu', [
             var FuncOnTagGroupIconClick = function (event) {
                 event.stop();
 
-                var LiElm = event.target.getParent('li').getElement('ul.quiqqer-tags-tagmenu-list-children');
+                var Target = event.target;
+
+                if (!Target.hasClass('quiqqer-tags-tagmenu-list-li-label-icon')) {
+                    Target = Target.getParent();
+                }
+
+                var LiElm   = Target.getParent('li').getElement('ul.quiqqer-tags-tagmenu-list-children');
+                var IconElm = Target.getElement('span');
 
                 if (!LiElm) {
                     return;
                 }
 
                 if (LiElm.getStyle('display') === 'none') {
-                    event.target.addClass('fa fa-angle-right');
-                    event.target.removeClass('fa fa-angle-down');
+                    IconElm.removeClass('fa fa-angle-right');
+                    IconElm.addClass('fa fa-angle-down');
 
                     LiElm.setStyle('display', '');
                     return;
                 }
 
 
-                event.target.removeClass('fa fa-angle-right');
-                event.target.addClass('fa fa-angle-down');
+                IconElm.addClass('fa fa-angle-right');
+                IconElm.removeClass('fa fa-angle-down');
 
                 LiElm.setStyle('display', 'none');
             };
@@ -126,7 +134,10 @@ define('package/quiqqer/tags/bin/TagMenu', [
                 var TagElm = this.$tagElms[i];
 
                 if (TagElm.checked) {
-                    selectedTags.push(TagElm.value);
+                    selectedTags.push({
+                        tag  : TagElm.value,
+                        title: TagElm.getProperty('data-title')
+                    });
                 }
             }
 

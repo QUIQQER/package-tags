@@ -15,10 +15,12 @@
         {foreach $children as $tagGroup}
         <li class="quiqqer-tags-tagmenu-list-li">
             <label class="quiqqer-tags-tagmenu-list-li-label">
-                <span class="quiqqer-tags-tagmenu-list-li-label-icon fa fa-angle-right"></span>
-                <a href="#" class="quiqqer-tags-tagmenu-list-li-label-link">
+                <span class="quiqqer-tags-tagmenu-list-li-label-icon">
+                    <span class="fa fa-angle-down"></span>
+                </span>
+                <span class="quiqqer-tags-tagmenu-list-li-label-link">
                     {$tagGroup['title']}
-                </a>
+                </span>
             </label>
             {include file=$childrenTemplate tags=$tagGroup['tags'] tagSearchUrl=$tagSearchUrl}
         </li>

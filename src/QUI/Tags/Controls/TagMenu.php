@@ -96,8 +96,6 @@ class TagMenu extends QUI\Control
             );
         }
 
-        \QUI\System\Log::writeRecursive($children);
-
         return $children;
     }
 }
