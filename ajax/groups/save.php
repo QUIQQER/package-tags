@@ -49,7 +49,7 @@ QUI::$Ajax->registerFunction(
             $Group->save();
 
             if (isset($data['parentId'])) {
-                if (empty($data['parentId'])) {
+                if (empty($data['parentId']) || $data['parentId'] == 'all') {
                     $Group->removeParentGroup();
                 } else {
                     $Group->setParentGroup($data['parentId']);
