@@ -1,0 +1,48 @@
+.quiqqer-tags-tagmenu-list ul {
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.quiqqer-tags-tagmenu-list ul ul {
+    margin-left: 25px;
+}
+
+.quiqqer-tags-tagmenu-list-li,
+.quiqqer-tags-tagmenu-list-li-label {
+    clear: both;
+    float: left;
+    width: 100%;
+}
+
+.quiqqer-tags-tagmenu-list__isInBreadcrumb {
+    font-weight: 400;
+}
+
+.quiqqer-tags-tagmenu-list-li-label-icon,
+.quiqqer-tags-tagmenu-list-li-label-checkbox {
+    cursor: pointer;
+    float: left;
+
+    text-align: center;
+    width: 30px;
+}
+
+.quiqqer-tags-tagmenu-list-li-label-checkbox:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.quiqqer-tags-tagmenu-list-li-label-checkbox input {
+    bottom: 1px;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+}
+
+.quiqqer-tags-tagmenu-list-li-label-link {
+    float: left;
+    padding-top: 5px;
+    width: calc(100% - 30px);
+}

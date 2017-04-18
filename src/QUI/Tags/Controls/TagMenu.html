@@ -1,0 +1,29 @@
+{if $this->getAttribute('showTitle') && $this->getAttribute('frontendTitle')}
+<header class="control-header grid-row-header">
+    <h1>{$this->getAttribute('frontendTitle')}</h1>
+</header>
+{/if}
+
+{if $this->getAttribute('content') != ""}
+<div class="control-content">
+    {$this->getAttribute('content')}
+</div>
+{/if}
+
+<nav class="quiqqer-tags-tagmenu-list">
+    <ul>
+        {foreach $children as $tagGroup}
+        <li class="quiqqer-tags-tagmenu-list-li">
+            <label class="quiqqer-tags-tagmenu-list-li-label">
+                <span class="quiqqer-tags-tagmenu-list-li-label-icon">
+                    <span class="fa fa-angle-down"></span>
+                </span>
+                <span class="quiqqer-tags-tagmenu-list-li-label-link">
+                    {$tagGroup['title']}
+                </span>
+            </label>
+            {include file=$childrenTemplate tags=$tagGroup['tags'] tagSearchUrl=$tagSearchUrl}
+        </li>
+        {/foreach}
+    </ul>
+</nav>
