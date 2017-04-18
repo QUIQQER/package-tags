@@ -285,10 +285,10 @@ define('package/quiqqer/tags/bin/tags/Select', [
             return new Promise(function (resolve, reject) {
                 this.Loader.show();
 
-                QUIAjax.get('package_quiqqer_tags_ajax_tag_add', function () {
+                QUIAjax.get('package_quiqqer_tags_ajax_tag_add', function (result) {
 
                     this.Loader.hide();
-                    resolve();
+                    resolve(result);
 
                 }.bind(this), {
                     'package'  : 'quiqqer/tags',
@@ -348,8 +348,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 text  : QUILocale.get('quiqqer/system', 'save'),
                 events: {
                     onClick: function () {
-                        self.createTag(tag).then(function () {
-                            return self.addTag(tag);
+                        self.createTag(tag).then(function (created) {
+                            return self.addTag(created.tag);
                         }).then(function () {
                             hide();
                         }).catch(hide);
