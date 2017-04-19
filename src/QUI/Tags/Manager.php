@@ -36,6 +36,11 @@ class Manager
     protected $tags = array();
 
     /**
+     * @var array
+     */
+    protected $groupsFromTags = array();
+
+    /**
      * constructor
      *
      * @param \QUI\Projects\Project $Project
@@ -726,6 +731,48 @@ class Manager
         return $result;
     }
 
+    /**
+     * Return a group tag array
+     * Return all parent groups from the tag
+     *
+     * @param string $tag
+     * @return array
+     */
+    public function getGroupsFromTag($tag)
+    {
+        if (isset($this->groupsFromTags[$tag])) {
+            return $this->groupsFromTags[$tag];
+        }
+
+        $PDO   = QUI::getDataBase()->getPDO();
+        $table = QUI::getDBProjectTableName('tags_groups', $this->Project);
+
+        $query = "
+            SELECT *
+            FROM {$table}
+            WHERE
+                tags LIKE :search1 OR
+                tags LIKE :search2 OR
+                tags LIKE :search3
+        ";
+
+        $Statement = $PDO->prepare($query);
+
+        $Statement->bindValue('search1', '%,' . $tag . ',%', \PDO::PARAM_STR);
+        $Statement->bindValue('search2', $tag . ',%', \PDO::PARAM_STR);
+        $Statement->bindValue('search3', '%,' . $tag, \PDO::PARAM_STR);
+
+        try {
+            $Statement->execute();
+            $this->groupsFromTags[$tag] = $Statement->fetchAll(\PDO::FETCH_ASSOC);
+
+            return $this->groupsFromTags[$tag];
+        } catch (\Exception $Exception) {
+            QUI\System\Log::writeException($Exception);
+        }
+
+        return array();
+    }
 
     /**
      * site methods
