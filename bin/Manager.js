@@ -243,10 +243,10 @@ define('package/quiqqer/tags/bin/Manager', [
          */
         refresh: function () {
             if (!this.$project) {
-                return;
+                return Promise.resolve();
             }
 
-            this.loadProject(this.$project, this.$lang);
+            return this.loadProject(this.$project, this.$lang);
         },
 
 
@@ -259,6 +259,7 @@ define('package/quiqqer/tags/bin/Manager', [
          *
          * @param {String} project - name of the project
          * @param {String} lang - language of the project
+         * @return {Promise}
          */
         loadProject: function (project, lang) {
             var self = this;
@@ -280,9 +281,7 @@ define('package/quiqqer/tags/bin/Manager', [
                     this.$Grid.setAttribute('serverSort', false);
                     this.$Grid.sort(2, 'count');
                     this.$Grid.setAttribute('serverSort', true);
-
-                    return;
-                    break;
+                    return Promise.resolve();
 
                 default:
                     GridParams.sortOn = this.$Grid.getAttribute('sortOn');
@@ -290,16 +289,21 @@ define('package/quiqqer/tags/bin/Manager', [
 
             this.Loader.show();
 
-            Ajax.get('package_quiqqer_tags_ajax_project_getList', function (result) {
-                self.$Grid.setData(result);
-                self.getButtons('delete-tag').disable();
-                self.getButtons('showtagsites').disable();
-                self.Loader.hide();
-            }, {
-                'package'  : 'quiqqer/tags',
-                projectName: this.$project,
-                projectLang: this.$lang,
-                gridParams : JSON.encode(GridParams)
+            return new Promise(function (resolve, reject) {
+                Ajax.get('package_quiqqer_tags_ajax_project_getList', function (result) {
+                    self.$Grid.setData(result);
+                    self.getButtons('delete-tag').disable();
+                    self.getButtons('showtagsites').disable();
+                    self.Loader.hide();
+
+                    resolve();
+                }, {
+                    'package'  : 'quiqqer/tags',
+                    projectName: self.$project,
+                    projectLang: self.$lang,
+                    gridParams : JSON.encode(GridParams),
+                    onError    : reject
+                });
             });
         },
 
@@ -318,20 +322,22 @@ define('package/quiqqer/tags/bin/Manager', [
         addTag: function (tag, tagParams, callback) {
             var self = this;
 
-            Ajax.post('package_quiqqer_tags_ajax_tag_add', function () {
-                if (typeof callback !== 'undefined') {
-                    callback();
-                }
+            return new Promise(function (resolve, reject) {
+                Ajax.post('package_quiqqer_tags_ajax_tag_add', function () {
+                    if (typeof callback !== 'undefined') {
+                        callback();
+                    }
 
-                self.refresh();
-
-            }, {
-                'package'  : 'quiqqer/tags',
-                projectName: this.$project,
-                projectLang: this.$lang,
-                tag        : tag,
-                tagParams  : JSON.encode(tagParams),
-                gridParams : JSON.encode(this.$Grid.getPaginationData())
+                    self.refresh().then(resolve).catch(reject);
+                }, {
+                    'package'  : 'quiqqer/tags',
+                    projectName: self.$project,
+                    projectLang: self.$lang,
+                    tag        : tag,
+                    tagParams  : JSON.encode(tagParams),
+                    gridParams : JSON.encode(self.$Grid.getPaginationData()),
+                    onError    : resolve
+                });
             });
         },
 
@@ -346,24 +352,27 @@ define('package/quiqqer/tags/bin/Manager', [
          * 		image
          * }
          * @param {Function} [callback] - (optional), callback function
+         * @return {Promise}
          */
         editTag: function (tag, tagParams, callback) {
             var self = this;
 
-            Ajax.post('package_quiqqer_tags_ajax_tag_edit', function () {
-                if (typeof callback !== 'undefined') {
-                    callback();
-                }
+            return new Promise(function (resolve, reject) {
+                Ajax.post('package_quiqqer_tags_ajax_tag_edit', function () {
+                    if (typeof callback !== 'undefined') {
+                        callback();
+                    }
 
-                self.refresh();
-
-            }, {
-                'package'  : 'quiqqer/tags',
-                projectName: this.$project,
-                projectLang: this.$lang,
-                tag        : tag,
-                tagParams  : JSON.encode(tagParams),
-                gridParams : JSON.encode(this.$Grid.getPaginationData())
+                    self.refresh().then(resolve).catch(reject);
+                }, {
+                    'package'  : 'quiqqer/tags',
+                    projectName: self.$project,
+                    projectLang: self.$lang,
+                    tag        : tag,
+                    tagParams  : JSON.encode(tagParams),
+                    gridParams : JSON.encode(self.$Grid.getPaginationData()),
+                    onError    : reject
+                });
             });
         },
 
@@ -376,18 +385,20 @@ define('package/quiqqer/tags/bin/Manager', [
         deleteTags: function (tags, callback) {
             var self = this;
 
-            Ajax.post('package_quiqqer_tags_ajax_tag_delete', function () {
-                if (typeof callback !== 'undefined') {
-                    callback();
-                }
+            return new Promise(function (resolve, reject) {
+                Ajax.post('package_quiqqer_tags_ajax_tag_delete', function () {
+                    if (typeof callback !== 'undefined') {
+                        callback();
+                    }
 
-                self.refresh();
-
-            }, {
-                'package'  : 'quiqqer/tags',
-                projectName: this.$project,
-                projectLang: this.$lang,
-                tags       : JSON.encode(tags)
+                    self.refresh().then(resolve).catch(reject);
+                }, {
+                    'package'  : 'quiqqer/tags',
+                    projectName: self.$project,
+                    projectLang: self.$lang,
+                    tags       : JSON.encode(tags),
+                    onError    : reject
+                });
             });
         },
 
@@ -507,16 +518,19 @@ define('package/quiqqer/tags/bin/Manager', [
                             image: Img.value
                         };
 
-                        var callback = function () {
-                            Win.close();
-                            self.refresh();
-                        };
+                        var P = Promise.resolve();
 
                         if (typeof tag === 'undefined') {
-                            self.addTag(Title.value, tagParams, callback);
+                            P = self.addTag(Title.value, tagParams);
                         } else {
-                            self.editTag(Tag.value, tagParams, callback);
+                            P = self.editTag(Tag.value, tagParams);
                         }
+
+                        P.then(function () {
+                            Win.close();
+                        }).catch(function () {
+                            Win.Loader.hide();
+                        });
                     }
                 }
             }).open();
