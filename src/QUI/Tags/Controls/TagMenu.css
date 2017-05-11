@@ -17,6 +17,10 @@
     width: 100%;
 }
 
+.quiqqer-tags-tagmenu-list-children__hidden {
+    display: none;
+}
+
 .quiqqer-tags-tagmenu-list__isInBreadcrumb {
     font-weight: 400;
 }

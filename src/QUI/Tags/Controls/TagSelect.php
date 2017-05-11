@@ -10,9 +10,11 @@ use QUI;
 use QUI\Tags\Groups\Handler as TagGroupsHandler;
 
 /**
- * Class TagMenu
+ * Class TagSelect
+ *
+ * List all tag groups and their tags in a dropdown with selectable entries (entry = tag)
  */
-class TagMenu extends QUI\Control
+class TagSelect extends QUI\Control
 {
     /**
      * Current Project
@@ -37,13 +39,12 @@ class TagMenu extends QUI\Control
         }
 
         $this->setAttributes(array(
-            'data-qui'      => 'package/quiqqer/tags/bin/TagMenu',
-            'selectedTags'  => array(),
-            'TagSearchSite' => false
+            'data-qui'      => 'package/quiqqer/tags/bin/TagSelect',
+            'selectedTags'  => array()
         ));
 
-        $this->addCSSClass('quiqqer-tags-tagmenu');
-        $this->addCSSFile(dirname(__FILE__) . '/TagMenu.css');
+        $this->addCSSClass('quiqqer-tags-tagselect');
+        $this->addCSSFile(dirname(__FILE__) . '/TagSelect.css');
 
         parent::__construct($attributes);
     }
@@ -69,13 +70,12 @@ class TagMenu extends QUI\Control
         $Engine->assign(array(
             'children'         => $this->getChildren(),
             'this'             => $this,
-            'childrenTemplate' => dirname(__FILE__) . '/TagMenu.Children.html',
             'Rewrite'          => QUI::getRewrite(),
             'tagSearchUrl'     => $tagSearchUrl,
             'selectedTags'     => $this->getAttribute('selectedTags')
         ));
 
-        return $Engine->fetch(dirname(__FILE__) . '/TagMenu.html');
+        return $Engine->fetch(dirname(__FILE__) . '/TagSelect.html');
     }
 
     /**

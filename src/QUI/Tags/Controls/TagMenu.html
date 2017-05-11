@@ -10,19 +10,28 @@
 </div>
 {/if}
 
+<noscript>
+    <style>
+        .quiqqer-tags-tagmenu-list-children__hidden {
+            display: inline;
+        }
+    </style>
+</noscript>
+
 <nav class="quiqqer-tags-tagmenu-list">
     <ul>
         {foreach $children as $tagGroup}
         <li class="quiqqer-tags-tagmenu-list-li">
-            <label class="quiqqer-tags-tagmenu-list-li-label">
+            <label class="quiqqer-tags-tagmenu-list-li-label quiqqer-tags-tagmenu-list-li-group">
                 <span class="quiqqer-tags-tagmenu-list-li-label-icon">
-                    <span class="fa fa-angle-down"></span>
+                    <span class="fa fa-angle-right"></span>
                 </span>
                 <span class="quiqqer-tags-tagmenu-list-li-label-link">
                     {$tagGroup['title']}
                 </span>
             </label>
-            {include file=$childrenTemplate tags=$tagGroup['tags'] tagSearchUrl=$tagSearchUrl}
+            {include file=$childrenTemplate tags=$tagGroup['tags'] selectedTags=$selectedTags
+            tagSearchUrl=$tagSearchUrl}
         </li>
         {/foreach}
     </ul>

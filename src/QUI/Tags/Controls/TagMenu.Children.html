@@ -1,9 +1,22 @@
-<ul class="quiqqer-tags-tagmenu-list-children">
+{assign var=hide value=true}
+
+{foreach $tags as $tag}
+{if $tag['tag']|in_array:$selectedTags}
+    {assign var=hide value=false}
+    {break}
+{/if}
+{/foreach}
+
+<ul class="quiqqer-tags-tagmenu-list-children {if $hide}quiqqer-tags-tagmenu-list-children__hidden{/if}">
     {foreach $tags as $tag}
     <li>
         <label class="quiqqer-tags-tagmenu-list-li-label">
             <span class="quiqqer-tags-tagmenu-list-li-label-checkbox">
-                <input type="checkbox" value="{$tag['tag']}" data-title="{$tag['title']}"/>
+                <input type="checkbox" value="{$tag['tag']}" data-title="{$tag['title']}"
+                {if $tag['tag']|in_array:$selectedTags}
+                checked="checked"
+                {/if}
+                />
             </span>
             {if $tagSearchUrl}
             <a href="{$tagSearchUrl}?tags={$tag['tag']}"
