@@ -100,7 +100,7 @@ class TagMenu extends QUI\Control
         }
 
         // sort by priority DESC
-        usort($children, function($a, $b) {
+        usort($children, function ($a, $b) {
             $prioA = $a['priority'];
             $prioB = $b['priority'];
 

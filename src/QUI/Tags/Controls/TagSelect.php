@@ -39,8 +39,8 @@ class TagSelect extends QUI\Control
         }
 
         $this->setAttributes(array(
-            'data-qui'      => 'package/quiqqer/tags/bin/TagSelect',
-            'selectedTags'  => array()
+            'data-qui'     => 'package/quiqqer/tags/bin/TagSelect',
+            'selectedTags' => array()
         ));
 
         $this->addCSSClass('quiqqer-tags-tagselect');
@@ -68,11 +68,11 @@ class TagSelect extends QUI\Control
 
         // Get Tag Search Site
         $Engine->assign(array(
-            'children'         => $this->getChildren(),
-            'this'             => $this,
-            'Rewrite'          => QUI::getRewrite(),
-            'tagSearchUrl'     => $tagSearchUrl,
-            'selectedTags'     => $this->getAttribute('selectedTags')
+            'children'     => $this->getChildren(),
+            'this'         => $this,
+            'Rewrite'      => QUI::getRewrite(),
+            'tagSearchUrl' => $tagSearchUrl,
+            'selectedTags' => $this->getAttribute('selectedTags')
         ));
 
         return $Engine->fetch(dirname(__FILE__) . '/TagSelect.html');
@@ -100,7 +100,7 @@ class TagSelect extends QUI\Control
         }
 
         // sort by priority DESC
-        usort($children, function($a, $b) {
+        usort($children, function ($a, $b) {
             $prioA = $a['priority'];
             $prioB = $b['priority'];
 
