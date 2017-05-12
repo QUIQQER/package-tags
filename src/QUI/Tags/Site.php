@@ -75,6 +75,32 @@ class Site
         }
 
         $Manager->setSiteTags($Site->getId(), $list);
+
+        self::setTagsToFulltextSearch($Site, $list);
+    }
+
+    /**
+     * Add tags to Fulltext search
+     *
+     * @param QUI\Projects\Site $Site
+     * @param array $tags
+     * @return void
+     */
+    public static function setTagsToFulltextSearch($Site, $tags)
+    {
+        try {
+            QUI::getPackageManager()->getInstalledPackage('quiqqer/search');
+        } catch (\Exception $Exception) {
+            return;
+        }
+
+        QUI\Search\Fulltext::setEntryData(
+            $Site->getProject(),
+            $Site->getId(),
+            array(
+                'tags' => implode(" ", $tags)
+            )
+        );
     }
 
     /**

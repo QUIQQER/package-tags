@@ -58,20 +58,11 @@ class TagSelect extends QUI\Control
     {
         $Engine = QUI::getTemplateManager()->getEngine();
 
-        $TagSearchSite = $this->getAttribute('TagSearchSite');
-
-        if ($TagSearchSite instanceof QUI\Projects\Site) {
-            $tagSearchUrl = $TagSearchSite->getUrlRewritten();
-        } else {
-            $tagSearchUrl = false;
-        }
-
         // Get Tag Search Site
         $Engine->assign(array(
             'children'     => $this->getChildren(),
             'this'         => $this,
             'Rewrite'      => QUI::getRewrite(),
-            'tagSearchUrl' => $tagSearchUrl,
             'selectedTags' => $this->getAttribute('selectedTags')
         ));
 
