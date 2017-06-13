@@ -30,11 +30,11 @@
             <en><![CDATA[Add a tag]]></en>
         </locale>
         <locale name="site.window.add.tag.title" html="true">
-            <de><![CDATA[<p>Der tag <strong>[tag]</strong> existiert nocht nicht. Möchten Sie diesen aufnehmen?]]></de>
+            <de><![CDATA[<p>Der Tag <strong>[tag]</strong> existiert noch nicht. Möchten Sie diesen aufnehmen?]]></de>
             <en><![CDATA[<p>The tag <strong>[tag]</strong> doesn't exist. Would you add the tag?]]></en>
         </locale>
         <locale name="site.table.description">
-            <de><![CDATA[Per klick auf das Tagfeld können Sie der Seite Tags hinzufügen.]]></de>
+            <de><![CDATA[Per Klick auf das Tagfeld können Sie der Seite Tags hinzufügen.]]></de>
             <en><![CDATA[By clicking on the tag field, you can add tags to the site.]]></en>
         </locale>
         <locale name="site.table.title">

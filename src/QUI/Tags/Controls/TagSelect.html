@@ -1,0 +1,20 @@
+<noscript>
+    <style>
+        .quiqqer-tags-tagselect__hidden {
+            display: block;
+        }
+    </style>
+</noscript>
+
+<nav class="quiqqer-tags-tagselect-list quiqqer-tags-tagselect__hidden">
+    <ul>
+        {foreach $children as $tagGroup}
+        <select class="quiqqer-tags-tagselect-select" data-taggroup="{$tagGroup['title']}">
+            <option value="" disabled selected>{$tagGroup['title']}</option>
+            {foreach $tagGroup['tags'] as $tag}
+            <option value="{$tag['tag']}" data-selected="{if $tag['tag']|in_array:$selectedTags}1{else}0{/if}">{$tag['title']}</option>
+            {/foreach}
+        </select>
+        {/foreach}
+    </ul>
+</nav>

@@ -47,8 +47,13 @@ define('package/quiqqer/tags/bin/TagSearch', [
                 Available  = Elm.getElement('.quiqqer-tags-search-available'),
                 Pool       = Elm.getElement('.quiqqer-tags-search-available-pool'),
                 Selected   = Elm.getElement('.quiqqer-tags-search-pool'),
-                Results    = Elm.getElement('.quiqqer-tags-search-results'),
-                categories = Available.getElements('.quiqqer-tags-search-menu-entry a');
+                Results    = Elm.getElement('.quiqqer-tags-search-results');
+
+            if (!Available) {
+                return;
+            }
+
+            var categories = Available.getElements('.quiqqer-tags-search-menu-entry a');
 
             Menu.setStyles({
                 display : null,
