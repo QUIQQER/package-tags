@@ -257,6 +257,14 @@
     text-align: center;
 }
 
+/* font awesome as image */
+.quiqqer-tags-search-result-entry-image a {
+    color: inherit;
+}
+.quiqqer-tags-search-result-entry-image .fa {
+    font-size: 120px;
+}
+
 .quiqqer-tags-search-result-entry-content {
     margin-bottom: 20px;
     margin-right: 0;
