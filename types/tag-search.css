@@ -3,7 +3,7 @@
 
 }
 
-.quiqqer-tags-search h2 {
+.quiqqer-tags-search-wrapper h2 {
     font-size: 16px !important;
 }
 
@@ -14,8 +14,8 @@
 }
 
 .quiqqer-tags-search-available {
-    border-top: 1px solid rgba(0,0,0,0.2);
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     margin: 20px 0;
     padding: 40px 0;
 }
@@ -48,7 +48,7 @@
     text-align: center;
     text-decoration: none !important;
     outline: none;
-        -moz-outline: none;
+    -moz-outline: none;
     width: 100%;
 }
 
@@ -61,7 +61,7 @@
 
 .quiqqer-tags-search-menu-entry .active::after {
     color: #333333;
-    content:"\f107";
+    content: "\f107";
     font-family: FontAwesome;
     left: 0;
     line-height: 20px;
@@ -74,7 +74,7 @@
 /** result
  * ========================================== */
 
-.quiqqer-tags-search-results {
+/*.quiqqer-tags-search-results {
     float: left;
     clear: both;
     margin: 0;
@@ -82,10 +82,11 @@
 
 .quiqqer-tags-search-result-entry {
     border-bottom: 1px solid #D0D3D3;
-    float: left;
     list-style-type: none;
-    margin: 0;
     width: 100%;
+    background: #f8f8f8;
+    margin: 20px 0;
+    padding: 10px;
 }
 
 .quiqqer-tags-search-result-entry:last-child {
@@ -112,6 +113,7 @@
     padding: 10px 0;
     text-decoration: none;
     width: 100%;
+    color: inherit;
 }
 
 .quiqqer-tags-search-result-entry h3 {
@@ -121,11 +123,16 @@
 
 .quiqqer-tags-search-result-entry-text {
     float: left;
-    width: calc( 100% - 120px )
+    width: calc(100% - 140px)
+}
+
+.quiqqer-tags-search-result-entry-text h4 {
+    font-size: 1.8em;
+    font-weight: 400;
 }
 
 .quiqqer-tags-search-result-entry-header-link:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .quiqqer-tags-search-result-entry-image {
@@ -143,9 +150,14 @@
 
 .quiqqer-tags-search-result-entry-taglist {
     clear: both;
-    float: left;
     padding: 10px 0;
     width: 100%;
+    font-size: 90%;
+}
+
+.quiqqer-tags-search-result-entry-taglist .fa {
+    margin: 0 10px;
+    opacity: 0.5;
 }
 
 .quiqqer-tags-search-result-entry-tagText {
@@ -155,26 +167,27 @@
 }
 
 .quiqqer-tags-search-result-entry .qui-tags-sitetags {
-    float: left;
+    float: none;
+    display: inline;
 }
 
 .quiqqer-tags-search-entry-image-div {
     float: left;
-    width: 120px;
+    width: 140px;
     height: 80px;
     text-align: center;
     transform-style: preserve-3d;
 }
 
 .quiqqer-tags-search-entry-image-img {
-    max-width: 100px;
-    max-height: 80px;
+    max-width: 120px;
+    max-height: 100px;
     width: auto;
     height: auto;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-}
+}*/
 
 /*.quiqqer-tags-list-result-entry-imgplaceholder {
     background-size: contain;
@@ -186,17 +199,30 @@
     width: 100px;
 }*/
 
-
 /** tag
  * ========================================== */
 
-.qui-tags-tag {
+.quiqqer-tags-search-pool .qui-tags-tag,
+.tag-category .qui-tags-tag {
+    /*background: none;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid transparent;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    color: #99A2A6;
+    cursor: pointer;
+    float: none !important;
+    margin: 0 0 5px 0;
+    padding: 2px 6px;
+    position: relative;
+    text-decoration: none !important;*/
     background-color: #EFF0F0;
     border: 1px solid #D6D9D9;
     border-radius: 3px;
-        -webkit-border-radius: 3px;
-    color: #99A2A6;
-    cursor: pointer;
+    -webkit-border-radius: 3px;
+    color: #99A2A6 !important;
     float: left;
     margin: 0 5px 5px 0;
     padding: 3px 10px;
@@ -204,8 +230,117 @@
     text-decoration: none !important;
 }
 
-.qui-tags-tag:hover {
+.quiqqer-tags-search-pool .qui-tags-tag:hover,
+.tag-category .qui-tags-tag:hover {
     color: #899195;
     background-color: #FFFFFF;
     text-decoration: none !important;
+}
+
+
+/** NEW
+ * ========================================== */
+
+.quiqqer-tags-search-result-entry {
+    clear: both;
+    float: none;
+    margin-bottom: 80px;
+    border-bottom: 1px solid #ddd;
+}
+
+.quiqqer-tags-search-result-entry:last-child {
+    margin-bottom: 0;
+}
+
+.quiqqer-tags-search-result-entry-image {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.quiqqer-tags-search-result-entry-content {
+    margin-bottom: 20px;
+    margin-right: 0;
+}
+
+
+.quiqqer-tags-search-result-entry-content-link {
+    color: inherit;
+}
+
+.quiqqer-tags-search-result-entry-content-short {
+    margin-bottom: 1em;
+}
+
+.quiqqer-tags-search-result-entry-content-footer {
+    display: flex;
+    align-items: stretch;
+}
+
+.quiqqer-tags-search-result-entry-content-footer.no-flex {
+    display: block;
+    text-align: right;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper {
+    flex-grow: 2;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper .fa {
+    opacity: 0.5;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper-creator {
+    margin-right: 10px;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper-link {
+    justify-self: flex-end;
+}
+
+/* tags */
+.quiqqer-tags-search-result-entry-taglist {
+    font-size: 90%;
+    margin-bottom: 20px;
+}
+.quiqqer-tags-search-result-entry-taglist {
+    clear: both;
+}
+.fa-tags {
+    margin-right: 15px;
+    opacity: 0.6;
+}
+.quiqqer-tags-search-result-entry .qui-tags-tag {
+    background: none;
+    float: none;
+    padding: 0 4px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    display: inline-block;
+}
+.quiqqer-tags-search-result-entry .qui-tags-tag:hover {
+    border: 1px solid #ddd;
+}
+.qui-tags-sitetags {
+    display: inline;
+}
+
+@media screen and (max-width: 767px) {
+    .quiqqer-tags-search-result-entry-content.grid-60 {
+        padding: 0;
+    }
+
+    .quiqqer-tags-search-result-entry-content-footer {
+        display: block;
+        text-align: center;
+    }
+    .quiqqer-tags-search-result-entry-content-footer-wrapper {
+        display: block;
+        border: none;
+        margin-bottom: 10px;
+    }
 }

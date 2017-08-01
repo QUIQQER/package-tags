@@ -500,6 +500,18 @@
             <de><![CDATA[Tag Suche Einstellungen]]></de>
             <en><![CDATA[Tag search settings]]></en>
         </locale>
+
+        <locale name="quiqqer.tag.settings.showCreator">
+            <de><![CDATA[Autor anzeigen]]></de>
+            <en><![CDATA[Show author]]></en>
+            <pl><![CDATA[Pokaż autora]]></pl>
+        </locale>
+
+        <locale name="quiqqer.tag.settings.showDate">
+            <de><![CDATA[Datum anzeigen]]></de>
+            <en><![CDATA[Show date]]></en>
+            <pl><![CDATA[Pokaż datę]]></pl>
+        </locale>
         <locale name="quiqqer.tag.settings.limit">
             <de><![CDATA[Anzahl Ergebnisse je Seite]]></de>
             <en><![CDATA[Number of results per page]]></en>

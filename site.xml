@@ -23,6 +23,8 @@
 
             <!-- extra attributes -->
             <attributes>
+                <attribute default="1">quiqqer.tag.settings.showCreator</attribute>
+                <attribute default="1">quiqqer.tag.settings.showDate</attribute>
                 <attribute default="10">quiqqer.tag.settings.limit</attribute>
                 <attribute default="1">quiqqer.tag.settings.showPagination</attribute>
                 <attribute default="1">quiqqer.tag.settings.showAvailableTags</attribute>
@@ -37,6 +39,16 @@
                             <locale group="quiqqer/tags" var="quiqqer.tag.search.settings.title"/>
                         </title>
 
+                        <input conf="quiqqer.tag.settings.showCreator" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showCreator"/>
+                            </text>
+                        </input>
+                        <input conf="quiqqer.tag.settings.showDate" type="checkbox">
+                            <text>
+                                <locale group="quiqqer/tags" var="quiqqer.tag.settings.showDate"/>
+                            </text>
+                        </input>
                         <input conf="quiqqer.tag.settings.limit" type="number">
                             <text>
                                 <locale group="quiqqer/tags" var="quiqqer.tag.settings.limit"/>
