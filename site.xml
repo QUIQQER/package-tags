@@ -23,7 +23,7 @@
 
             <!-- extra attributes -->
             <attributes>
-                <attribute default="1">quiqqer.tag.settings.showCreator</attribute>
+                <attribute default="0">quiqqer.tag.settings.showCreator</attribute>
                 <attribute default="1">quiqqer.tag.settings.showDate</attribute>
                 <attribute default="10">quiqqer.tag.settings.limit</attribute>
                 <attribute default="1">quiqqer.tag.settings.showPagination</attribute>
