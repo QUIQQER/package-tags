@@ -32,7 +32,9 @@ $Pagination->setGetParams(
 $Manager = new QUI\Tags\Manager($Project);
 
 try {
-    $tags = $Manager->getList();
+    $tags = $Manager->getList(array(
+        'limit' => 0
+    ));
 
     $Engine->assign(array(
         'tags' => $tags

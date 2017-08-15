@@ -35,7 +35,7 @@ class Site
             $url = $Site->getLocation();
             $url = str_replace(QUI\Rewrite::getDefaultSuffix(), '', $url);
 
-            QUI::getRewrite()->registerPath($url . '/*', $Site);
+            QUI::getRewrite()->registerPath($url.'/*', $Site);
         }
 
         // set tags
