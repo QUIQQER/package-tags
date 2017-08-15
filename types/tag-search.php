@@ -32,7 +32,9 @@ $Pagination->setGetParams(
 $Manager = new QUI\Tags\Manager($Project);
 
 try {
-    $tags = $Manager->getList();
+    $tags = $Manager->getList(array(
+        'limit' => 0
+    ));
 
     $Engine->assign(array(
         'tags' => $tags
@@ -122,11 +124,13 @@ $Pagination->setAttributes(array(
 $Pagination->setGetParams('tags', implode('-', $requestTagNames));
 
 $Engine->assign(array(
-    'result'     => $result,
-    'Manager'    => $Manager,
-    'count'      => $count,
-    'sheets'     => $Pagination->getAttribute('sheets'),
-    'start'      => $Pagination->getStart(),
-    'max'        => $Pagination->getAttribute('limit'),
-    'Pagination' => $Pagination
+    'result'      => $result,
+    'Manager'     => $Manager,
+    'count'       => $count,
+    'sheets'      => $Pagination->getAttribute('sheets'),
+    'start'       => $Pagination->getStart(),
+    'max'         => $Pagination->getAttribute('limit'),
+    'Pagination'  => $Pagination,
+    'showCreator' => $Site->getAttribute('quiqqer.tag.settings.showCreator'),
+    'showDate'    => $Site->getAttribute('quiqqer.tag.settings.showDate')
 ));

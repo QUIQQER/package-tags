@@ -91,10 +91,16 @@ class TagMenu extends QUI\Control
         foreach ($tagGroupIds as $tagGroupId) {
             $TagGroup = TagGroupsHandler::get($this->Project, $tagGroupId);
 
+            $tags     = $TagGroup->getTags();
+
+            if (empty($tags)) {
+                continue;
+            }
+
             $children[] = array(
                 'id'       => $TagGroup->getId(),
                 'title'    => $TagGroup->getTitle(),
-                'tags'     => $TagGroup->getTags(),
+                'tags'     => $tags,
                 'priority' => $TagGroup->getPriority()
             );
         }

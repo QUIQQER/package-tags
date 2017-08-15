@@ -541,13 +541,9 @@ class Group
      */
     public function removeTag($tag)
     {
-        $tags = $this->getTags();
-
-        if (isset($tags[$tag])) {
-            unset($tags[$tag]);
+        if (isset($this->tags[$tag])) {
+            unset($this->tags[$tag]);
         }
-
-        $this->tags = $tags;
     }
 
     /**

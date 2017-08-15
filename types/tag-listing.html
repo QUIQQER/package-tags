@@ -4,11 +4,16 @@
         TAG
 
     **}
-    <section class="content-header grid-100 mobile-grid-100">
+
+    <section class="content-header grid-100 mobile-grid-100 grid-parent">
         {if $tag.title}
-            <h1>{$tag.title}</h1>
+            <header>
+                <h1>{$tag.title}</h1>
+            </header>
         {else}
-            <h1>{$tag.tag}</h1>
+            <header>
+                <h1>{$tag.tag}</h1>
+            </header>
         {/if}
 
         <div class="content-short qui-tags-tag-content">
@@ -16,7 +21,7 @@
         </div>
     </section>
 
-    <section class="content-template grid-100 mobile-grid-100">
+    <section class="content-template grid-100 mobile-grid-100 grid-parent">
         {if isset($sites) && count($sites)}
         <header>
             <h2>{t tag=$tag.title}quiqqer/tags template.tag.header.results{/t}</h2>
@@ -56,7 +61,8 @@
         TAG LIST
 
     **}
-    <section class="content-header grid-100 mobile-grid-100">
+{*
+    <section class="content-header grid-100 mobile-grid-100 grid-parent">
         <header>
             <h1>{$Site->getAttribute('title')}</h1>
         </header>
@@ -67,14 +73,14 @@
         </div>
         {/if}
     </section>
-
+*}
     {if $Site->getAttribute('content')}
-    <section class="content-body grid-100 mobile-grid-100">
+    <section class="content-body grid-100 mobile-grid-100 grid-parent">
         {$Site->getAttribute('content')}
     </section>
     {/if}
 
-    <section class="content-template grid-100 mobile-grid-100">
+    <section class="content-template grid-100 mobile-grid-100 grid-parent">
         {control control="\QUI\Tags\Controls\TagList"}
     </section>
 {/if}

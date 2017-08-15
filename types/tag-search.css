@@ -3,7 +3,7 @@
 
 }
 
-.quiqqer-tags-search h2 {
+.quiqqer-tags-search-wrapper h2 {
     font-size: 16px !important;
 }
 
@@ -14,8 +14,8 @@
 }
 
 .quiqqer-tags-search-available {
-    border-top: 1px solid rgba(0,0,0,0.2);
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     margin: 20px 0;
     padding: 40px 0;
 }
@@ -48,7 +48,7 @@
     text-align: center;
     text-decoration: none !important;
     outline: none;
-        -moz-outline: none;
+    -moz-outline: none;
     width: 100%;
 }
 
@@ -61,7 +61,7 @@
 
 .quiqqer-tags-search-menu-entry .active::after {
     color: #333333;
-    content:"\f107";
+    content: "\f107";
     font-family: FontAwesome;
     left: 0;
     line-height: 20px;
@@ -71,132 +71,135 @@
     width: 100%;
 }
 
-/** result
+/** result - new
  * ========================================== */
 
-.quiqqer-tags-search-results {
-    float: left;
-    clear: both;
-    margin: 0;
-}
-
 .quiqqer-tags-search-result-entry {
-    border-bottom: 1px solid #D0D3D3;
-    float: left;
-    list-style-type: none;
-    margin: 0;
-    width: 100%;
+    clear: both;
+    float: none;
+    margin-bottom: 80px;
+    border-bottom: 1px solid #ddd;
 }
 
 .quiqqer-tags-search-result-entry:last-child {
-    border-bottom: 1px solid #FFFFff;
-}
-
-.quiqqer-tags-search-results .quiqqer-sheets {
-    clear: both;
-    float: left;
-    width: 100%;
-}
-
-.quiqqer-tags-search-results .quiqqer-sheets {
-    margin-bottom: 20px !important;
-}
-
-.quiqqer-tags-search-results .quiqqer-sheets:last-child {
-    margin-bottom: 0 !important;
-    margin-top: 40px !important;
-}
-
-.quiqqer-tags-search-result-entry-link {
-    float: left;
-    padding: 10px 0;
-    text-decoration: none;
-    width: 100%;
-}
-
-.quiqqer-tags-search-result-entry h3 {
-    margin: 0 0 10px;
-    padding: 0;
-}
-
-.quiqqer-tags-search-result-entry-text {
-    float: left;
-    width: calc( 100% - 120px )
-}
-
-.quiqqer-tags-search-result-entry-header-link:hover {
-    text-decoration: underline;
+    margin-bottom: 0;
 }
 
 .quiqqer-tags-search-result-entry-image {
-    float: left;
-    margin: 0 10px 0 0;
-    max-width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
-.quiqqer-tags-search-result-entry-imgplaceholder {
-    float: left;
-    height: 100px;
-    margin: 0 10px 0 0;
-    width: 100px;
+/* font awesome as image */
+.quiqqer-tags-search-result-entry-image a {
+    color: inherit;
+}
+.quiqqer-tags-search-result-entry-image .fa {
+    font-size: 120px;
 }
 
+.quiqqer-tags-search-result-entry-content.grid-60 {
+    margin-bottom: 20px;
+    padding-right: 0;
+}
+
+
+.quiqqer-tags-search-result-entry-content-link {
+    color: inherit;
+}
+
+.quiqqer-tags-search-result-entry-content-short {
+    margin-bottom: 1em;
+}
+
+.quiqqer-tags-search-result-entry-content-footer {
+    display: flex;
+    align-items: stretch;
+}
+
+.quiqqer-tags-search-result-entry-content-footer.no-flex {
+    display: block;
+    text-align: right;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper {
+    flex-grow: 2;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper .fa {
+    opacity: 0.5;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper-creator {
+    margin-right: 10px;
+}
+
+.quiqqer-tags-search-result-entry-content-footer-wrapper-link {
+    justify-self: flex-end;
+}
+
+/* tags */
+.quiqqer-tags-search-result-entry-taglist {
+    font-size: 90%;
+    margin-bottom: 20px;
+}
 .quiqqer-tags-search-result-entry-taglist {
     clear: both;
-    float: left;
-    padding: 10px 0;
-    width: 100%;
+}
+.fa-tags {
+    margin-right: 15px;
+    opacity: 0.6;
+}
+.quiqqer-tags-search-result-entry .qui-tags-tag {
+    background: none;
+    float: none;
+    padding: 0 4px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    display: inline-block;
+}
+.quiqqer-tags-search-result-entry .qui-tags-tag:hover {
+    border: 1px solid #ddd;
+}
+.qui-tags-sitetags {
+    display: inline;
 }
 
-.quiqqer-tags-search-result-entry-tagText {
-    float: left;
-    line-height: 30px;
-    padding-right: 10px;
+@media screen and (max-width: 767px) {
+    .quiqqer-tags-search-result-entry-content.grid-60 {
+        padding: 0;
+    }
+
+    .quiqqer-tags-search-result-entry-content-footer {
+        display: block;
+        text-align: center;
+    }
+    .quiqqer-tags-search-result-entry-content-footer-wrapper {
+        display: block;
+        border: none;
+        margin-bottom: 10px;
+    }
+
+    .fa-tags {
+        margin-right: 10px;
+    }
 }
-
-.quiqqer-tags-search-result-entry .qui-tags-sitetags {
-    float: left;
-}
-
-.quiqqer-tags-search-entry-image-div {
-    float: left;
-    width: 120px;
-    height: 80px;
-    text-align: center;
-    transform-style: preserve-3d;
-}
-
-.quiqqer-tags-search-entry-image-img {
-    max-width: 100px;
-    max-height: 80px;
-    width: auto;
-    height: auto;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-/*.quiqqer-tags-list-result-entry-imgplaceholder {
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-    float: left;
-    height: 100px;
-    margin: 0 10px 0 0;
-    width: 100px;
-}*/
-
 
 /** tag
  * ========================================== */
 
-.qui-tags-tag {
+.quiqqer-tags-search-pool .qui-tags-tag,
+.tag-category .qui-tags-tag {
     background-color: #EFF0F0;
     border: 1px solid #D6D9D9;
     border-radius: 3px;
-        -webkit-border-radius: 3px;
-    color: #99A2A6;
-    cursor: pointer;
+    -webkit-border-radius: 3px;
+    color: #99A2A6 !important;
     float: left;
     margin: 0 5px 5px 0;
     padding: 3px 10px;
@@ -204,7 +207,8 @@
     text-decoration: none !important;
 }
 
-.qui-tags-tag:hover {
+.quiqqer-tags-search-pool .qui-tags-tag:hover,
+.tag-category .qui-tags-tag:hover {
     color: #899195;
     background-color: #FFFFFF;
     text-decoration: none !important;
