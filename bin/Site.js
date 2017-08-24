@@ -179,6 +179,13 @@ define('package/quiqqer/tags/bin/Site', [
         },
 
         /**
+         * on control unload
+         */
+        unload: function () {
+            this.$onDestroy();
+        },
+
+        /**
          * event : on destroy
          * set the tags to the site
          */
