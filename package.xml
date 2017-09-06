@@ -1,0 +1,26 @@
+<quiqqer>
+    <package>
+        <title>
+            <locale group="quiqqer/tags" var="package.title"/>
+        </title>
+
+        <description>
+            <locale group="quiqqer/tags" var="package.description"/>
+        </description>
+
+        <image src="URL_OPT_DIR/quiqqer/package-tags/bin/images/Logo.jpg"/>
+
+        <support>
+            <email>support@pcsg.de</email>
+            <forum>https://community.quiqqer.com</forum>
+            <source>https://dev.quiqqer.com/quiqqer/package-tags</source>
+            <issues>https://dev.quiqqer.com/quiqqer/package-tags/issues</issues>
+            <wiki>https://dev.quiqqer.com/quiqqer/package-tags/wikis/home</wiki>
+        </support>
+
+        <copyright>
+            <name><![CDATA[PCSG - Computer & Internet Service OHG]]></name>
+            <license></license>
+        </copyright>
+    </package>
+</quiqqer>

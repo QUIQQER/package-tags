@@ -173,13 +173,11 @@
         </locale>
         <locale name="package.description" html="true">
             <de><![CDATA[
-                <p>Tags lassen sich mit "Schlagwörtern" oder „Stichwörtern“ übersetzen.
-                Sie beschreiben einen Inhalt mit einzelnen Wörtern.</p>
-                <p>Für einen Artikel über eine Reise nach Rom wären demnach zum Beispiel
-                die Tags „Italien“, „Reise“ oder „Rom“ passend.</p>
-                <p>Sie können Tags in Ihrem Projekt nutzen, um Ihren Lesern mehr Übersicht zu bieten oder ihnen eine einfache Suche nach Inhalten zu ermöglichen.</p>
+                Das Tag-Paket erweitert QUIQQER um eine Tag-Verwaltung.
             ]]></de>
-            <en><![CDATA[]]></en>
+            <en><![CDATA[
+                The tag package edtends QUIQQER by a tag management.
+            ]]></en>
         </locale>
 
         <locale name="permission.tags._header">

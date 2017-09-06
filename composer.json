@@ -1,7 +1,7 @@
 {
   "name": "quiqqer/tags",
   "type": "quiqqer-module",
-  "description": "Tags for QUIQQER.",
+  "description": "The tag package edtends QUIQQER by a tag management.",
   "version": "dev-dev",
   "license": "GPL-2.0+",
   "authors": [
