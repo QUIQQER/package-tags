@@ -28,8 +28,6 @@ QUI::$Ajax->registerFunction(
 
         $tagParams = json_decode($tagParams, true);
 
-        \QUI\System\Log::writeRecursive($tagParams);
-
         try {
             $tag = $Tags->add($tag, $tagParams);
         } catch (QUI\Exception $Exception) {
