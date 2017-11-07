@@ -592,6 +592,8 @@ class Group
             return $tag['tag'];
         }, $this->getTags());
 
+        sort($tags);
+
         return array(
             'id'           => $this->id,
             'title'        => $this->title,
