@@ -98,7 +98,7 @@ class Site
             $Site->getProject(),
             $Site->getId(),
             array(
-                'tags' => implode(" ", $tags)
+                'tags' => ',' . implode(",", $tags) . ','
             )
         );
     }
