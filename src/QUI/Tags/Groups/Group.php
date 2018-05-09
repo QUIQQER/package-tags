@@ -466,7 +466,7 @@ class Group
                 'desc'         => $this->getDescription(),
                 'image'        => $image,
                 'priority'     => $this->getPriority(),
-                'tags'         => implode($tags, ','),
+                'tags'         => ',' . implode($tags, ',') . ',',
                 'generated'    => $this->isGenerated() ? 1 : 0,
                 'generator'    => $this->getGenerator()
             ),
@@ -591,6 +591,8 @@ class Group
         $tags = array_map(function ($tag) {
             return $tag['tag'];
         }, $this->getTags());
+
+        sort($tags);
 
         return array(
             'id'           => $this->id,

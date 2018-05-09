@@ -562,4 +562,15 @@
                 <![CDATA[The tag group #[childTagGroupId] is a child of the tag group #[tagGroupId] and thus cannot be set as a parent group.]]></en>
         </locale>
     </groups>
+
+    <!-- Translations for quiqqer/search -->
+    <groups name="quiqqer/search" datatype="php,js">
+
+        <!-- Search fields -->
+        <locale name="tpl.search.field.tags">
+            <de><![CDATA[In Seiten-Tags suchen]]></de>
+            <en><![CDATA[Search in Site tags]]></en>
+        </locale>
+
+    </groups>
 </locales>

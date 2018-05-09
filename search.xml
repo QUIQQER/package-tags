@@ -3,7 +3,7 @@
 
     <search>
         <searchfields>
-            <field type="TEXT">tags</field>
+            <field type="TEXT" fulltext="1">tags</field>
         </searchfields>
     </search>
 

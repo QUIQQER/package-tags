@@ -185,6 +185,15 @@ define('package/quiqqer/tags/bin/TagMenu', [
         },
 
         /**
+         * Deselect all tags
+         */
+        deselectAll: function() {
+            this.$tagElms.each(function(Elm) {
+                Elm.checked = false;
+            });
+        },
+
+        /**
          * Get all selected tags
          *
          * @return {Array}

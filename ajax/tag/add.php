@@ -31,6 +31,7 @@ QUI::$Ajax->registerFunction(
         try {
             $tag = $Tags->add($tag, $tagParams);
         } catch (QUI\Exception $Exception) {
+            \QUI\System\Log::writeException($Exception);
         }
 
         return $Tags->get($Tags->clearTagName($tag));
