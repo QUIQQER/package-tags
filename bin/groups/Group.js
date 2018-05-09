@@ -308,12 +308,13 @@ define('package/quiqqer/tags/bin/groups/Group', [
                 });
 
                 var TagContainer = new Tags({
-                    projectName: this.$Project.getName(),
-                    projectLang: this.$Project.getLang(),
-                    styles     : {
+                    projectName    : this.$Project.getName(),
+                    projectLang    : this.$Project.getLang(),
+                    allowDuplicates: false,
+                    styles         : {
                         height: '100%'
                     },
-                    events     : {
+                    events         : {
                         onChange: function (TC) {
                             self.$data.tags = TC.getValue();
                         }
