@@ -165,6 +165,10 @@
             <en><![CDATA[Please choose one or more tag groups.<br><i>(Multi-select with Ctrl + click)</i>]]></en>
         </locale>
 
+        <locale name="message.limit.tags.to.site">
+            <de>Sie können dieser Seite nicht mehr als [amount] Tags hinzufügen. Entfernen Sie Tags um neue hinzuzufügen.</de>
+            <en>You can't add more than [amount] tags. Remove some tags to add new ones.</en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
         <locale name="package.title">
