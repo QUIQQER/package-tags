@@ -134,11 +134,12 @@ class Manager
     }
 
     /**
-     * Delete the tag
+     * Delete a tag
      *
      * @param string $tag
      *
      * @throws QUI\Database\Exception
+     * @throws QUI\Permissions\Exception
      */
     public function deleteTag($tag)
     {
@@ -150,29 +151,30 @@ class Manager
             return;
         }
 
-
-        // Erstmal alle Elternbeziehungen löschen
+        // Delete tag from all tag groups
         $Statement = QUI::getPDO()->prepare(
-            "UPDATE `" . QUI::getDBProjectTableName('tags', $this->Project) . "`
-             SET `ptags` = replace(`ptags`, '," . $tag . ",', ',')"
+            "UPDATE `" . QUI::getDBProjectTableName('tags_groups', $this->Project) . "`
+             SET `tags` = replace(`tags`, '," . $tag . ",', ',')"
         );
 
         try {
             $Statement->execute();
         } catch (\PDOException $Exception) {
+            QUI\System\Log::writeException($Exception);
+
             throw new QUI\Database\Exception(
                 $Exception->getMessage(),
                 $Exception->getCode()
             );
         }
 
-        // Dann sich selbst löschen
+        // Delete tag itself
         QUI::getDataBase()->delete(
             QUI::getDBProjectTableName('tags', $this->Project),
             array('tag' => $tag)
         );
 
-        // @todo cache auch löschen?
+        // @todo also delete tag from cache and tag group cache tables?
     }
 
     /**
