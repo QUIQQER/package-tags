@@ -61,6 +61,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
             this.setAttribute('icon', 'fa fa-tag');
             this.setAttribute('showIds', false);
             this.setAttribute('child', 'package/quiqqer/tags/bin/tags/SelectItem');
+            this.setAttribute('_maxTagsAmount', -1);
 
             this.setAttribute(
                 'placeholder',
@@ -87,7 +88,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 }.bind(this),
                 onAddItem          : function (Control, tag) {
                     this.fireEvent('addTag', [this, tag]);
-                }.bind(this)
+                }.bind(this),
+                onChange           : this.refreshStatus
             });
         },
 
@@ -190,6 +192,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
             }.bind(this));
 
             this.Loader.inject(this.getElm());
+
+            this.refreshStatus();
         },
 
         /**
@@ -389,6 +393,52 @@ define('package/quiqqer/tags/bin/tags/Select', [
          */
         getTags: function () {
             return this.getValue();
+        },
+
+        /**
+         * Returns a promise resolving with the maximum amount of tags the current user can add
+         *
+         * @return {Promise}
+         */
+        getMaxTagAmount: function () {
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                if (self.getAttribute('_maxTagsAmount') !== -1) {
+                    resolve(self.getAttribute('_maxTagsAmount'));
+                } else {
+                    QUIAjax.get('package_quiqqer_tags_ajax_tag_getMaxAmount', function (maxAmount) {
+                        self.setAttribute('_maxTagsAmount', maxAmount);
+                        resolve(self.getAttribute('_maxTagsAmount'));
+                    }.bind(this), {
+                        'package': 'quiqqer/tags',
+                        onError  : reject
+                    });
+                }
+            });
+        },
+
+
+        /**
+         * Refreshes the controls status.
+         * Currently this only en-/disables adding new tags.
+         */
+        refreshStatus: function () {
+            var self = this;
+            this.getMaxTagAmount().then(function (maxTagAmount) {
+                if (self.$values.length >= maxTagAmount) {
+                    self.$Search.style.visibility = 'hidden';
+                    self.$SearchButton.$Elm.style.visibility = 'hidden';
+                    QUI.getMessageHandler(function (MH) {
+                        MH.addInformation(
+                            QUILocale.get(lg, 'message.limit.tags.to.site', {amount: maxTagAmount}),
+                            self.getElm()
+                        );
+                    });
+                } else {
+                    self.$Search.style.visibility = 'visible';
+                    self.$SearchButton.$Elm.style.visibility = 'visible';
+                }
+            });
         }
     });
 });

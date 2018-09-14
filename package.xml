@@ -8,7 +8,7 @@
             <locale group="quiqqer/tags" var="package.description"/>
         </description>
 
-        <image src="URL_OPT_DIR/quiqqer/package-tags/bin/images/Logo.jpg"/>
+        <image src="URL_OPT_DIR/quiqqer/tags/bin/images/Logo.jpg"/>
 
         <support>
             <email><![CDATA[support@pcsg.de]]></email>
