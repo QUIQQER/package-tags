@@ -726,11 +726,6 @@ class Manager
         foreach ($siteIds as $id => $count) {
             try {
                 $Child = $this->Project->get($id);
-
-                if (!$Child->getAttribute('active')) {
-                    continue;
-                }
-
                 $Child->load('quiqqer/tags');
 
                 $result[] = $Child;
