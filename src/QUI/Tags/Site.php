@@ -39,16 +39,10 @@ class Site
         }
 
         // set tags
-        if (!$tags) {
-            $tags = '';
-        }
-
-        if (is_string($tags)) {
-            $tags = explode(',', $tags);
-        }
-
-        if (!is_array($tags)) {
-            return;
+        if (empty($tags) || !is_string($tags)) {
+            $tags = [];
+        } else {
+            $tags = explode(',', trim($tags, ','));
         }
 
         $list = array();
