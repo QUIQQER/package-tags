@@ -39,9 +39,9 @@ class Site
         }
 
         // set tags
-        if (empty($tags) || !is_string($tags)) {
+        if (empty($tags) || (!is_string($tags) && !is_array($tags))) {
             $tags = [];
-        } else {
+        } elseif (is_string($tags)) {
             $tags = explode(',', trim($tags, ','));
         }
 
