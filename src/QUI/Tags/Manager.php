@@ -258,6 +258,10 @@ class Manager
      */
     public function existsTag($tag)
     {
+        if (isset($this->tags[$tag])) {
+            return true;
+        }
+
         $result = QUI::getDataBase()->fetch([
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => [
