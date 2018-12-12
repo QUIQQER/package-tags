@@ -258,6 +258,10 @@ class Manager
      */
     public function existsTag($tag)
     {
+        if (isset($this->tags[$tag])) {
+            return true;
+        }
+
         $result = QUI::getDataBase()->fetch([
             'from'  => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => [
@@ -898,7 +902,7 @@ class Manager
                 'limit' => 1
             ]);
 
-            if (!isset($result[0])) {
+            if (empty($result)) {
                 QUI::getDataBase()->insert($tableTagCache, [
                     'tag'   => $tag,
                     'sites' => ','.$siteId.',',
@@ -908,13 +912,23 @@ class Manager
                 continue;
             }
 
-            if (strpos($result[0]['sites'], ','.$siteId.',') !== false) {
+            $siteIds = trim($result[0]['sites'], ',');
+
+            if (empty($siteIds)) {
                 continue;
             }
 
+            $siteIds = explode(',', $siteIds);
+
+            if (in_array($siteId, $siteIds)) {
+                continue;
+            }
+
+            $siteIds[] = $siteId;
+
             QUI::getDataBase()->update($tableTagCache, [
-                'sites' => $result[0]['sites'].$siteId.',',
-                'count' => count($result[0]['sites']) + 1
+                'sites' => ','.implode(',', $siteIds).',',
+                'count' => count($siteIds)
             ], [
                 'tag' => $tag
             ]);
@@ -957,24 +971,30 @@ class Manager
                 'limit' => 1
             ]);
 
-            if (!isset($result[0])) {
+            if (empty($result)) {
                 continue;
             }
 
-            if (strpos($result[0]['sites'], ','.$siteId.',') === false) {
+            $siteIds = trim($result[0]['sites'], ',');
+
+            if (empty($siteIds)) {
                 continue;
             }
 
+            $siteIds = explode(',', $siteIds);
+            $k       = array_search($siteId, $siteIds);
 
-            $result[0]['sites'] = str_replace(
-                ','.$siteId.',',
-                ',',
-                $result[0]['sites']
-            );
+            if ($k === false) {
+                continue;
+            }
+
+            unset($siteIds[$k]);
+
+            $siteIds = array_values($siteIds);
 
             QUI::getDataBase()->update($tableTagCache, [
-                'sites' => $result[0]['sites'],
-                'count' => count($result[0]['sites'])
+                'sites' => ','.implode(',', $siteIds).',',
+                'count' => count($siteIds)
             ], [
                 'tag' => $tag
             ]);
