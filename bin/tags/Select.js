@@ -4,13 +4,6 @@
  * @module package/quiqqer/tags/bin/tags/Select
  * @author www.pcsg.de (Henning Leutz)
  *
- * @require qui/QUI
- * @require qui/controls/Control
- * @require qui/controls/buttons/Button
- * @require Locale
- * @require Ajax
- * @require Projects
- *
  * @event onAddTag [ this, tag ]
  * @event onChange [ this ]
  */
@@ -50,8 +43,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
         ],
 
         options: {
-            projectName: false,
-            projectLang: false
+            projectName      : false,
+            projectLang      : false,
+            considerMaxAmount: true     // considers permission for max amount of tags per Site
         },
 
         initialize: function (options) {
@@ -424,9 +418,14 @@ define('package/quiqqer/tags/bin/tags/Select', [
          */
         refreshStatus: function () {
             var self = this;
+
+            if (!this.getAttribute('considerMaxAmount')) {
+                return;
+            }
+
             this.getMaxTagAmount().then(function (maxTagAmount) {
                 if (self.$values.length >= maxTagAmount) {
-                    self.$Search.style.visibility = 'hidden';
+                    self.$Search.style.visibility            = 'hidden';
                     self.$SearchButton.$Elm.style.visibility = 'hidden';
                     QUI.getMessageHandler(function (MH) {
                         MH.addInformation(
@@ -435,7 +434,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
                         );
                     });
                 } else {
-                    self.$Search.style.visibility = 'visible';
+                    self.$Search.style.visibility            = 'visible';
                     self.$SearchButton.$Elm.style.visibility = 'visible';
                 }
             });
