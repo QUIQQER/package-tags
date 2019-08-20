@@ -3,18 +3,6 @@
  *
  * @module package/quiqqer/tags/bin/groups/Panel
  * @author www.pcsg.de (Henning Leutz)
- *
- * @require qui/QUI
- * @require qui/controls/desktop/Panel
- * @require qui/controls/buttons/Button
- * @require qui/utils/Form
- * @require Locale
- * @require Ajax
- * @require Mustache
- * @require Projects
- * @require utils/Controls
- * @require text!package/quiqqer/tags/bin/groups/Group.information.html.html
- * @require css!package/quiqqer/tags/bin/groups/Group.css
  */
 define('package/quiqqer/tags/bin/groups/Group', [
 
@@ -308,13 +296,14 @@ define('package/quiqqer/tags/bin/groups/Group', [
                 });
 
                 var TagContainer = new Tags({
-                    projectName    : this.$Project.getName(),
-                    projectLang    : this.$Project.getLang(),
-                    allowDuplicates: false,
-                    styles         : {
+                    projectName      : this.$Project.getName(),
+                    projectLang      : this.$Project.getLang(),
+                    considerMaxAmount: false,
+                    allowDuplicates  : false,
+                    styles           : {
                         height: '100%'
                     },
-                    events         : {
+                    events           : {
                         onChange: function (TC) {
                             self.$data.tags = TC.getValue();
                         }
