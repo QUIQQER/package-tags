@@ -22,7 +22,9 @@
     "email": "support@pcsg.de"
   },
   "require": {
-    "quiqqer/quiqqer": "*@dev"
+    "quiqqer/quiqqer": "~1.0 | dev-master | dev-dev",
+    "quiqqer/utils": "~1.10 | dev-master | dev-dev",
+    "quiqqer/controls" : "~1.0 | dev-master | dev-dev"
   },
   "autoload": {
     "psr-4": {
