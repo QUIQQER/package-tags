@@ -1,17 +1,12 @@
-![QUIQQER Tags](bin/images/Readme.jpg)
-
-
-QUIQQER Tags (Themen)
+![QUIQQER Tags (Topics)](bin/images/Readme.jpg)
 ========
 
-Das Tag-Paket erweitert QUIQQER um eine Tag-Verwaltung.
+The tag package extends QUIQQER with tag-management. 
 
-Tagging ist eine Technik, die es jedem Besucher erlaubt, an die besuchten Seiten 
-frei wählbare Begriffe zu hängen (die Texte werden quasi etikettiert).
-Dadurch lassen sich Artikel in unterschiedliche Themenbereiche gleichzeitig einsortieren;
-die starre Hierarchisierung der herkömmlichen Navigations-Rubriken wird somit ergänzt oder ersetzt.
+Tagging is a technique that allows every visitor to attach freely selectable terms to the visited pages.  
+This allows articles to be grouped into multiple subject areas at the same time; the rigid hierarchy of conventional categories is thus supplemented or replaced.
 
-Paketname:
+Package name:
 
     quiqqer/tags
 
@@ -19,75 +14,36 @@ Paketname:
 Features
 --------
 
-- Tag-Verwaltung
-- Zuweisen einzelner Tags zu Seiten
-- Tag-Suche
-- Taglisten
-- Tag Cache (Cron)
+- Tag-Management
+- Categorize sites with tags
+- Search (by) tags
+- Lists of tags
+- Tag Caching (Cron)
 
 
 Installation
 ------------
 
-Der Paketname ist: quiqqer/tags
+The package name is: `quiqqer/tags`
 
 
-Mitwirken
+Contribute
 ----------
-
+- Project: https://dev.quiqqer.com/quiqqer/package-tags
 - Issue Tracker: https://dev.quiqqer.com/quiqqer/package-tags/issues
 - Source Code: https://dev.quiqqer.com/quiqqer/package-tags/tree/master
+- Wiki: https://dev.quiqqer.com/quiqqer/package-tags/wikis/home
 
 
 Support
 -------
 
-Falls Sie Fehler gefunden, Wünsche oder Verbesserungsvorschläge haben, 
-können Sie uns gern per Mail an support@pcsg.de darüber informieren.  
-Wir werden versuchen auf Ihre Wünsche einzugehen bzw. diese an die 
-zuständigen Entwickler des Projektes weiterleiten.
+If you found any flaws, have any wishes or suggestions you can send an email
+to [support@pcsg.de](mailto:support@pcsg.de) to inform us about your concerns.  
+We will try to respond to your request and forward it to the responsible developer.
 
 
 License
 -------
 
-- GPL-2.0+
-
-
-Entwickler
---------
-
-
-Eine Seite besitzt folgende neue Attribute:
-
-- (array) **quiqqer.tags.tagList**
-
-```html
-{$Site->getAttribute('quiqqer.tags.tagList')}
-```
-
-```html
-{assign var=tags value=$Site->getAttribute('quiqqer.tags.tagList')}
-{foreach from=$tags entry=tag}
-    {$tag}
-{/foreach}
-```
-
-## Controls die mitgeliefert werden
-
-### {control control="\QUI\Tags\Controls\SiteTags" Site=$Site hideTitle=false}
-
-Listet die Tags einer Seite auf
-
-**Attribute**
-+ {\QUI\Projects\Project\Site} Site - Seite für die die Tags angezeigt werden soll
-+ {Bool} hideTitle - [optional]  Einstellung, um den Titel vor den Tags anzuzeigen oder auszublenden.
-
-
-### {control control="\QUI\Tags\Controls\TagList" Site=$Site Project=$Project}
-
-Zeigt eine Tagliste an. Tags anzeigen von A-Z
-
-**Attribute**
-+ {\QUI\Projects\Project\Site} Site - [optional] Die Liste selbst, wenn keine Liste angegeben wird, wird eine Seite types:tag-listing gesucht
-+ {\QUI\Projects\Project} Project - [optional] Projekt der Liste, wenn kein Projekt angegeben wird, wird das Projekt der Site verwendet
+- GPL-3.0+
