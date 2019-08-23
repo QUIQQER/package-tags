@@ -5,6 +5,7 @@
  * @author www.pcsg.de (Henning Leutz)
  *
  * @event onAddTag [ this, tag ]
+ * @event onRemoveTag [ tag ]
  * @event onChange [ this ]
  */
 define('package/quiqqer/tags/bin/tags/Select', [
@@ -83,6 +84,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 onAddItem          : function (Control, tag) {
                     this.fireEvent('addTag', [this, tag]);
                 }.bind(this),
+                onRemoveItem       : function (tag) {
+                    this.fireEvent('removeTag', [tag]);
+                },
                 onChange           : this.refreshStatus
             });
         },
