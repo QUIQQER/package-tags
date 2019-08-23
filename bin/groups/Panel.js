@@ -102,6 +102,10 @@ define('package/quiqqer/tags/bin/groups/Panel', [
          * @param {string} selectValue
          */
         $setValue: function (selectValue) {
+            if (!selectValue) {
+                return;
+            }
+
             var values    = selectValue.split(',');
             this.$Project = Projects.get(values[0], values[1]);
         },

@@ -1,14 +1,20 @@
 {
   "name": "quiqqer/tags",
   "type": "quiqqer-module",
-  "description": "The tag package edtends QUIQQER by a tag management.",
+  "description": "Extends QUIQQER with a tag management system.",
   "version": "dev-master",
-  "license": "GPL-2.0+",
+  "license": "GPL-3.0+",
   "authors": [
     {
       "name": "Henning Leutz",
       "email": "leutz@pcsg.de",
-      "homepage": "http://www.pcsg.de",
+      "homepage": "https://www.pcsg.de",
+      "role": "Developer"
+    },
+    {
+      "name": "Jan Wennrich",
+      "email": "info@pcsg.de",
+      "homepage": "https://www.pcsg.de",
       "role": "Developer"
     }
   ],
@@ -16,7 +22,9 @@
     "email": "support@pcsg.de"
   },
   "require": {
-    "quiqqer/quiqqer": "*@dev"
+    "quiqqer/quiqqer": "~1.0 | dev-master | dev-dev",
+    "quiqqer/utils": "~1.10 | dev-master | dev-dev",
+    "quiqqer/controls" : "~1.0 | dev-master | dev-dev"
   },
   "autoload": {
     "psr-4": {

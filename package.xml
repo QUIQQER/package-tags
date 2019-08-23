@@ -10,6 +10,13 @@
 
         <image src="URL_OPT_DIR/quiqqer/tags/bin/images/Logo.jpg"/>
 
+        <preview>
+            <image src="URL_OPT_DIR/quiqqer/tags/bin/images/preview/tagged_sites.jpg"/>
+            <image src="URL_OPT_DIR/quiqqer/tags/bin/images/preview/tag_list.jpg"/>
+            <image src="URL_OPT_DIR/quiqqer/tags/bin/images/preview/add_tags.jpg"/>
+            <image src="URL_OPT_DIR/quiqqer/tags/bin/images/preview/tag_group_management.jpg"/>
+        </preview>
+
         <support>
             <email><![CDATA[support@pcsg.de]]></email>
             <forum><![CDATA[https://community.quiqqer.com]]></forum>
@@ -20,7 +27,7 @@
 
         <copyright>
             <name><![CDATA[PCSG - Computer & Internet Service OHG]]></name>
-            <license><![CDATA[]]></license>
+            <license><![CDATA[GPL-3.0+]]></license>
         </copyright>
     </package>
 </quiqqer>

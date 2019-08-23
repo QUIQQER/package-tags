@@ -8,7 +8,7 @@
         </locale>
 
         <locale name="panel.delete.window.message">
-            <de><![CDATA[<p>Möchten Sie folgende tags wirklich löschen?</p>
+            <de><![CDATA[<p>Möchtest du das folgende Tag wirklich löschen?</p>
                 <p><strong>[tags]</strong></p>]]></de>
             <en><![CDATA[<p>Do you really want to delete the following tags?</p>
                 <p><strong>[tags]</strong></p>]]></en>
@@ -30,20 +30,20 @@
             <en><![CDATA[Add a tag]]></en>
         </locale>
         <locale name="site.window.add.tag.title" html="true">
-            <de><![CDATA[<p>Der Tag <strong>[tag]</strong> existiert noch nicht. Möchten Sie diesen aufnehmen?]]></de>
-            <en><![CDATA[<p>The tag <strong>[tag]</strong> doesn't exist. Would you add the tag?]]></en>
+            <de><![CDATA[<p>Das Tag <strong>[tag]</strong> existiert noch nicht. Möchtest du es aufnehmen?]]></de>
+            <en><![CDATA[<p>The tag <strong>[tag]</strong> doesn't exist yet. Would you like to add it?]]></en>
         </locale>
         <locale name="site.table.description">
-            <de><![CDATA[Per Klick auf das Tagfeld können Sie der Seite Tags hinzufügen.]]></de>
-            <en><![CDATA[By clicking on the tag field, you can add tags to the site.]]></en>
+            <de><![CDATA[Per Klick auf das Tag-Feld kannst du der Seite Tags hinzufügen.]]></de>
+            <en><![CDATA[By clicking on the tag-field, you can add tags to the site.]]></en>
         </locale>
         <locale name="site.table.title">
             <de><![CDATA[Der Seite zugewiesene Tags]]></de>
-            <en><![CDATA[The page assigned tags]]></en>
+            <en><![CDATA[Tags assigned to the page]]></en>
         </locale>
         <locale name="site.table.groups.title">
             <de><![CDATA[Der Seite zugewiesene Tag-Gruppen]]></de>
-            <en><![CDATA[The page assigned tag groups]]></en>
+            <en><![CDATA[Tag-groups assigned to the page]]></en>
         </locale>
         <locale name="control.tagcontainer.window.add.title">
             <de><![CDATA[Tag hinzufügen]]></de>
@@ -70,7 +70,7 @@
             <en><![CDATA[Image for the tag]]></en>
         </locale>
         <locale name="panel.manager.title">
-            <de><![CDATA[Tagverwaltung]]></de>
+            <de><![CDATA[Tag-Verwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
         </locale>
         <locale name="control.tags.search.category.no.tags">
@@ -78,7 +78,7 @@
             <en><![CDATA[No tags contained]]></en>
         </locale>
         <locale name="panel.showtagsites.title">
-            <de><![CDATA[Liste der Seiten, denen der Tag "[tag]" zugeordnet ist]]></de>
+            <de><![CDATA[Liste der Seiten, denen das Tag "[tag]" zugeordnet ist]]></de>
             <en><![CDATA[List of sites the tag "[tag]" is associated with]]></en>
         </locale>
 
@@ -112,15 +112,15 @@
         <!-- Control: TagSites -->
         <locale name="tag.groups.panel.title">
             <de><![CDATA[Tag-Gruppen]]></de>
-            <en><![CDATA[Tag group]]></en>
+            <en><![CDATA[Tag Groups]]></en>
         </locale>
         <locale name="tag.groups.panel.template.parent">
             <de><![CDATA[Eltern-Tag-Gruppe]]></de>
-            <en><![CDATA[Parent tag group]]></en>
+            <en><![CDATA[Parent Tag Group]]></en>
         </locale>
 
         <locale name="tag.groups.window.create.title">
-            <de><![CDATA[Tag-Gruppen anlegen]]></de>
+            <de><![CDATA[Tag-Gruppe anlegen]]></de>
             <en><![CDATA[Create Tag group]]></en>
         </locale>
         <locale name="tag.groups.window.delete.title">
@@ -129,7 +129,7 @@
         </locale>
         <locale name="tag.groups.window.delete.info" html="true">
             <de>
-                <![CDATA[Sind Sie sicher, dass Sie die folgenden Tag-Gruppen unwiderruflich löschen wollen?<br><br>[groups]]]></de>
+                <![CDATA[Bist du sicher, dass du die folgenden Tag-Gruppen unwiderruflich löschen möchtest?<br><br>[groups]]]></de>
             <en><![CDATA[Are you sure you want to irrevocably delete the following tag groups?<br><br>[groups]]]></en>
         </locale>
 
@@ -156,36 +156,36 @@
             <en><![CDATA[Tag group search]]></en>
         </locale>
         <locale name="control.grouptags.search.window.info">
-            <de><![CDATA[Bitte wählen Sie eine Tag-Gruppe aus.]]></de>
-            <en><![CDATA[Please choose tag group.]]></en>
+            <de><![CDATA[Bitte wähle eine Tag-Gruppe aus.]]></de>
+            <en><![CDATA[Please select a tag group.]]></en>
         </locale>
         <locale name="control.grouptags.search.window.info.multiselect" html="true">
             <de>
-                <![CDATA[Bitte wählen Sie eine oder mehrere Tag-Gruppen aus.<br><i>(Mehrfachauswahl mit Strg + Klick)</i>]]></de>
-            <en><![CDATA[Please choose one or more tag groups.<br><i>(Multi-select with Ctrl + click)</i>]]></en>
+                <![CDATA[Bitte wähle eine oder mehrere Tag-Gruppen aus.<br><i>(Mehrfachauswahl mit Strg + Klick)</i>]]></de>
+            <en><![CDATA[Please select one or more tag groups.<br><i>(Multi-select with Ctrl + click)</i>]]></en>
         </locale>
 
         <locale name="message.limit.tags.to.site">
-            <de>Sie können dieser Seite nicht mehr als [amount] Tags hinzufügen. Entfernen Sie Tags um neue hinzuzufügen.</de>
+            <de>Du kannst dieser Seite nicht mehr als [amount] Tags hinzufügen. Entferne Tags, um neue hinzuzufügen.</de>
             <en>You can't add more than [amount] tags. Remove some tags to add new ones.</en>
         </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
         <locale name="package.title">
             <de><![CDATA[QUIQQER - Tags]]></de>
-            <en><![CDATA[QUIQQER - TAG's]]></en>
+            <en><![CDATA[QUIQQER - Tags]]></en>
         </locale>
         <locale name="package.description" html="true">
             <de><![CDATA[
                 Das Tag-Paket erweitert QUIQQER um eine Tag-Verwaltung.
             ]]></de>
             <en><![CDATA[
-                The tag package edtends QUIQQER by a tag management.
+                The tag package edtends QUIQQER by tag management.
             ]]></en>
         </locale>
 
         <locale name="permission.tags._header">
-            <de><![CDATA[Tagverwaltung]]></de>
+            <de><![CDATA[Tag-Verwaltung]]></de>
             <en><![CDATA[Tag Management]]></en>
         </locale>
         <locale name="permission.tags.siteLimit">
@@ -210,7 +210,7 @@
         </locale>
         <locale name="permission.tags.group.delete">
             <de><![CDATA[Darf Tag Gruppen löschen.]]></de>
-            <en><![CDATA[Can delete tag group.]]></en>
+            <en><![CDATA[Can delete tag groups.]]></en>
         </locale>
 
         <!-- Settings -->
@@ -228,63 +228,63 @@
         </locale>
         <locale name="settings.window.tags.getTagsRecursive.text">
             <de><![CDATA[Kinder von Tags einer Tag-Gruppe anzeigen]]></de>
-            <en><![CDATA[Show children of tags of a tag group]]></en>
+            <en><![CDATA[Show the children of a tag-group's tags]]></en>
         </locale>
         <locale name="settings.window.tags.getTagsRecursive.description">
             <de>
-                <![CDATA[Bei der Auswahl einer Tag-Gruppe zum Filtern einer Tag-Liste sollen auch alle Tags der Tag-Gruppen-Kinder und ihrer Tag-Gruppen-Kinder angezeigt werden (bis zur tiefsten Ebene).]]></de>
+                <![CDATA[Bei der Auswahl einer Tag-Gruppe (zum Filtern einer Tag-Liste) sollen auch alle Tags der Tag-Gruppen-Kinder und ihrer Tag-Gruppen-Kinder angezeigt werden (bis zur tiefsten Ebene).]]></de>
             <en>
-                <![CDATA[On choosing a tag group to filter a tag list all children of the tag groups and their children should be shown (up to the lowest level).]]></en>
+                <![CDATA[When selecting a tag group (to filter a tag list), all tags of the tag group's children and their tag group's children should also be displayed (down to the lowest level).]]></en>
         </locale>
 
         <locale name="exception.limit.tags.to.site">
-            <de><![CDATA[Sie dürfen nur [limit] tags der Seite hinzufügen. Die Tags wurden nicht hinzugefügt.]]></de>
-            <en><![CDATA[You can add only [limit] tags to the page. The tags wasn't saved.]]></en>
+            <de><![CDATA[Du darfst der Seite nur [limit] Tags hinzufügen. Die Tags wurden nicht hinzugefügt.]]></de>
+            <en><![CDATA[You can add only [limit] tags to the page. The tags weren't added.]]></en>
         </locale>
         <locale name="exception.tag.title.exist">
-            <de><![CDATA[Ein tag mit dem selben Titel existiert bereits]]></de>
+            <de><![CDATA[Ein Tag mit dem selben Titel existiert bereits.]]></de>
             <en><![CDATA[A tag with the same title already exist.]]></en>
         </locale>
         <locale name="exception.tag.already.exists">
-            <de><![CDATA[Der tag existiert bereits]]></de>
+            <de><![CDATA[Das Tag existiert bereits.]]></de>
             <en><![CDATA[The tag already exist.]]></en>
         </locale>
         <locale name="exception.tag.not.found">
-            <de><![CDATA[Der tag wurde leider nicht gefunden]]></de>
-            <en><![CDATA[The tag was not found]]></en>
+            <de><![CDATA[Das Tag wurde leider nicht gefunden.]]></de>
+            <en><![CDATA[The tag was not found.]]></en>
         </locale>
         <locale name="tag.control.placeholder.limit">
-            <de><![CDATA[Weitere Tags können nicht hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht]]></de>
-            <en><![CDATA[More tags can not be added. The maximum number of tags has been reached.]]></en>
+            <de><![CDATA[Es können keine weiteren Tags hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht.]]></de>
+            <en><![CDATA[Additional tags cannot be added. The maximum number of tags has been reached.]]></en>
         </locale>
         <locale name="tag.control.placeholder.addtag">
-            <de><![CDATA[Geben Sie bitte hier Ihren gewünschten Tag ein ...]]></de>
-            <en><![CDATA[Please enter here your wanted tag ...]]></en>
+            <de><![CDATA[Bitte gib hier dein gewünschtes Tag ein…]]></de>
+            <en><![CDATA[Please enter your desired tag here…]]></en>
         </locale>
         <locale name="tag.control.placeholder.addgroup">
-            <de><![CDATA[Geben Sie bitte hier Ihre gewünschte Tag-Gruppe ein ...]]></de>
-            <en><![CDATA[Please enter here your wanted tag group ...]]></en>
+            <de><![CDATA[Bitte gib hier deine gewünschte Tag-Gruppe ein…]]></de>
+            <en><![CDATA[Please enter here your desired tag group here…]]></en>
         </locale>
         <locale name="tag">
             <de><![CDATA[Tag]]></de>
             <en><![CDATA[Tag]]></en>
         </locale>
         <locale name="message.no.tags.found">
-            <de><![CDATA[Keine Tags gefunden]]></de>
-            <en><![CDATA[No tags found]]></en>
+            <de><![CDATA[Keine Tags gefunden.]]></de>
+            <en><![CDATA[No tags found.]]></en>
         </locale>
         <locale name="message.no.tag.groups.found">
-            <de><![CDATA[Keine Tag-Gruppen gefunden]]></de>
-            <en><![CDATA[No tag groups found]]></en>
+            <de><![CDATA[Keine Tag-Gruppen gefunden.]]></de>
+            <en><![CDATA[No tag groups found.]]></en>
         </locale>
         <locale name="message.no.permission.create.tags">
             <de><![CDATA[
-            Sie haben nicht die nötigen Rechte, neue Tags anzulegen.
-            Bitte verwenden Sie nur die vorhandenen Tags
+            Du hast nicht die notwendigen Rechte, um neue Tags anzulegen.
+            Bitte verwende nur die vorhandenen Tags.
             ]]></de>
             <en><![CDATA[
             You dont have the necessary rights to create new tags.
-            Please only use existing tags.
+            Please use only the existing tags.
             ]]></en>
         </locale>
 
@@ -335,15 +335,15 @@
         </locale>
         <locale name="filter.special">
             <de><![CDATA[Sonderzeichen]]></de>
-            <en><![CDATA[Special character]]></en>
+            <en><![CDATA[Special Characters]]></en>
         </locale>
         <locale name="filter.all">
             <de><![CDATA[Alle]]></de>
-            <en><![CDATA[all]]></en>
+            <en><![CDATA[All]]></en>
         </locale>
         <locale name="filter.groups.all">
             <de><![CDATA[Alle Gruppen]]></de>
-            <en><![CDATA[All groups]]></en>
+            <en><![CDATA[All Groups]]></en>
         </locale>
 
         <locale name="bricks.tags.title">
@@ -362,11 +362,11 @@
         <locale name="quiqqer/tags:types/tag-listing.description" html="true">
             <de><![CDATA[
             Dieser Seitentyp listet alle Tags inkl. Beschreibung und zugehörigem Icon in einer Liste auf.
-            Klickt der Nutzer auf einen Tag, landet er auf einer Suchergebnis-Seite mit allen Seiten, denen dieser Tag zugewiesen ist.
+            Klickt der Nutzer auf ein Tag, landet er auf einer Suchergebnis-Seite mit allen Seiten, denen dieses Tag zugewiesen ist.
             ]]></de>
             <en><![CDATA[
-            This page type lists all tags including description and associated icon in a list.
-            If the user clicks on a tag, he ends up on a search result page with all pages to which this tag is assigned.
+            This site-type lists all tags including description and icon in a list.
+            If the user clicks on a tag, he will be taken to a search results page with all pages to which this tag is assigned.
             ]]></en>
         </locale>
         <locale name="quiqqer/tags:types/tag-search.title">
@@ -383,12 +383,12 @@
             um beispielsweise bestimmte Tags vorauszuwählen oder die Darstellung anzupassen.
             ]]></de>
             <en><![CDATA[
-            Through the tag search the user can find content on various relevant topics without having to enter search terms themselves.
-            These topics can be defined as tags by the site operator at will for each bottom side.
-            The user can perform the tag search with both one and several selected tags to further narrow down the results.
-            In the list of results all sub-pages are marked internally with the searched tags.
-            The tag search can be configured in the settings by the page operator,
-            For example, to pre-select certain tags or to adjust the display.
+            The tag search allows users to find content on various relevant topics without having to enter search terms themselves.
+            These topics can be defined as tags by the site operator for each subpage as desired.
+            The user can perform the tag search with one or more selected tags to narrow down the results more precisely.
+            The results list displays all subpages that are internally marked with the tags you are looking for.
+            The tag search can be configured in the settings by the site operator,
+            for example to preselect certain tags or to adjust the display.
             ]]></en>
         </locale>
     </groups>
@@ -462,12 +462,12 @@
         </locale>
 
         <locale name="template.tag.header.results">
-            <de><![CDATA[Seiten die den Tag [tag] enthalten]]></de>
-            <en><![CDATA[Pages that contain the tag [tag]]]></en>
+            <de><![CDATA[Seiten, die das Tag [tag] enthalten]]></de>
+            <en><![CDATA[Pages containing the tag [tag]]]></en>
         </locale>
 
         <locale name="message.types.tag.no.entries.found">
-            <de><![CDATA[Die Tagsuche ergab keine Treffer.]]></de>
+            <de><![CDATA[Die Tag-Suche ergab keine Treffer.]]></de>
             <en><![CDATA[The Tag search found no results.]]></en>
         </locale>
 
@@ -515,7 +515,7 @@
             <pl><![CDATA[Pokaż datę]]></pl>
         </locale>
         <locale name="quiqqer.tag.settings.limit">
-            <de><![CDATA[Anzahl Ergebnisse je Seite]]></de>
+            <de><![CDATA[Anzahl Ergebnisse pro Seite]]></de>
             <en><![CDATA[Number of results per page]]></en>
         </locale>
         <locale name="quiqqer.tag.settings.showPagination">
@@ -523,27 +523,27 @@
             <en><![CDATA[Show Pagination]]></en>
         </locale>
         <locale name="quiqqer.tag.settings.showAvailableTags">
-            <de><![CDATA[Vorhandene tags anzeigen]]></de>
+            <de><![CDATA[Vorhandene Tags anzeigen]]></de>
             <en><![CDATA[Show available tags]]></en>
         </locale>
         <locale name="quiqqer.tag.settings.showSelectedTags">
-            <de><![CDATA[Ausgewählte tags anzeigen]]></de>
+            <de><![CDATA[Ausgewählte Tags anzeigen]]></de>
             <en><![CDATA[Show selected tags]]></en>
         </locale>
         <locale name="quiqqer.tag.settings.defaultTags">
-            <de><![CDATA[Vorausgewählte tags]]></de>
-            <en><![CDATA[Preselected tags]]></en>
+            <de><![CDATA[Vorausgewählte Tags]]></de>
+            <en><![CDATA[Preselected Tags]]></en>
         </locale>
 
         <locale name="message.group.successful.save">
             <de><![CDATA[Tag-Gruppe wurde erfolgreich gespeichert.]]></de>
-            <en><![CDATA[Tag group has been successfully saved.]]></en>
+            <en><![CDATA[Tag group has been saved successfully.]]></en>
         </locale>
 
         <!-- Class: Manager -->
         <locale name="exception.manager.cannot.delete.group.with.children">
             <de>
-                <![CDATA[Tag-Gruppen, die noch andere Tag-Gruppen enthalten, können nicht gelöscht werden. Bitte löschen Sie zuerst alle Tag-Gruppen-Kinder dieser Tag-Gruppe, um sie zu löschen zu können.]]></de>
+                <![CDATA[Tag-Gruppen, die noch andere Tag-Gruppen enthalten, können nicht gelöscht werden. Bitte lösche zuerst alle Tag-Gruppen-Kinder dieser Tag-Gruppe, um sie zu löschen zu können.]]></de>
             <en>
                 <![CDATA[Tag groups that contain other tag groups cannot be deleted. Please delete all tag group children from this group to be able to delete it.]]></en>
         </locale>
@@ -551,7 +551,7 @@
         <!-- Class: Groups\Group -->
         <locale name="exception.groups.group.parent.does.not.exist">
             <de>
-                <![CDATA[Die Tag-Gruppe #[tagGroupId] kann nicht als Eltern-Tag-Gruppe zugewiesen werden, da sie nicht exisitert.]]></de>
+                <![CDATA[Die Tag-Gruppe #[tagGroupId] kann nicht als Eltern-Tag-Gruppe zugewiesen werden, da sie nicht existiert.]]></de>
             <en>
                 <![CDATA[The tag group #[tagGroupId] cannot be assigned as a parent tag group because it does not exist.]]></en>
         </locale>
