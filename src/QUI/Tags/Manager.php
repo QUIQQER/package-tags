@@ -183,6 +183,8 @@ class Manager
             ['tag' => $tag]
         );
 
+        QUI\Cache\Manager::clear('quiqqer/tags/'.md5($tag));
+
         // @todo also delete tag from cache and tag group cache tables?
     }
 
@@ -254,6 +256,8 @@ class Manager
             $tagParams,
             ['tag' => $tag]
         );
+
+        QUI\Cache\Manager::clear('quiqqer/tags/'.md5($tag));
     }
 
     /**
@@ -271,6 +275,14 @@ class Manager
 
         if (isset($this->exists[$tag])) {
             return true;
+        }
+
+        try {
+            QUI\Cache\Manager::get('quiqqer/tags/'.md5($tag));
+            $this->exists[$tag] = true;
+
+            return true;
+        } catch (QUI\Exception $Exception) {
         }
 
         try {
@@ -334,6 +346,15 @@ class Manager
             return $this->tags[$tag];
         }
 
+        $cache = 'quiqqer/tags/'.md5($tag);
+
+        try {
+            $this->tags[$tag] = QUI\Cache\Manager::get($cache);
+
+            return $this->tags[$tag];
+        } catch (QUI\Exception $Exception) {
+        }
+
         try {
             $result = QUI::getDataBase()->fetch([
                 'from'  => QUI::getDBProjectTableName('tags', $this->Project),
@@ -360,6 +381,7 @@ class Manager
         }
 
         $this->tags[$tag] = $result[0];
+        QUI\Cache\Manager::set($cache, $result[0]);
 
         return $result[0];
     }
