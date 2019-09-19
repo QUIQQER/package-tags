@@ -166,7 +166,8 @@
         </locale>
 
         <locale name="message.limit.tags.to.site">
-            <de>Du kannst dieser Seite nicht mehr als [amount] Tags hinzufügen. Entferne Tags, um neue hinzuzufügen.</de>
+            <de>Du kannst dieser Seite nicht mehr als [amount] Tags hinzufügen. Entferne Tags, um neue hinzuzufügen.
+            </de>
             <en>You can't add more than [amount] tags. Remove some tags to add new ones.</en>
         </locale>
     </groups>
@@ -254,7 +255,8 @@
             <en><![CDATA[The tag was not found.]]></en>
         </locale>
         <locale name="tag.control.placeholder.limit">
-            <de><![CDATA[Es können keine weiteren Tags hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht.]]></de>
+            <de>
+                <![CDATA[Es können keine weiteren Tags hinzugefügt werden. Die maximale Anzahl der Tags ist erreicht.]]></de>
             <en><![CDATA[Additional tags cannot be added. The maximum number of tags has been reached.]]></en>
         </locale>
         <locale name="tag.control.placeholder.addtag">
@@ -564,6 +566,10 @@
                 <![CDATA[Die Tag-Gruppe #[childTagGroupId] ist ein Kind der Tag-Gruppe #[tagGroupId] und kann daher nicht als Eltern-Gruppe gesetzt werden.]]></de>
             <en>
                 <![CDATA[The tag group #[childTagGroupId] is a child of the tag group #[tagGroupId] and thus cannot be set as a parent group.]]></en>
+        </locale>
+        <locale name="exception.tag.creation">
+            <de><![CDATA[Das Tag konnte leider nicht angelegt werden.]]></de>
+            <en><![CDATA[Unfortunately the tag could not be created.]]></en>
         </locale>
     </groups>
 
