@@ -36,6 +36,13 @@ class Manager
     protected $tags = [];
 
     /**
+     * tag list - only for exists check
+     *
+     * @var array
+     */
+    protected $exists = [];
+
+    /**
      * @var array
      */
     protected $groupsFromTags = [];
@@ -262,13 +269,26 @@ class Manager
             return true;
         }
 
-        $result = QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-            'where' => [
-                'tag' => $tag
-            ],
-            'limit' => 1
-        ]);
+        if (isset($this->exists[$tag])) {
+            return true;
+        }
+
+        try {
+            $result = QUI::getDataBase()->fetch([
+                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+                'where' => [
+                    'tag' => $tag
+                ],
+                'limit' => 1
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addWarning($Exception->getMessage());
+            QUI\System\Log::writeDebugException($Exception);
+
+            return false;
+        }
+
+        $this->exists[$tag] = true;
 
         return isset($result[0]);
     }
@@ -281,13 +301,21 @@ class Manager
      */
     public function existsTagTitle($title)
     {
-        $result = QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-            'where' => [
-                'title' => $title
-            ],
-            'limit' => 1
-        ]);
+        try {
+            $result = QUI::getDataBase()->fetch([
+                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+                'where' => [
+                    'title' => $title
+                ],
+                'limit' => 1
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addWarning($Exception->getMessage());
+            QUI\System\Log::writeDebugException($Exception);
+
+            return false;
+        }
+
 
         return isset($result[0]);
     }
@@ -306,20 +334,27 @@ class Manager
             return $this->tags[$tag];
         }
 
-        $result = QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-            'where' => [
-                'tag' => $tag
-            ],
-            'limit' => 1
-        ]);
+        try {
+            $result = QUI::getDataBase()->fetch([
+                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+                'where' => [
+                    'tag' => $tag
+                ],
+                'limit' => 1
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addWarning($Exception->getMessage());
+            QUI\System\Log::writeDebugException($Exception);
+
+            throw new QUI\Tags\Exception(
+                ['quiqqer/tags', 'exception.tag.not.found'],
+                404
+            );
+        }
 
         if (!isset($result[0])) {
             throw new QUI\Tags\Exception(
-                [
-                    'quiqqer/tags',
-                    'exception.tag.not.found'
-                ],
+                ['quiqqer/tags', 'exception.tag.not.found'],
                 404
             );
         }
