@@ -15,8 +15,9 @@ QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_groups_getTree',
     function ($project) {
         $Project = QUI::getProjectManager()->decode($project);
+
         return QUI\Tags\Groups\Handler::getTree($Project);
     },
-    array('project'),
+    ['project'],
     'Permission::checkAdminUser'
 );

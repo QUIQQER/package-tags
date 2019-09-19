@@ -27,21 +27,21 @@ class Watch
     {
         switch ($call) {
             case 'package_quiqqer_tags_ajax_tag_add':
-                return QUI::getLocale()->get('quiqqer/tags', 'watch.add.tags', array(
+                return QUI::getLocale()->get('quiqqer/tags', 'watch.add.tags', [
                     'tag' => $params['tag']
-                ));
+                ]);
 
             case 'package_quiqqer_tags_ajax_tag_delete':
-                $tags = json_decode($params['tags'], true);
+                $tags = \json_decode($params['tags'], true);
 
-                return QUI::getLocale()->get('quiqqer/tags', 'watch.delete.tags', array(
-                    'tag' => implode(',', $tags)
-                ));
+                return QUI::getLocale()->get('quiqqer/tags', 'watch.delete.tags', [
+                    'tag' => \implode(',', $tags)
+                ]);
 
             case 'package_quiqqer_tags_ajax_tag_edit':
-                return QUI::getLocale()->get('quiqqer/tags', 'watch.edit.tags', array(
+                return QUI::getLocale()->get('quiqqer/tags', 'watch.edit.tags', [
                     'tag' => $params['tag']
-                ));
+                ]);
         }
 
         return '####';

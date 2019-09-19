@@ -20,17 +20,17 @@ class SiteTags extends QUI\Control
      *
      * @param array $attributes
      */
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
         // defaults
-        $this->setAttributes(array(
+        $this->setAttributes([
             'hideTitle' => true
-        ));
+        ]);
 
         parent::__construct($attributes);
 
         $this->addCSSFile(
-            dirname(__FILE__) . '/SiteTags.css'
+            \dirname(__FILE__).'/SiteTags.css'
         );
 
         $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
@@ -54,9 +54,9 @@ class SiteTags extends QUI\Control
         $Project = $Site->getProject();
         $Tags    = new QUI\Tags\Manager($Project);
         $tags    = $Site->getAttribute('quiqqer.tags.tagList');
-        $tagList = array();
+        $tagList = [];
 
-        if (is_array($tags)) {
+        if (\is_array($tags)) {
             foreach ($tags as $tag) {
                 try {
                     $tagList[] = $Tags->get($tag);
@@ -65,7 +65,7 @@ class SiteTags extends QUI\Control
             }
         }
 
-        $Engine->assign(array(
+        $Engine->assign([
             'Project'    => $Project,
             'Site'       => $Site,
             'Locale'     => QUI::getLocale(),
@@ -73,9 +73,9 @@ class SiteTags extends QUI\Control
             'this'       => $this,
             'tagList'    => $tagList,
             'SearchSite' => $this->getSearchSite()
-        ));
+        ]);
 
-        return $Engine->fetch(dirname(__FILE__) . '/SiteTags.html');
+        return $Engine->fetch(\dirname(__FILE__).'/SiteTags.html');
     }
 
     /**
@@ -92,7 +92,7 @@ class SiteTags extends QUI\Control
         }
 
         $Project   = $Site->getProject();
-        $cacheName = $Project->getName() . '/' . $Project->getLang() . '/sites/quiqqer/tags:types/tag-search';
+        $cacheName = $Project->getName().'/'.$Project->getLang().'/sites/quiqqer/tags:types/tag-search';
 
         try {
             return $Project->get(
@@ -105,7 +105,7 @@ class SiteTags extends QUI\Control
         $tagSearchIds = $Project->getConfig('tags.tagSearchId');
 
         if ($tagSearchIds) {
-            $tagSearchIds = json_decode($tagSearchIds, true);
+            $tagSearchIds = \json_decode($tagSearchIds, true);
 
             if ($tagSearchIds[$language]) {
                 try {
@@ -119,12 +119,12 @@ class SiteTags extends QUI\Control
             }
         }
 
-        $result = $Project->getSites(array(
-            'where' => array(
+        $result = $Project->getSites([
+            'where' => [
                 'type' => 'quiqqer/tags:types/tag-search'
-            ),
+            ],
             'limit' => 1
-        ));
+        ]);
 
         if (isset($result[0])) {
             QUI\Cache\Manager::set($cacheName, $result[0]->getId());

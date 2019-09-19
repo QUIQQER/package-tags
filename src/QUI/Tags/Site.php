@@ -33,19 +33,19 @@ class Site
             $Site->getAttribute('active')
         ) {
             $url = $Site->getLocation();
-            $url = str_replace(QUI\Rewrite::getDefaultSuffix(), '', $url);
+            $url = \str_replace(QUI\Rewrite::getDefaultSuffix(), '', $url);
 
             QUI::getRewrite()->registerPath($url.'/*', $Site);
         }
 
         // set tags
-        if (empty($tags) || (!is_string($tags) && !is_array($tags))) {
+        if (empty($tags) || (!\is_string($tags) && !\is_array($tags))) {
             $tags = [];
-        } elseif (is_string($tags)) {
-            $tags = explode(',', trim($tags, ','));
+        } elseif (\is_string($tags)) {
+            $tags = \explode(',', \trim($tags, ','));
         }
 
-        $list = array();
+        $list = [];
 
         foreach ($tags as $tag) {
             if ($Manager->existsTag($tag)) {
@@ -56,11 +56,11 @@ class Site
         $User  = QUI::getUserBySession();
         $limit = $User->getPermission('tags.siteLimit', 'maxInteger');
 
-        if ($limit < count($list)) {
+        if ($limit < \count($list)) {
             $message = QUI::getLocale()->get(
                 'quiqqer/tags',
                 'exception.limit.tags.to.site',
-                array('limit' => $limit)
+                ['limit' => $limit]
             );
 
             QUI::getMessagesHandler()->addAttention($message);
@@ -91,9 +91,9 @@ class Site
         QUI\Search\Fulltext::setEntryData(
             $Site->getProject(),
             $Site->getId(),
-            array(
-                'tags' => ',' . implode(",", $tags) . ','
-            )
+            [
+                'tags' => ','.\implode(",", $tags).','
+            ]
         );
     }
 

@@ -19,7 +19,7 @@ QUI::$Ajax->registerFunction(
     function ($project, $groupIds) {
         try {
             $Project  = QUI::getProjectManager()->decode($project);
-            $groupIds = json_decode($groupIds, true);
+            $groupIds = \json_decode($groupIds, true);
 
             foreach ($groupIds as $id) {
                 Handler::delete($Project, $id);
@@ -29,9 +29,9 @@ QUI::$Ajax->registerFunction(
                 QUI::getLocale()->get(
                     'quiqqer/tags',
                     'message.ajax.groups.delete.error',
-                    array(
+                    [
                         'error' => $Exception->getMessage()
-                    )
+                    ]
                 )
             );
 
@@ -47,6 +47,6 @@ QUI::$Ajax->registerFunction(
 
         return true;
     },
-    array('project', 'groupIds'),
+    ['project', 'groupIds'],
     'Permission::checkAdminUser'
 );

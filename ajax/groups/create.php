@@ -21,10 +21,10 @@ QUI::$Ajax->registerFunction(
 
         $Group->setImage($image);
         $Group->setDescription($desc);
-        $Group->save();
+        $Group->save < ();
 
         return $Group->getId();
     },
-    array('project', 'title', 'desc', 'image'),
+    ['project', 'title', 'desc', 'image'],
     'Permission::checkAdminUser'
 );

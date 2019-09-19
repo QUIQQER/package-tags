@@ -17,11 +17,11 @@ QUI::$Ajax->registerFunction(
     function ($project, $params) {
         $Project = QUI::getProjectManager()->decode($project);
         $Grid    = new QUI\Utils\Grid();
-        $result  = array();
+        $result  = [];
 
         $groupIds = QUI\Tags\Groups\Handler::getGroupIds(
             $Project,
-            $Grid->parseDBParams(json_decode($params, true))
+            $Grid->parseDBParams(\json_decode($params, true))
         );
 
         foreach ($groupIds as $groupId) {
@@ -31,6 +31,6 @@ QUI::$Ajax->registerFunction(
 
         return $Grid->parseResult($result, QUI\Tags\Groups\Handler::count($Project));
     },
-    array('project', 'params'),
+    ['project', 'params'],
     'Permission::checkAdminUser'
 );

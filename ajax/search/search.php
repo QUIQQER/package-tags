@@ -27,5 +27,5 @@ QUI::$Ajax->registerFunction(
 
         return $Tags->searchTags($search, json_decode($params, true));
     },
-    array('projectName', 'projectLang', 'search', 'params')
+    ['projectName', 'projectLang', 'search', 'params']
 );

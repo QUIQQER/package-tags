@@ -3,6 +3,7 @@
 /**
  * This file contains package_quiqqer_tags_ajax_search_getTagsBySektor
  */
+
 use QUI\Tags\Controls\TagList;
 
 /**
@@ -17,9 +18,9 @@ use QUI\Tags\Controls\TagList;
 QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_search_getTagsBySektor',
     function ($project, $sektor, $groupId = null) {
-        $TagList = new TagList(array(
+        $TagList = new TagList([
             'Project' => QUI::getProjectManager()->decode($project)
-        ));
+        ]);
 
         if (empty($groupId)) {
             $groupId = null;
@@ -27,5 +28,5 @@ QUI::$Ajax->registerFunction(
 
         return $TagList->getList($sektor, $groupId);
     },
-    array('project', 'sektor', 'groupId')
+    ['project', 'sektor', 'groupId']
 );

@@ -21,9 +21,9 @@ QUI::$Ajax->registerFunction(
         $params
     ) {
         $Project = QUI::getProjectManager()->decode($project);
-        $params  = json_decode($params, true);
+        $params  = \json_decode($params, true);
 
         return QUI\Tags\Groups\Handler::search($Project, $search, $params);
     },
-    array('project', 'search', 'params')
+    ['project', 'search', 'params']
 );

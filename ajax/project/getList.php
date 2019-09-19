@@ -20,19 +20,19 @@ QUI::$Ajax->registerFunction(
         $projectLang,
         $gridParams
     ) {
-        ini_set('display_errors', 1);
+        \ini_set('display_errors', 1);
 
         $Tags = new QUI\Tags\Manager(
             QUI::getProject($projectName, $projectLang)
         );
 
-        $gridParams = json_decode($gridParams, true);
+        $gridParams = \json_decode($gridParams, true);
 
         $Grid   = new QUI\Utils\Grid($gridParams);
         $result = $Tags->getList($gridParams);
 
         return $Grid->parseResult($result, $Tags->count());
     },
-    array('projectName', 'projectLang', 'gridParams'),
+    ['projectName', 'projectLang', 'gridParams'],
     'Permission::checkAdminUser'
 );

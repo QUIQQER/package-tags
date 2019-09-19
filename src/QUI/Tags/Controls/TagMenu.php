@@ -26,7 +26,7 @@ class TagMenu extends QUI\Control
      *
      * @param array $attributes
      */
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
         if (isset($attributes['Project'])
             && $attributes['Project'] instanceof QUI\Projects\Project
@@ -36,14 +36,14 @@ class TagMenu extends QUI\Control
             $this->Project = QUI::getRewrite()->getSite()->getProject();
         }
 
-        $this->setAttributes(array(
+        $this->setAttributes([
             'data-qui'      => 'package/quiqqer/tags/bin/TagMenu',
-            'selectedTags'  => array(),
+            'selectedTags'  => [],
             'TagSearchSite' => false
-        ));
+        ]);
 
         $this->addCSSClass('quiqqer-tags-tagmenu');
-        $this->addCSSFile(dirname(__FILE__) . '/TagMenu.css');
+        $this->addCSSFile(\dirname(__FILE__).'/TagMenu.css');
 
         parent::__construct($attributes);
     }
@@ -66,16 +66,16 @@ class TagMenu extends QUI\Control
         }
 
         // Get Tag Search Site
-        $Engine->assign(array(
+        $Engine->assign([
             'children'         => $this->getChildren(),
             'this'             => $this,
-            'childrenTemplate' => dirname(__FILE__) . '/TagMenu.Children.html',
+            'childrenTemplate' => \dirname(__FILE__).'/TagMenu.Children.html',
             'Rewrite'          => QUI::getRewrite(),
             'tagSearchUrl'     => $tagSearchUrl,
             'selectedTags'     => $this->getAttribute('selectedTags')
-        ));
+        ]);
 
-        return $Engine->fetch(dirname(__FILE__) . '/TagMenu.html');
+        return $Engine->fetch(\dirname(__FILE__).'/TagMenu.html');
     }
 
     /**
@@ -86,27 +86,27 @@ class TagMenu extends QUI\Control
     public function getChildren()
     {
         $tagGroupIds = TagGroupsHandler::getGroupIds($this->Project);
-        $children    = array();
+        $children    = [];
 
         foreach ($tagGroupIds as $tagGroupId) {
             $TagGroup = TagGroupsHandler::get($this->Project, $tagGroupId);
 
-            $tags     = $TagGroup->getTags();
+            $tags = $TagGroup->getTags();
 
             if (empty($tags)) {
                 continue;
             }
 
-            $children[] = array(
+            $children[] = [
                 'id'       => $TagGroup->getId(),
                 'title'    => $TagGroup->getTitle(),
                 'tags'     => $tags,
                 'priority' => $TagGroup->getPriority()
-            );
+            ];
         }
 
         // sort by priority DESC
-        usort($children, function ($a, $b) {
+        \usort($children, function ($a, $b) {
             $prioA = $a['priority'];
             $prioB = $b['priority'];
 
