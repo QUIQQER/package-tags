@@ -93,15 +93,23 @@ class Manager
             } while ($this->existsTag($tag));
         }
 
-        QUI::getDataBase()->insert(
-            QUI::getDBProjectTableName('tags', $this->Project),
-            [
-                'tag'   => $tag,
-                'title' => $title
-            ]
-        );
+        try {
+            QUI::getDataBase()->insert(
+                QUI::getDBProjectTableName('tags', $this->Project),
+                [
+                    'tag'   => $tag,
+                    'title' => $title
+                ]
+            );
 
-        $this->edit($tag, $params);
+            $this->edit($tag, $params);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            throw new QUI\Tags\Exception(
+                QUI::getLocale()->get('quiqqer/tags', 'exception.tag.creation')
+            );
+        }
 
         return $tag;
     }
@@ -131,13 +139,20 @@ class Manager
      */
     public function count()
     {
-        $result = QUI::getDataBase()->fetch([
-            'count' => [
-                'select' => 'tag',
-                'as'     => 'count'
-            ],
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project)
-        ]);
+        try {
+            $result = QUI::getDataBase()->fetch([
+                'count' => [
+                    'select' => 'tag',
+                    'as'     => 'count'
+                ],
+                'from'  => QUI::getDBProjectTableName('tags', $this->Project)
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::writeDebugException($Exception);
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return 0;
+        }
 
         return (int)$result[0]['count'];
     }
@@ -287,11 +302,12 @@ class Manager
 
         try {
             $result = QUI::getDataBase()->fetch([
-                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-                'where' => [
+                'select' => 'tag',
+                'from'   => QUI::getDBProjectTableName('tags', $this->Project),
+                'where'  => [
                     'tag' => $tag
                 ],
-                'limit' => 1
+                'limit'  => 1
             ]);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::addWarning($Exception->getMessage());
@@ -315,11 +331,12 @@ class Manager
     {
         try {
             $result = QUI::getDataBase()->fetch([
-                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
-                'where' => [
+                'select' => 'tag',
+                'from'   => QUI::getDBProjectTableName('tags', $this->Project),
+                'where'  => [
                     'title' => $title
                 ],
-                'limit' => 1
+                'limit'  => 1
             ]);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::addWarning($Exception->getMessage());
@@ -488,7 +505,14 @@ class Manager
             'order' => $order
         ]);
 
-        $result    = QUI::getDataBase()->fetch($params);
+        try {
+            $result = QUI::getDataBase()->fetch($params);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return [];
+        }
+
         $tags      = [];
         $tagsCount = [];
 
@@ -501,19 +525,25 @@ class Manager
         }
 
         // get count
-        $countResult = QUI::getDataBase()->fetch([
-            'select' => [
-                'tag',
-                'count'
-            ],
-            'from'   => QUI::getDBProjectTableName('tags_cache', $this->Project),
-            'where'  => [
-                'tag' => [
-                    'type'  => 'IN',
-                    'value' => $tags
+        try {
+            $countResult = QUI::getDataBase()->fetch([
+                'select' => [
+                    'tag',
+                    'count'
+                ],
+                'from'   => QUI::getDBProjectTableName('tags_cache', $this->Project),
+                'where'  => [
+                    'tag' => [
+                        'type'  => 'IN',
+                        'value' => $tags
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return [];
+        }
 
         foreach ($countResult as $row) {
             $tagsCount[$row['tag']] = $row['count'];
@@ -563,10 +593,16 @@ class Manager
 
         $DataBase = QUI::getDataBase();
 
-        $result = $DataBase->fetch([
-            'from'  => QUI::getDBProjectTableName('tags_siteCache', $this->Project),
-            'where' => $str
-        ]);
+        try {
+            $result = $DataBase->fetch([
+                'from'  => QUI::getDBProjectTableName('tags_siteCache', $this->Project),
+                'where' => $str
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return [];
+        }
 
         if (!isset($result[0])) {
             return $tags;
@@ -613,12 +649,16 @@ class Manager
         $ids = \implode(',', $ids);
         $ids = \trim($ids, ',');
 
+        try {
+            $result = $DataBase->fetch([
+                'from'  => QUI::getDBProjectTableName('tags_sites', $this->Project),
+                'where' => 'id in ('.$ids.')'
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
 
-        $result = $DataBase->fetch([
-            'from'  => QUI::getDBProjectTableName('tags_sites', $this->Project),
-            'where' => 'id in ('.$ids.')'
-        ]);
-
+            return [];
+        }
         $tag_str = '';
 
         foreach ($result as $entry) {
@@ -673,7 +713,13 @@ class Manager
             $query['limit'] = $queryParams['limit'];
         }
 
-        $result = QUI::getDataBase()->fetch($query);
+        try {
+            $result = QUI::getDataBase()->fetch($query);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return [];
+        }
 
         return $result;
     }
@@ -718,10 +764,16 @@ class Manager
             }
         }
 
-        $result = QUI::getDataBase()->fetch([
-            'from'  => $cacheTable,
-            'where' => $where
-        ]);
+        try {
+            $result = QUI::getDataBase()->fetch([
+                'from'  => $cacheTable,
+                'where' => $where
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return [];
+        }
 
         if (!isset($result[0])) {
             return [];
@@ -1016,13 +1068,19 @@ class Manager
 
         // update cache of tags
         foreach ($list as $tag) {
-            $result = QUI::getDataBase()->fetch([
-                'from'  => $tableTagCache,
-                'where' => [
-                    'tag' => $tag
-                ],
-                'limit' => 1
-            ]);
+            try {
+                $result = QUI::getDataBase()->fetch([
+                    'from'  => $tableTagCache,
+                    'where' => [
+                        'tag' => $tag
+                    ],
+                    'limit' => 1
+                ]);
+            } catch (QUI\Exception $Exception) {
+                QUI\System\Log::addError($Exception->getMessage());
+
+                continue;
+            }
 
             if (empty($result)) {
                 continue;
@@ -1045,12 +1103,16 @@ class Manager
 
             $siteIds = \array_values($siteIds);
 
-            QUI::getDataBase()->update($tableTagCache, [
-                'sites' => ','.\implode(',', $siteIds).',',
-                'count' => \count($siteIds)
-            ], [
-                'tag' => $tag
-            ]);
+            try {
+                QUI::getDataBase()->update($tableTagCache, [
+                    'sites' => ','.\implode(',', $siteIds).',',
+                    'count' => \count($siteIds)
+                ], [
+                    'tag' => $tag
+                ]);
+            } catch (QUI\Exception $Exception) {
+                QUI\System\Log::addError($Exception->getMessage());
+            }
         }
     }
 
@@ -1066,9 +1128,13 @@ class Manager
             $this->Project
         );
 
-        QUI::getDataBase()->delete($table, [
-            'id' => $siteId
-        ]);
+        try {
+            QUI::getDataBase()->delete($table, [
+                'id' => $siteId
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+        }
     }
 
     /**
@@ -1080,13 +1146,19 @@ class Manager
      */
     public function getSiteTags($siteId)
     {
-        $result = QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags_sites', $this->Project),
-            'where' => [
-                'id' => (int)$siteId
-            ],
-            'limit' => 1
-        ]);
+        try {
+            $result = QUI::getDataBase()->fetch([
+                'from'  => QUI::getDBProjectTableName('tags_sites', $this->Project),
+                'where' => [
+                    'id' => (int)$siteId
+                ],
+                'limit' => 1
+            ]);
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return [];
+        }
 
         if (!isset($result[0])) {
             return [];
