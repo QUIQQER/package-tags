@@ -3,6 +3,7 @@
 /**
  * This file contains QUI\Tags\Groups\Group
  */
+
 namespace QUI\Tags\Groups;
 
 use QUI;
@@ -66,7 +67,7 @@ class Group
     /**
      * @var array
      */
-    protected $tags = array();
+    protected $tags = [];
 
     /**
      * ID of parent tag group
@@ -89,19 +90,19 @@ class Group
      */
     public function __construct($groupId, Project $Project)
     {
-        $result = QUI::getDataBase()->fetch(array(
+        $result = QUI::getDataBase()->fetch([
             'from'  => Handler::table($Project),
-            'where' => array(
+            'where' => [
                 'id' => (int)$groupId
-            ),
+            ],
             'limit' => 1
-        ));
+        ]);
 
         if (empty($result)) {
-            throw new QUI\Tags\Exception(array(
+            throw new QUI\Tags\Exception([
                 'quiqqer/tags',
                 'exception.group.not.found'
-            ));
+            ]);
         }
 
         $this->Project = $Project;
@@ -130,7 +131,7 @@ class Group
             return;
         }
 
-        $tags = explode(',', $data['tags']);
+        $tags = \explode(',', $data['tags']);
 
         foreach ($tags as $tag) {
             try {
@@ -241,7 +242,7 @@ class Group
      */
     public function setTitle($title)
     {
-        $this->title = trim(Orthos::removeHTML($title));
+        $this->title = \trim(Orthos::removeHTML($title));
     }
 
     /**
@@ -252,7 +253,7 @@ class Group
      */
     public function setWorkingTitle($title)
     {
-        $this->workingtitle = trim(Orthos::removeHTML($title));
+        $this->workingtitle = \trim(Orthos::removeHTML($title));
     }
 
     /**
@@ -263,7 +264,7 @@ class Group
      */
     public function setDescription($description)
     {
-        $this->desc = trim(Orthos::removeHTML($description));
+        $this->desc = \trim(Orthos::removeHTML($description));
     }
 
     /**
@@ -299,7 +300,7 @@ class Group
      */
     public function setGenerator($generator)
     {
-        if (!is_string($generator)) {
+        if (!\is_string($generator)) {
             return;
         }
 
@@ -319,18 +320,19 @@ class Group
     {
         if (empty($Image)) {
             $this->image = '';
+
             return;
         }
 
-        if (is_string($Image)) {
+        if (\is_string($Image)) {
             $Image = QUI\Projects\Media\Utils::getImageByUrl($Image);
         }
 
         if (!QUI\Projects\Media\Utils::isImage($Image)) {
-            throw new QUI\Tags\Exception(array(
+            throw new QUI\Tags\Exception([
                 'quiqqer/tags',
                 'exception.taggroup.no.image'
-            ));
+            ]);
         }
 
         $this->image = $Image->getUrl();
@@ -353,41 +355,41 @@ class Group
         }
 
         if ($groupId === $this->id) {
-            throw new QUI\Tags\Exception(array(
+            throw new QUI\Tags\Exception([
                 'quiqqer/tags',
                 'exception.groups.group.cannot.be.its.own.parent'
-            ));
+            ]);
         }
 
         if (!Handler::exists($this->Project, $groupId)) {
-            throw new QUI\Tags\Exception(array(
+            throw new QUI\Tags\Exception([
                 'quiqqer/tags',
                 'exception.groups.group.parent.does.not.exist',
-                array(
+                [
                     'tagGroupId' => $groupId
-                )
-            ));
+                ]
+            ]);
         }
 
-        if (in_array($groupId, $this->getChildrenIds())) {
-            throw new QUI\Tags\Exception(array(
+        if (\in_array($groupId, $this->getChildrenIds())) {
+            throw new QUI\Tags\Exception([
                 'quiqqer/tags',
                 'exception.groups.group.parent.cannot.be.child',
-                array(
+                [
                     'childTagGroupId' => $groupId,
                     'tagGroupId'      => $this->id
-                )
-            ));
+                ]
+            ]);
         }
 
         QUI::getDataBase()->update(
             Handler::table($this->Project),
-            array(
+            [
                 'parentId' => $groupId
-            ),
-            array(
+            ],
+            [
                 'id' => $this->id
-            )
+            ]
         );
 
         $this->parentId = $groupId;
@@ -411,18 +413,18 @@ class Group
      */
     public function removeParentGroup()
     {
-        if (is_null($this->parentId)) {
+        if ($this->parentId === null) {
             return;
         }
 
         QUI::getDataBase()->update(
             Handler::table($this->Project),
-            array(
+            [
                 'parentId' => null
-            ),
-            array(
+            ],
+            [
                 'id' => $this->id
-            )
+            ]
         );
 
         $this->parentId = null;
@@ -453,26 +455,26 @@ class Group
         }
 
         // tags
-        $tags = array_map(function ($tag) {
+        $tags = \array_map(function ($tag) {
             return $tag['tag'];
         }, $this->getTags());
 
         // database
         QUI::getDataBase()->update(
             Handler::table($this->Project),
-            array(
+            [
                 'title'        => $this->getTitle(),
                 'workingtitle' => $this->getWorkingTitle(),
                 'desc'         => $this->getDescription(),
                 'image'        => $image,
                 'priority'     => $this->getPriority(),
-                'tags'         => ',' . implode($tags, ',') . ',',
+                'tags'         => ','.\implode($tags, ',').',',
                 'generated'    => $this->isGenerated() ? 1 : 0,
                 'generator'    => $this->getGenerator()
-            ),
-            array(
+            ],
+            [
                 'id' => $this->getId()
-            )
+            ]
         );
     }
 
@@ -494,6 +496,7 @@ class Group
             throw $Exception;
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::writeException($Exception);
+
             return;
         }
 
@@ -526,7 +529,7 @@ class Group
      */
     public function setTags($tags)
     {
-        $this->tags = array();
+        $this->tags = [];
 
         foreach ($tags as $tag) {
             $this->addTag($tag);
@@ -572,10 +575,10 @@ class Group
      */
     public function getTags()
     {
-        $tags = array_values($this->tags);
+        $tags = \array_values($this->tags);
 
-        usort($tags, function ($a, $b) {
-            return strcmp($a["title"], $b["title"]);
+        \usort($tags, function ($a, $b) {
+            return \strcmp($a["title"], $b["title"]);
         });
 
         return $tags;
@@ -588,24 +591,24 @@ class Group
      */
     public function toArray()
     {
-        $tags = array_map(function ($tag) {
+        $tags = \array_map(function ($tag) {
             return $tag['tag'];
         }, $this->getTags());
 
-        sort($tags);
+        \sort($tags);
 
-        return array(
+        return [
             'id'           => $this->id,
             'title'        => $this->title,
             'workingtitle' => $this->workingtitle,
             'desc'         => $this->desc,
             'image'        => $this->image,
             'priority'     => $this->priority,
-            'tags'         => implode(',', $tags),
-            'countTags'    => count($this->tags),
+            'tags'         => \implode(',', $tags),
+            'countTags'    => \count($this->tags),
             'generated'    => $this->isGenerated(),
             'parentId'     => $this->parentId
-        );
+        ];
     }
 
     /**
@@ -615,6 +618,6 @@ class Group
      */
     public function toJSON()
     {
-        return json_encode($this->toArray());
+        return \json_encode($this->toArray());
     }
 }

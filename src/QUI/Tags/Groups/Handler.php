@@ -21,14 +21,14 @@ class Handler
      *
      * @var array
      */
-    protected static $groups = array();
+    protected static $groups = [];
 
     /**
      * Category tree runtime cache
      *
      * @var array
      */
-    protected static $trees = array();
+    protected static $trees = [];
 
     /**
      * Return the tag groups table name
@@ -55,9 +55,9 @@ class Handler
 
         QUI::getDataBase()->insert(
             self::table($Project),
-            array(
+            [
                 'title' => QUI\Utils\Security\Orthos::cleanHTML($title)
-            )
+            ]
         );
 
         $gid = QUI::getDataBase()->getPDO()->lastInsertId();
@@ -72,15 +72,15 @@ class Handler
      * @param array $queryParams
      * @return int
      */
-    public static function count(Project $Project, $queryParams = array())
+    public static function count(Project $Project, $queryParams = [])
     {
-        $query = array(
+        $query = [
             'from'  => self::table($Project),
-            'count' => array(
+            'count' => [
                 'select' => 'id',
                 'as'     => 'count'
-            )
-        );
+            ]
+        ];
 
         if (isset($queryParams['where'])) {
             $query['where'] = $queryParams['where'];
@@ -118,28 +118,28 @@ class Handler
         $groupId = (int)$groupId;
 
         // check if group has children
-        $result = QUI::getDataBase()->fetch(array(
+        $result = QUI::getDataBase()->fetch([
             'count' => 1,
             'from'  => self::table($Project),
-            'where' => array(
+            'where' => [
                 'parentId' => $groupId
-            )
-        ));
+            ]
+        ]);
 
         $hasChildren = boolval((int)current(current($result)));
 
         if ($hasChildren) {
-            throw new QUI\Tags\Exception(array(
+            throw new QUI\Tags\Exception([
                 'quiqqer/tags',
                 'exception.manager.cannot.delete.group.with.children'
-            ));
+            ]);
         }
 
         QUI::getDataBase()->delete(
             self::table($Project),
-            array(
+            [
                 'id' => $groupId
-            )
+            ]
         );
 
         if (isset(self::$groups[$project])
@@ -158,17 +158,17 @@ class Handler
      * @param array $queryParams -  optional, query params order, limit
      * @return array
      */
-    public static function search(Project $Project, $search, $queryParams = array())
+    public static function search(Project $Project, $search, $queryParams = [])
     {
-        $query = array(
+        $query = [
             'from'  => self::table($Project),
-            'where' => array(
-                'title' => array(
+            'where' => [
+                'title' => [
                     'value' => $search,
                     'type'  => 'LIKE%'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         if (isset($queryParams['order'])) {
             $query['order'] = $queryParams['order'];
@@ -242,11 +242,11 @@ class Handler
                 break;
         }
 
-        return QUI::getDataBase()->fetch(array(
+        return QUI::getDataBase()->fetch([
             'from'  => self::table($Project),
             'order' => 'title',
             'where' => $where
-        ));
+        ]);
     }
 
     /**
@@ -309,9 +309,9 @@ class Handler
      *
      * @throws QUI\Tags\Exception
      */
-    public static function getGroups(Project $Project, $params = array())
+    public static function getGroups(Project $Project, $params = [])
     {
-        $result   = array();
+        $result   = [];
         $groupIds = self::getGroupIds($Project, $params);
 
         foreach ($groupIds as $groupId) {
@@ -333,11 +333,11 @@ class Handler
      *                              $queryParams['order']
      * @return array
      */
-    public static function getGroupIds(Project $Project, $params = array())
+    public static function getGroupIds(Project $Project, $params = [])
     {
-        $query = array(
+        $query = [
             'from' => self::table($Project)
-        );
+        ];
 
         if (isset($params['where'])) {
             $query['where_or'] = $params['where'];
@@ -351,9 +351,7 @@ class Handler
             $query['limit'] = $params['limit'];
         }
 
-        if (isset($params['order'])
-            && !empty($params['order'])
-        ) {
+        if (isset($params['order']) && !empty($params['order'])) {
             $query['order'] = $params['order'];
         }
 
@@ -361,7 +359,7 @@ class Handler
             $query['debug'] = $params['debug'];
         }
 
-        $result = array();
+        $result = [];
         $data   = QUI::getDataBase()->fetch($query);
 
         foreach ($data as $entry) {
@@ -390,22 +388,22 @@ class Handler
         }
 
         if (!isset(self::$trees[$project])) {
-            self::$trees[$project] = array();
+            self::$trees[$project] = [];
         }
 
-        $result = QUI::getDataBase()->fetch(array(
-            'select' => array(
+        $result = QUI::getDataBase()->fetch([
+            'select' => [
                 'id',
                 'title',
                 'parentId'
-            ),
+            ],
             'from'   => self::table($Project)
-        ));
+        ]);
 
-        $groups = array();
+        $groups = [];
 
         foreach ($result as $row) {
-            $row['children'] = array();
+            $row['children'] = [];
 
             if (empty($row['parentId'])) {
                 $row['parentId'] = false;
@@ -430,7 +428,7 @@ class Handler
      */
     protected static function buildTree(&$groups, $parentId = false)
     {
-        $tree = array();
+        $tree = [];
 
         foreach ($groups as $group) {
             if ($group['parentId'] != $parentId) {
@@ -454,8 +452,8 @@ class Handler
      */
     protected static function sortGroupsAlphabetically($groups)
     {
-        usort($groups, function ($a, $b) {
-            return strnatcasecmp($a['title'], $b['title']);
+        \usort($groups, function ($a, $b) {
+            return \strnatcasecmp($a['title'], $b['title']);
         });
 
         return $groups;
@@ -476,7 +474,7 @@ class Handler
 
         // group has no children
         if (empty($groupNode)) {
-            return array();
+            return [];
         }
 
         return self::getChildrenIdsFromNode($groupNode['children']);
@@ -489,7 +487,7 @@ class Handler
      * @param array $children (optional) - array that includes children ids
      * @return array
      */
-    protected static function getChildrenIdsFromNode($node, &$children = array())
+    protected static function getChildrenIdsFromNode($node, &$children = [])
     {
         foreach ($node as $k => $item) {
             $children[] = $item['id'];

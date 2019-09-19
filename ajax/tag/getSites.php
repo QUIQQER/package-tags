@@ -23,14 +23,14 @@ QUI::$Ajax->registerFunction(
     function ($projectName, $projectLang, $tag, $searchParams) {
         $Project      = QUI::getProject($projectName, $projectLang);
         $Manager      = new Manager($Project);
-        $siteIdsAssoc = $Manager->getSiteIdsFromTags(array($tag));
-        $siteIds      = array();
+        $siteIdsAssoc = $Manager->getSiteIdsFromTags([$tag]);
+        $siteIds      = [];
 
         foreach ($siteIdsAssoc as $siteId => $count) {
             $siteIds[] = $siteId;
         }
 
-        $tagSites = array();
+        $tagSites = [];
 
         $searchParams = Orthos::clearArray(json_decode($searchParams, true));
         $Grid         = new Grid($searchParams);
@@ -39,7 +39,7 @@ QUI::$Ajax->registerFunction(
 
         if (empty($siteIds)) {
             return $Grid->parseResult(
-                array(),
+                [],
                 0
             );
         }
@@ -52,41 +52,41 @@ QUI::$Ajax->registerFunction(
             if (isset($searchParams['sortBy']) &&
                 !empty($searchParams['sortBy'])
             ) {
-                $order .= ' ' . $searchParams['sortBy'];
+                $order .= ' '.$searchParams['sortBy'];
             }
         }
 
-        $result = QUI::getDataBase()->fetch(array(
-            'select' => array(
+        $result = QUI::getDataBase()->fetch([
+            'select' => [
                 'id'
-            ),
+            ],
             'from'   => QUI::getDBProjectTableName('sites', $Project),
-            'where'  => array(
-                'id' => array(
+            'where'  => [
+                'id' => [
                     'type'  => 'IN',
                     'value' => $siteIds
-                )
-            ),
+                ]
+            ],
             'order'  => empty($order) ? null : $order,
             'limit'  => $gridParams['limit']
-        ));
+        ]);
 
         foreach ($result as $row) {
             $Site = $Project->get($row['id']);
 
-            $tagSites[] = array(
+            $tagSites[] = [
                 'id'    => $Site->getId(),
                 'title' => $Site->getAttribute('title'),
                 'url'   => $Site->getUrlRewritten()
-            );
+            ];
         }
 
         $result = $Grid->parseResult(
             $tagSites,
-            count($siteIds)
+            \count($siteIds)
         );
 
         return $result;
     },
-    array('projectName', 'projectLang', 'tag', 'searchParams')
+    ['projectName', 'projectLang', 'tag', 'searchParams']
 );

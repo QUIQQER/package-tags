@@ -18,7 +18,7 @@ QUI::$Ajax->registerFunction(
     function ($project, $groupId, $data) {
         try {
             $Project = QUI::getProjectManager()->decode($project);
-            $data    = json_decode($data, true);
+            $data    = \json_decode($data, true);
             $Group   = QUI\Tags\Groups\Handler::get($Project, $groupId);
 
             if (isset($data['title'])) {
@@ -42,7 +42,7 @@ QUI::$Ajax->registerFunction(
             }
 
             if (isset($data['tags'])) {
-                $tags = explode(',', $data['tags']);
+                $tags = \explode(',', $data['tags']);
                 $Group->setTags($tags);
             }
 
@@ -60,10 +60,10 @@ QUI::$Ajax->registerFunction(
                 QUI::getLocale()->get(
                     'quiqqer/tags',
                     'message.group.save.error',
-                    array(
+                    [
                         'tagGroupId' => $groupId,
                         'error'      => $Exception->getMessage()
-                    )
+                    ]
                 )
             );
 
@@ -76,6 +76,6 @@ QUI::$Ajax->registerFunction(
 
         return $Group->toArray();
     },
-    array('project', 'groupId', 'data'),
+    ['project', 'groupId', 'data'],
     'Permission::checkAdminUser'
 );

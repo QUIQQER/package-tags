@@ -21,12 +21,12 @@ class TagList extends QUI\Control
      *
      * @param array $attributes
      */
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
         parent::__construct($attributes);
 
         $this->addCSSFile(
-            dirname(__FILE__) . '/TagList.css'
+            \dirname(__FILE__).'/TagList.css'
         );
 
         $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
@@ -44,11 +44,11 @@ class TagList extends QUI\Control
 
         $urlParams = $Rewrite->getUrlParamsList();
 
-        $Engine->assign(array(
+        $Engine->assign([
             'Project' => $this->getProject(),
             'Site'    => $this->getSite(),
             'Locale'  => QUI::getLocale()
-        ));
+        ]);
 
 
         $needle = 'abc';
@@ -71,13 +71,13 @@ class TagList extends QUI\Control
 
         $tags = $this->getList($needle);
 
-        $Engine->assign(array(
+        $Engine->assign([
             'tags' => $tags,
             'list' => $needle
-        ));
+        ]);
 
 
-        return $Engine->fetch(dirname(__FILE__) . '/TagList.html');
+        return $Engine->fetch(\dirname(__FILE__).'/TagList.html');
     }
 
     /**
@@ -141,33 +141,33 @@ class TagList extends QUI\Control
                 break;
         }
 
-        if (!is_null($groupId)) {
+        if (!\is_null($groupId)) {
             $TagGroup  = TagGroupsHandler::get($this->getProject(), $groupId);
-            $tags      = array();
+            $tags      = [];
             $groupTags = $TagGroup->getTags();
 
             if (empty($groupTags)) {
-                return array();
+                return [];
             }
 
             foreach ($groupTags as $tagData) {
                 $tags[] = $tagData['tag'];
             }
 
-            $tags = array_unique($tags);
+            $tags = \array_unique($tags);
 
             if (empty($where)) {
-                $where .= '`tag` IN (\'' . implode('\',\'', $tags) . '\')';
+                $where .= '`tag` IN (\''.\implode('\',\'', $tags).'\')';
             } else {
-                $where .= ' AND `tag` IN (\'' . implode('\',\'', $tags) . '\')';
+                $where .= ' AND `tag` IN (\''.\implode('\',\'', $tags).'\')';
             }
         }
 
-        return QUI::getDataBase()->fetch(array(
+        return QUI::getDataBase()->fetch([
             'from'  => QUI::getDBProjectTableName('tags', $this->getProject()),
             'order' => 'title',
             'where' => $where
-        ));
+        ]);
     }
 
     /**
@@ -186,7 +186,7 @@ class TagList extends QUI\Control
         $tagSearchIds = $Project->getConfig('tags.tagSearchId');
 
         if ($tagSearchIds) {
-            $tagSearchIds = json_decode($tagSearchIds, true);
+            $tagSearchIds = \json_decode($tagSearchIds, true);
 
             if ($tagSearchIds[$language]) {
                 try {
@@ -199,12 +199,12 @@ class TagList extends QUI\Control
             }
         }
 
-        $result = $this->getProject()->getSites(array(
-            'where' => array(
+        $result = $this->getProject()->getSites([
+            'where' => [
                 'type' => 'quiqqer/tags:types/tag-listing'
-            ),
+            ],
             'limit' => 1
-        ));
+        ]);
 
         return $this->getProject()->get($result[0]['id']);
     }

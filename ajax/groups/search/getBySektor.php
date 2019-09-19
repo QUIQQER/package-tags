@@ -20,5 +20,5 @@ QUI::$Ajax->registerFunction(
             $sektor
         );
     },
-    array('project', 'sektor')
+    ['project', 'sektor']
 );

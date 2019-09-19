@@ -20,6 +20,6 @@ QUI::$Ajax->registerFunction(
             $groupId
         );
     },
-    array('project', 'groupId'),
+    ['project', 'groupId'],
     'Permission::checkAdminUser'
 );

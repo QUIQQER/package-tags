@@ -24,11 +24,11 @@ QUI::$Ajax->registerFunction(
             QUI::getProject($projectName, $projectLang)
         );
 
-        $result = array();
-        $tags   = json_decode($tags, true);
+        $result = [];
+        $tags   = \json_decode($tags, true);
 
-        if (!is_array($tags)) {
-            $tags = array();
+        if (!\is_array($tags)) {
+            $tags = [];
         }
 
         foreach ($tags as $tag) {
@@ -42,5 +42,5 @@ QUI::$Ajax->registerFunction(
 
         return $result;
     },
-    array('projectName', 'projectLang', 'tags')
+    ['projectName', 'projectLang', 'tags']
 );

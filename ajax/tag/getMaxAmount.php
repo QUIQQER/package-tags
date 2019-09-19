@@ -14,5 +14,5 @@ QUI::$Ajax->registerFunction(
     function () {
         return QUI::getUserBySession()->getPermission('tags.siteLimit', 'maxInteger');
     },
-    array()
+    []
 );

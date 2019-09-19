@@ -20,7 +20,7 @@ class EventHandler
      */
     public static function onAdminLoadFooter()
     {
-        if (!defined('ADMIN') || !ADMIN) {
+        if (!\defined('ADMIN') || !ADMIN) {
             return;
         }
 
@@ -28,6 +28,6 @@ class EventHandler
         $Config    = $Package->getConfig();
         $useGroups = $Config->getValue('tags', 'useGroups') ? 1 : 0;
 
-        echo '<script>var QUIQQER_TAGS_USE_GROUPS = ' . $useGroups . '</script>';
+        echo '<script>var QUIQQER_TAGS_USE_GROUPS = '.$useGroups.'</script>';
     }
 }

@@ -24,11 +24,11 @@ QUI::$Ajax->registerFunction(
             return $Tags->get($tag);
         } catch (\QUI\Tags\Exception $Exception) {
             if ($Exception->getCode() === 404) {
-                return array();
+                return [];
             }
 
             throw $Exception;
         }
     },
-    array('projectName', 'projectLang', 'tag')
+    ['projectName', 'projectLang', 'tag']
 );

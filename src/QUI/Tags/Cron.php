@@ -41,15 +41,15 @@ class Cron
 
 
         // get ids
-        $result = $DataBase->fetch(array(
+        $result = $DataBase->fetch([
             'from' => $tableSites
-        ));
+        ]);
 
-        $list = array();
-        $_tmp = array();
+        $list = [];
+        $_tmp = [];
 
         foreach ($result as $entry) {
-            $tags = explode(',', $entry['tags']);
+            $tags = \explode(',', $entry['tags']);
 
             foreach ($tags as $tag) {
                 if (empty($tag)) {
@@ -61,7 +61,7 @@ class Cron
 
                 $entry['id'] = (int)$entry['id'];
 
-                $_str = $entry['id'] . '_' . $tag;
+                $_str = $entry['id'].'_'.$tag;
 
 
                 if (isset($_tmp[$_str])) {
@@ -79,7 +79,7 @@ class Cron
         $DataBase->table()->truncate($tableCache);
 
         foreach ($list as $tag => $entry) {
-            $siteIds = array();
+            $siteIds = [];
 
             // only active sites
             foreach ($entry as $siteId) {
@@ -94,11 +94,11 @@ class Cron
                 }
             }
 
-            $DataBase->insert($tableCache, array(
+            $DataBase->insert($tableCache, [
                 'tag'   => $tag,
-                'sites' => ',' . implode(',', $siteIds) . ',',
-                'count' => count($siteIds)
-            ));
+                'sites' => ','.\implode(',', $siteIds).',',
+                'count' => \count($siteIds)
+            ]);
         }
 
         /**
@@ -130,17 +130,14 @@ class Cron
                     continue;
                 }
 
-                $DataBase->insert(
-                    $tableSiteCache,
-                    array(
-                        'id'     => $Site->getId(),
-                        'name'   => $Site->getAttribute('name'),
-                        'title'  => $Site->getAttribute('title'),
-                        'tags'   => $entry['tags'],
-                        'c_date' => $Site->getAttribute('c_date'),
-                        'e_date' => $Site->getAttribute('e_date')
-                    )
-                );
+                $DataBase->insert($tableSiteCache, [
+                    'id'     => $Site->getId(),
+                    'name'   => $Site->getAttribute('name'),
+                    'title'  => $Site->getAttribute('title'),
+                    'tags'   => $entry['tags'],
+                    'c_date' => $Site->getAttribute('c_date'),
+                    'e_date' => $Site->getAttribute('e_date')
+                ]);
             } catch (QUI\Exception $Exception) {
             }
         }

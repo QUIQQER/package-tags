@@ -26,7 +26,7 @@ QUI::$Ajax->registerFunction(
             QUI::getProject($projectName, $projectLang)
         );
 
-        $tagParams = json_decode($tagParams, true);
+        $tagParams = \json_decode($tagParams, true);
 
         try {
             $tag = $Tags->add($tag, $tagParams);
@@ -36,6 +36,6 @@ QUI::$Ajax->registerFunction(
 
         return $Tags->get($Tags->clearTagName($tag));
     },
-    array('projectName', 'projectLang', 'tag', 'tagParams'),
+    ['projectName', 'projectLang', 'tag', 'tagParams'],
     'Permission::checkUser'
 );

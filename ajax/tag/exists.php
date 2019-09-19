@@ -22,5 +22,5 @@ QUI::$Ajax->registerFunction(
 
         return $Tags->existsTag($tag);
     },
-    array('projectName', 'projectLang', 'tag')
+    ['projectName', 'projectLang', 'tag']
 );

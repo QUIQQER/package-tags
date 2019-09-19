@@ -34,10 +34,10 @@ QUI::$Ajax->registerFunction(
                 $value = $tag['title'];
             }
 
-            $result .= '<option value="' . $value . '" data-tag="' . $tag['tag'] . '">';
+            $result .= '<option value="'.$value.'" data-tag="'.$tag['tag'].'">';
         }
 
         return $result;
     },
-    array('projectName', 'projectLang', 'string')
+    ['projectName', 'projectLang', 'string']
 );
