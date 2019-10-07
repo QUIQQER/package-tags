@@ -3,8 +3,7 @@
 
 The tag package extends QUIQQER with tag-management. 
 
-Tagging is a technique that allows every visitor to attach freely selectable terms to the visited pages.  
-This allows articles to be grouped into multiple subject areas at the same time; the rigid hierarchy of conventional categories is thus supplemented or replaced.
+Tagging allows pages to be grouped into several subject areas at the same time; the rigid hierarchy of conventional categories is thus supplemented or replaced.
 
 Package name:
 
