@@ -1,34 +1,33 @@
 {
-  "name": "quiqqer/tags",
-  "type": "quiqqer-module",
-  "description": "Extends QUIQQER with a tag management system.",
-  "version": "dev-master",
-  "license": "GPL-3.0+",
-  "authors": [
-    {
-      "name": "Henning Leutz",
-      "email": "leutz@pcsg.de",
-      "homepage": "https://www.pcsg.de",
-      "role": "Developer"
+    "name": "quiqqer\/tags",
+    "type": "quiqqer-module",
+    "description": "Extends QUIQQER with a tag management system.",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Henning Leutz",
+            "email": "leutz@pcsg.de",
+            "homepage": "https:\/\/www.pcsg.de",
+            "role": "Developer"
+        },
+        {
+            "name": "Jan Wennrich",
+            "email": "info@pcsg.de",
+            "homepage": "https:\/\/www.pcsg.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "support@pcsg.de"
     },
-    {
-      "name": "Jan Wennrich",
-      "email": "info@pcsg.de",
-      "homepage": "https://www.pcsg.de",
-      "role": "Developer"
+    "require": {
+        "quiqqer\/quiqqer": "~1.0 | dev-master | dev-dev",
+        "quiqqer\/utils": "~1.10 | dev-master | dev-dev",
+        "quiqqer\/controls": "~1.0 | dev-master | dev-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "QUI\\Tags\\": "src\/QUI\/Tags"
+        }
     }
-  ],
-  "support": {
-    "email": "support@pcsg.de"
-  },
-  "require": {
-    "quiqqer/quiqqer": "~1.0 | dev-master | dev-dev",
-    "quiqqer/utils": "~1.10 | dev-master | dev-dev",
-    "quiqqer/controls" : "~1.0 | dev-master | dev-dev"
-  },
-  "autoload": {
-    "psr-4": {
-      "QUI\\Tags\\": "src/QUI/Tags"
-    }
-  }
 }
