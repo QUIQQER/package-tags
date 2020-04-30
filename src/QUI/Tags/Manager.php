@@ -240,7 +240,7 @@ class Manager
         }
 
         if (isset($params['generated'])) {
-            $tagParams['generated'] = $tagParams['generated'] ? 1 : 0;
+            $tagParams['generated'] = $params['generated'] ? 1 : 0;
         }
 
         if (isset($params['generator']) && \is_string($params['generator'])) {
