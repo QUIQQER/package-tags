@@ -1195,4 +1195,6 @@ class Manager
 
         return $result[0]['count'];
     }
+
+    /** new Site Tag Cache  */
 }
