@@ -1209,7 +1209,6 @@ class Manager
     public function getTagsSiteCache($params = [])
     {
         try {
-
             $table = QUI::getDBProjectTableName('tags_siteCache', $this->Project);
             $limit        = '';
             $order        = '';
@@ -1269,7 +1268,7 @@ class Manager
                 $len_groups = \count($tagGroups_as);
                 foreach ($tagGroups_as as $group => $tag_array) {
                     $group = (int)$group;
-                    if($group == 0) {
+                    if ($group == 0) {
                         break;
                     }
 
@@ -1279,7 +1278,6 @@ class Manager
                     $where .= " AND (";
 
                     for ($e = 0, $len_tags = \count($tag_array); $e < $len_tags; $e++) {
-
                         $entry_tag = $tag_array[$e];
                         $where     .= " `tags` LIKE :TagEntry" . $tagCounter ;
                         $tagCounterlist[] = $entry_tag;
@@ -1337,7 +1335,7 @@ class Manager
                 $Statement->bindValue(':searchAddition', '%' . $like_param . '%', \PDO::PARAM_STR);
             }
 
-            foreach ($tagCounterlist as $index => $tagValue){
+            foreach ($tagCounterlist as $index => $tagValue) {
                 $Statement->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
             }
 
@@ -1361,7 +1359,7 @@ class Manager
                 if ($like_param) {
                     $StatementCount->bindValue(':searchAddition', '%' . $like_param . '%', \PDO::PARAM_STR);
                 }
-                foreach ($tagCounterlist as $index => $tagValue){
+                foreach ($tagCounterlist as $index => $tagValue) {
                     $StatementCount->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
                 }
 
@@ -1379,8 +1377,6 @@ class Manager
                     $resultCount = $resultCount[0]['count'];
                 }
             }
-
-
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::addError($Exception->getMessage());
 
