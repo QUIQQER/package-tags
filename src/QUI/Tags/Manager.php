@@ -1196,5 +1196,209 @@ class Manager
         return $result[0]['count'];
     }
 
-    /** new Site Tag Cache  */
+    /**
+     * gets the Tags corresponding to the requested Site ID
+     * This function is designed for multiple site ID's
+     *
+     * 05.12.19 rewritten to be able to return results with no input arrays
+     *
+     * @param array $params - Grid Params
+     *
+     * @return array
+     */
+    public function getTagsSiteCache($params = [])
+    {
+        try {
+
+            $table = QUI::getDBProjectTableName('tags_siteCache', $this->Project);
+            $limit        = '';
+            $order        = '';
+            $where        = '';
+            $resultCount  = null;
+            $like_param   = false;
+            $limit_count   = 20;
+
+            /** Order needs to be a full sting with known Table and desc or asc like: ORDER BY c_date ASC */
+            /** $params['order']['column'] like: c_date */
+            /** $params['order']['type'] like: ASC / DESC */
+            if (isset($params['order'])) {
+                $order_column = '';
+                $order_type   = '';
+
+                if (isset($params['order']['column']) && isset($params['order']['type'])) {
+                    switch ($params['order']['column']) {
+                        case 'c_date':
+                        case 'e_date':
+                        case 'title':
+                            $order_column = $params['order']['column'];
+                            break;
+                    }
+
+                    switch (\mb_strtolower($params['order']['type'])) {
+                        case 'asc':
+                        case 'desc':
+                            $order_type = $params['order']['type'];
+                            break;
+                    }
+
+                    if (!empty($order_column) && !empty($order_type)) {
+                        $order = "ORDER BY $order_column $order_type";
+                    }
+                }
+            }
+
+            /** If Like Parameter a counter on how many of the results match is required*/
+            if (isset($params['like'])) {
+                $like_param = $params['like'];
+                if (!empty($like_param)) {
+                    $where .= " `name` LIKE :searchAddition";
+                }
+            }
+
+            $tagCounter = 0;
+            $tagCounterlist = [];
+
+            if (isset($params['tagGroups_tags_linked']) && $params['tagGroups_tags_linked']) {
+                $tagGroups_as = $params['tagGroups_tags_linked'];
+
+                if (strlen($where) > 0) {
+                    $where .= " AND ";
+                }
+
+                $i          = 0;
+                $len_groups = \count($tagGroups_as);
+                foreach ($tagGroups_as as $group => $tag_array) {
+                    $group = (int)$group;
+                    if($group == 0) {
+                        break;
+                    }
+
+                    $where .= "(";
+                    $where .= "`groups` LIKE '%,$group,%' ";
+
+                    $where .= " AND (";
+
+                    for ($e = 0, $len_tags = \count($tag_array); $e < $len_tags; $e++) {
+
+                        $entry_tag = $tag_array[$e];
+                        $where     .= " `tags` LIKE :TagEntry" . $tagCounter ;
+                        $tagCounterlist[] = $entry_tag;
+
+                        $tagCounter += 1;
+
+                        if ($e != $len_tags - 1) {
+                            $where .= ' OR ';
+                        }
+                    }
+                    $where .= ")";
+                    $where .= ")";
+
+                    if ($i != $len_groups - 1) {
+                        $where .= " AND ";
+                    }
+
+
+                    $i += 1;
+                }
+            }
+
+
+            /** Adrian 18.12.19 */
+            if (isset($params['limit'])) {
+                $limit_count = $params['limit'];
+            }
+
+            if (isset($params['page'])) {
+                $page      = (int)$params['page'];
+                $offset    = ($page - 1) * $limit_count;
+                $row_count = $limit_count;
+
+                if ($offset < 0) {
+                    $offset = 0;
+                }
+
+                $limit = "LIMIT $offset, $row_count";
+            }
+
+            if (strlen($where) > 0) {
+                $where = "WHERE $where";
+            }
+
+            $query = "SELECT * FROM $table 
+                        $where 
+                        $order 
+                        $limit
+                        ";
+
+            $Pdo = QUI::getDataBase()->getPDO();
+
+            $Statement = $Pdo->prepare($query);
+            if ($like_param){
+                $Statement->bindValue(':searchAddition', '%' . $like_param . '%', \PDO::PARAM_STR);
+            }
+
+            foreach ($tagCounterlist as $index => $tagValue){
+                $Statement->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
+            }
+
+            /** executes the SQL */
+            try {
+                $Statement->execute();
+            } catch (\Exception $Exception) {
+                QUI\System\Log::writeException($Exception);
+            }
+
+            /** fetches the SQL result*/
+            $result = $Statement->fetchAll(\PDO::FETCH_ASSOC);
+
+
+            $countResults = true;
+
+            if ($countResults) {
+                $query = "SELECT COUNT(`id`) AS 'count' FROM $table $where";
+
+                $StatementCount = $Pdo->prepare($query);
+                if ($like_param) {
+                    $StatementCount->bindValue(':searchAddition', '%' . $like_param . '%', \PDO::PARAM_STR);
+                }
+                foreach ($tagCounterlist as $index => $tagValue){
+                    $StatementCount->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
+                }
+
+                /** executes the SQL */
+                try {
+                    $StatementCount->execute();
+                } catch (\Exception $Exception) {
+                    QUI\System\Log::writeException($Exception);
+                }
+
+                $resultCount = $StatementCount->fetchAll(\PDO::FETCH_ASSOC);
+
+
+                if ($resultCount) {
+                    $resultCount = $resultCount[0]['count'];
+                }
+            }
+
+
+        } catch (QUI\Exception $Exception) {
+            QUI\System\Log::addError($Exception->getMessage());
+
+            return [];
+        }
+
+        if (!isset($result[0])) {
+            return [];
+        }
+
+
+        foreach ($result as $c => $single_result) {
+            $result[$c]['tags'] = \explode(',', \trim(\str_replace(',,', ',', $result[$c]['tags']), ','));
+        }
+
+        return [
+            'result'      => $result,
+            'resultCount' => $resultCount
+        ];
+    }
 }
