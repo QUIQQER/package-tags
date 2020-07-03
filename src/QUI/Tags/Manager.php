@@ -1331,7 +1331,7 @@ class Manager
             $Pdo = QUI::getDataBase()->getPDO();
 
             $Statement = $Pdo->prepare($query);
-            if ($like_param){
+            if ($like_param) {
                 $Statement->bindValue(':searchAddition', '%' . $like_param . '%', \PDO::PARAM_STR);
             }
 
