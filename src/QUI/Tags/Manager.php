@@ -1387,7 +1387,6 @@ class Manager
             return [];
         }
 
-
         foreach ($result as $c => $single_result) {
             $result[$c]['tags'] = \explode(',', \trim(\str_replace(',,', ',', $result[$c]['tags']), ','));
         }
