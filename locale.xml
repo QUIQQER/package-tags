@@ -25,6 +25,10 @@
             <de><![CDATA[Anzahl Seiten]]></de>
             <en><![CDATA[Site count]]></en>
         </locale>
+        <locale name="panel.manager.tag.groups">
+            <de><![CDATA[Tag-Gruppen]]></de>
+            <en><![CDATA[Tag groups]]></en>
+        </locale>
         <locale name="panel.add.window.title">
             <de><![CDATA[Tag hinzufügen]]></de>
             <en><![CDATA[Add a tag]]></en>
@@ -80,6 +84,11 @@
         <locale name="panel.showtagsites.title">
             <de><![CDATA[Liste der Seiten, denen das Tag "[tag]" zugeordnet ist]]></de>
             <en><![CDATA[List of sites the tag "[tag]" is associated with]]></en>
+        </locale>
+
+        <locale name="controls.panel.window.tagGroups">
+            <de><![CDATA[Tag-Gruppen]]></de>
+            <en><![CDATA[Tag groups]]></en>
         </locale>
 
         <!-- Control: TagSites -->

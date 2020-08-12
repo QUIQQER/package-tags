@@ -1,8 +1,6 @@
 <?php
 
-/**
- * This file contains package_quiqqer_tags_ajax_tag_get
- */
+use QUI\Tags\Groups\Handler as TagGroupHandler;
 
 /**
  * Add a tag
@@ -16,11 +14,19 @@
 QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_get',
     function ($projectName, $projectLang, $tag) {
-        $Tags = new QUI\Tags\Manager(
-            QUI::getProject($projectName, $projectLang)
-        );
+        $Project = QUI::getProject($projectName, $projectLang);
+        $Tags    = new QUI\Tags\Manager($Project);
 
-        return $Tags->get($tag);
+        $tagData = $Tags->get($tag);
+
+        // Add tag groups if applicable
+        $tagData['tagGroupIds'] = false;
+
+        if (TagGroupHandler::isTagGroupsEnabled()) {
+            $tagData['tagGroupIds'] = TagGroupHandler::getGroupIdsByTag($Project, $tag);
+        }
+
+        return $tagData;
     },
     ['projectName', 'projectLang', 'tag']
 );

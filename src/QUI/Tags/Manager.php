@@ -1,9 +1,5 @@
 <?php
 
-/**
- * This file contains \QUI\Tags\Manager
- */
-
 namespace QUI\Tags;
 
 use QUI;
@@ -11,6 +7,7 @@ use QUI\Utils\Security\Orthos;
 use QUI\Projects\Site\Edit;
 use QUI\Permissions\Permission;
 use QUI\Utils\Grid;
+use QUI\Tags\Groups\Handler as TagGroupsHandler;
 
 /**
  * Tag Manager
@@ -271,6 +268,31 @@ class Manager
             $tagParams,
             ['tag' => $tag]
         );
+
+        if (isset($params['tagGroupIds'])) {
+            $currentTagGroupIds = TagGroupsHandler::getGroupIdsByTag($this->Project, $tag);
+            $removeTagGroupIds  = \array_diff($currentTagGroupIds, $params['tagGroupIds']);
+
+            foreach ($removeTagGroupIds as $tagGroupId) {
+                try {
+                    $TagGroup = QUI\Tags\Groups\Handler::get($this->Project, $tagGroupId);
+                    $TagGroup->removeTag($tag);
+                    $TagGroup->save();
+                } catch (\Exception $Exception) {
+                    QUI\System\Log::writeException($Exception);
+                }
+            }
+
+            foreach ($params['tagGroupIds'] as $tagGroupId) {
+                try {
+                    $TagGroup = QUI\Tags\Groups\Handler::get($this->Project, $tagGroupId);
+                    $TagGroup->addTag($tag);
+                    $TagGroup->save();
+                } catch (\Exception $Exception) {
+                    QUI\System\Log::writeException($Exception);
+                }
+            }
+        }
 
         QUI\Cache\Manager::clear('quiqqer/tags/'.\md5($tag));
     }
