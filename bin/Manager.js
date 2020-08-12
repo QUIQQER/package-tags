@@ -22,6 +22,7 @@ define('package/quiqqer/tags/bin/Manager', [
     'qui/controls/buttons/Select',
     'controls/grid/Grid',
     'package/quiqqer/tags/bin/TagSites',
+    'package/quiqqer/tags/bin/groups/Select',
     'utils/Controls',
     'Ajax',
     'Locale',
@@ -29,7 +30,7 @@ define('package/quiqqer/tags/bin/Manager', [
 
     'css!package/quiqqer/tags/bin/Manager.css'
 
-], function (QUI, QUIPanel, QUIConfirm, QUISelect, Grid, TagSites, ControlUtils, Ajax, QUILocale, Projects) {
+], function (QUI, QUIPanel, QUIConfirm, QUISelect, Grid, TagSites, TagGroupSelect, ControlUtils, QUIAjax, QUILocale, Projects) {
     "use strict";
 
     var lg = 'quiqqer/tags';
@@ -45,7 +46,9 @@ define('package/quiqqer/tags/bin/Manager', [
         Binds: [
             '$onCreate',
             '$onResize',
-            '$onInject'
+            '$onInject',
+            '$checkTagGroupsEnabled',
+            '$buildGrid'
         ],
 
         options: {
@@ -56,8 +59,9 @@ define('package/quiqqer/tags/bin/Manager', [
             this.$Grid     = null;
             this.$Projects = null; // select
 
-            this.$project = false;
-            this.$lang    = false;
+            this.$project          = false;
+            this.$lang             = false;
+            this.$tagGroupsEnabled = null;
 
             this.parent(options);
 
@@ -129,56 +133,6 @@ define('package/quiqqer/tags/bin/Manager', [
                     }
                 }
             });
-
-            // Grid
-            var Container = new Element('div').inject(
-                this.getContent()
-            );
-
-            this.$Grid = new Grid(Container, {
-                columnModel      : [{
-                    header   : QUILocale.get(lg, 'tag'),
-                    dataIndex: 'tag',
-                    dataType : 'string',
-                    width    : 200,
-                    hidden   : true
-                }, {
-                    header   : QUILocale.get(lg, 'panel.manager.tag.title'),
-                    dataIndex: 'title',
-                    dataType : 'string',
-                    width    : 200
-                }, {
-                    header   : QUILocale.get('quiqqer/system', 'description'),
-                    dataIndex: 'desc',
-                    dataType : 'string',
-                    width    : 300
-                }, {
-                    header   : QUILocale.get(lg, 'panel.manager.tag.count'),
-                    dataIndex: 'count',
-                    dataType : 'number',
-                    width    : 75
-                }],
-                pagination       : true,
-                multipleSelection: true,
-                serverSort       : true
-            });
-
-            this.$Grid.addEvents({
-                onDblClick: function (event) {
-                    self.openTagWindow(
-                        self.$Grid.getDataByRow(event.row).tag
-                    );
-                },
-
-                onClick: function () {
-                    self.getButtons('delete-tag').enable();
-                    self.getButtons('showtagsites').enable();
-                },
-
-                onRefresh: function () {
-                    self.refresh();
-                }
-            });
         },
 
         /**
@@ -210,10 +164,81 @@ define('package/quiqqer/tags/bin/Manager', [
                     }
                 }
 
+                self.$checkTagGroupsEnabled().then(function () {
+                    self.$buildGrid();
 
-                self.$Projects.setValue(
-                    self.$Projects.firstChild().getAttribute('value')
-                );
+                    self.$Projects.setValue(
+                        self.$Projects.firstChild().getAttribute('value')
+                    );
+                });
+            });
+        },
+
+        /**
+         * Build tags GRID
+         */
+        $buildGrid: function () {
+            var self = this;
+
+            // Grid
+            var Container = new Element('div').inject(
+                this.getContent()
+            );
+
+            var columns = [{
+                header   : QUILocale.get(lg, 'tag'),
+                dataIndex: 'tag',
+                dataType : 'string',
+                width    : 200,
+                hidden   : true
+            }, {
+                header   : QUILocale.get(lg, 'panel.manager.tag.title'),
+                dataIndex: 'title',
+                dataType : 'string',
+                width    : 200
+            }, {
+                header   : QUILocale.get('quiqqer/system', 'description'),
+                dataIndex: 'desc',
+                dataType : 'string',
+                width    : 300
+            }, {
+                header   : QUILocale.get(lg, 'panel.manager.tag.count'),
+                dataIndex: 'count',
+                dataType : 'number',
+                width    : 75
+            }];
+
+            if (this.$tagGroupsEnabled) {
+                columns.push({
+                    header   : QUILocale.get(lg, 'panel.manager.tag.groups'),
+                    dataIndex: 'tagGroups',
+                    dataType : 'string',
+                    width    : 200
+                });
+            }
+
+            this.$Grid = new Grid(Container, {
+                columnModel      : columns,
+                pagination       : true,
+                multipleSelection: true,
+                serverSort       : true
+            });
+
+            this.$Grid.addEvents({
+                onDblClick: function (event) {
+                    self.openTagWindow(
+                        self.$Grid.getDataByRow(event.row).tag
+                    );
+                },
+
+                onClick: function () {
+                    self.getButtons('delete-tag').enable();
+                    self.getButtons('showtagsites').enable();
+                },
+
+                onRefresh: function () {
+                    self.refresh();
+                }
             });
         },
 
@@ -290,7 +315,7 @@ define('package/quiqqer/tags/bin/Manager', [
             this.Loader.show();
 
             return new Promise(function (resolve, reject) {
-                Ajax.get('package_quiqqer_tags_ajax_project_getList', function (result) {
+                QUIAjax.get('package_quiqqer_tags_ajax_project_getList', function (result) {
                     self.$Grid.setData(result);
                     self.getButtons('delete-tag').disable();
                     self.getButtons('showtagsites').disable();
@@ -323,7 +348,7 @@ define('package/quiqqer/tags/bin/Manager', [
             var self = this;
 
             return new Promise(function (resolve, reject) {
-                Ajax.post('package_quiqqer_tags_ajax_tag_add', function () {
+                QUIAjax.post('package_quiqqer_tags_ajax_tag_add', function () {
                     if (typeof callback !== 'undefined') {
                         callback();
                     }
@@ -358,7 +383,7 @@ define('package/quiqqer/tags/bin/Manager', [
             var self = this;
 
             return new Promise(function (resolve, reject) {
-                Ajax.post('package_quiqqer_tags_ajax_tag_edit', function () {
+                QUIAjax.post('package_quiqqer_tags_ajax_tag_edit', function () {
                     if (typeof callback !== 'undefined') {
                         callback();
                     }
@@ -386,7 +411,7 @@ define('package/quiqqer/tags/bin/Manager', [
             var self = this;
 
             return new Promise(function (resolve, reject) {
-                Ajax.post('package_quiqqer_tags_ajax_tag_delete', function () {
+                QUIAjax.post('package_quiqqer_tags_ajax_tag_delete', function () {
                     if (typeof callback !== 'undefined') {
                         callback();
                     }
@@ -412,7 +437,8 @@ define('package/quiqqer/tags/bin/Manager', [
          * @param {String} [tag] - (optional) TAG
          */
         openTagWindow: function (tag) {
-            var self = this;
+            var self               = this
+            var TagGroupSelectCtrl = false;
 
             new QUIConfirm({
                 title    : QUILocale.get(lg, 'panel.add.window.title'),
@@ -480,7 +506,7 @@ define('package/quiqqer/tags/bin/Manager', [
                                 return;
                             }
 
-                            Ajax.get('package_quiqqer_tags_ajax_tag_get', function (data) {
+                            QUIAjax.get('package_quiqqer_tags_ajax_tag_get', function (data) {
                                 Tag.value   = tag;
                                 Title.value = data.title;
                                 Desc.value  = data.desc;
@@ -492,6 +518,23 @@ define('package/quiqqer/tags/bin/Manager', [
                                 var ImageControl = QUI.Controls.getById(quiid);
 
                                 ImageControl.setValue(data.image);
+
+                                // List tag groups (if applicable)
+                                if (data.tagGroupIds) {
+                                    var TagGroupsLabel = new Element('label', {
+                                        'html': QUILocale.get(lg, 'controls.panel.window.tagGroups')
+                                    }).inject(Content);
+
+                                    TagGroupSelectCtrl = new TagGroupSelect({
+                                        projectName: self.$project,
+                                        projectLang: self.$lang
+                                    }).inject(TagGroupsLabel);
+
+                                    TagGroupSelectCtrl.addTagGroups(data.tagGroupIds);
+
+                                    Win.setAttribute('maxHeight', 600);
+                                    Win.resize();
+                                }
 
                                 Win.Loader.hide();
                             }, {
@@ -518,7 +561,11 @@ define('package/quiqqer/tags/bin/Manager', [
                             image: Img.value
                         };
 
-                        var P = Promise.resolve();
+                        if (TagGroupSelectCtrl) {
+                            tagParams.tagGroupIds = TagGroupSelectCtrl.getTagGroupIds().split(',');
+                        }
+
+                        var P;
 
                         if (typeof tag === 'undefined') {
                             P = self.addTag(Title.value, tagParams);
@@ -600,6 +647,25 @@ define('package/quiqqer/tags/bin/Manager', [
                     }
                 }
             }).show();
+        },
+
+        /**
+         * Check if the tag group feature is enabled
+         *
+         * @return {Promise}
+         */
+        $checkTagGroupsEnabled: function () {
+            var self = this;
+
+            return new Promise(function (resolve, reject) {
+                QUIAjax.get('package_quiqqer_tags_ajax_groups_isEnabled', function (tagGroupsEnabled) {
+                    self.$tagGroupsEnabled = tagGroupsEnabled;
+                    resolve();
+                }, {
+                    'package': 'quiqqer/tags',
+                    onError  : reject
+                });
+            });
         }
     });
 });
