@@ -1200,13 +1200,59 @@ class Manager
      * gets the Tags corresponding to the requested Site ID
      * This function is designed for multiple site ID's
      *
+     * Searches the Table tags_siteCache without any use of unnecessary objects,
+     * this achieves very fast and accurate search results as long as the tags_siteCache-Table is up-to-date
+     *
      * 05.12.19 rewritten to be able to return results with no input arrays
      *
      * @param array $params - Grid Params
      *
+     * $params = [
+     * 'order'                 => $parameter_array['order_by'],
+     * 'limit'                 => $parameter_array['limit'],
+     * 'page'                  => $parameter_array['page'],
+     * // 'siteId_array'           => $resultSiteIds,
+     * 'like'                  => $search_addition,
+     * 'tagGroups'             => $tagGroups,
+     * 'tags'                  => $tagsArray,
+     * 'tagGroups_tags_linked' => $tagGroups_tags_linked
+     * ];
+     *
+     * available Parameters:
+     * »» $params['order']
+     * »» needs to be specified with two sub-Parameters:
+     *      $params['order']['column']  and
+     *      $params['order']['type']
+     *
+     * »» $params['order']['column'] can be:
+     *      'c_date' || 'e_date' || 'title'
+     *
+     * »» $params['order']['type'] can be:
+     *      'asc' || 'desc'
+     *
+     *
+     * »» $params['like']
+     * will search the `name` column to find a matching STR with the like
+     * 
+     * 
+     * »» $params['tagGroups_tags_linked'] this is the combination of Searched Groups and Tags:
+     *
+     *
+     * »» $params['limit'] can be used a s just a limit or with parameter 'page'
+     * »» $params['page'] is dependant on the param limit and will be put together to form a kind of pagination
+     *      you can provide a page e.g. 1 or 33 and a limit to the page e.g. 20 or 55
+     *
      * @return array
+     *
+     * returns an associative array with
+     * return [ 'result'      => $SQL-Result,
+     *          'resultCount' => $Full-SQL-ResultCount ];
+     * - $SQL-Result can be an empty array
+     * - $SQL-Result can contain results with only specified Limits
+     * - $Full-SQL-ResultCount will always return and contain the full number of found results
      */
-    public function getTagsSiteCache($params = [])
+//    public function getTagsSiteCache($params = [])
+    public function searchSitesFromTagsSiteCache($params = [])
     {
         try {
             $table = QUI::getDBProjectTableName('tags_siteCache', $this->Project);
@@ -1225,7 +1271,7 @@ class Manager
                 $order_type   = '';
 
                 if (isset($params['order']['column']) && isset($params['order']['type'])) {
-                    switch ($params['order']['column']) {
+                    switch (\mb_strtolower($params['order']['column'])) {
                         case 'c_date':
                         case 'e_date':
                         case 'title':
@@ -1301,9 +1347,10 @@ class Manager
             }
 
 
-            /** Adrian 18.12.19 */
             if (isset($params['limit'])) {
-                $limit_count = $params['limit'];
+                $limit_count = (int)$params['limit'];
+
+                $limit = "LIMIT $limit_count";
             }
 
             if (isset($params['page'])) {
