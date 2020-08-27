@@ -1233,8 +1233,8 @@ class Manager
      *
      * »» $params['like']
      * will search the `name` column to find a matching STR with the like
-     * 
-     * 
+     *
+     *
      * »» $params['tagGroups_tags_linked'] this is the combination of Searched Groups and Tags:
      *
      *
