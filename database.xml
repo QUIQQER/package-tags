@@ -51,6 +51,7 @@
             <field type="varchar( 255 ) DEFAULT NULL">name</field>
             <field type="tinytext">title</field>
             <field type="text NULL">tags</field>
+            <field type="text NULL">groups</field>
             <field type="timestamp NULL DEFAULT NULL">c_date</field>
             <field type="timestamp DEFAULT NOW() ON UPDATE NOW()">e_date</field>
 
