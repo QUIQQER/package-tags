@@ -48,7 +48,6 @@ class Cron
 
         $list = [];
         $_tmp = [];
-        QUI\System\Log::writeRecursive('Start Tags Tmp Things');
 
         foreach ($result as $entry) {
             $tags = \explode(',', $entry['tags']);
@@ -74,14 +73,11 @@ class Cron
                 $_tmp[$_str] = 1; // temp zum prüfen ob schon drinnen, in_array ist zulangsam
             }
         }
-        QUI\System\Log::writeRecursive('End Tags Tmp Things');
-
 
         /**
          * Tag cache
          */
         $DataBase->table()->truncate($tableCache);
-        QUI\System\Log::writeRecursive('Start Tag cache');
 
         foreach ($list as $tag => $entry) {
             $siteIds = [];
@@ -105,13 +101,11 @@ class Cron
                 'count' => \count($siteIds)
             ]);
         }
-        QUI\System\Log::writeRecursive('End Tag cache');
 
         /**
          * Sites cache
          */
         $DataBase->table()->truncate($tableSiteCache);
-        QUI\System\Log::writeRecursive('Start Sites cache');
 
         foreach ($result as $entry) {
             if (empty($entry['tags'])) {
@@ -166,17 +160,6 @@ class Cron
                 }
 
                 $goupsStr = ',' . \implode(',', $groupsIds) . ',';
-
-                if (!isEmpty($groupsIds)) {
-                    QUI\System\Log::writeRecursive([
-                        'siteId' => $entry['id'],
-                        'tags' => $entry['tags'],
-//                        'groups' => $groupsIds,
-                        '$goupsStr' => $goupsStr,
-//                        '$groupsIdsAssoc' => $groupsIdsAssoc
-                    ]);
-                }
-
 
                 $DataBase->insert($tableSiteCache, [
                     'id'     => $Site->getId(),
