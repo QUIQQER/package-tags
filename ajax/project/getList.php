@@ -1,8 +1,6 @@
 <?php
 
-/**
- * this file contains package_quiqqer_tags_ajax_project_getList
- */
+use QUI\Tags\Groups\Handler as TagGroupsHandler;
 
 /**
  * Return a tag list from the project
@@ -20,16 +18,31 @@ QUI::$Ajax->registerFunction(
         $projectLang,
         $gridParams
     ) {
-        \ini_set('display_errors', 1);
-
-        $Tags = new QUI\Tags\Manager(
-            QUI::getProject($projectName, $projectLang)
-        );
+        $Project = QUI::getProject($projectName, $projectLang);
+        $Tags    = new QUI\Tags\Manager($Project);
 
         $gridParams = \json_decode($gridParams, true);
+        $Grid       = new QUI\Utils\Grid($gridParams);
+        $result     = $Tags->getList($gridParams);
 
-        $Grid   = new QUI\Utils\Grid($gridParams);
-        $result = $Tags->getList($gridParams);
+        if (TagGroupsHandler::isTagGroupsEnabled()) {
+            foreach ($result as $k => $row) {
+                $groupIds  = TagGroupsHandler::getGroupIdsByTag($Project, $row['tag']);
+                $tagGroups = [];
+
+                foreach ($groupIds as $groupId) {
+                    $TagGroup    = TagGroupsHandler::get($Project, $groupId);
+                    $tagGroups[] = $TagGroup->getTitle();
+                }
+
+                // Sort tag groups alphabetically
+                \usort($tagGroups, function ($a, $b) {
+                    return \strnatcmp($a, $b);
+                });
+
+                $result[$k]['tagGroups'] = \implode(', ', $tagGroups);
+            }
+        }
 
         return $Grid->parseResult($result, $Tags->count());
     },

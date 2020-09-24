@@ -31,6 +31,24 @@ class Handler
     protected static $trees = [];
 
     /**
+     * Check if tag group feature is enabled.
+     *
+     * @return bool
+     */
+    public static function isTagGroupsEnabled()
+    {
+        try {
+            $Package = QUI::getPackageManager()->getInstalledPackage('quiqqer/tags');
+            $Config  = $Package->getConfig();
+        } catch (\Exception $Exception) {
+            QUI\System\Log::writeException($Exception);
+            return false;
+        }
+
+        return !empty($Config->getValue('tags', 'useGroups'));
+    }
+
+    /**
      * Return the tag groups table name
      *
      * @param Project $Project
@@ -364,12 +382,31 @@ class Handler
 
         foreach ($data as $entry) {
             try {
-                $result[] = $entry['id'];
+                $result[] = (int)$entry['id'];
             } catch (QUI\Exception $Exception) {
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Get IDs of all tag groups that contain a specific tag
+     *
+     * @param Project $Project
+     * @param string $tag
+     * @return int[]
+     */
+    public static function getGroupIdsByTag(Project $Project, string $tag)
+    {
+        return self::getGroupIds($Project, [
+            'where' => [
+                'tags' => [
+                    'type'  => '%LIKE%',
+                    'value' => $tag
+                ]
+            ]
+        ]);
     }
 
     /**
