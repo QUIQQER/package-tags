@@ -142,31 +142,36 @@ class Cron
                         continue;
                     }
 
-                    $query = "SELECT * FROM $tableTagGroups WHERE tags LIKE '%,$tag,%'";
-                    $result = $DataBase->fetchSQL($query);
+                    $result = QUI::getDataBase()->fetch([
+                        'from'  => $tableTagGroups,
+                        'where' => [
+                            'tags' => [
+                                'type'  => '%LIKE%',
+                                'value' => ',' . $tag . ','
+                            ]
+                        ]
+                    ]);
+
+//                    $query = "SELECT * FROM $tableTagGroups WHERE tags LIKE '%,$tag,%'";
+//                    $result = $DataBase->fetchSQL($query);
 
                     /**
                      * for every group add id to the List
                      */
-                    $currentGroup = [];
                     foreach ($result as $foundGroup) {
                         $groupId = $foundGroup['id'];
                         $groupsIds[] = $groupId;
-                        $currentGroup[] = $groupId;
-                    }
-                    if (!isEmpty($currentGroup)) {
-                        $groupsIdsAssoc[$tag] = $currentGroup;
                     }
                 }
 
-                $goupsStr = ',' . \implode(',', $groupsIds) . ',';
+                $groupsStr = ',' . \implode(',', $groupsIds) . ',';
 
                 $DataBase->insert($tableSiteCache, [
                     'id'     => $Site->getId(),
                     'name'   => $Site->getAttribute('name'),
                     'title'  => $Site->getAttribute('title'),
                     'tags'   => $entry['tags'],
-                    'groups'   => $goupsStr,
+                    'groups' => $groupsStr,
                     'c_date' => $Site->getAttribute('c_date'),
                     'e_date' => $Site->getAttribute('e_date')
                 ]);
