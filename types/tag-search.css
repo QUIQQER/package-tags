@@ -4,7 +4,12 @@
 }
 
 .quiqqer-tags-search-wrapper h2 {
-    font-size: 16px !important;
+    font-size: 23px !important;
+    margin: 20px;
+}
+
+.quiqqer-tags-search-pool {
+    margin-left: 25px;
 }
 
 .quiqqer-tags-search-available,
@@ -22,7 +27,19 @@
 
 .quiqqer-tags-search-available h3,
 .quiqqer-tags-search-results h3 {
-    font-size: 14px !important;
+    font-size: 19px !important;
+    margin: 10px;
+}
+
+.quiqqer-tags-search-results
+.quiqqer-pagination.grid-100.grid-parent
+.quiqqer-sheets-desktop.hide-on-mobile.show-on-noscript {
+    margin: 7px 7px 13px 7px ;
+    width: calc(100% - 134px);
+}
+
+.quiqqer-tags-search-results p{
+    margin: 10px;
 }
 
 .quiqqer-tags-search-menu {
@@ -202,9 +219,10 @@
     color: #99A2A6 !important;
     float: left;
     margin: 0 5px 5px 0;
-    padding: 3px 10px;
+    padding: 9px 18px;
     position: relative;
     text-decoration: none !important;
+    font-size: 12px;
 }
 
 .quiqqer-tags-search-pool .qui-tags-tag:hover,
@@ -212,4 +230,71 @@
     color: #899195;
     background-color: #FFFFFF;
     text-decoration: none !important;
+}
+
+/** New Articles */
+
+.nexgam-tag-search-result article {
+    border-bottom: 1px solid #999999;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.nexgam-tag-search-result article h2 {
+    float: left;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.nexgam-tag-search-result article h2 a {
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nexgam-tags-result-image {
+    float: left;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.nexgam-tag-search-result picture {
+    float: left;
+    padding-right: 10px;
+}
+
+.nexgam-tags-result-image img {
+    max-width: 100%;
+}
+
+.nexgam-tag-search-result article footer {
+    background: #ddd;
+    clear: both;
+    float: left;
+    margin: 10px 0 0 0;
+    width: 100%;
+}
+
+.nexgam-tags-result-consoles {
+    float: left;
+    margin-left: 10px;
+    margin-top: 8px;
+}
+
+.nexgam-tags-result-consoles img {
+    max-height: 20px;
+}
+
+.nexgam-tags-result-more {
+    border-left: 1px solid #999;
+    float: right;
+    font-size: 14px;
+    line-height: 30px;
+    padding: 0 10px;
+    text-decoration: none;
+}
+
+.nexgam-tags-result-more span {
+    color: #999;
+    text-decoration: none;
 }

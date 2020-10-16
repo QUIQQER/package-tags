@@ -94,12 +94,18 @@ class Cron
                     continue;
                 }
             }
-
-            $DataBase->insert($tableCache, [
-                'tag'   => $tag,
-                'sites' => ',' . \implode(',', $siteIds) . ',',
-                'count' => \count($siteIds)
-            ]);
+            /** es trat ein Fehler auf mit dublicate Entry ???
+             * woher kann das kommen ?
+             * soll das als replace gebaut werden?
+             */
+            try {
+                $DataBase->insert($tableCache, [
+                    'tag'   => $tag,
+                    'sites' => ',' . \implode(',', $siteIds) . ',',
+                    'count' => \count($siteIds)
+                ]);
+            } catch (QUI\Exception $Exception) {
+            }
         }
 
         /**

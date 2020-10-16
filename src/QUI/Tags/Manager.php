@@ -786,6 +786,10 @@ class Manager
             }
         }
 
+        /** Logging the Where */
+        QUI\System\Log::writeRecursive([
+            '$where getSiteIdsFromTags' => $where
+        ]);
         try {
             $result = QUI::getDataBase()->fetch([
                 'from'  => $cacheTable,
@@ -1400,12 +1404,22 @@ class Manager
             $Pdo = QUI::getDataBase()->getPDO();
 
             $Statement = $Pdo->prepare($query);
+
             if ($like_param) {
                 $Statement->bindValue(':searchAddition', '%' . $like_param . '%', \PDO::PARAM_STR);
             }
 
             foreach ($tagCounterlist as $index => $tagValue) {
                 $Statement->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
+            }
+
+            $logQuery = false;
+//            $logQuery = true;
+            if ($logQuery) {
+                QUI\System\Log::writeRecursive([
+                    '$params' => $params,
+                    '$query' => $query
+                ]);
             }
 
             /** executes the SQL */
@@ -1431,6 +1445,13 @@ class Manager
                 foreach ($tagCounterlist as $index => $tagValue) {
                     $StatementCount->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
                 }
+
+//                if ($logQuery) {
+//                    QUI\System\Log::writeRecursive([
+//                        '$StatementCount' => '',
+//                        '$query' => $query
+//                    ]);
+//                }
 
                 /** executes the SQL */
                 try {

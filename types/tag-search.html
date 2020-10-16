@@ -46,7 +46,6 @@
         </div>
         {/if}
 
-
         {if $Site->getAttribute('quiqqer.tag.settings.showAvailableTags')}
         <div class="quiqqer-tags-search-available">
 
@@ -133,10 +132,9 @@
                 {$Pagination->create()}
             {/if}
 
-            <div class="content-body">
+            <div class="content-body nexgam-tag-search-result">
                 {foreach $result as $Entry}
                 <article class="quiqqer-tags-search-result-entry">
-
                     <!-- entry image -->
                     <div class="quiqqer-tags-search-result-entry-image grid-40 grid-parent">
                         <a itemprop="url" href="{url site=$Entry}">
@@ -172,7 +170,6 @@
 
                         <div class="quiqqer-tags-search-result-entry-content-footer
                                     {if !$showDate && !$showCreator}no-flex{/if}">
-
                             {if $showDate || $showCreator}
                             <div class="quiqqer-tags-search-result-entry-content-footer-wrapper">
 
@@ -221,10 +218,6 @@
                         {$Control->getBody()}
                     </div>
 
-
-
-
-
                     {*
                     <a href="{url site=$Entry}" class="quiqqer-tags-search-result-entry-link">
                         <div class="quiqqer-tags-search-entry-image-div grid-25">
@@ -256,6 +249,85 @@
                         {$Control->getBody()}
                     </div>
                     *}
+                </article>
+
+                <article class="grid-100 mobile-grid-100 grid-parent">
+                    <header>
+                        <h2>
+                            <a href="{url site=$Entry rewrited=true}">
+                                {$Entry->getAttribute('title')}
+                            </a>
+                        </h2>
+                    </header>
+
+                    {assign var=img value=""}
+
+                    {if $Entry->getAttribute('image_emotion')}
+                        {assign var=img value=$Entry->getAttribute('image_emotion')}
+                    {elseif $Entry->getAttribute('image_site')}
+                        {assign var=img value=$Entry->getAttribute('image_site')}
+                    {/if}
+
+                    {image src=$img width="1000" onlysrc=true assign=imagesrc}
+
+                    {if $img && $imagesrc}
+                    <section class="nexgam-tags-result-image grid-30 mobile-grid-100 grid-parent">
+                        <picture class="grid-100 mobile-grid-100 grid-parent">
+                            <source srcset="{image src=$img width="1000" onlysrc=true}" media="(min-width: 1000px)">
+                            <source srcset="{image src=$img width="800" onlysrc=true}" media="(min-width: 800px)">
+                            <source srcset="{image src=$img onlysrc=true}">
+                            <img srcset="{image src=$img width="700" onlysrc=true}"
+                            alt=""
+                            />
+                        </picture>
+                    </section>
+                    {/if}
+
+                    {if $img && $imagesrc}
+                    <div class="grid-70 mobile-grid-100 grid-parent">
+                    {else}
+                    <div class="grid-100 mobile-grid-100 grid-parent">
+                    {/if}
+                        {$Entry->getAttribute('short')}
+                    </div>
+
+                    <footer>
+                        <div class="nexgam-tags-result-consoles">
+                            {*
+                            {foreach from=$Entry->getAttribute('quiqqer.tags.tagList') item=Tag}
+                                    {$cumulatedTags.$Tag.title}
+                            {/foreach}
+                            *}
+
+                            {assign var=tagNameList value=$Entry->getAttribute('quiqqer.tags.tagList')}
+
+                            {if isset($tagNameList)}
+                                {assign var=c value=0}
+
+                                {foreach from=$tagNameList item=TagName}
+                                    {assign var=Tag value=$cumulatedTags.$TagName}
+
+                                    {if $Tag.image && $c <= 2}
+                                        {image
+                                            src=$Tag.image
+                                            alt=$Tag.title
+                                            resize=1
+                                            width=100
+                                            height=20
+                                            class="konsole"
+                                        }
+                                        {assign var=c value=$c+1}
+                                    {/if}
+                                {/foreach}
+                            {/if}
+                        </div>
+
+                        <a href="{url site=$Entry rewrited=true}" title="{$Entry->getAttribute('title')|escape:"html"}"
+                        class="nexgam-tags-result-more smooth"
+                        >
+                        <span>mehr...</span>
+                        </a>
+                    </footer>
                 </article>
                 {foreachelse}
                     <div class="content-message-attention">
