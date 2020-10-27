@@ -11,7 +11,6 @@ use QUI\Utils\Grid;
 use QUI\Tags\Groups\Handler as TagGroupsHandler;
 use QUI\System\Log;
 
-
 /**
  * Tag Manager
  * manage tags for a project
