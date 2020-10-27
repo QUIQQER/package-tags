@@ -2,12 +2,15 @@
 
 namespace QUI\Tags;
 
+use Nexgam\NexgamTemplate\HandleTags;
 use QUI;
 use QUI\Utils\Security\Orthos;
 use QUI\Projects\Site\Edit;
 use QUI\Permissions\Permission;
 use QUI\Utils\Grid;
 use QUI\Tags\Groups\Handler as TagGroupsHandler;
+use QUI\System\Log;
+
 
 /**
  * Tag Manager
@@ -1280,6 +1283,8 @@ class Manager
 //    public function getTagsSiteCache($params = [])
     public function searchSitesFromTagsSiteCache($params = [])
     {
+        $time_start1 = HandleTags::microtime_float();
+
         try {
             $table = QUI::getDBProjectTableName('tags_siteCache', $this->Project);
             $limit        = '';
@@ -1395,6 +1400,13 @@ class Manager
                 $where = "WHERE $where";
             }
 
+            if ($limit == '') {
+                Log::writeRecursive([
+                    'no Limit was found here in get sites from tags extendet'
+                ]);
+                $limit = 'LIMIT 50';
+            }
+
             $query = "SELECT * FROM $table 
                         $where 
                         $order 
@@ -1414,7 +1426,7 @@ class Manager
             }
 
             $logQuery = false;
-//            $logQuery = true;
+            $logQuery = true;
             if ($logQuery) {
                 QUI\System\Log::writeRecursive([
                     '$params' => $params,
@@ -1432,6 +1444,9 @@ class Manager
             /** fetches the SQL result*/
             $result = $Statement->fetchAll(\PDO::FETCH_ASSOC);
 
+            QUI\System\Log::writeRecursive([
+                'count($result) from ajax v2' => count($result)
+            ]);
 
             $countResults = true;
 
@@ -1462,6 +1477,9 @@ class Manager
 
                 $resultCount = $StatementCount->fetchAll(\PDO::FETCH_ASSOC);
 
+                $time_end1 = HandleTags::microtime_float();
+                $time = $time_end1 - $time_start1;
+                QUI\System\Log::writeRecursive("Did Query from ajax_search_v2 in $time seconds\n");
 
                 if ($resultCount) {
                     $resultCount = $resultCount[0]['count'];
