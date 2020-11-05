@@ -1478,7 +1478,7 @@ class Manager
 
                 $time_end1 = HandleTags::microtime_float();
                 $time = $time_end1 - $time_start1;
-                QUI\System\Log::writeRecursive("Did Query from ajax_search_v2 in $time seconds\n");
+//                QUI\System\Log::writeRecursive("Did Query from ajax_search_v2 in $time seconds\n");
 
                 if ($resultCount) {
                     $resultCount = $resultCount[0]['count'];
