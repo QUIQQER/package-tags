@@ -1425,7 +1425,7 @@ class Manager
             }
 
             $logQuery = false;
-            $logQuery = true;
+//            $logQuery = true;
             if ($logQuery) {
                 QUI\System\Log::writeRecursive([
                     '$params' => $params,
@@ -1443,9 +1443,9 @@ class Manager
             /** fetches the SQL result*/
             $result = $Statement->fetchAll(\PDO::FETCH_ASSOC);
 
-            QUI\System\Log::writeRecursive([
-                'count($result) from ajax v2' => count($result)
-            ]);
+//            QUI\System\Log::writeRecursive([
+//                'count($result) from ajax v2' => count($result)
+//            ]);
 
             $countResults = true;
 
