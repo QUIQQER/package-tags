@@ -1385,7 +1385,14 @@ class Manager
 
             if (isset($params['page'])) {
                 $page      = (int)$params['page'];
-                $offset    = ($page - 1) * $limit_count;
+                $offsetPages    = ($page - 1) * $limit_count;
+
+                if (isset($params['offSet'])) {
+                    $offset = $offsetPages + $params['offSet'];
+                } else {
+                    $offset = $offsetPages;
+                }
+
                 $row_count = $limit_count;
 
                 if ($offset < 0) {
@@ -1424,8 +1431,8 @@ class Manager
                 $Statement->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
             }
 
-            $logQuery = false;
-//            $logQuery = true;
+//            $logQuery = false;
+            $logQuery = true;
             if ($logQuery) {
                 QUI\System\Log::writeRecursive([
                     '$params' => $params,
