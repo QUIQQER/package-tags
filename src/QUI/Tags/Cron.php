@@ -170,7 +170,9 @@ class Cron
                     }
                 }
 
-                $groupsStr = ',' . \implode(',', $groupsIds) . ',';
+                $groupsIdsNew = [];
+                foreach ($groupsIds as $groupEntry => $i) {$groupsIdsNew[] = $groupEntry;}
+                $groupsStr = ',' . \implode(',', $groupsIdsNew) . ',';
 
                 $DataBase->insert($tableSiteCache, [
                     'id'     => $Site->getId(),
