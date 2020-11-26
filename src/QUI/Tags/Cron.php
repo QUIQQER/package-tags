@@ -171,7 +171,9 @@ class Cron
                 }
 
                 $groupsIdsNew = [];
-                foreach ($groupsIds as $groupEntry => $i) {$groupsIdsNew[] = $groupEntry;}
+                foreach ($groupsIds as $groupEntry => $i) {
+                    $groupsIdsNew[] = $groupEntry;
+                }
                 $groupsStr = ',' . \implode(',', $groupsIdsNew) . ',';
 
                 $DataBase->insert($tableSiteCache, [
