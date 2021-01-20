@@ -1285,7 +1285,8 @@ class Manager
         $time_start1 = HandleTags::microtime_float();
 
         try {
-            $table = QUI::getDBProjectTableName('tags_siteCache', $this->Project);
+            $table_tags_siteCache = QUI::getDBProjectTableName('tags_siteCache', $this->Project);
+            $table_de_sites = QUI::getDBProjectTableName('sites', $this->Project);
             $limit        = '';
             $order        = '';
             $where        = '';
@@ -1317,18 +1318,24 @@ class Manager
                     }
 
                     if (!empty($order_column) && !empty($order_type)) {
-                        $order = "ORDER BY $order_column $order_type";
+                        $order = "ORDER BY siteCache.$order_column $order_type";
                     }
                 }
             }
+
+            $where .= 'siteCache.id = deSites.id';
+            $where .= ' AND deSites.active = 1';
+
 
             /** If Like Parameter a counter on how many of the results match is required*/
             if (isset($params['like'])) {
                 $like_param = $params['like'];
                 if (!empty($like_param)) {
-                    $where .= " `name` LIKE :searchAddition";
+                    $where .= " AND `name` LIKE :searchAddition";
                 }
             }
+
+
 
             $tagCounter = 0;
             $tagCounterlist = [];
@@ -1349,13 +1356,13 @@ class Manager
                     }
 
                     $where .= "(";
-                    $where .= "`groups` LIKE '%,$group,%' ";
+                    $where .= "`siteCache.groups` LIKE '%,$group,%' ";
 
                     $where .= " AND (";
 
                     for ($e = 0, $len_tags = \count($tag_array); $e < $len_tags; $e++) {
                         $entry_tag = $tag_array[$e];
-                        $where     .= " `tags` LIKE :TagEntry" . $tagCounter ;
+                        $where     .= " `siteCache.tags` LIKE :TagEntry" . $tagCounter ;
                         $tagCounterlist[] = $entry_tag;
 
                         $tagCounter += 1;
@@ -1413,8 +1420,8 @@ class Manager
                 $limit = 'LIMIT 50';
             }
 
-            $query = "SELECT * FROM $table 
-                        $where 
+            $query = "SELECT * FROM $table_tags_siteCache siteCache, $table_de_sites deSites
+                        $where
                         $order 
                         $limit
                         ";
@@ -1457,7 +1464,8 @@ class Manager
             $countResults = true;
 
             if ($countResults) {
-                $query = "SELECT COUNT(`id`) AS 'count' FROM $table $where";
+                $query = "SELECT COUNT('siteCache.id') AS 'count' FROM $table_tags_siteCache siteCache, $table_de_sites deSites
+                          $where";
 
                 $StatementCount = $Pdo->prepare($query);
                 if ($like_param) {
@@ -1467,12 +1475,12 @@ class Manager
                     $StatementCount->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
                 }
 
-//                if ($logQuery) {
-//                    QUI\System\Log::writeRecursive([
-//                        '$StatementCount' => '',
-//                        '$query' => $query
-//                    ]);
-//                }
+                if ($logQuery) {
+                    QUI\System\Log::writeRecursive([
+                        '$StatementCount' => '',
+                        '$query' => $query
+                    ]);
+                }
 
                 /** executes the SQL */
                 try {
