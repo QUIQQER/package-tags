@@ -1305,6 +1305,7 @@ class Manager
                     switch (\mb_strtolower($params['order']['column'])) {
                         case 'c_date':
                         case 'e_date':
+                        case 'release_from':
                         case 'title':
                             $order_column = $params['order']['column'];
                             break;
