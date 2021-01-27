@@ -1318,8 +1318,17 @@ class Manager
                             break;
                     }
 
+                    $de_sites_table_data = [
+                        'release_from'
+                    ];
+
                     if (!empty($order_column) && !empty($order_type)) {
-                        $order = "ORDER BY siteCache.$order_column $order_type";
+                        // differentiate release_from in de sites
+                        if (\in_array($order_column, $de_sites_table_data)) {
+                            $order = "ORDER BY deSites.$order_column $order_type";
+                        } else {
+                            $order = "ORDER BY siteCache.$order_column $order_type";
+                        }
                     }
                 }
             }
@@ -1439,8 +1448,8 @@ class Manager
                 $Statement->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
             }
 
-//            $logQuery = false;
-            $logQuery = true;
+            $logQuery = false;
+//            $logQuery = true;
             if ($logQuery) {
                 QUI\System\Log::writeRecursive([
                     '$params' => $params,
