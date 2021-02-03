@@ -1341,7 +1341,8 @@ class Manager
             if (isset($params['like'])) {
                 $like_param = $params['like'];
                 if (!empty($like_param)) {
-                    $where .= " AND `name` LIKE :searchAddition";
+//                    $where .= " AND `name` LIKE :searchAddition";
+                    $where .= " AND deSites.`title` LIKE :searchAddition";
                 }
             }
 
