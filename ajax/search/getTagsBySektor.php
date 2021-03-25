@@ -21,6 +21,10 @@ QUI::$Ajax->registerFunction(
         $TagList = new TagList([
             'Project' => QUI::getProjectManager()->decode($project)
         ]);
+//        \QUI\System\Log::writeRecursive([
+//            'getTagsBySektor ektor incoming' => $sektor
+//        ]);
+        /** Sector usually is all */
 
         if (empty($groupId)) {
             $groupId = null;

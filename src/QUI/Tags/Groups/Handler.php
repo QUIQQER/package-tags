@@ -478,6 +478,10 @@ class Handler
 
         $tree = self::sortGroupsAlphabetically($tree);
 
+//        QUI\System\Log::writeRecursive([
+//            'Handler buildTree $tree' => $tree
+//        ]);
+
         return $tree;
     }
 

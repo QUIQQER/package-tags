@@ -1346,8 +1346,6 @@ class Manager
                 }
             }
 
-
-
             $tagCounter = 0;
             $tagCounterlist = [];
 
@@ -1450,7 +1448,7 @@ class Manager
             }
 
             $logQuery = false;
-//            $logQuery = true;
+            $logQuery = true;
             if ($logQuery) {
                 QUI\System\Log::writeRecursive([
                     '$params' => $params,
