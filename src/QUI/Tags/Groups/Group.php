@@ -446,6 +446,11 @@ class Group
         // image
         $image = '';
 
+        QUI\System\Log::writeRecursive([
+            'wanting to add Tag to Group' => $this->getTags(),
+            'debug_backtrace' => debug_backtrace()
+        ]);
+
         if (QUI\Projects\Media\Utils::isMediaUrl($this->image)) {
             try {
                 $Image = QUI\Projects\Media\Utils::getImageByUrl($this->image);
@@ -468,7 +473,7 @@ class Group
                 'desc'         => $this->getDescription(),
                 'image'        => $image,
                 'priority'     => $this->getPriority(),
-                'tags'         => ','.\implode($tags, ',').',',
+                'tags'         => ','.\implode(',', $tags).',',
                 'generated'    => $this->isGenerated() ? 1 : 0,
                 'generator'    => $this->getGenerator()
             ],
