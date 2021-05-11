@@ -17,16 +17,20 @@ QUI::$Ajax->registerFunction(
     function ($project, $groupId) {
         $Project = QUI::getProjectManager()->decode($project);
 
-//        \QUI\System\Log::writeRecursive([
-//            'initiated' => 'package_quiqqer_tags_ajax_groups_get',
-//            'searched GroupId' => $groupId
-//        ]);
+        if (false) {
+            \QUI\System\Log::writeRecursive([
+                'initiated'        => 'package_quiqqer_tags_ajax_groups_get',
+                'searched GroupId' => $groupId
+            ]);
+        }
 
-        $Group   = QUI\Tags\Groups\Handler::get($Project, $groupId);
+        $Group = QUI\Tags\Groups\Handler::get($Project, $groupId);
 
-//        \QUI\System\Log::writeRecursive([
-//            'returning' => $Group->toArray()
-//        ]);
+        if (false) {
+            \QUI\System\Log::writeRecursive([
+                'returning' => $Group->toArray()
+            ]);
+        }
 
         return $Group->toArray();
     },
