@@ -146,9 +146,9 @@ class TagList extends QUI\Control
             $tags      = [];
             $groupTags = $TagGroup->getTags();
 
-            QUI\System\Log::writeRecursive([
-                '$groupTags' => $groupTags
-            ]);
+//            QUI\System\Log::writeRecursive([
+//                '$groupTags' => $groupTags
+//            ]);
 
             if (empty($groupTags)) {
                 return [];
