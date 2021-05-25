@@ -1373,8 +1373,8 @@ class Manager
                     for ($e = 0, $len_tags = \count($tag_array); $e < $len_tags; $e++) {
                         $entry_tag = $tag_array[$e];
 //                        $where     .= " `siteCache.tags` LIKE :TagEntry" . $tagCounter ;
-//                        $where     .= " siteCache.tags LIKE :TagEntry" . $tagCounter ;
-                        $where     .= " siteCache.tags LIKE '%,:TagEntry" . $tagCounter . ",%'";
+                        $where     .= " siteCache.tags LIKE :TagEntry" . $tagCounter ;
+//                        $where     .= " siteCache.tags LIKE '%,:TagEntry" . $tagCounter . ",%'";
                         $tagCounterlist[] = $entry_tag;
 
                         $tagCounter += 1;
