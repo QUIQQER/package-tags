@@ -1450,8 +1450,9 @@ class Manager
                 $Statement->bindValue(':TagEntry'. $index, '%,' . $tagValue . ',%', \PDO::PARAM_STR);
             }
 
+//            $logQuery = False;
             $logQuery = false;
-            $logQuery = true;
+//            $logQuery = true;
             if ($logQuery) {
                 QUI\System\Log::writeRecursive([
                     '$params' => $params,
