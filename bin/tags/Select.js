@@ -127,7 +127,6 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     }
 
                     resolve(list);
-
                 }, {
                     'package'  : 'quiqqer/tags',
                     projectName: this.$Project.getName(),
@@ -173,7 +172,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * event : on create
          */
         $onCreate: function () {
-            this.$Search.addEvent('keyup', function (event) {
+            this.$Search.addEvent('keydown', function (event) {
                 if (event.key === 'enter') {
                     var Active = this.$DropDown.getElement(
                         '.qui-elements-list-dropdown-entry-hover'

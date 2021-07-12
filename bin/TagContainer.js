@@ -121,7 +121,6 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 }
             });
 
-
             this.$Input = new Element('input', {
                 'class'    : 'qui-tags-input',
                 name       : 'add-tag',
