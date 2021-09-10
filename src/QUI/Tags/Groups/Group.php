@@ -468,7 +468,7 @@ class Group
                 'desc'         => $this->getDescription(),
                 'image'        => $image,
                 'priority'     => $this->getPriority(),
-                'tags'         => ','.\implode($tags, ',').',',
+                'tags'         => ','.\implode(',', $tags).',',
                 'generated'    => $this->isGenerated() ? 1 : 0,
                 'generator'    => $this->getGenerator()
             ],
