@@ -346,7 +346,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
             };
 
             new QUIButton({
-                text  : QUILocale.get('quiqqer/system', 'save'),
+                text  : QUILocale.get('quiqqer/quiqqer', 'save'),
                 events: {
                     onClick: function () {
                         self.createTag(tag).then(function (created) {
@@ -363,7 +363,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
             }).inject(Container);
 
             new QUIButton({
-                text  : QUILocale.get('quiqqer/system', 'cancel'),
+                text  : QUILocale.get('quiqqer/quiqqer', 'cancel'),
                 events: {
                     onClick: hide
                 },

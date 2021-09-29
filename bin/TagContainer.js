@@ -624,7 +624,7 @@ define('package/quiqqer/tags/bin/TagContainer', [
                 title          : Locale.get(lg, 'control.tagcontainer.window.add.title'),
                 maxWidth       : 600,
                 maxHeight      : 400,
-                closeButtonText: Locale.get('quiqqer/system', 'cancel'),
+                closeButtonText: Locale.get('quiqqer/quiqqer', 'cancel'),
                 events         : {
                     onOpen: function (Win) {
                         var Content = Win.getContent();

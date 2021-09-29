@@ -197,7 +197,7 @@ define('package/quiqqer/tags/bin/Manager', [
                 dataType : 'string',
                 width    : 200
             }, {
-                header   : QUILocale.get('quiqqer/system', 'description'),
+                header   : QUILocale.get('quiqqer/quiqqer', 'description'),
                 dataIndex: 'desc',
                 dataType : 'string',
                 width    : 300
@@ -448,12 +448,12 @@ define('package/quiqqer/tags/bin/Manager', [
                 autoclose: false,
 
                 cancel_button: {
-                    text     : QUILocale.get('quiqqer/system', 'cancel'),
+                    text     : QUILocale.get('quiqqer/quiqqer', 'cancel'),
                     textimage: 'fa fa-remove'
                 },
 
                 ok_button: {
-                    text     : QUILocale.get('quiqqer/system', 'save'),
+                    text     : QUILocale.get('quiqqer/quiqqer', 'save'),
                     textimage: 'fa fa-save'
                 },
 
@@ -481,7 +481,7 @@ define('package/quiqqer/tags/bin/Manager', [
                             '<input name="image" id="field-image" class="media-image" type="text" />' +
 
                             '<label for="field-desc">' +
-                            QUILocale.get('quiqqer/system', 'description') +
+                            QUILocale.get('quiqqer/quiqqer', 'description') +
                             '</label>' +
                             '<textarea name="desc" id="field-desc"></textarea>'
                         );
