@@ -1042,10 +1042,10 @@ class Manager
             $siteIds = \trim($result[0]['sites'], ',');
 
             if (empty($siteIds)) {
-                continue;
+                $siteIds = [];
+            } else {
+                $siteIds = \explode(',', $siteIds);
             }
-
-            $siteIds = \explode(',', $siteIds);
 
             if (\in_array($siteId, $siteIds)) {
                 continue;
