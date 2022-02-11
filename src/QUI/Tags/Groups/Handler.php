@@ -358,7 +358,7 @@ class Handler
         ];
 
         if (isset($params['where'])) {
-            $query['where_or'] = $params['where'];
+            $query['where'] = $params['where'];
         }
 
         if (isset($params['where_or'])) {
