@@ -12,5 +12,16 @@
                 <locale group="" value="" />
             </param>
         </params>
+
+        <autocreate>
+            <scope>projects</scope>
+            <interval>0 0 * * *</interval>
+            <active>1</active>
+
+            <params>
+                <param name="project">[projectName]</param>
+                <param name="lang">[projectLang]</param>
+            </params>
+        </autocreate>
     </cron>
 </crons>
