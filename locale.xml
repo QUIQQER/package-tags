@@ -402,9 +402,18 @@
             for example to preselect certain tags or to adjust the display.
             ]]></en>
         </locale>
+
+        <locale name="cron.createCache.title">
+            <de><![CDATA[Tag-Cache aufbauen]]></de>
+            <en><![CDATA[Build tag cache]]></en>
+        </locale>
+        <locale name="cron.createCache.description">
+            <de><![CDATA[Erstellte die Cache-Tabelle für alle Tags und Tag-Gruppen.]]></de>
+            <en><![CDATA[Builds the cache table for all tags and tag groups.]]></en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php">
-        <!-- Ajax -->
+                <!-- Ajax -->
         <locale name="message.ajax.groups.delete.error" html="true">
             <de><![CDATA[Beim Löschen der Tag-Gruppen ist ein Fehler aufgetreten:<br><br>[error]]]></de>
             <en><![CDATA[An error occurred while deleting the tag groups:<br><br>[error]]]></en>

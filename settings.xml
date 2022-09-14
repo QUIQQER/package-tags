@@ -26,13 +26,13 @@
             <categories>
                 <category name="tags">
                     <text>
-                        <locale group="quiqqer/system" var="quiqqer.settings.general.globals.title"/>
+                        <locale group="quiqqer/quiqqer" var="quiqqer.settings.general.globals.title"/>
                     </text>
                     <icon>fa fa-tags</icon>
 
                     <settings title="tags" name="tags">
                         <title>
-                            <locale group="quiqqer/system" var="quiqqer.settings.general.globals.title"/>
+                            <locale group="quiqqer/quiqqer" var="quiqqer.settings.general.globals.title"/>
                         </title>
 
                         <input conf="tags.useGroups" type="checkbox">

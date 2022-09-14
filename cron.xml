@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <crons>
     <cron exec="\QUI\Tags\Cron::createCache">
-        <title>Tag Cache aufbauen</title>
-        <description>Beschreibung des Cron</description>
+        <title>
+            <locale group="quiqqer/tags" var="cron.createCache.title"/>
+        </title>
+        <description>
+            <locale group="quiqqer/tags" var="cron.createCache.description"/>
+        </description>
         <!-- available params -->
         <params>
             <param name="project">
@@ -12,5 +16,16 @@
                 <locale group="" value="" />
             </param>
         </params>
+
+        <autocreate>
+            <scope>projects</scope>
+            <interval>0 0 * * *</interval>
+            <active>1</active>
+
+            <params>
+                <param name="project">[projectName]</param>
+                <param name="lang">[projectLang]</param>
+            </params>
+        </autocreate>
     </cron>
 </crons>

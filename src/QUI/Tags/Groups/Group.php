@@ -242,7 +242,11 @@ class Group
      */
     public function setTitle($title)
     {
-        $this->title = \trim(Orthos::removeHTML($title));
+        if (!empty($title)) {
+            $title = \trim(Orthos::removeHTML($title));
+        }
+
+        $this->title = $title;
     }
 
     /**
@@ -253,7 +257,11 @@ class Group
      */
     public function setWorkingTitle($title)
     {
-        $this->workingtitle = \trim(Orthos::removeHTML($title));
+        if (!empty($title)) {
+            $title = \trim(Orthos::removeHTML($title));
+        }
+
+        $this->workingtitle = $title;
     }
 
     /**
@@ -264,7 +272,11 @@ class Group
      */
     public function setDescription($description)
     {
-        $this->desc = \trim(Orthos::removeHTML($description));
+        if (!empty($description)) {
+            $description = \trim(Orthos::removeHTML($description));
+        }
+
+        $this->desc = $description;
     }
 
     /**
@@ -468,7 +480,7 @@ class Group
                 'desc'         => $this->getDescription(),
                 'image'        => $image,
                 'priority'     => $this->getPriority(),
-                'tags'         => ','.\implode($tags, ',').',',
+                'tags'         => ','.\implode(',', $tags).',',
                 'generated'    => $this->isGenerated() ? 1 : 0,
                 'generator'    => $this->getGenerator()
             ],
