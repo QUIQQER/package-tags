@@ -179,6 +179,30 @@
             </de>
             <en>You can't add more than [amount] tags. Remove some tags to add new ones.</en>
         </locale>
+        <locale name="window.tag.group.search.title">
+            <de>Tag Suche</de>
+            <en>Tag search</en>
+        </locale>
+        <locale name="window.tag.group.search.all.tags">
+            <de>Alle Tags</de>
+            <en>All tags</en>
+        </locale>
+        <locale name="window.tag.group.search.suggest">
+            <de>Vorgeschlagene Tags</de>
+            <en>Recomended tags</en>
+        </locale>
+        <locale name="window.tag.group.search.selected">
+            <de>Ausgewählte Tags</de>
+            <en>Selected tags</en>
+        </locale>
+        <locale name="window.tag.group.search.selected.button.count">
+            <de>Übernehmen ([count])</de>
+            <en>Apply ([count])</en>
+        </locale>
+        <locale name="window.tag.group.search.selected.button">
+            <de>Übernehmen</de>
+            <en>Apply</en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
         <locale name="package.title">
@@ -413,7 +437,7 @@
         </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php">
-                <!-- Ajax -->
+        <!-- Ajax -->
         <locale name="message.ajax.groups.delete.error" html="true">
             <de><![CDATA[Beim Löschen der Tag-Gruppen ist ein Fehler aufgetreten:<br><br>[error]]]></de>
             <en><![CDATA[An error occurred while deleting the tag groups:<br><br>[error]]]></en>
