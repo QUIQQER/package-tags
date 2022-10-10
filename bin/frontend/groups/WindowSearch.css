@@ -1,3 +1,12 @@
+.quiqqer-tags-group-window-search form {
+    padding: 10px 20px;
+}
+
+.quiqqer-tags-group-window-search-suggestsContainer,
+.quiqqer-tags-group-window-search-selectedContainer {
+    padding: 10px 20px;
+}
+
 .quiqqer-tags-group-window-search label {
     width: 100%;
 }

@@ -10,11 +10,14 @@ define('package/quiqqer/tags/bin/frontend/groups/Select', [
     'qui/controls/Control',
     'qui/controls/buttons/Select',
     'Ajax',
+    'Locale',
 
     'css!package/quiqqer/tags/bin/frontend/groups/Select.css'
 
-], function (QUI, QUIControl, QUISelect, QUIAjax) {
+], function (QUI, QUIControl, QUISelect, QUIAjax, QUILocale) {
     "use strict";
+
+    const lg = 'quiqqer/tags';
 
     return new Class({
 
@@ -58,8 +61,10 @@ define('package/quiqqer/tags/bin/frontend/groups/Select', [
             this.getElm().addClass('quiqqer-tags-groups-select');
 
             this.$Select = new QUISelect({
-                searchable: true,
-                events    : {
+                searchable     : true,
+                showIcons      : false,
+                placeholderText: QUILocale.get(lg, 'quiqqer.tags.select.placeholder'),
+                events         : {
                     onChange: (value) => {
                         this.fireEvent('select', [
                             this,
@@ -93,6 +98,11 @@ define('package/quiqqer/tags/bin/frontend/groups/Select', [
         },
 
         setValue: function (value) {
+            if (value === '') {
+                this.$Select.selectPlaceholder();
+                return;
+            }
+
             this.$Select.setValue(value);
         }
     });

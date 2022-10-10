@@ -203,6 +203,10 @@
             <de>Übernehmen</de>
             <en>Apply</en>
         </locale>
+        <locale name="quiqqer.tags.select.placeholder">
+            <de>Suche ein tag ...</de>
+            <en>Search a tag ...</en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php,js">
         <locale name="package.title">

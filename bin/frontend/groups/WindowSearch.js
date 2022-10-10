@@ -9,11 +9,12 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
     'Locale',
     'Ajax',
     'Mustache',
+    'package/quiqqer/tags/bin/frontend/tags/Tag',
 
     'text!package/quiqqer/tags/bin/frontend/groups/WindowSearch.html',
     'css!package/quiqqer/tags/bin/frontend/groups/WindowSearch.css'
 
-], function (QUI, QUIConfirm, QUILocale, QUIAjax, Mustache, template) {
+], function (QUI, QUIConfirm, QUILocale, QUIAjax, Mustache, Tag, template) {
     "use strict";
 
     const lg = 'quiqqer/tags';
@@ -29,10 +30,12 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
         ],
 
         options: {
-            groupId  : false,
-            maxHeight: 550,
-            maxWidth : 750,
-            suggests : true
+            groupId     : false,
+            maxHeight   : 550,
+            maxWidth    : 750,
+            suggestions : true,
+            selected    : false,
+            emptyAllowed: false
         },
 
         initialize: function (options) {
@@ -60,6 +63,7 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
 
             this.Loader.show();
             this.getContent().addClass('quiqqer-tags-group-window-search');
+            this.getContent().setStyle('padding', 0);
 
             this.getContent().set('html', Mustache.render(template, {
                 suggestsTitle: QUILocale.get(lg, 'window.tag.group.search.suggest'),
@@ -80,26 +84,39 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
             this.$SelectedContainer.setStyle('display', 'none');
             this.$Selected = this.getContent().getElement('.quiqqer-tags-group-window-search-selected');
 
+            if (this.getAttribute('selected')) {
+                const selected = this.getAttribute('selected');
+
+                if (typeOf(selected) === 'array') {
+                    selected.forEach((tag) => {
+                        this.$select(tag);
+                    });
+                }
+            }
+
             QUI.parse(this.getContent()).then(() => {
                 this.$Select = QUI.Controls.getById(
                     this.getContent().getElement('[data-qui="package/quiqqer/tags/bin/frontend/groups/Select"]').get('data-quiid')
                 );
 
                 this.$Select.addEvent('select', (Instance, value) => {
-                    this.$select(value);
+                    if (value !== '') {
+                        this.$select(value);
+                    }
                 });
 
                 this.$Select.setGroup(this.getAttribute('groupId'));
                 this.$Select.getElm().setStyle('width', '100%');
 
-                if (!this.getAttribute('suggests')) {
-                    this.getContent().getElement('.quiqqer-tags-group-window-search-suggestsContainer').setStyle('display', 'none');
-                    this.Loader.hide();
-                    return;
-                }
-
                 this.$Suggests = this.getContent().getElement('.quiqqer-tags-group-window-search-suggests');
                 this.$Groups = this.getContent().getElement('.quiqqer-tags-group-window-search-groups');
+
+                if (!this.getAttribute('suggestions')) {
+                    this.getContent().getElement(
+                        '.quiqqer-tags-group-window-search-suggestsContainer'
+                    ).setStyle('display', 'none');
+                }
+
 
                 Promise.all([
                     this.getTagsFromGroup(),
@@ -127,7 +144,7 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
 
                     // show sub groups
                     if (groups.length) {
-                        new Element('div', {
+                        const All = new Element('div', {
                             'class'   : 'quiqqer-tags-group-window-search-suggests-entry',
                             'data-tag': this.getAttribute('groupId'),
                             html      : QUILocale.get(lg, 'window.tag.group.search.all.tags'),
@@ -146,6 +163,8 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
                                 }
                             }).inject(this.$Groups);
                         }
+
+                        All.click();
                     }
 
                     this.Loader.hide();
@@ -157,12 +176,12 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
         },
 
         submit: function () {
-            const nodes = this.$Selected.getElements('.quiqqer-tags-group-window-search-suggests-entry');
+            const nodes = this.$Selected.getElements('.quiqqer-tags-tag');
             const tags = nodes.map(function (Node) {
                 return Node.get('data-tag');
             });
 
-            if (!nodes.length) {
+            if (!nodes.length && !this.getAttribute('emptyAllowed')) {
                 return;
             }
 
@@ -190,29 +209,56 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
         },
 
         $select: function (tag) {
-            if (this.$Selected.getElement('[ndata-tag="' + tag + '"]')) {
+            if (this.$Select) {
+                this.$Select.setValue('');
+            }
+
+            if (this.$Selected.getElement('[data-tag="' + tag + '"]')) {
                 return;
             }
 
-            this.Loader.show();
+            new Tag({
+                tag      : tag,
+                deletable: true,
+                events   : {
+                    onDelete: () => {
+                        this.$refresh();
+                    }
+                }
+            }).inject(this.$Selected);
 
-            this.getTag(tag).then((result) => {
-                new Element('div', {
-                    'class'   : 'quiqqer-tags-group-window-search-suggests-entry',
-                    'data-tag': result.tag,
-                    html      : result.title
-                }).inject(this.$Selected);
+            this.$SubmitButton.setAttribute('text', QUILocale.get(lg, 'window.tag.group.search.selected.button.count', {
+                count: this.$Selected.getElements('.quiqqer-tags-tag').length
+            }));
 
-                this.$SubmitButton.setAttribute('text', QUILocale.get(lg, 'window.tag.group.search.selected.button.count', {
-                    count: this.$Selected.getElements('.quiqqer-tags-group-window-search-suggests-entry').length
-                }));
+            this.$SubmitButton.enable();
+            this.$SelectedContainer.setStyle('display', '');
+        },
 
-                this.$SubmitButton.enable();
+        $refresh: function () {
+            const tags = this.$Selected.getElements('quiqqer-tags-tag');
 
-                this.$SelectedContainer.setStyle('display', '');
+            if (this.$Select) {
                 this.$Select.setValue('');
-                this.Loader.hide();
-            });
+            }
+
+            if (!tags.length) {
+                this.$SelectedContainer.setStyle('display', 'none');
+
+                if (!this.getAttribute('emptyAllowed')) {
+                    this.$SubmitButton.disable();
+                }
+
+                this.$SubmitButton.setAttribute('text', QUILocale.get(lg, 'window.tag.group.search.selected.button'));
+                return;
+            }
+
+            this.$SubmitButton.setAttribute('text', QUILocale.get(lg, 'window.tag.group.search.selected.button.count', {
+                count: this.$Selected.getElements('.quiqqer-tags-tag').length
+            }));
+
+            this.$SubmitButton.enable();
+            this.$SelectedContainer.setStyle('display', '');
         },
 
         //region ajax
