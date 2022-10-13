@@ -66,6 +66,8 @@ define('package/quiqqer/tags/bin/frontend/groups/Select', [
                 placeholderText: QUILocale.get(lg, 'quiqqer.tags.select.placeholder'),
                 events         : {
                     onChange: (value) => {
+                        this.$Input.value = value;
+                        
                         this.fireEvent('select', [
                             this,
                             value
