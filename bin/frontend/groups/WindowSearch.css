@@ -1,0 +1,59 @@
+.quiqqer-tags-group-window-search form {
+    padding: 10px 20px;
+}
+
+.quiqqer-tags-group-window-search-suggestsContainer,
+.quiqqer-tags-group-window-search-selectedContainer {
+    padding: 10px 20px;
+}
+
+.quiqqer-tags-group-window-search label {
+    width: 100%;
+}
+
+.quiqqer-tags-group-window-search label input {
+    width: 100%;
+}
+
+.quiqqer-tags-group-window-search-groups {
+    background: #f9fafb;
+    display: inline-block;
+    padding: 20px;
+    width: 100%;
+}
+
+.quiqqer-tags-group-window-search-selected,
+.quiqqer-tags-group-window-search-suggests {
+    background: #f9fafb;
+    display: inline-block;
+    padding: 20px;
+    width: 100%;
+}
+
+.quiqqer-tags-group-window-search-suggests-entry {
+    background: #fff;
+    border: 1px solid #EAECF0;
+    border-radius: 5px;
+    cursor: pointer;
+    float: left;
+    font-size: 12px;
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+.quiqqer-tags-group-window-search-suggests-entry:hover {
+    background: #c5c5c5;
+    border: 1px solid #9b9b9b;
+    color: #4a4a4a;
+}
+
+.quiqqer-tags-group-window-search-suggests-entry--active {
+    background: #b9e4ff;
+    border: 1px solid #84d0ff;
+    color: #2b9adf;
+}
+
+.quiqqer-tags-group-window-search h2 {
+    font-size: 14px;
+    margin-top: 1rem;
+}
