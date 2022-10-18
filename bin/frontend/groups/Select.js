@@ -67,7 +67,7 @@ define('package/quiqqer/tags/bin/frontend/groups/Select', [
                 events         : {
                     onChange: (value) => {
                         this.$Input.value = value;
-                        
+
                         this.fireEvent('select', [
                             this,
                             value
@@ -78,24 +78,31 @@ define('package/quiqqer/tags/bin/frontend/groups/Select', [
         },
 
         /**
+         * Set the tag group
+         * - only tags from this group are displayed
          *
          * @param {Number} groupId
+         * @return {Promise}
          */
         setGroup: function (groupId) {
             this.$Select.disable();
 
-            QUIAjax.get('package_quiqqer_tags_ajax_groups_search_getTagsByGroup', (tags) => {
-                this.$Select.clear();
+            return new Promise((resolve, reject) => {
+                QUIAjax.get('package_quiqqer_tags_ajax_groups_search_getTagsByGroup', (tags) => {
+                    this.$Select.clear();
 
-                for (let i = 0, len = tags.length; i < len; i++) {
-                    this.$Select.appendChild(tags[i].title, tags[i].tag);
-                }
+                    for (let i = 0, len = tags.length; i < len; i++) {
+                        this.$Select.appendChild(tags[i].title, tags[i].tag);
+                    }
 
-                this.$Select.enable();
-            }, {
-                'package': 'quiqqer/tags',
-                groupId  : groupId,
-                recursive: 1
+                    this.$Select.enable();
+                    resolve();
+                }, {
+                    'package': 'quiqqer/tags',
+                    groupId  : groupId,
+                    recursive: 1,
+                    onError  : reject
+                });
             });
         },
 
