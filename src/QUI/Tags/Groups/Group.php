@@ -10,6 +10,8 @@ use QUI;
 use QUI\Projects\Project;
 use QUI\Utils\Security\Orthos;
 
+use function strpos;
+
 /**
  * Class Group
  *
@@ -212,6 +214,28 @@ class Group
         }
 
         return false;
+    }
+
+    /**
+     * @param $search
+     * @param $queryParams
+     * @return array
+     */
+    public function searchTags($search, $queryParams = []): array
+    {
+        $tags   = $this->getTags();
+        $result = [];
+
+        foreach ($tags as $tag) {
+            if (strpos($tag['tag'], $search) === false
+                && strpos($tag['title'], $search) === false) {
+                continue;
+            }
+
+            $result[] = $tag;
+        }
+
+        return $result;
     }
 
     /**
@@ -480,7 +504,7 @@ class Group
                 'desc'         => $this->getDescription(),
                 'image'        => $image,
                 'priority'     => $this->getPriority(),
-                'tags'         => ','.\implode(',', $tags).',',
+                'tags'         => ',' . \implode(',', $tags) . ',',
                 'generated'    => $this->isGenerated() ? 1 : 0,
                 'generator'    => $this->getGenerator()
             ],

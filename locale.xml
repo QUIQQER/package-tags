@@ -439,6 +439,10 @@
             <de><![CDATA[Erstellte die Cache-Tabelle für alle Tags und Tag-Gruppen.]]></de>
             <en><![CDATA[Builds the cache table for all tags and tag groups.]]></en>
         </locale>
+        <locale name="window.tag.group.search.groupLabel">
+            <de><![CDATA[Gruppierung]]></de>
+            <en><![CDATA[Grouping]]></en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php">
         <!-- Ajax -->

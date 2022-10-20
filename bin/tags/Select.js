@@ -82,7 +82,10 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     }
                 }.bind(this),
                 onAddItem          : function (Control, tag) {
-                    this.fireEvent('addTag', [this, tag]);
+                    this.fireEvent('addTag', [
+                        this,
+                        tag
+                    ]);
                 }.bind(this),
                 onRemoveItem       : function (tag) {
                     this.fireEvent('removeTag', [tag]);
@@ -308,7 +311,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * @param {String} tag
          */
         showCreateTagDialog: function (tag) {
-            var self      = this;
+            var self = this;
             var Container = new Element('div', {
                 html      : QUILocale.get(lg, 'site.window.add.tag.title', {
                     tag: tag
@@ -428,7 +431,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
             this.getMaxTagAmount().then(function (maxTagAmount) {
                 if (self.$values.length >= maxTagAmount) {
-                    self.$Search.style.visibility            = 'hidden';
+                    self.$Search.style.visibility = 'hidden';
                     self.$SearchButton.$Elm.style.visibility = 'hidden';
                     QUI.getMessageHandler(function (MH) {
                         MH.addInformation(
@@ -437,7 +440,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
                         );
                     });
                 } else {
-                    self.$Search.style.visibility            = 'visible';
+                    self.$Search.style.visibility = 'visible';
                     self.$SearchButton.$Elm.style.visibility = 'visible';
                 }
             });
