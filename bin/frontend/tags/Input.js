@@ -199,8 +199,6 @@ define('package/quiqqer/tags/bin/frontend/tags/Input', [
             }).inject(this.$Groups);
 
             this.getGroupsFromGroup().then((groups) => {
-                console.log(groups);
-
                 if (groups.length) {
                     const All = new Element('div', {
                         'class'   : 'quiqqer-tags-input-groups-entry',
