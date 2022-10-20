@@ -1,9 +1,12 @@
 .quiqqer-tags-input {
     border: 1px solid #dedede;
+    display: flex;
+    flex-direction: column;
 }
 
 .quiqqer-tags-input .qui-elements-select-list {
     border: none;
+    border-radius: 0;
     min-height: 120px;
 }
 
@@ -75,4 +78,13 @@
     color: #206bc4;
     background-color: rgba(32, 107, 196, .04);
     border: 1px solid #206bc4;
+}
+
+.quiqqer-tags-input .quiqqer-tags-selectItem {
+    display: flex;
+}
+
+.quiqqer-tags-input .quiqqer-tags-selectItem-destroy,
+.quiqqer-tags-input .quiqqer-tags-selectItem-icon {
+    width: 50px;
 }
