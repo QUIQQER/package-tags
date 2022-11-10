@@ -15,14 +15,16 @@ QUI::$Ajax->registerFunction(
         $tags = [];
 
         if (!empty($recursive)) {
-            function getGroupTags(Group $Group, $Project, &$tags)
-            {
-                $tags = array_merge($Group->getTags(), $tags);
-                $children = $Group->getChildrenIds();
+            if (!function_exists('getGroupTags')) {
+                function getGroupTags(Group $Group, $Project, &$tags)
+                {
+                    $tags = array_merge($Group->getTags(), $tags);
+                    $children = $Group->getChildrenIds();
 
-                foreach ($children as $id) {
-                    $TagGroup = QUI\Tags\Groups\Handler::get($Project, $id);
-                    getGroupTags($TagGroup, $Project, $tags);
+                    foreach ($children as $id) {
+                        $TagGroup = QUI\Tags\Groups\Handler::get($Project, $id);
+                        getGroupTags($TagGroup, $Project, $tags);
+                    }
                 }
             }
 
