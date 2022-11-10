@@ -199,29 +199,34 @@ define('package/quiqqer/tags/bin/frontend/tags/Input', [
             }).inject(this.$Groups);
 
             this.getGroupsFromGroup().then((groups) => {
-                if (groups.length) {
-                    const All = new Element('div', {
+                if (!groups.length) {
+                    this.$Groups.destroy();
+                    this.$Groups = null;
+                    return;
+                }
+
+                const All = new Element('div', {
+                    'class'   : 'quiqqer-tags-input-groups-entry',
+                    'data-tag': this.getAttribute('groupId'),
+                    html      : QUILocale.get(lg, 'window.tag.group.search.all.tags'),
+                    events    : {
+                        click: this.$onGroupClick
+                    }
+                }).inject(this.$Groups);
+
+                for (let i = 0, len = groups.length; i < len; i++) {
+                    new Element('div', {
                         'class'   : 'quiqqer-tags-input-groups-entry',
-                        'data-tag': this.getAttribute('groupId'),
-                        html      : QUILocale.get(lg, 'window.tag.group.search.all.tags'),
+                        'data-tag': groups[i].id,
+                        html      : groups[i].title,
                         events    : {
                             click: this.$onGroupClick
                         }
                     }).inject(this.$Groups);
-
-                    for (let i = 0, len = groups.length; i < len; i++) {
-                        new Element('div', {
-                            'class'   : 'quiqqer-tags-input-groups-entry',
-                            'data-tag': groups[i].id,
-                            html      : groups[i].title,
-                            events    : {
-                                click: this.$onGroupClick
-                            }
-                        }).inject(this.$Groups);
-                    }
-
-                    All.click();
                 }
+
+                All.click();
+
             });
         },
 
