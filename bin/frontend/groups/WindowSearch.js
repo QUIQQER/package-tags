@@ -236,7 +236,7 @@ define('package/quiqqer/tags/bin/frontend/groups/WindowSearch', [
         },
 
         $refresh: function () {
-            const tags = this.$Selected.getElements('quiqqer-tags-tag');
+            const tags = this.$Selected.getElements('.quiqqer-tags-tag');
 
             if (this.$Select) {
                 this.$Select.setValue('');
