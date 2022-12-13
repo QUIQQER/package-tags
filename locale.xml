@@ -443,6 +443,18 @@
             <de><![CDATA[Gruppierung]]></de>
             <en><![CDATA[Grouping]]></en>
         </locale>
+        <locale name="window.tag.group.search.tagLabel">
+            <de><![CDATA[Bitte auswählen:]]></de>
+            <en><![CDATA[Please select:]]></en>
+        </locale>
+        <locale name="window.tag.no.tags.selected">
+            <de><![CDATA[Noch keine Tags ausgewählt]]></de>
+            <en><![CDATA[No tags selected]]></en>
+        </locale>
+        <locale name="window.tag.no.tags.selectedTags">
+            <de><![CDATA[Ausgewählte Tags]]></de>
+            <en><![CDATA[Selected tags]]></en>
+        </locale>
     </groups>
     <groups name="quiqqer/tags" datatype="php">
         <!-- Ajax -->

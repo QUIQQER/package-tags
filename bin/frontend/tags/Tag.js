@@ -65,6 +65,7 @@ define('package/quiqqer/tags/bin/frontend/tags/Tag', [
         $onInject: function () {
             this.getTag().then((result) => {
                 this.$Text.set('html', result.title);
+                this.$Text.set('title', result.title);
             });
         },
 
