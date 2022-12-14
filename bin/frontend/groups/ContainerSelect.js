@@ -28,6 +28,11 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             '$onTagClick'
         ],
 
+        options: {
+            'group-label': false,
+            'tag-label'  : false,
+        },
+
         initialize: function (options) {
             this.parent(options);
 
@@ -65,11 +70,6 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
                 'class': 'quiqqer-tags-containerSelect-selected'
             }).inject(this.$Container);
 
-            new Element('div', {
-                'class': 'quiqqer-tags-containerSelect-selectedTags-label',
-                html   : QUILocale.get(lg, 'window.tag.no.tags.selectedTags')
-            }).inject(this.$Selected);
-
             this.readTagValues();
         },
 
@@ -84,9 +84,15 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             this.setAttribute('group', groupId);
             this.$Groups.set('html', '');
 
+            let groupLabel = QUILocale.get(lg, 'window.tag.group.search.groupLabel');
+
+            if (this.getAttribute('group-label')) {
+                groupLabel = this.getAttribute('group-label');
+            }
+
             new Element('div', {
                 'class': 'quiqqer-tags-containerSelect-groups-label',
-                html   : QUILocale.get(lg, 'window.tag.group.search.groupLabel')
+                html   : groupLabel
             }).inject(this.$Groups);
 
 
@@ -115,9 +121,15 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
         refreshTags: function () {
             this.$Tags.set('html', '');
 
+            let label = QUILocale.get(lg, 'window.tag.group.search.tagLabel');
+
+            if (this.getAttribute('tag-label')) {
+                label = this.getAttribute('tag-label');
+            }
+
             new Element('div', {
                 'class': 'quiqqer-tags-containerSelect-groups-label',
-                html   : QUILocale.get(lg, 'window.tag.group.search.tagLabel')
+                html   : label
             }).inject(this.$Tags);
 
             return this.getTagsFromGroup().then((tags) => {
