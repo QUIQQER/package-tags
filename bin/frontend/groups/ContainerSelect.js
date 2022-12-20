@@ -7,12 +7,13 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
     'qui/QUI',
     'qui/controls/Control',
     'package/quiqqer/tags/bin/frontend/tags/Tag',
+    URL_OPT_DIR + 'bin/quiqqer-asset/animejs/animejs/lib/anime.min.js',
     'Ajax',
     'Locale',
 
     'css!package/quiqqer/tags/bin/frontend/groups/ContainerSelect.css'
 
-], function (QUI, QUIControl, Tag, QUIAjax, QUILocale) {
+], function (QUI, QUIControl, Tag, animejs, QUIAjax, QUILocale) {
     "use strict";
 
     const lg = 'quiqqer/tags';
@@ -29,8 +30,10 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
         ],
 
         options: {
-            'group-label': false,
-            'tag-label'  : false,
+            'group-label'      : false,
+            'tag-label'        : false,
+            'selected-label'   : false,
+            'group-auto-select': true
         },
 
         initialize: function (options) {
@@ -46,8 +49,6 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
         },
 
         $onInject: function () {
-
-
         },
 
         $onImport: function () {
@@ -63,7 +64,10 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             }).inject(this.$Container);
 
             this.$Tags = new Element('div', {
-                'class': 'quiqqer-tags-containerSelect-tags'
+                'class': 'quiqqer-tags-containerSelect-tags',
+                styles : {
+                    display: 'none'
+                }
             }).inject(this.$Container);
 
             this.$Selected = new Element('div', {
@@ -99,6 +103,7 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             return this.getGroupsFromGroup().then((groups) => {
                 if (!groups.length) {
                     this.$Groups.setStyle('display', 'none');
+                    this.openTags();
                     this.refreshTags();
                     return;
                 }
@@ -114,10 +119,17 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
                     }).inject(this.$Groups);
                 }
 
-                this.$Groups.getElement('.quiqqer-tags-containerSelect-groups-entry').click();
+                if (this.getAttribute('group-auto-select')) {
+                    this.$Groups.getElement('.quiqqer-tags-containerSelect-groups-entry').click();
+                }
             });
         },
 
+        /**
+         * refresh the tags, fetch the tags from the parent group
+         *
+         * @return {Promise<unknown>}
+         */
         refreshTags: function () {
             this.$Tags.set('html', '');
 
@@ -147,6 +159,9 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             });
         },
 
+        /**
+         * reads the input value and set tha tags
+         */
         readTagValues: function () {
             let tags = this.$Input.value;
 
@@ -166,6 +181,9 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             });
         },
 
+        /**
+         * refresh the value to the input
+         */
         $refreshTagValues: function () {
             let tags = this.$Selected.getElements('[data-tag]').map(function (Node) {
                 return Node.get('data-tag');
@@ -174,6 +192,12 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             this.$Input.value = tags.join(',');
         },
 
+        /**
+         * add a tag
+         *
+         * @param tag
+         * @return {*}
+         */
         addTag: function (tag) {
             if (this.$Selected.getElement('.quiqqer-tags-containerSelect--empty')) {
                 this.$Selected.getElement('.quiqqer-tags-containerSelect--empty').destroy();
@@ -181,6 +205,19 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
 
             if (this.$Selected.getElement('[data-tag="' + tag + '"]')) {
                 return;
+            }
+
+            if (!this.$Selected.getElement('.quiqqer-tags-containerSelect-selectedTags-label')) {
+                let label = QUILocale.get(lg, 'window.tag.group.search.selectLabel');
+
+                if (this.getAttribute('selected-label')) {
+                    label = this.getAttribute('selected-label');
+                }
+
+                new Element('div', {
+                    'class': 'quiqqer-tags-containerSelect-selectedTags-label',
+                    html   : label
+                }).inject(this.$Selected);
             }
 
             return new Promise((resolve, reject) => {
@@ -195,7 +232,13 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
 
                     new Tag({
                         tag      : TagData.tag,
-                        deletable: true
+                        deletable: true,
+                        events   : {
+                            onDelete: () => {
+                                this.$refreshTagValues();
+                                this.readTagValues();
+                            }
+                        }
                     }).inject(this.$Selected);
 
                     this.$refreshTagValues();
@@ -221,9 +264,127 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             event.target.addClass('quiqqer-tags-containerSelect-groups-entry--active');
 
             this.setAttribute('selectedGroup', event.target.get('data-tag'));
-            this.refreshTags();
+
+            this.$Groups.setStyles({
+                height  : this.$Groups.getSize().y,
+                overflow: 'hidden'
+            });
+
+            this.closeGroups().then(() => {
+                this.refreshTags();
+                return this.openTags();
+            });
         },
 
+        /**
+         * opens the groups
+         * @return {Promise<*>}
+         */
+        openGroups: function () {
+            let label = QUILocale.get(lg, 'window.tag.group.search.tagLabel');
+            let Label = this.$Groups.getElement('.quiqqer-tags-containerSelect-groups-label');
+            let entries = this.$Groups.querySelectorAll('.quiqqer-tags-containerSelect-groups-entry');
+
+            if (this.getAttribute('tag-label')) {
+                label = this.getAttribute('tag-label');
+            }
+
+            Label.set({
+                html: label
+            });
+
+            entries.forEach(function (Node) {
+                Node.removeClass('quiqqer-tags-containerSelect-groups-entry--active');
+            });
+
+            return this.$animate(entries, {
+                opacity: 1
+            }).then(() => {
+                const scrollSize = this.$Groups.getScrollSize();
+
+                return this.$animate(this.$Groups, {
+                    height: scrollSize.y
+                });
+            }).then(() => {
+                this.$Groups.setStyle('height', null);
+                this.$Groups.setStyle('paddingBottom', null);
+                this.$Groups.setStyle('overflow', null);
+            });
+        },
+
+        /**
+         * closes the groups
+         * @return {*}
+         */
+        closeGroups: function () {
+            this.$animate(
+                this.$Groups.querySelectorAll('.quiqqer-tags-containerSelect-groups-entry'),
+                {opacity: 0}
+            );
+
+            const group = this.getAttribute('selectedGroup');
+            const Group = this.$Groups.getElement('[data-tag="' + group + '"]');
+
+            const Label = this.$Groups.getElement('.quiqqer-tags-containerSelect-groups-label');
+            let label = QUILocale.get(lg, 'window.tag.group.search.tagLabel');
+
+            if (this.getAttribute('tag-label')) {
+                label = this.getAttribute('tag-label');
+            }
+
+            Label.set({
+                html  : '< ' + label + ' (' + Group.get('html') + ')',
+                styles: {
+                    cursor: 'pointer'
+                },
+                events: {
+                    click: () => {
+                        this.closeTags().then(() => {
+                            this.openGroups();
+                        });
+                    }
+                }
+            });
+
+            return this.$animate(this.$Groups, {
+                height       : 25,
+                paddingBottom: 0
+            });
+        },
+
+        /**
+         * opens the tag section
+         * @return {Promise<unknown>}
+         */
+        openTags: function () {
+            this.$Tags.setStyle('opacity', 0);
+            this.$Tags.setStyle('display', null);
+
+            return this.$animate(this.$Tags, {
+                height : this.$Tags.getScrollSize().y,
+                opacity: 1
+            }).then(() => {
+                this.$Tags.setStyle('height', null);
+            });
+        },
+
+        /**
+         * closes the tag section
+         * @return {Promise<unknown>}
+         */
+        closeTags: function () {
+            return this.$animate(this.$Tags, {
+                height : 0,
+                opacity: 0,
+            }).then(() => {
+                this.$Tags.setStyle('display', 'none');
+            });
+        },
+
+        /**
+         * event: on tag click -> adds the tag to the values
+         * @param event
+         */
         $onTagClick: function (event) {
             let Target = event.target;
 
@@ -261,7 +422,6 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             if (!group) {
                 group = this.getAttribute('group');
             }
-            console.log(group, '-');
 
             return new Promise((resolve, reject) => {
                 QUIAjax.get('package_quiqqer_tags_ajax_groups_search_getTagsByGroup', resolve, {
@@ -270,6 +430,25 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
                     recursive: 1,
                     onError  : reject
                 });
+            });
+        },
+
+        /**
+         * animation helper
+         *
+         * @param Target
+         * @param options
+         * @return {*}
+         */
+        $animate: function (Target, options) {
+            return new Promise(function (resolve) {
+                options = options || {};
+                options.targets = Target;
+                options.complete = resolve;
+                options.duration = options.duration || 250;
+                options.easing = options.easing || 'easeInQuad';
+
+                animejs(options);
             });
         }
     });

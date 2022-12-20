@@ -447,6 +447,10 @@
             <de><![CDATA[Bitte auswählen:]]></de>
             <en><![CDATA[Please select:]]></en>
         </locale>
+        <locale name="window.tag.group.search.selectLabel">
+            <de><![CDATA[Auswahl:]]></de>
+            <en><![CDATA[Selection:]]></en>
+        </locale>
         <locale name="window.tag.no.tags.selected">
             <de><![CDATA[Noch keine Tags ausgewählt]]></de>
             <en><![CDATA[No tags selected]]></en>

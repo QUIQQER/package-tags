@@ -9,6 +9,7 @@
 
 .quiqqer-tags-containerSelect--empty {
     font-size: 12px;
+    text-align: center;
 }
 
 .quiqqer-tags-containerSelect-selected,
@@ -31,6 +32,7 @@
 .quiqqer-tags-containerSelect-selected {
     background-color: #fff;
     border-bottom: none;
+    padding-top: 35px;
 }
 
 .quiqqer-tags-containerSelect-selectedTags-label,
