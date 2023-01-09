@@ -10,6 +10,8 @@ use QUI;
 use QUI\Projects\Project;
 use QUI\Utils\Security\Orthos;
 
+use function array_unique;
+use function array_values;
 use function strpos;
 
 /**
@@ -494,6 +496,8 @@ class Group
         $tags = \array_map(function ($tag) {
             return $tag['tag'];
         }, $this->getTags());
+
+        $tags = array_values(array_unique($tags));
 
         // database
         QUI::getDataBase()->update(
