@@ -403,7 +403,7 @@ class Handler
             'where' => [
                 'tags' => [
                     'type'  => '%LIKE%',
-                    'value' => $tag
+                    'value' => ','.$tag.','
                 ]
             ]
         ]);
