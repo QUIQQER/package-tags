@@ -273,6 +273,8 @@ define('package/quiqqer/tags/bin/frontend/groups/ContainerSelect', [
             this.closeGroups().then(() => {
                 this.refreshTags();
                 return this.openTags();
+            }).then(() => {
+                this.fireEvent('groupSelect', [this]);
             });
         },
 
