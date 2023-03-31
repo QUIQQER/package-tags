@@ -21,7 +21,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
 ], function (QUI, QUIElementSelect, QUIButton, QUILoader, QUILocale, QUIAjax, Projects) {
     "use strict";
 
-    var lg = 'quiqqer/tags';
+    const lg = 'quiqqer/tags';
 
     /**
      * @class package/quiqqer/tags/bin/tags/Select
@@ -73,21 +73,27 @@ define('package/quiqqer/tags/bin/tags/Select', [
             this.addEvents({
                 onSearchButtonClick: this.$onSearchButtonClick,
                 onCreate           : this.$onCreate,
-                onSetAttribute     : function (attr, value) {
-                    if (attr == 'projectLang') {
+                onChange           : this.refreshStatus,
+
+                onSetAttribute: (attr, value) => {
+                    if (attr === 'projectLang') {
                         this.$Project = Projects.get(
                             this.getAttribute('projectName'),
                             value
                         );
                     }
-                }.bind(this),
-                onAddItem          : function (Control, tag) {
-                    this.fireEvent('addTag', [this, tag]);
-                }.bind(this),
-                onRemoveItem       : function (tag) {
-                    this.fireEvent('removeTag', [tag]);
                 },
-                onChange           : this.refreshStatus
+
+                onAddItem: (Control, tag) => {
+                    this.fireEvent('addTag', [
+                        this,
+                        tag
+                    ]);
+                },
+
+                onRemoveItem: (tag) => {
+                    this.fireEvent('removeTag', [tag]);
+                }
             });
         },
 
@@ -115,11 +121,11 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 return Promise.reject('No project available');
             }
 
-            return new Promise(function (resolve) {
+            return new Promise((resolve) => {
                 QUIAjax.get('package_quiqqer_tags_ajax_search_search', function (result) {
-                    var list = [];
+                    let list = [];
 
-                    for (var i = 0, len = result.length; i < len; i++) {
+                    for (let i = 0, len = result.length; i < len; i++) {
                         list.push({
                             id   : result[i].tag,
                             title: result[i].title
@@ -136,7 +142,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
                         limit: 10
                     })
                 });
-            }.bind(this));
+            });
         },
 
         /**
@@ -151,13 +157,14 @@ define('package/quiqqer/tags/bin/tags/Select', [
             require([
                 'package/quiqqer/tags/bin/search/Window'
             ], function (Window) {
+
                 new Window({
                     projectName: self.$Project.getName(),
                     projectLang: self.$Project.getLang(),
                     selected   : self.getTags().split(','),
                     events     : {
                         onSubmit: function (Win, values) {
-                            for (var i = 0, len = values.length; i < len; i++) {
+                            for (let i = 0, len = values.length; i < len; i++) {
                                 self.addTag(values[i]);
                             }
                         }
@@ -172,9 +179,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * event : on create
          */
         $onCreate: function () {
-            this.$Search.addEvent('keydown', function (event) {
+            this.$Search.addEvent('keydown', (event) => {
                 if (event.key === 'enter') {
-                    var Active = this.$DropDown.getElement(
+                    const Active = this.$DropDown.getElement(
                         '.qui-elements-list-dropdown-entry-hover'
                     );
 
@@ -182,11 +189,13 @@ define('package/quiqqer/tags/bin/tags/Select', [
                         return;
                     }
 
-                    this.addTag(this.$Search.value).catch(function () {
-                        this.showCreateTagDialog(this.$Search.value);
-                    }.bind(this));
+                    const value = this.$Search.value;
+
+                    this.addTag(value).catch(() => {
+                        this.showCreateTagDialog(value);
+                    });
                 }
-            }.bind(this));
+            });
 
             this.Loader.inject(this.getElm());
 
@@ -201,7 +210,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
          */
         addTag: function (tag) {
             // filter duplicates
-            var found = this.getTags().split(',').filter(function (val) {
+            const found = this.getTags().split(',').filter(function (val) {
                 return val === tag;
             });
 
@@ -266,10 +275,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 tags = tags.split(',');
             }
 
-            var promises = [];
+            const promises = [];
 
-
-            for (var i = 0, len = tags.length; i < len; i++) {
+            for (let i = 0, len = tags.length; i < len; i++) {
                 promises.push(this.addTag(tags[i]));
             }
 
@@ -283,15 +291,13 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * @returns {Promise}
          */
         createTag: function (tag) {
-            return new Promise(function (resolve, reject) {
+            return new Promise((resolve, reject) => {
                 this.Loader.show();
 
-                QUIAjax.get('package_quiqqer_tags_ajax_tag_add', function (result) {
-
+                QUIAjax.get('package_quiqqer_tags_ajax_tag_add', (result) => {
                     this.Loader.hide();
                     resolve(result);
-
-                }.bind(this), {
+                }, {
                     'package'  : 'quiqqer/tags',
                     permission : 'tags.create',
                     projectName: this.$Project.getName(),
@@ -300,7 +306,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     showError  : false,
                     onError    : reject
                 });
-            }.bind(this));
+            });
         },
 
         /**
@@ -308,8 +314,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * @param {String} tag
          */
         showCreateTagDialog: function (tag) {
-            var self      = this;
-            var Container = new Element('div', {
+            const self = this;
+            const Container = new Element('div', {
                 html      : QUILocale.get(lg, 'site.window.add.tag.title', {
                     tag: tag
                 }),
@@ -329,7 +335,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 'tabindex': -1
             }).inject(this.getElm());
 
-            var hide = function () {
+            const hide = function () {
                 moofx(Container).animate({
                     opacity: 0,
                     top    : -50
@@ -398,7 +404,8 @@ define('package/quiqqer/tags/bin/tags/Select', [
          * @return {Promise}
          */
         getMaxTagAmount: function () {
-            var self = this;
+            const self = this;
+
             return new Promise(function (resolve, reject) {
                 if (self.getAttribute('_maxTagsAmount') !== -1) {
                     resolve(self.getAttribute('_maxTagsAmount'));
@@ -416,11 +423,11 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
 
         /**
-         * Refreshes the controls status.
-         * Currently this only en-/disables adding new tags.
+         * Refreshes the control's status.
+         * Currently, this only en-/disables adding new tags.
          */
         refreshStatus: function () {
-            var self = this;
+            const self = this;
 
             if (!this.getAttribute('considerMaxAmount')) {
                 return;
@@ -428,8 +435,9 @@ define('package/quiqqer/tags/bin/tags/Select', [
 
             this.getMaxTagAmount().then(function (maxTagAmount) {
                 if (self.$values.length >= maxTagAmount) {
-                    self.$Search.style.visibility            = 'hidden';
+                    self.$Search.style.visibility = 'hidden';
                     self.$SearchButton.$Elm.style.visibility = 'hidden';
+
                     QUI.getMessageHandler(function (MH) {
                         MH.addInformation(
                             QUILocale.get(lg, 'message.limit.tags.to.site', {amount: maxTagAmount}),
@@ -437,7 +445,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
                         );
                     });
                 } else {
-                    self.$Search.style.visibility            = 'visible';
+                    self.$Search.style.visibility = 'visible';
                     self.$SearchButton.$Elm.style.visibility = 'visible';
                 }
             });

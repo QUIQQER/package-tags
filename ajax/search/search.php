@@ -9,7 +9,9 @@
  *
  * @param string $projectName - name of the project
  * @param string $projectLang - lang of the project
- * @param string $string - matching string
+ * @param string $search - matching string
+ * @param string $search - json array
+ * @param string $group - parent tag group
  *
  * @return string
  */
@@ -19,13 +21,22 @@ QUI::$Ajax->registerFunction(
         $projectName,
         $projectLang,
         $search,
-        $params
+        $params,
+        $group
     ) {
-        $Tags = new QUI\Tags\Manager(
-            QUI::getProject($projectName, $projectLang)
-        );
+        $Project = QUI::getProject($projectName, $projectLang);
+        $Tags    = new QUI\Tags\Manager($Project);
 
-        return $Tags->searchTags($search, json_decode($params, true));
+        if (!empty($group) && is_numeric($group)) {
+            try {
+                $TagGroup = QUI\Tags\Groups\Handler::get($Project, $group);
+                return $TagGroup->searchTags($search, json_decode($params, true));
+            } catch (QUI\Exception $Exception) {
+                return $Tags->searchTags($search, json_decode($params, true));
+            }
+        } else {
+            return $Tags->searchTags($search, json_decode($params, true));
+        }
     },
-    ['projectName', 'projectLang', 'search', 'params']
+    ['projectName', 'projectLang', 'search', 'params', 'group']
 );

@@ -165,9 +165,6 @@ define('package/quiqqer/tags/bin/groups/Group', [
             this.Loader.show();
 
             this.$unloadData().then(function () {
-                var previousParentId = this.$data.parentId;
-                this.$data.parentId  = this.$ParentGroupSelect.getTagGroupIds();
-
                 return new Promise(function (resolve) {
                     QUIAjax.post('package_quiqqer_tags_ajax_groups_save', function (newGroupData) {
                         this.Loader.hide();
@@ -175,8 +172,6 @@ define('package/quiqqer/tags/bin/groups/Group', [
                         if (newGroupData) {
                             this.$data = newGroupData;
                             this.$ParentGroupSelect.addItem(this.$data.parentId ? this.$data.parentId : 'all');
-                        } else {
-                            this.$ParentGroupSelect.addItem(previousParentId ? previousParentId : 'all');
                         }
 
                         this.refresh();
@@ -258,7 +253,7 @@ define('package/quiqqer/tags/bin/groups/Group', [
                             Control.setProject(this.$Project);
                         }
 
-                        Control.addEvent('change', this.$unloadData);
+                        //Control.addEvent('change', this.$unloadData);
                     }.bind(this));
 
                     this.$loadCategory();
@@ -392,7 +387,6 @@ define('package/quiqqer/tags/bin/groups/Group', [
          */
         $unloadData: function () {
             return new Promise(function (resolve, reject) {
-
                 var Form = this.getContent().getElement('form'),
                     data = QUIFormUtils.getFormData(Form);
 
@@ -421,6 +415,10 @@ define('package/quiqqer/tags/bin/groups/Group', [
                     if (data.hasOwnProperty(key)) {
                         this.$data[key] = data[key];
                     }
+                }
+
+                if (this.$ParentGroupSelect) {
+                    this.$data.parentId = this.$ParentGroupSelect.getTagGroupIds();
                 }
 
                 resolve();

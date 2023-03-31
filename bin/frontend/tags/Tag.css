@@ -1,0 +1,21 @@
+.quiqqer-tags-tag {
+    background: #fff;
+    border: 1px solid #EAECF0;
+    border-radius: 5px;
+    cursor: default;
+    float: left;
+    font-size: 12px;
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+.quiqqer-tags-tag--delete {
+    cursor: pointer;
+    margin-left: 5px;
+    text-align: center;
+    width: 20px;
+}
+
+.quiqqer-tags-tag--delete:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
