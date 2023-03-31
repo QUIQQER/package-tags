@@ -428,30 +428,7 @@ class Handler
             self::$trees[$project] = [];
         }
 
-        $result = QUI::getDataBase()->fetch([
-            'select' => [
-                'id',
-                'title',
-                'parentId'
-            ],
-            'from'   => self::table($Project)
-        ]);
-
-        $groups = [];
-
-        foreach ($result as $row) {
-            $row['children'] = [];
-
-            if (empty($row['parentId'])) {
-                $row['parentId'] = false;
-            }
-
-            $groups[] = $row;
-        }
-
-        $groups = self::sortGroupsAlphabetically($groups);
-
-        self::$trees[$project][$lang] = self::buildTree($groups);
+        self::$trees[$project][$lang] = self::buildTree($Project);
 
         return self::$trees[$project][$lang];
     }
@@ -459,26 +436,62 @@ class Handler
     /**
      * Build hierarchical group tree
      *
-     * @param array $groups
-     * @param bool $parentId (optional) - parent id of group (branch)
+     * @param Project $Project
+     * @param int|null $parentTagGroupId (optional) - parent id of group (branch) [default: root]
      * @return array
      */
-    protected static function buildTree(&$groups, $parentId = false)
+    protected static function buildTree(Project $Project, ?int $parentTagGroupId = null): array
     {
         $tree = [];
 
-        foreach ($groups as $group) {
-            if ($group['parentId'] != $parentId) {
-                continue;
+        $result = QUI::getDataBase()->fetch([
+            'select' => [
+                'id',
+                'title',
+                'parentId'
+            ],
+            'from'   => self::table($Project),
+            'where'  => [
+                'parentId' => $parentTagGroupId
+            ]
+        ]);
+
+        /**
+         * Check if a tag group has any children.
+         *
+         * @param int $tagGroupId
+         * @return bool
+         *
+         * @throws QUI\Database\Exception
+         */
+        $hasChildren = function (int $tagGroupId) use ($Project): bool {
+            $result = QUI::getDataBase()->fetch([
+                'select' => ['id'],
+                'from'   => self::table($Project),
+                'where'  => [
+                    'parentId' => $tagGroupId
+                ],
+                'limit'  => 1
+            ]);
+
+            return !empty($result);
+        };
+
+        foreach ($result as $tagGroup) {
+            if (empty($tagGroup['parentId'])) {
+                $tagGroup['parentId'] = false;
             }
 
-            $group['children'] = self::buildTree($groups, $group['id']);
-            $tree[]            = $group;
+            $tagGroup['children'] = [];
+
+            if ($hasChildren($tagGroup['id'])) {
+                $tagGroup['children'] = self::buildTree($Project, $tagGroup['id']);
+            }
+
+            $tree[] = $tagGroup;
         }
 
-        $tree = self::sortGroupsAlphabetically($tree);
-
-        return $tree;
+        return self::sortGroupsAlphabetically($tree);
     }
 
     /**
