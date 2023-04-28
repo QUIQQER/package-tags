@@ -223,14 +223,14 @@ define('package/quiqqer/tags/bin/tags/Select', [
                 return Promise.reject('No project available');
             }
 
-            return new Promise(function (resolve, reject) {
+            return new Promise((resolve, reject) => {
                 this.Loader.show();
 
                 QUIAjax.get([
                     'ajax_permissions_session_hasPermission',
                     'package_quiqqer_tags_ajax_tag_exists',
                     'package_quiqqer_tags_ajax_tag_getData'
-                ], function (hasPermission, tagExists, TagData) {
+                ], (hasPermission, tagExists, TagData) => {
                     if (!hasPermission && !tagExists) {
                         QUI.getMessageHandler(function (MH) {
                             MH.addError(
@@ -252,8 +252,10 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     this.Loader.hide();
                     this.addItem(TagData.tag);
 
-                    resolve();
-                }.bind(this), {
+                    // because of addItem delay from qui/controls/elements/Select
+                    // not the best solution
+                    setTimeout(resolve, 100);
+                }, {
                     'package'  : 'quiqqer/tags',
                     permission : 'tags.create',
                     projectName: this.$Project.getName(),
@@ -261,7 +263,7 @@ define('package/quiqqer/tags/bin/tags/Select', [
                     tag        : tag,
                     showError  : false
                 });
-            }.bind(this));
+            });
         },
 
         /**
