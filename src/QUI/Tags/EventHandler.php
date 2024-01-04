@@ -24,10 +24,10 @@ class EventHandler
             return;
         }
 
-        $Package   = QUI::getPackageManager()->getInstalledPackage('quiqqer/tags');
-        $Config    = $Package->getConfig();
+        $Package = QUI::getPackageManager()->getInstalledPackage('quiqqer/tags');
+        $Config = $Package->getConfig();
         $useGroups = $Config->getValue('tags', 'useGroups') ? 1 : 0;
 
-        echo '<script>var QUIQQER_TAGS_USE_GROUPS = '.$useGroups.'</script>';
+        echo '<script>var QUIQQER_TAGS_USE_GROUPS = ' . $useGroups . '</script>';
     }
 }

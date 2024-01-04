@@ -39,7 +39,7 @@ class Handler
     {
         try {
             $Package = QUI::getPackageManager()->getInstalledPackage('quiqqer/tags');
-            $Config  = $Package->getConfig();
+            $Config = $Package->getConfig();
         } catch (\Exception $Exception) {
             QUI\System\Log::writeException($Exception);
             return false;
@@ -93,10 +93,10 @@ class Handler
     public static function count(Project $Project, $queryParams = [])
     {
         $query = [
-            'from'  => self::table($Project),
+            'from' => self::table($Project),
             'count' => [
                 'select' => 'id',
-                'as'     => 'count'
+                'as' => 'count'
             ]
         ];
 
@@ -132,13 +132,13 @@ class Handler
         QUI\Permissions\Permission::checkPermission('tags.group.delete', $User);
 
         $project = $Project->getName();
-        $lang    = $Project->getLang();
+        $lang = $Project->getLang();
         $groupId = (int)$groupId;
 
         // check if group has children
         $result = QUI::getDataBase()->fetch([
             'count' => 1,
-            'from'  => self::table($Project),
+            'from' => self::table($Project),
             'where' => [
                 'parentId' => $groupId
             ]
@@ -160,7 +160,8 @@ class Handler
             ]
         );
 
-        if (isset(self::$groups[$project])
+        if (
+            isset(self::$groups[$project])
             && isset(self::$groups[$project][$lang])
             && isset(self::$groups[$project][$lang][$groupId])
         ) {
@@ -179,11 +180,11 @@ class Handler
     public static function search(Project $Project, $search, $queryParams = [])
     {
         $query = [
-            'from'  => self::table($Project),
+            'from' => self::table($Project),
             'where' => [
                 'title' => [
                     'value' => $search,
-                    'type'  => 'LIKE%'
+                    'type' => 'LIKE%'
                 ]
             ]
         ];
@@ -261,7 +262,7 @@ class Handler
         }
 
         return QUI::getDataBase()->fetch([
-            'from'  => self::table($Project),
+            'from' => self::table($Project),
             'order' => 'title',
             'where' => $where
         ]);
@@ -278,9 +279,10 @@ class Handler
     public static function get(Project $Project, $groupId)
     {
         $project = $Project->getName();
-        $lang    = $Project->getLang();
+        $lang = $Project->getLang();
 
-        if (isset(self::$groups[$project])
+        if (
+            isset(self::$groups[$project])
             && isset(self::$groups[$project][$lang])
             && isset(self::$groups[$project][$lang][$groupId])
         ) {
@@ -329,7 +331,7 @@ class Handler
      */
     public static function getGroups(Project $Project, $params = [])
     {
-        $result   = [];
+        $result = [];
         $groupIds = self::getGroupIds($Project, $params);
 
         foreach ($groupIds as $groupId) {
@@ -378,7 +380,7 @@ class Handler
         }
 
         $result = [];
-        $data   = QUI::getDataBase()->fetch($query);
+        $data = QUI::getDataBase()->fetch($query);
 
         foreach ($data as $entry) {
             try {
@@ -402,8 +404,8 @@ class Handler
         return self::getGroupIds($Project, [
             'where' => [
                 'tags' => [
-                    'type'  => '%LIKE%',
-                    'value' => ','.$tag.','
+                    'type' => '%LIKE%',
+                    'value' => ',' . $tag . ','
                 ]
             ]
         ]);
@@ -418,7 +420,7 @@ class Handler
     public static function getTree(Project $Project)
     {
         $project = $Project->getName();
-        $lang    = $Project->getLang();
+        $lang = $Project->getLang();
 
         if (isset(self::$trees[$project][$lang])) {
             return self::$trees[$project][$lang];
@@ -450,8 +452,8 @@ class Handler
                 'title',
                 'parentId'
             ],
-            'from'   => self::table($Project),
-            'where'  => [
+            'from' => self::table($Project),
+            'where' => [
                 'parentId' => $parentTagGroupId
             ]
         ]);
@@ -467,11 +469,11 @@ class Handler
         $hasChildren = function (int $tagGroupId) use ($Project): bool {
             $result = QUI::getDataBase()->fetch([
                 'select' => ['id'],
-                'from'   => self::table($Project),
-                'where'  => [
+                'from' => self::table($Project),
+                'where' => [
                     'parentId' => $tagGroupId
                 ],
-                'limit'  => 1
+                'limit' => 1
             ]);
 
             return !empty($result);
@@ -519,7 +521,7 @@ class Handler
      */
     public static function getTagGroupChildrenIds(Project $Project, $groupId)
     {
-        $tree      = self::getTree($Project);
+        $tree = self::getTree($Project);
         $groupNode = self::searchTree($tree, (int)$groupId);
 
         // group has no children

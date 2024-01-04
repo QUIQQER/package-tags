@@ -1,9 +1,6 @@
 /**
  * @module package/quiqqer/tags/bin/tags/SelectItem
  * @author www.pcsg.de (Henning Leutz)
- *
- * @require qui/controls/Control
- * @require css!package/quiqqer/tags/bin/tags/SelectItem.css
  */
 define('package/quiqqer/tags/bin/tags/SelectItem', [
 
@@ -32,8 +29,8 @@ define('package/quiqqer/tags/bin/tags/SelectItem', [
         initialize: function (options) {
             this.parent(options);
 
-            this.$Icon    = null;
-            this.$Text    = null;
+            this.$Icon = null;
+            this.$Text = null;
             this.$Destroy = null;
             this.$Project = null;
 
@@ -48,18 +45,19 @@ define('package/quiqqer/tags/bin/tags/SelectItem', [
          * @returns {HTMLElement}
          */
         create: function () {
-            var self = this,
-                Elm  = this.parent();
+            const self = this,
+                  Elm  = this.parent();
 
             Elm.set({
-                'class': 'quiqqer-tags-selectItem smooth',
-                html   : '<span class="quiqqer-tags-selectItem-icon fa fa-tag"></span>' +
-                '<span class="quiqqer-tags-selectItem-text">&nbsp;</span>' +
-                '<span class="quiqqer-tags-selectItem-destroy fa fa-remove"></span>'
+                'class'   : 'quiqqer-tags-selectItem smooth',
+                'data-qui': 'package/quiqqer/tags/bin/tags/SelectItem',
+                html      : '<span class="quiqqer-tags-selectItem-icon fa fa-tag"></span>' +
+                            '<span class="quiqqer-tags-selectItem-text">&nbsp;</span>' +
+                            '<span class="quiqqer-tags-selectItem-destroy fa fa-remove"></span>'
             });
 
-            this.$Icon    = Elm.getElement('.quiqqer-tags-selectItem-icon');
-            this.$Text    = Elm.getElement('.quiqqer-tags-selectItem-text');
+            this.$Icon = Elm.getElement('.quiqqer-tags-selectItem-icon');
+            this.$Text = Elm.getElement('.quiqqer-tags-selectItem-text');
             this.$Destroy = Elm.getElement('.quiqqer-tags-selectItem-destroy');
 
             this.$Destroy.addEvent('click', function () {
@@ -73,17 +71,17 @@ define('package/quiqqer/tags/bin/tags/SelectItem', [
          * event : on inject
          */
         $onInject: function () {
-            var self = this;
+            const self = this;
 
             this.$Text.set({
                 html: '<span class="fa fa-spinner fa-spin"></span>'
             });
 
-            var projectName = false,
+            let projectName = false,
                 projectLang = false;
 
             if (this.getAttribute('Parent')) {
-                var Parent = this.getAttribute('Parent');
+                const Parent = this.getAttribute('Parent');
 
                 projectName = Parent.getAttribute('projectName');
                 projectLang = Parent.getAttribute('projectLang');

@@ -18,7 +18,7 @@ QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_groups_delete',
     function ($project, $groupIds) {
         try {
-            $Project  = QUI::getProjectManager()->decode($project);
+            $Project = QUI::getProjectManager()->decode($project);
             $groupIds = \json_decode($groupIds, true);
 
             foreach ($groupIds as $id) {

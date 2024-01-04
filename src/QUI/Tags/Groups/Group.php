@@ -95,7 +95,7 @@ class Group
     public function __construct($groupId, Project $Project)
     {
         $result = QUI::getDataBase()->fetch([
-            'from'  => Handler::table($Project),
+            'from' => Handler::table($Project),
             'where' => [
                 'id' => (int)$groupId
             ],
@@ -110,7 +110,7 @@ class Group
         }
 
         $this->Project = $Project;
-        $this->id      = (int)$groupId;
+        $this->id = (int)$groupId;
         $this->Manager = new QUI\Tags\Manager($this->Project);
 
         $data = $result[0];
@@ -225,12 +225,14 @@ class Group
      */
     public function searchTags($search, $queryParams = []): array
     {
-        $tags   = $this->getTags();
+        $tags = $this->getTags();
         $result = [];
 
         foreach ($tags as $tag) {
-            if (strpos($tag['tag'], $search) === false
-                && strpos($tag['title'], $search) === false) {
+            if (
+                strpos($tag['tag'], $search) === false
+                && strpos($tag['title'], $search) === false
+            ) {
                 continue;
             }
 
@@ -415,7 +417,7 @@ class Group
                 'exception.groups.group.parent.cannot.be.child',
                 [
                     'childTagGroupId' => $groupId,
-                    'tagGroupId'      => $this->id
+                    'tagGroupId' => $this->id
                 ]
             ]);
         }
@@ -503,14 +505,14 @@ class Group
         QUI::getDataBase()->update(
             Handler::table($this->Project),
             [
-                'title'        => $this->getTitle(),
+                'title' => $this->getTitle(),
                 'workingtitle' => $this->getWorkingTitle(),
-                'desc'         => $this->getDescription(),
-                'image'        => $image,
-                'priority'     => $this->getPriority(),
-                'tags'         => ',' . \implode(',', $tags) . ',',
-                'generated'    => $this->isGenerated() ? 1 : 0,
-                'generator'    => $this->getGenerator()
+                'desc' => $this->getDescription(),
+                'image' => $image,
+                'priority' => $this->getPriority(),
+                'tags' => ',' . \implode(',', $tags) . ',',
+                'generated' => $this->isGenerated() ? 1 : 0,
+                'generator' => $this->getGenerator()
             ],
             [
                 'id' => $this->getId()
@@ -638,16 +640,16 @@ class Group
         \sort($tags);
 
         return [
-            'id'           => $this->id,
-            'title'        => $this->title,
+            'id' => $this->id,
+            'title' => $this->title,
             'workingtitle' => $this->workingtitle,
-            'desc'         => $this->desc,
-            'image'        => $this->image,
-            'priority'     => $this->priority,
-            'tags'         => \implode(',', $tags),
-            'countTags'    => \count($this->tags),
-            'generated'    => $this->isGenerated(),
-            'parentId'     => $this->parentId
+            'desc' => $this->desc,
+            'image' => $this->image,
+            'priority' => $this->priority,
+            'tags' => \implode(',', $tags),
+            'countTags' => \count($this->tags),
+            'generated' => $this->isGenerated(),
+            'parentId' => $this->parentId
         ];
     }
 

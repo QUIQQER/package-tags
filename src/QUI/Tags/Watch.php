@@ -8,6 +8,9 @@ namespace QUI\Tags;
 
 use QUI;
 
+use function implode;
+use function json_decode;
+
 /**
  * Class Watch
  *
@@ -32,10 +35,10 @@ class Watch
                 ]);
 
             case 'package_quiqqer_tags_ajax_tag_delete':
-                $tags = \json_decode($params['tags'], true);
+                $tags = json_decode($params['tags'], true);
 
                 return QUI::getLocale()->get('quiqqer/tags', 'watch.delete.tags', [
-                    'tag' => \implode(',', $tags)
+                    'tag' => implode(',', $tags)
                 ]);
 
             case 'package_quiqqer_tags_ajax_tag_edit':

@@ -2,12 +2,29 @@
 
 namespace QUI\Tags;
 
+use PDOException;
 use QUI;
-use QUI\Utils\Security\Orthos;
-use QUI\Projects\Site\Edit;
 use QUI\Permissions\Permission;
-use QUI\Utils\Grid;
+use QUI\Projects\Project;
+use QUI\Projects\Site\Edit;
 use QUI\Tags\Groups\Handler as TagGroupsHandler;
+use QUI\Utils\Grid;
+use QUI\Utils\Security\Orthos;
+
+use function array_diff;
+use function array_search;
+use function array_values;
+use function count;
+use function explode;
+use function implode;
+use function is_array;
+use function is_string;
+use function mb_strtolower;
+use function md5;
+use function preg_replace;
+use function substr;
+use function trim;
+use function ucwords;
 
 /**
  * Tag Manager
@@ -21,7 +38,7 @@ class Manager
     /**
      * Project
      *
-     * @var \QUI\Projects\Project
+     * @var Project
      */
     protected $Project;
 
@@ -47,9 +64,9 @@ class Manager
     /**
      * constructor
      *
-     * @param \QUI\Projects\Project $Project
+     * @param Project $Project
      */
-    public function __construct(QUI\Projects\Project $Project)
+    public function __construct(Project $Project)
     {
         $this->Project = $Project;
     }
@@ -86,7 +103,7 @@ class Manager
             $i = 1;
 
             do {
-                $tag .= (string)$i++;
+                $tag .= $i++;
             } while ($this->existsTag($tag));
         }
 
@@ -94,7 +111,7 @@ class Manager
             QUI::getDataBase()->insert(
                 QUI::getDBProjectTableName('tags', $this->Project),
                 [
-                    'tag'   => $tag,
+                    'tag' => $tag,
                     'title' => $title
                 ]
             );
@@ -121,10 +138,10 @@ class Manager
     public static function clearTagName($str)
     {
         $str = Orthos::clear($str);
-        $str = \ucwords(\mb_strtolower($str));
-        $str = \preg_replace('/[^a-zA-Z0-9]/', '', $str);
-        $str = \substr($str, 0, 250);
-        $str = \trim($str);
+        $str = ucwords(mb_strtolower($str));
+        $str = preg_replace('/[^a-zA-Z0-9]/', '', $str);
+        $str = substr($str, 0, 250);
+        $str = trim($str);
 
         return $str;
     }
@@ -140,9 +157,9 @@ class Manager
             $result = QUI::getDataBase()->fetch([
                 'count' => [
                     'select' => 'tag',
-                    'as'     => 'count'
+                    'as' => 'count'
                 ],
-                'from'  => QUI::getDBProjectTableName('tags', $this->Project)
+                'from' => QUI::getDBProjectTableName('tags', $this->Project)
             ]);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::writeDebugException($Exception);
@@ -174,13 +191,13 @@ class Manager
 
         // Delete tag from all tag groups
         $Statement = QUI::getPDO()->prepare(
-            "UPDATE `".QUI::getDBProjectTableName('tags_groups', $this->Project)."`
-             SET `tags` = replace(`tags`, ',".$tag.",', ',')"
+            "UPDATE `" . QUI::getDBProjectTableName('tags_groups', $this->Project) . "`
+             SET `tags` = replace(`tags`, '," . $tag . ",', ',')"
         );
 
         try {
             $Statement->execute();
-        } catch (\PDOException $Exception) {
+        } catch (PDOException $Exception) {
             QUI\System\Log::writeException($Exception);
 
             throw new QUI\Database\Exception(
@@ -195,8 +212,7 @@ class Manager
             ['tag' => $tag]
         );
 
-        QUI\Cache\Manager::clear('quiqqer/tags/'.\md5($tag));
-
+        QUI\Cache\Manager::clear('quiqqer/tags/' . md5($tag));
         // @todo also delete tag from cache and tag group cache tables?
     }
 
@@ -240,12 +256,12 @@ class Manager
             $tagParams['generated'] = $params['generated'] ? 1 : 0;
         }
 
-        if (isset($params['generator']) && \is_string($params['generator'])) {
+        if (isset($params['generator']) && is_string($params['generator'])) {
             $tagParams['generator'] = $params['generator'];
         }
 
         $result = QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'from' => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => [
                 'title' => $tagParams['title']
             ]
@@ -271,7 +287,7 @@ class Manager
 
         if (isset($params['tagGroupIds'])) {
             $currentTagGroupIds = TagGroupsHandler::getGroupIdsByTag($this->Project, $tag);
-            $removeTagGroupIds  = \array_diff($currentTagGroupIds, $params['tagGroupIds']);
+            $removeTagGroupIds = array_diff($currentTagGroupIds, $params['tagGroupIds']);
 
             foreach ($removeTagGroupIds as $tagGroupId) {
                 try {
@@ -294,7 +310,7 @@ class Manager
             }
         }
 
-        QUI\Cache\Manager::clear('quiqqer/tags/'.\md5($tag));
+        QUI\Cache\Manager::clear('quiqqer/tags/' . md5($tag));
     }
 
     /**
@@ -315,7 +331,7 @@ class Manager
         }
 
         try {
-            QUI\Cache\Manager::get('quiqqer/tags/'.\md5($tag));
+            QUI\Cache\Manager::get('quiqqer/tags/' . md5($tag));
             $this->exists[$tag] = true;
 
             return true;
@@ -325,11 +341,11 @@ class Manager
         try {
             $result = QUI::getDataBase()->fetch([
                 'select' => 'tag',
-                'from'   => QUI::getDBProjectTableName('tags', $this->Project),
-                'where'  => [
+                'from' => QUI::getDBProjectTableName('tags', $this->Project),
+                'where' => [
                     'tag' => $tag
                 ],
-                'limit'  => 1
+                'limit' => 1
             ]);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::addWarning($Exception->getMessage());
@@ -354,11 +370,11 @@ class Manager
         try {
             $result = QUI::getDataBase()->fetch([
                 'select' => 'tag',
-                'from'   => QUI::getDBProjectTableName('tags', $this->Project),
-                'where'  => [
+                'from' => QUI::getDBProjectTableName('tags', $this->Project),
+                'where' => [
                     'title' => $title
                 ],
-                'limit'  => 1
+                'limit' => 1
             ]);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::addWarning($Exception->getMessage());
@@ -385,7 +401,7 @@ class Manager
             return $this->tags[$tag];
         }
 
-        $cache = 'quiqqer/tags/'.\md5($tag);
+        $cache = 'quiqqer/tags/' . md5($tag);
 
         try {
             $this->tags[$tag] = QUI\Cache\Manager::get($cache);
@@ -396,7 +412,7 @@ class Manager
 
         try {
             $result = QUI::getDataBase()->fetch([
-                'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+                'from' => QUI::getDBProjectTableName('tags', $this->Project),
                 'where' => [
                     'tag' => $tag
                 ],
@@ -435,7 +451,7 @@ class Manager
     public function getByTitle($title)
     {
         $result = QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'from' => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => [
                 'title' => $title
             ],
@@ -473,7 +489,7 @@ class Manager
     public function getByGenerator($generator)
     {
         $result = QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'from' => QUI::getDBProjectTableName('tags', $this->Project),
             'where' => [
                 'generator' => $generator
             ],
@@ -511,19 +527,19 @@ class Manager
      */
     public function getList($params = [])
     {
-        $Grid  = new Grid();
+        $Grid = new Grid();
         $order = 'tag ASC';
 
-        if (isset($params['sortOn']) && !empty($params['sortOn'])) {
-            $order = '`'.$params['sortOn'].'`';
+        if (!empty($params['sortOn'])) {
+            $order = '`' . $params['sortOn'] . '`';
 
-            if (isset($params['sortBy']) && !empty($params['sortBy'])) {
-                $order .= ' '.$params['sortBy'];
+            if (!empty($params['sortBy'])) {
+                $order .= ' ' . $params['sortBy'];
             }
         }
 
         $params = \array_merge($Grid->parseDBParams($params), [
-            'from'  => QUI::getDBProjectTableName('tags', $this->Project),
+            'from' => QUI::getDBProjectTableName('tags', $this->Project),
             'order' => $order
         ]);
 
@@ -535,7 +551,7 @@ class Manager
             return [];
         }
 
-        $tags      = [];
+        $tags = [];
         $tagsCount = [];
 
         foreach ($result as $row) {
@@ -553,10 +569,10 @@ class Manager
                     'tag',
                     'count'
                 ],
-                'from'   => QUI::getDBProjectTableName('tags_cache', $this->Project),
-                'where'  => [
+                'from' => QUI::getDBProjectTableName('tags_cache', $this->Project),
+                'where' => [
                     'tag' => [
-                        'type'  => 'IN',
+                        'type' => 'IN',
                         'value' => $tags
                     ]
                 ]
@@ -594,7 +610,7 @@ class Manager
      */
     public function getRelationTags($tags)
     {
-        if (!\is_array($tags)) {
+        if (!is_array($tags)) {
             return [];
         }
 
@@ -605,8 +621,8 @@ class Manager
         // seitenids bekommen
         $str = '';
 
-        for ($i = 0, $len = \count($tags); $i < $len; $i++) {
-            $str .= ' tag = "'.$this->clearTagName($tags[$i]).'"';
+        for ($i = 0, $len = count($tags); $i < $len; $i++) {
+            $str .= ' tag = "' . $this->clearTagName($tags[$i]) . '"';
 
             if ($i != $len - 1) {
                 $str .= ' OR ';
@@ -617,7 +633,7 @@ class Manager
 
         try {
             $result = $DataBase->fetch([
-                'from'  => QUI::getDBProjectTableName('tags_siteCache', $this->Project),
+                'from' => QUI::getDBProjectTableName('tags_siteCache', $this->Project),
                 'where' => $str
             ]);
         } catch (QUI\Exception $Exception) {
@@ -633,7 +649,7 @@ class Manager
         $ids = [];
 
         foreach ($result as $entry) {
-            $_ids = \explode(',', $entry['sites']);
+            $_ids = explode(',', $entry['sites']);
 
             foreach ($_ids as $_id) {
                 if (empty($_id)) {
@@ -650,8 +666,8 @@ class Manager
         }
 
         // rausfiltern welche tags nur einmal vorkommen
-        $_ids     = [];
-        $tagcount = \count($tags);
+        $_ids = [];
+        $tagcount = count($tags);
 
         foreach ($ids as $id => $count) {
             if ($count >= $tagcount) {
@@ -668,13 +684,13 @@ class Manager
 
 
         // tags der ids bekommen
-        $ids = \implode(',', $ids);
-        $ids = \trim($ids, ',');
+        $ids = implode(',', $ids);
+        $ids = trim($ids, ',');
 
         try {
             $result = $DataBase->fetch([
-                'from'  => QUI::getDBProjectTableName('tags_sites', $this->Project),
-                'where' => 'id in ('.$ids.')'
+                'from' => QUI::getDBProjectTableName('tags_sites', $this->Project),
+                'where' => 'id in (' . $ids . ')'
             ]);
         } catch (QUI\Exception $Exception) {
             QUI\System\Log::addError($Exception->getMessage());
@@ -688,8 +704,8 @@ class Manager
         }
 
         $tag_str = \str_replace(',,', ',', $tag_str);
-        $tag_str = \trim($tag_str, ',');
-        $tag_str = \explode(',', $tag_str);
+        $tag_str = trim($tag_str, ',');
+        $tag_str = explode(',', $tag_str);
 
         foreach ($tags as $_tag) {
             $tag_str[] = $_tag;
@@ -712,17 +728,17 @@ class Manager
      */
     public function searchTags($search, $queryParams = [])
     {
-        $search = \mb_strtolower($search);
-        $query  = [
-            'from'     => QUI::getDBProjectTableName('tags', $this->Project),
+        $search = mb_strtolower($search);
+        $query = [
+            'from' => QUI::getDBProjectTableName('tags', $this->Project),
             'where_or' => [
-                'tag'   => [
+                'tag' => [
                     'value' => $search,
-                    'type'  => '%LIKE%'
+                    'type' => '%LIKE%'
                 ],
                 'title' => [
                     'value' => $search,
-                    'type'  => '%LIKE%'
+                    'type' => '%LIKE%'
                 ]
             ]
         ];
@@ -758,7 +774,7 @@ class Manager
     {
         $cacheTable = QUI::getDBProjectTableName('tags_cache', $this->Project);
 
-        if (!\is_array($tags)) {
+        if (!is_array($tags)) {
             return [];
         }
 
@@ -778,8 +794,8 @@ class Manager
         // search string
         $where = '';
 
-        for ($i = 0, $len = \count($tagList); $i < $len; $i++) {
-            $where .= ' tag = "'.$tagList[$i].'"';
+        for ($i = 0, $len = count($tagList); $i < $len; $i++) {
+            $where .= ' tag = "' . $tagList[$i] . '"';
 
             if ($i != $len - 1) {
                 $where .= ' OR ';
@@ -788,7 +804,7 @@ class Manager
 
         try {
             $result = QUI::getDataBase()->fetch([
-                'from'  => $cacheTable,
+                'from' => $cacheTable,
                 'where' => $where
             ]);
         } catch (QUI\Exception $Exception) {
@@ -805,7 +821,7 @@ class Manager
 
         // filter double tags
         foreach ($result as $entry) {
-            $list = \explode(',', $entry['sites']);
+            $list = explode(',', $entry['sites']);
 
             foreach ($list as $id) {
                 $id = (int)$id;
@@ -827,12 +843,12 @@ class Manager
         if (isset($params['limit']) && $params['limit']) {
             if (\strpos($params['limit'], ',') === false) {
                 $start = 0;
-                $end   = (int)$params['limit'];
+                $end = (int)$params['limit'];
             } else {
-                $parts = \explode(',', $params['limit']);
+                $parts = explode(',', $params['limit']);
 
                 $start = (int)$parts[0];
-                $end   = (int)$parts[1];
+                $end = (int)$parts[1];
             }
 
             $ids = \array_slice($ids, $start, $end, true);
@@ -852,7 +868,7 @@ class Manager
     public function getSitesFromTags($tags, $params = [])
     {
         $siteIds = $this->getSiteIdsFromTags($tags, $params);
-        $result  = [];
+        $result = [];
 
         foreach ($siteIds as $id => $count) {
             try {
@@ -880,7 +896,7 @@ class Manager
             return $this->groupsFromTags[$tag];
         }
 
-        $PDO   = QUI::getDataBase()->getPDO();
+        $PDO = QUI::getDataBase()->getPDO();
         $table = QUI::getDBProjectTableName('tags_groups', $this->Project);
 
         $query = "
@@ -894,9 +910,9 @@ class Manager
 
         $Statement = $PDO->prepare($query);
 
-        $Statement->bindValue('search1', '%,'.$tag.',%', \PDO::PARAM_STR);
-        $Statement->bindValue('search2', $tag.',%', \PDO::PARAM_STR);
-        $Statement->bindValue('search3', '%,'.$tag, \PDO::PARAM_STR);
+        $Statement->bindValue('search1', '%,' . $tag . ',%', \PDO::PARAM_STR);
+        $Statement->bindValue('search2', $tag . ',%', \PDO::PARAM_STR);
+        $Statement->bindValue('search3', '%,' . $tag, \PDO::PARAM_STR);
 
         try {
             $Statement->execute();
@@ -969,15 +985,15 @@ class Manager
      */
     public function setSiteTags($siteId, $tags)
     {
-        if (!\is_array($tags)) {
+        if (!is_array($tags)) {
             return;
         }
 
-        $siteId   = (int)$siteId;
-        $Site     = new Edit($this->Project, $siteId);
+        $siteId = (int)$siteId;
+        $Site = new Edit($this->Project, $siteId);
         $isActive = $Site->getAttribute('active');
 
-        $list  = [];
+        $list = [];
         $table = QUI::getDBProjectTableName(
             'tags_sites',
             $this->Project
@@ -991,7 +1007,7 @@ class Manager
 
         // entry exists?
         $result = QUI::getDataBase()->fetch([
-            'from'  => $table,
+            'from' => $table,
             'where' => [
                 'id' => $siteId
             ],
@@ -1006,7 +1022,7 @@ class Manager
 
         QUI::getDataBase()->update(
             $table,
-            ['tags' => ','.\implode(',', $list).','],
+            ['tags' => ',' . implode(',', $list) . ','],
             ['id' => $siteId]
         );
 
@@ -1022,7 +1038,7 @@ class Manager
         // update cache of tags
         foreach ($list as $tag) {
             $result = QUI::getDataBase()->fetch([
-                'from'  => $tableTagCache,
+                'from' => $tableTagCache,
                 'where' => [
                     'tag' => $tag
                 ],
@@ -1031,20 +1047,20 @@ class Manager
 
             if (empty($result)) {
                 QUI::getDataBase()->insert($tableTagCache, [
-                    'tag'   => $tag,
-                    'sites' => ','.$siteId.',',
+                    'tag' => $tag,
+                    'sites' => ',' . $siteId . ',',
                     'count' => 1
                 ]);
 
                 continue;
             }
 
-            $siteIds = \trim($result[0]['sites'], ',');
+            $siteIds = trim($result[0]['sites'], ',');
 
             if (empty($siteIds)) {
                 $siteIds = [];
             } else {
-                $siteIds = \explode(',', $siteIds);
+                $siteIds = explode(',', $siteIds);
             }
 
             if (\in_array($siteId, $siteIds)) {
@@ -1054,8 +1070,8 @@ class Manager
             $siteIds[] = $siteId;
 
             QUI::getDataBase()->update($tableTagCache, [
-                'sites' => ','.\implode(',', $siteIds).',',
-                'count' => \count($siteIds)
+                'sites' => ',' . implode(',', $siteIds) . ',',
+                'count' => count($siteIds)
             ], [
                 'tag' => $tag
             ]);
@@ -1070,7 +1086,7 @@ class Manager
      */
     public function removeSiteFromTags($siteId, $tags)
     {
-        if (!\is_array($tags)) {
+        if (!is_array($tags)) {
             return;
         }
 
@@ -1092,7 +1108,7 @@ class Manager
         foreach ($list as $tag) {
             try {
                 $result = QUI::getDataBase()->fetch([
-                    'from'  => $tableTagCache,
+                    'from' => $tableTagCache,
                     'where' => [
                         'tag' => $tag
                     ],
@@ -1108,14 +1124,14 @@ class Manager
                 continue;
             }
 
-            $siteIds = \trim($result[0]['sites'], ',');
+            $siteIds = trim($result[0]['sites'], ',');
 
             if (empty($siteIds)) {
                 continue;
             }
 
-            $siteIds = \explode(',', $siteIds);
-            $k       = \array_search($siteId, $siteIds);
+            $siteIds = explode(',', $siteIds);
+            $k = array_search($siteId, $siteIds);
 
             if ($k === false) {
                 continue;
@@ -1123,12 +1139,12 @@ class Manager
 
             unset($siteIds[$k]);
 
-            $siteIds = \array_values($siteIds);
+            $siteIds = array_values($siteIds);
 
             try {
                 QUI::getDataBase()->update($tableTagCache, [
-                    'sites' => ','.\implode(',', $siteIds).',',
-                    'count' => \count($siteIds)
+                    'sites' => ',' . implode(',', $siteIds) . ',',
+                    'count' => count($siteIds)
                 ], [
                     'tag' => $tag
                 ]);
@@ -1170,7 +1186,7 @@ class Manager
     {
         try {
             $result = QUI::getDataBase()->fetch([
-                'from'  => QUI::getDBProjectTableName('tags_sites', $this->Project),
+                'from' => QUI::getDBProjectTableName('tags_sites', $this->Project),
                 'where' => [
                     'id' => (int)$siteId
                 ],
@@ -1187,8 +1203,8 @@ class Manager
         }
 
         $tags = \str_replace(',,', ',', $result[0]['tags']);
-        $tags = \trim($tags, ',');
-        $tags = \explode(',', $tags);
+        $tags = trim($tags, ',');
+        $tags = explode(',', $tags);
 
         return $tags;
     }
@@ -1205,8 +1221,8 @@ class Manager
             'select' => [
                 'count'
             ],
-            'from'   => QUI::getDBProjectTableName('tags_cache', $this->Project),
-            'where'  => [
+            'from' => QUI::getDBProjectTableName('tags_cache', $this->Project),
+            'where' => [
                 'tag' => $tag
             ]
         ];

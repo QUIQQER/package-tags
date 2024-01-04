@@ -26,7 +26,7 @@ class TagList extends QUI\Control
         parent::__construct($attributes);
 
         $this->addCSSFile(
-            \dirname(__FILE__).'/TagList.css'
+            \dirname(__FILE__) . '/TagList.css'
         );
 
         $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
@@ -39,15 +39,15 @@ class TagList extends QUI\Control
      */
     public function getBody()
     {
-        $Engine  = QUI::getTemplateManager()->getEngine();
+        $Engine = QUI::getTemplateManager()->getEngine();
         $Rewrite = QUI::getRewrite();
 
         $urlParams = $Rewrite->getUrlParamsList();
 
         $Engine->assign([
             'Project' => $this->getProject(),
-            'Site'    => $this->getSite(),
-            'Locale'  => QUI::getLocale()
+            'Site' => $this->getSite(),
+            'Locale' => QUI::getLocale()
         ]);
 
 
@@ -77,7 +77,7 @@ class TagList extends QUI\Control
         ]);
 
 
-        return $Engine->fetch(\dirname(__FILE__).'/TagList.html');
+        return $Engine->fetch(\dirname(__FILE__) . '/TagList.html');
     }
 
     /**
@@ -142,8 +142,8 @@ class TagList extends QUI\Control
         }
 
         if (!\is_null($groupId)) {
-            $TagGroup  = TagGroupsHandler::get($this->getProject(), $groupId);
-            $tags      = [];
+            $TagGroup = TagGroupsHandler::get($this->getProject(), $groupId);
+            $tags = [];
             $groupTags = $TagGroup->getTags();
 
             if (empty($groupTags)) {
@@ -157,14 +157,14 @@ class TagList extends QUI\Control
             $tags = \array_unique($tags);
 
             if (empty($where)) {
-                $where .= '`tag` IN (\''.\implode('\',\'', $tags).'\')';
+                $where .= '`tag` IN (\'' . \implode('\',\'', $tags) . '\')';
             } else {
-                $where .= ' AND `tag` IN (\''.\implode('\',\'', $tags).'\')';
+                $where .= ' AND `tag` IN (\'' . \implode('\',\'', $tags) . '\')';
             }
         }
 
         return QUI::getDataBase()->fetch([
-            'from'  => QUI::getDBProjectTableName('tags', $this->getProject()),
+            'from' => QUI::getDBProjectTableName('tags', $this->getProject()),
             'order' => 'title',
             'where' => $where
         ]);
@@ -181,8 +181,8 @@ class TagList extends QUI\Control
             return $this->getAttribute('Site');
         }
 
-        $Project      = $this->getProject();
-        $language     = $Project->getLang();
+        $Project = $this->getProject();
+        $language = $Project->getLang();
         $tagSearchIds = $Project->getConfig('tags.tagSearchId');
 
         if ($tagSearchIds) {

@@ -18,8 +18,8 @@ QUI::$Ajax->registerFunction(
     function ($project, $groupId, $data) {
         try {
             $Project = QUI::getProjectManager()->decode($project);
-            $data    = \json_decode($data, true);
-            $Group   = QUI\Tags\Groups\Handler::get($Project, $groupId);
+            $data = \json_decode($data, true);
+            $Group = QUI\Tags\Groups\Handler::get($Project, $groupId);
 
             if (isset($data['title'])) {
                 $Group->setTitle($data['title']);
@@ -62,7 +62,7 @@ QUI::$Ajax->registerFunction(
                     'message.group.save.error',
                     [
                         'tagGroupId' => $groupId,
-                        'error'      => $Exception->getMessage()
+                        'error' => $Exception->getMessage()
                     ]
                 )
             );

@@ -16,7 +16,7 @@ QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_groups_get',
     function ($project, $groupId) {
         $Project = QUI::getProjectManager()->decode($project);
-        $Group   = QUI\Tags\Groups\Handler::get($Project, $groupId);
+        $Group = QUI\Tags\Groups\Handler::get($Project, $groupId);
 
         return $Group->toArray();
     },
