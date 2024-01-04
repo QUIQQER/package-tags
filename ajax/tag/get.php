@@ -1,7 +1,5 @@
 <?php
 
-use QUI\Tags\Groups\Handler as TagGroupHandler;
-
 /**
  * Add a tag
  *
@@ -11,6 +9,9 @@ use QUI\Tags\Groups\Handler as TagGroupHandler;
  *
  * @return array
  */
+
+use QUI\Tags\Groups\Handler as TagGroupHandler;
+
 QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_get',
     function ($projectName, $projectLang, $tag) {

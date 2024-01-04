@@ -11,11 +11,11 @@ $types = explode(';', $types);
  * Pagination
  */
 
-$Pagination = new QUI\Bricks\Controls\Pagination(array(
-    'Site'      => $Site,
+$Pagination = new QUI\Bricks\Controls\Pagination([
+    'Site' => $Site,
     'showLimit' => true,
-    'limit'     => $Site->getAttribute('quiqqer.tag.settings.limit')
-));
+    'limit' => $Site->getAttribute('quiqqer.tag.settings.limit')
+]);
 
 $Pagination->loadFromRequest();
 
@@ -32,13 +32,13 @@ $Pagination->setGetParams(
 $Manager = new QUI\Tags\Manager($Project);
 
 try {
-    $tags = $Manager->getList(array(
+    $tags = $Manager->getList([
         'limit' => 0
-    ));
+    ]);
 
-    $Engine->assign(array(
+    $Engine->assign([
         'tags' => $tags
-    ));
+    ]);
 } catch (QUI\Exception $Exception) {
 }
 
@@ -47,9 +47,9 @@ try {
  * Requested tags
  */
 
-$requestList     = QUI::getRewrite()->getUrlParamsList();
-$requestTags     = array();
-$requestTagNames = array();
+$requestList = QUI::getRewrite()->getUrlParamsList();
+$requestTags = [];
+$requestTagNames = [];
 
 if (isset($_GET['tags']) && !empty($_GET['tags'])) {
     $requestList = explode('-', $_GET['tags']);
@@ -57,14 +57,15 @@ if (isset($_GET['tags']) && !empty($_GET['tags'])) {
 
 foreach ($requestList as $requestTag) {
     try {
-        $requestTags[]     = $Manager->get($requestTag);
+        $requestTags[] = $Manager->get($requestTag);
         $requestTagNames[] = $requestTag;
     } catch (QUI\Exception $Exception) {
     }
 }
 
 // default tag set?
-if (empty($requestTagNames)
+if (
+    empty($requestTagNames)
     && $Site->getAttribute('quiqqer.tag.settings.defaultTags')
 ) {
     $defaultTags = $Site->getAttribute('quiqqer.tag.settings.defaultTags');
@@ -72,28 +73,28 @@ if (empty($requestTagNames)
 
     foreach ($defaultTags as $tag) {
         try {
-            $requestTags[]     = $Manager->get($tag);
+            $requestTags[] = $Manager->get($tag);
             $requestTagNames[] = $tag;
         } catch (QUI\Exception $Exception) {
         }
     }
 }
 
-$Engine->assign(array(
-    'requestTags'     => $requestTags,
+$Engine->assign([
+    'requestTags' => $requestTags,
     'requestTagNames' => $requestTagNames
-));
+]);
 
 /**
  * Search
  */
 
-$count  = 0;
+$count = 0;
 $sheets = 0;
-$result = array();
+$result = [];
 
 if (!empty($requestTags)) {
-    $tags = array();
+    $tags = [];
 
     foreach ($requestTags as $requestTag) {
         $tags[] = $requestTag['tag'];
@@ -105,9 +106,9 @@ if (!empty($requestTags)) {
         $sqlParams['limit'] = 10;
     }
 
-    $result = $Manager->getSitesFromTags($tags, array(
+    $result = $Manager->getSitesFromTags($tags, [
         'limit' => $sqlParams['limit']
-    ));
+    ]);
 
     $count = count($Manager->getSiteIdsFromTags($tags));
 }
@@ -117,20 +118,20 @@ if ($Pagination->getAttribute('limit')) {
 }
 
 
-$Pagination->setAttributes(array(
+$Pagination->setAttributes([
     'sheets' => $sheets
-));
+]);
 
 $Pagination->setGetParams('tags', implode('-', $requestTagNames));
 
-$Engine->assign(array(
-    'result'      => $result,
-    'Manager'     => $Manager,
-    'count'       => $count,
-    'sheets'      => $Pagination->getAttribute('sheets'),
-    'start'       => $Pagination->getStart(),
-    'max'         => $Pagination->getAttribute('limit'),
-    'Pagination'  => $Pagination,
+$Engine->assign([
+    'result' => $result,
+    'Manager' => $Manager,
+    'count' => $count,
+    'sheets' => $Pagination->getAttribute('sheets'),
+    'start' => $Pagination->getStart(),
+    'max' => $Pagination->getAttribute('limit'),
+    'Pagination' => $Pagination,
     'showCreator' => $Site->getAttribute('quiqqer.tag.settings.showCreator'),
-    'showDate'    => $Site->getAttribute('quiqqer.tag.settings.showDate')
-));
+    'showDate' => $Site->getAttribute('quiqqer.tag.settings.showDate')
+]);
