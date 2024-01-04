@@ -30,7 +30,8 @@ class TagSelect extends QUI\Control
      */
     public function __construct($attributes = [])
     {
-        if (isset($attributes['Project'])
+        if (
+            isset($attributes['Project'])
             && $attributes['Project'] instanceof QUI\Projects\Project
         ) {
             $this->Project = $attributes['Project'];
@@ -39,12 +40,12 @@ class TagSelect extends QUI\Control
         }
 
         $this->setAttributes([
-            'data-qui'     => 'package/quiqqer/tags/bin/TagSelect',
+            'data-qui' => 'package/quiqqer/tags/bin/TagSelect',
             'selectedTags' => []
         ]);
 
         $this->addCSSClass('quiqqer-tags-tagselect');
-        $this->addCSSFile(\dirname(__FILE__).'/TagSelect.css');
+        $this->addCSSFile(\dirname(__FILE__) . '/TagSelect.css');
 
         parent::__construct($attributes);
     }
@@ -60,13 +61,13 @@ class TagSelect extends QUI\Control
 
         // Get Tag Search Site
         $Engine->assign([
-            'children'     => $this->getChildren(),
-            'this'         => $this,
-            'Rewrite'      => QUI::getRewrite(),
+            'children' => $this->getChildren(),
+            'this' => $this,
+            'Rewrite' => QUI::getRewrite(),
             'selectedTags' => $this->getAttribute('selectedTags')
         ]);
 
-        return $Engine->fetch(\dirname(__FILE__).'/TagSelect.html');
+        return $Engine->fetch(\dirname(__FILE__) . '/TagSelect.html');
     }
 
     /**
@@ -77,20 +78,20 @@ class TagSelect extends QUI\Control
     public function getChildren()
     {
         $tagGroupIds = TagGroupsHandler::getGroupIds($this->Project);
-        $children    = [];
+        $children = [];
 
         foreach ($tagGroupIds as $tagGroupId) {
             $TagGroup = TagGroupsHandler::get($this->Project, $tagGroupId);
-            $tags     = $TagGroup->getTags();
+            $tags = $TagGroup->getTags();
 
             if (empty($tags)) {
                 continue;
             }
 
             $children[] = [
-                'id'       => $TagGroup->getId(),
-                'title'    => $TagGroup->getTitle(),
-                'tags'     => $tags,
+                'id' => $TagGroup->getId(),
+                'title' => $TagGroup->getTitle(),
+                'tags' => $tags,
                 'priority' => $TagGroup->getPriority()
             ];
         }

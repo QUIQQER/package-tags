@@ -8,6 +8,14 @@ namespace QUI\Tags;
 
 use QUI;
 
+use function count;
+use function explode;
+use function implode;
+use function is_array;
+use function is_string;
+use function str_replace;
+use function trim;
+
 /**
  * Site events for tags
  *
@@ -18,31 +26,32 @@ class Site
     /**
      * event on site save
      *
-     * @param \QUI\Projects\Site $Site
+     * @param QUI\Projects\Site $Site
      *
      * @throws \QUI\Exception
      */
     public static function onSave($Site)
     {
         $Project = $Site->getProject();
-        $tags    = $Site->getAttribute('quiqqer.tags.tagList');
+        $tags = $Site->getAttribute('quiqqer.tags.tagList');
         $Manager = new QUI\Tags\Manager($Project);
 
         // register path
-        if ($Site->getAttribute('type') == 'quiqqer/tags:types/tag-listing' &&
+        if (
+            $Site->getAttribute('type') == 'quiqqer/tags:types/tag-listing' &&
             $Site->getAttribute('active')
         ) {
             $url = $Site->getLocation();
-            $url = \str_replace(QUI\Rewrite::getDefaultSuffix(), '', $url);
+            $url = str_replace(QUI\Rewrite::getDefaultSuffix(), '', $url);
 
-            QUI::getRewrite()->registerPath($url.'/*', $Site);
+            QUI::getRewrite()->registerPath($url . '/*', $Site);
         }
 
         // set tags
-        if (empty($tags) || (!\is_string($tags) && !\is_array($tags))) {
+        if (empty($tags) || (!is_string($tags) && !is_array($tags))) {
             $tags = [];
-        } elseif (\is_string($tags)) {
-            $tags = \explode(',', \trim($tags, ','));
+        } elseif (is_string($tags)) {
+            $tags = explode(',', trim($tags, ','));
         }
 
         $list = [];
@@ -53,10 +62,10 @@ class Site
             }
         }
 
-        $User  = QUI::getUserBySession();
+        $User = QUI::getUserBySession();
         $limit = $User->getPermission('tags.siteLimit', 'maxInteger');
 
-        if ($limit < \count($list)) {
+        if ($limit < count($list)) {
             $message = QUI::getLocale()->get(
                 'quiqqer/tags',
                 'exception.limit.tags.to.site',
@@ -92,7 +101,7 @@ class Site
             $Site->getProject(),
             $Site->getId(),
             [
-                'tags' => ','.\implode(",", $tags).','
+                'tags' => ',' . implode(",", $tags) . ','
             ]
         );
     }
@@ -100,7 +109,7 @@ class Site
     /**
      * event : on site deactivate
      *
-     * @param \QUI\Projects\Site $Site
+     * @param QUI\Projects\Site $Site
      *
      * @throws \QUI\Exception
      */
@@ -112,12 +121,12 @@ class Site
     /**
      * event on site load
      *
-     * @param \QUI\Projects\Site $Site
+     * @param QUI\Projects\Site $Site
      */
     public static function onLoad($Site)
     {
         $Manager = new QUI\Tags\Manager($Site->getProject());
-        $tags    = $Manager->getSiteTags($Site->getId());
+        $tags = $Manager->getSiteTags($Site->getId());
 
         $Site->setAttribute('quiqqer.tags.tagList', $tags);
     }
@@ -125,7 +134,7 @@ class Site
     /**
      * event on site destroy
      *
-     * @param \QUI\Projects\Site $Site
+     * @param QUI\Projects\Site $Site
      */
     public static function onDestroy($Site)
     {

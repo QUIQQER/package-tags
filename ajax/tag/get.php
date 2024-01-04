@@ -15,7 +15,7 @@ QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_get',
     function ($projectName, $projectLang, $tag) {
         $Project = QUI::getProject($projectName, $projectLang);
-        $Tags    = new QUI\Tags\Manager($Project);
+        $Tags = new QUI\Tags\Manager($Project);
 
         $tagData = $Tags->get($tag);
 

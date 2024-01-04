@@ -28,7 +28,8 @@ class TagMenu extends QUI\Control
      */
     public function __construct($attributes = [])
     {
-        if (isset($attributes['Project'])
+        if (
+            isset($attributes['Project'])
             && $attributes['Project'] instanceof QUI\Projects\Project
         ) {
             $this->Project = $attributes['Project'];
@@ -37,13 +38,13 @@ class TagMenu extends QUI\Control
         }
 
         $this->setAttributes([
-            'data-qui'      => 'package/quiqqer/tags/bin/TagMenu',
-            'selectedTags'  => [],
+            'data-qui' => 'package/quiqqer/tags/bin/TagMenu',
+            'selectedTags' => [],
             'TagSearchSite' => false
         ]);
 
         $this->addCSSClass('quiqqer-tags-tagmenu');
-        $this->addCSSFile(\dirname(__FILE__).'/TagMenu.css');
+        $this->addCSSFile(\dirname(__FILE__) . '/TagMenu.css');
 
         parent::__construct($attributes);
     }
@@ -67,15 +68,15 @@ class TagMenu extends QUI\Control
 
         // Get Tag Search Site
         $Engine->assign([
-            'children'         => $this->getChildren(),
-            'this'             => $this,
-            'childrenTemplate' => \dirname(__FILE__).'/TagMenu.Children.html',
-            'Rewrite'          => QUI::getRewrite(),
-            'tagSearchUrl'     => $tagSearchUrl,
-            'selectedTags'     => $this->getAttribute('selectedTags')
+            'children' => $this->getChildren(),
+            'this' => $this,
+            'childrenTemplate' => \dirname(__FILE__) . '/TagMenu.Children.html',
+            'Rewrite' => QUI::getRewrite(),
+            'tagSearchUrl' => $tagSearchUrl,
+            'selectedTags' => $this->getAttribute('selectedTags')
         ]);
 
-        return $Engine->fetch(\dirname(__FILE__).'/TagMenu.html');
+        return $Engine->fetch(\dirname(__FILE__) . '/TagMenu.html');
     }
 
     /**
@@ -86,7 +87,7 @@ class TagMenu extends QUI\Control
     public function getChildren()
     {
         $tagGroupIds = TagGroupsHandler::getGroupIds($this->Project);
-        $children    = [];
+        $children = [];
 
         foreach ($tagGroupIds as $tagGroupId) {
             $TagGroup = TagGroupsHandler::get($this->Project, $tagGroupId);
@@ -98,9 +99,9 @@ class TagMenu extends QUI\Control
             }
 
             $children[] = [
-                'id'       => $TagGroup->getId(),
-                'title'    => $TagGroup->getTitle(),
-                'tags'     => $tags,
+                'id' => $TagGroup->getId(),
+                'title' => $TagGroup->getTitle(),
+                'tags' => $tags,
                 'priority' => $TagGroup->getPriority()
             ];
         }
