@@ -8,6 +8,9 @@ namespace QUI\Tags;
 
 use QUI;
 
+use function count;
+use function implode;
+
 /**
  * Tag Crons - Crons for the tag system
  *
@@ -32,12 +35,12 @@ class Cron
         }
 
 
-        $Project  = QUI::getProject($params['project'], $params['lang']);
+        $Project = QUI::getProject($params['project'], $params['lang']);
         $DataBase = QUI::getDataBase();
 
-        $tableSites     = QUI::getDBProjectTableName('tags_sites', $Project);
+        $tableSites = QUI::getDBProjectTableName('tags_sites', $Project);
         $tableSiteCache = QUI::getDBProjectTableName('tags_siteCache', $Project);
-        $tableCache     = QUI::getDBProjectTableName('tags_cache', $Project);
+        $tableCache = QUI::getDBProjectTableName('tags_cache', $Project);
 
 
         // get ids
@@ -61,7 +64,7 @@ class Cron
 
                 $entry['id'] = (int)$entry['id'];
 
-                $_str = $entry['id'].'_'.$tag;
+                $_str = $entry['id'] . '_' . $tag;
 
 
                 if (isset($_tmp[$_str])) {
@@ -69,7 +72,7 @@ class Cron
                 }
 
                 $list[$tag][] = $entry['id'];
-                $_tmp[$_str]  = 1; // temp zum prüfen ob schon drinnen, in_array ist zulangsam
+                $_tmp[$_str] = 1; // temp zum prüfen ob schon drinnen, in_array ist zulangsam
             }
         }
 
@@ -95,9 +98,9 @@ class Cron
             }
 
             $DataBase->insert($tableCache, [
-                'tag'   => $tag,
-                'sites' => ','.\implode(',', $siteIds).',',
-                'count' => \count($siteIds)
+                'tag' => $tag,
+                'sites' => ',' . implode(',', $siteIds) . ',',
+                'count' => count($siteIds)
             ]);
         }
 
@@ -131,10 +134,10 @@ class Cron
                 }
 
                 $DataBase->insert($tableSiteCache, [
-                    'id'     => $Site->getId(),
-                    'name'   => $Site->getAttribute('name'),
-                    'title'  => $Site->getAttribute('title'),
-                    'tags'   => $entry['tags'],
+                    'id' => $Site->getId(),
+                    'name' => $Site->getAttribute('name'),
+                    'title' => $Site->getAttribute('title'),
+                    'tags' => $entry['tags'],
                     'c_date' => $Site->getAttribute('c_date'),
                     'e_date' => $Site->getAttribute('e_date')
                 ]);

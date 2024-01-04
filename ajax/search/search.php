@@ -25,7 +25,7 @@ QUI::$Ajax->registerFunction(
         $group
     ) {
         $Project = QUI::getProject($projectName, $projectLang);
-        $Tags    = new QUI\Tags\Manager($Project);
+        $Tags = new QUI\Tags\Manager($Project);
 
         if (!empty($group) && is_numeric($group)) {
             try {

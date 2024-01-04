@@ -17,7 +17,7 @@ QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_groups_create',
     function ($project, $title, $desc, $image) {
         $Project = QUI::getProjectManager()->decode($project);
-        $Group   = QUI\Tags\Groups\Handler::create($Project, $title);
+        $Group = QUI\Tags\Groups\Handler::create($Project, $title);
 
         $Group->setImage($image);
         $Group->setDescription($desc);

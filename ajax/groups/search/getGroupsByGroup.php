@@ -10,7 +10,7 @@ QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_groups_search_getGroupsByGroup',
     function ($project, $groupId, $recursive = 1) {
         $Project = QUI::getProjectManager()->decode($project);
-        $Group   = QUI\Tags\Groups\Handler::get($Project, $groupId);
+        $Group = QUI\Tags\Groups\Handler::get($Project, $groupId);
 
         $groups = [];
 

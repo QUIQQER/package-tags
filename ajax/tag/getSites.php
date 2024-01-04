@@ -21,10 +21,10 @@ use QUI\Utils\Security\Orthos;
 QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_getSites',
     function ($projectName, $projectLang, $tag, $searchParams) {
-        $Project      = QUI::getProject($projectName, $projectLang);
-        $Manager      = new Manager($Project);
+        $Project = QUI::getProject($projectName, $projectLang);
+        $Manager = new Manager($Project);
         $siteIdsAssoc = $Manager->getSiteIdsFromTags([$tag]);
-        $siteIds      = [];
+        $siteIds = [];
 
         foreach ($siteIdsAssoc as $siteId => $count) {
             $siteIds[] = $siteId;
@@ -33,9 +33,9 @@ QUI::$Ajax->registerFunction(
         $tagSites = [];
 
         $searchParams = Orthos::clearArray(json_decode($searchParams, true));
-        $Grid         = new Grid($searchParams);
-        $gridParams   = $Grid->parseDBParams($searchParams);
-        $order        = '';
+        $Grid = new Grid($searchParams);
+        $gridParams = $Grid->parseDBParams($searchParams);
+        $order = '';
 
         if (empty($siteIds)) {
             return $Grid->parseResult(
@@ -44,15 +44,17 @@ QUI::$Ajax->registerFunction(
             );
         }
 
-        if (isset($searchParams['sortOn']) &&
+        if (
+            isset($searchParams['sortOn']) &&
             !empty($searchParams['sortOn'])
         ) {
             $order = $searchParams['sortOn'];
 
-            if (isset($searchParams['sortBy']) &&
+            if (
+                isset($searchParams['sortBy']) &&
                 !empty($searchParams['sortBy'])
             ) {
-                $order .= ' '.$searchParams['sortBy'];
+                $order .= ' ' . $searchParams['sortBy'];
             }
         }
 
@@ -60,24 +62,24 @@ QUI::$Ajax->registerFunction(
             'select' => [
                 'id'
             ],
-            'from'   => QUI::getDBProjectTableName('sites', $Project),
-            'where'  => [
+            'from' => QUI::getDBProjectTableName('sites', $Project),
+            'where' => [
                 'id' => [
-                    'type'  => 'IN',
+                    'type' => 'IN',
                     'value' => $siteIds
                 ]
             ],
-            'order'  => empty($order) ? null : $order,
-            'limit'  => $gridParams['limit']
+            'order' => empty($order) ? null : $order,
+            'limit' => $gridParams['limit']
         ]);
 
         foreach ($result as $row) {
             $Site = $Project->get($row['id']);
 
             $tagSites[] = [
-                'id'    => $Site->getId(),
+                'id' => $Site->getId(),
                 'title' => $Site->getAttribute('title'),
-                'url'   => $Site->getUrlRewritten()
+                'url' => $Site->getUrlRewritten()
             ];
         }
 

@@ -25,7 +25,7 @@ QUI::$Ajax->registerFunction(
         );
 
         $result = '';
-        $list   = $Tags->searchTags($string);
+        $list = $Tags->searchTags($string);
 
         foreach ($list as $tag) {
             $value = $tag['tag'];
@@ -34,7 +34,7 @@ QUI::$Ajax->registerFunction(
                 $value = $tag['title'];
             }
 
-            $result .= '<option value="'.$value.'" data-tag="'.$tag['tag'].'">';
+            $result .= '<option value="' . $value . '" data-tag="' . $tag['tag'] . '">';
         }
 
         return $result;

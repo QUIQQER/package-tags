@@ -16,8 +16,8 @@ QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_groups_list',
     function ($project, $params) {
         $Project = QUI::getProjectManager()->decode($project);
-        $Grid    = new QUI\Utils\Grid();
-        $result  = [];
+        $Grid = new QUI\Utils\Grid();
+        $result = [];
 
         $groupIds = QUI\Tags\Groups\Handler::getGroupIds(
             $Project,
@@ -25,7 +25,7 @@ QUI::$Ajax->registerFunction(
         );
 
         foreach ($groupIds as $groupId) {
-            $Group    = QUI\Tags\Groups\Handler::get($Project, $groupId);
+            $Group = QUI\Tags\Groups\Handler::get($Project, $groupId);
             $result[] = $Group->toArray();
         }
 
