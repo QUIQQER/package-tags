@@ -1215,17 +1215,22 @@ class Manager
      * @param string $tag
      * @return integer
      */
-    public function getTagCount($tag)
+    public function getTagCount(string $tag): int
     {
-        $result = [
-            'select' => [
-                'count'
-            ],
-            'from' => QUI::getDBProjectTableName('tags_cache', $this->Project),
-            'where' => [
-                'tag' => $tag
-            ]
-        ];
+        try {
+            $result = QUI::getDatabase()->fetch([
+                'select' => [
+                    'count'
+                ],
+                'from' => QUI::getDBProjectTableName('tags_cache', $this->Project),
+                'where' => [
+                    'tag' => $tag
+                ]
+            ]);
+        } catch (QUI\Exception $exception) {
+            QUI\System\Log::addError($exception->getMessage());
+            return 0;
+        }
 
         if (empty($result)) {
             return 0;
