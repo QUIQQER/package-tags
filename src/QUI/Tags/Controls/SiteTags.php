@@ -7,7 +7,6 @@
 namespace QUI\Tags\Controls;
 
 use QUI;
-
 use QUI\Database\Exception;
 
 use function dirname;

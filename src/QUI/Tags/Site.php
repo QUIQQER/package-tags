@@ -7,7 +7,6 @@
 namespace QUI\Tags;
 
 use QUI;
-
 use QUI\Exception;
 
 use function class_exists;
