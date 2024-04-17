@@ -26,7 +26,7 @@ class Watch
      *
      * @return string
      */
-    public static function watchText($call, $params, $result)
+    public static function watchText(string $call, array $params, array $result): string
     {
         switch ($call) {
             case 'package_quiqqer_tags_ajax_tag_add':

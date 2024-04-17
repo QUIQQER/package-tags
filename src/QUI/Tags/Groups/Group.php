@@ -6,13 +6,24 @@
 
 namespace QUI\Tags\Groups;
 
+use Exception;
 use QUI;
 use QUI\Projects\Project;
 use QUI\Utils\Security\Orthos;
 
+use function array_map;
 use function array_unique;
 use function array_values;
-use function strpos;
+use function count;
+use function explode;
+use function implode;
+use function in_array;
+use function is_string;
+use function json_encode;
+use function sort;
+use function strcmp;
+use function trim;
+use function usort;
 
 /**
  * Class Group
@@ -26,64 +37,64 @@ class Group
      *
      * @var Project
      */
-    protected $Project;
+    protected Project $Project;
 
     /**
      * @var integer
      */
-    protected $id;
+    protected int $id;
 
     /**
      * @var string
      */
-    protected $desc = '';
+    protected string $desc = '';
 
     /**
      * @var string
      */
-    protected $title = '';
+    protected string $title = '';
 
     /**
      * @var string
      */
-    protected $workingtitle = '';
+    protected string $workingtitle = '';
 
     /**
      * @var string
      */
-    protected $image = '';
+    protected string $image = '';
 
     /**
      * @var int
      */
-    protected $priority = 1;
+    protected int $priority = 1;
 
     /**
      * @var bool
      */
-    protected $generated = false;
+    protected bool $generated = false;
 
     /**
      * @var string
      */
-    protected $generator = '';
+    protected string $generator = '';
 
     /**
      * @var array
      */
-    protected $tags = [];
+    protected array $tags = [];
 
     /**
      * ID of parent tag group
      *
      * @var null|int - null if no parent set; ID otherwise
      */
-    protected $parentId = null;
+    protected ?int $parentId = null;
 
     /**
      * @var null|QUI\Tags\Manager
      */
-    protected $Manager = null;
+    protected ?QUI\Tags\Manager $Manager = null;
 
     /**
      * Group constructor
@@ -92,15 +103,24 @@ class Group
      * @param Project $Project
      * @throws QUI\Tags\Exception
      */
-    public function __construct($groupId, Project $Project)
+    public function __construct(int $groupId, Project $Project)
     {
-        $result = QUI::getDataBase()->fetch([
-            'from' => Handler::table($Project),
-            'where' => [
-                'id' => (int)$groupId
-            ],
-            'limit' => 1
-        ]);
+        try {
+            $result = QUI::getDataBase()->fetch([
+                'from' => Handler::table($Project),
+                'where' => [
+                    'id' => $groupId
+                ],
+                'limit' => 1
+            ]);
+        } catch (QUI\Exception $exception) {
+            QUI\System\Log::addError($exception->getMessage());
+
+            throw new QUI\Tags\Exception([
+                'quiqqer/tags',
+                'exception.group.not.found'
+            ]);
+        }
 
         if (empty($result)) {
             throw new QUI\Tags\Exception([
@@ -110,7 +130,7 @@ class Group
         }
 
         $this->Project = $Project;
-        $this->id = (int)$groupId;
+        $this->id = $groupId;
         $this->Manager = new QUI\Tags\Manager($this->Project);
 
         $data = $result[0];
@@ -128,19 +148,19 @@ class Group
 
         try {
             $this->setImage($data['image']);
-        } catch (QUI\Exception $Exception) {
+        } catch (QUI\Exception) {
         }
 
         if (!isset($data['tags'])) {
             return;
         }
 
-        $tags = \explode(',', $data['tags']);
+        $tags = explode(',', $data['tags']);
 
         foreach ($tags as $tag) {
             try {
                 $this->addTag($tag);
-            } catch (QUI\Tags\Exception $Exception) {
+            } catch (QUI\Tags\Exception) {
             }
         }
     }
@@ -150,7 +170,7 @@ class Group
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -160,7 +180,7 @@ class Group
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -170,7 +190,7 @@ class Group
      *
      * @return string
      */
-    public function getWorkingTitle()
+    public function getWorkingTitle(): string
     {
         return $this->workingtitle;
     }
@@ -180,7 +200,7 @@ class Group
      *
      * @return integer
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return $this->priority;
     }
@@ -190,7 +210,7 @@ class Group
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->desc;
     }
@@ -200,12 +220,12 @@ class Group
      *
      * @return QUI\Projects\Media\Image|false
      */
-    public function getImage()
+    public function getImage(): QUI\Projects\Media\Image|bool
     {
         if (QUI\Projects\Media\Utils::isMediaUrl($this->image)) {
             try {
                 return QUI\Projects\Media\Utils::getImageByUrl($this->image);
-            } catch (QUI\Exception $Exception) {
+            } catch (QUI\Exception) {
             }
         }
 
@@ -219,20 +239,16 @@ class Group
     }
 
     /**
-     * @param $search
-     * @param $queryParams
+     * @param string $search
      * @return array
      */
-    public function searchTags($search, $queryParams = []): array
+    public function searchTags(string $search): array
     {
         $tags = $this->getTags();
         $result = [];
 
         foreach ($tags as $tag) {
-            if (
-                strpos($tag['tag'], $search) === false
-                && strpos($tag['title'], $search) === false
-            ) {
+            if (!str_contains($tag['tag'], $search) && !str_contains($tag['title'], $search)) {
                 continue;
             }
 
@@ -247,9 +263,9 @@ class Group
      *
      * @return bool
      */
-    public function isGenerated()
+    public function isGenerated(): bool
     {
-        return $this->generated ? true : false;
+        return $this->generated;
     }
 
     /**
@@ -257,7 +273,7 @@ class Group
      *
      * @return string
      */
-    public function getGenerator()
+    public function getGenerator(): string
     {
         return $this->generator;
     }
@@ -268,10 +284,10 @@ class Group
      *
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         if (!empty($title)) {
-            $title = \trim(Orthos::removeHTML($title));
+            $title = trim(Orthos::removeHTML($title));
         }
 
         $this->title = $title;
@@ -283,10 +299,10 @@ class Group
      *
      * @param string $title
      */
-    public function setWorkingTitle($title)
+    public function setWorkingTitle(string $title): void
     {
         if (!empty($title)) {
-            $title = \trim(Orthos::removeHTML($title));
+            $title = trim(Orthos::removeHTML($title));
         }
 
         $this->workingtitle = $title;
@@ -298,10 +314,10 @@ class Group
      *
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         if (!empty($description)) {
-            $description = \trim(Orthos::removeHTML($description));
+            $description = trim(Orthos::removeHTML($description));
         }
 
         $this->desc = $description;
@@ -312,25 +328,25 @@ class Group
      *
      * @param integer $priority
      */
-    public function setPriority($priority)
+    public function setPriority(int $priority): void
     {
-        $this->priority = (int)$priority;
+        $this->priority = $priority;
     }
 
     /**
-     * Set the genereated status
+     * Set the generated status
      * Is the group generated?
      *
      * @param bool $status
      */
-    public function setGenerateStatus($status)
+    public function setGenerateStatus(bool $status): void
     {
         // cannot set to false if a generator is set
         if (!$status && !empty($this->generator)) {
             return;
         }
 
-        $this->generated = $status ? true : false;
+        $this->generated = $status;
     }
 
     /**
@@ -338,12 +354,8 @@ class Group
      *
      * @param string $generator
      */
-    public function setGenerator($generator)
+    public function setGenerator(string $generator): void
     {
-        if (!\is_string($generator)) {
-            return;
-        }
-
         $this->generator = $generator;
         $this->generated = true;
     }
@@ -356,7 +368,7 @@ class Group
      * @throws QUI\Tags\Exception
      * @throws QUI\Exception
      */
-    public function setImage($Image)
+    public function setImage(QUI\Projects\Media\Image|string $Image): void
     {
         if (empty($Image)) {
             $this->image = '';
@@ -364,7 +376,7 @@ class Group
             return;
         }
 
-        if (\is_string($Image)) {
+        if (is_string($Image)) {
             $Image = QUI\Projects\Media\Utils::getImageByUrl($Image);
         }
 
@@ -384,12 +396,10 @@ class Group
      * @param int $groupId - ID of parent tag group
      * @return void
      *
-     * @throws QUI\Tags\Exception
+     * @throws QUI\Tags\Exception|QUI\Database\Exception
      */
-    public function setParentGroup($groupId)
+    public function setParentGroup(int $groupId): void
     {
-        $groupId = (int)$groupId;
-
         if ($this->parentId === $groupId) {
             return;
         }
@@ -411,7 +421,7 @@ class Group
             ]);
         }
 
-        if (\in_array($groupId, $this->getChildrenIds())) {
+        if (in_array($groupId, $this->getChildrenIds())) {
             throw new QUI\Tags\Exception([
                 'quiqqer/tags',
                 'exception.groups.group.parent.cannot.be.child',
@@ -440,48 +450,52 @@ class Group
      *
      * @return array
      */
-    public function getChildrenIds()
+    public function getChildrenIds(): array
     {
         return Handler::getTagGroupChildrenIds($this->Project, $this->id);
     }
 
     /**
      * Removes the current parent tag group from this tag group.
-     * This makes the tag group parentless.
+     * This makes the tag group parent less.
      *
      * @return void
      */
-    public function removeParentGroup()
+    public function removeParentGroup(): void
     {
         if ($this->parentId === null) {
             return;
         }
 
-        QUI::getDataBase()->update(
-            Handler::table($this->Project),
-            [
-                'parentId' => null
-            ],
-            [
-                'id' => $this->id
-            ]
-        );
+        try {
+            QUI::getDataBase()->update(
+                Handler::table($this->Project),
+                ['parentId' => null],
+                ['id' => $this->id]
+            );
 
-        $this->parentId = null;
+            $this->parentId = null;
+        } catch (QUI\Exception $exception) {
+            QUI\System\Log::addError($exception->getMessage());
+        }
     }
 
     /**
      * Delete the group
      */
-    public function delete()
+    public function delete(): void
     {
-        Handler::delete($this->Project, $this->getId());
+        try {
+            Handler::delete($this->Project, $this->getId());
+        } catch (QUI\Exception $exception) {
+            QUI\System\Log::addError($exception->getMessage());
+        }
     }
 
     /**
      * Save the group
      */
-    public function save()
+    public function save(): void
     {
         // image
         $image = '';
@@ -490,12 +504,12 @@ class Group
             try {
                 $Image = QUI\Projects\Media\Utils::getImageByUrl($this->image);
                 $image = $Image->getUrl();
-            } catch (QUI\Exception $Exception) {
+            } catch (QUI\Exception) {
             }
         }
 
         // tags
-        $tags = \array_map(function ($tag) {
+        $tags = array_map(function ($tag) {
             return $tag['tag'];
         }, $this->getTags());
 
@@ -510,7 +524,7 @@ class Group
                 'desc' => $this->getDescription(),
                 'image' => $image,
                 'priority' => $this->getPriority(),
-                'tags' => ',' . \implode(',', $tags) . ',',
+                'tags' => ',' . implode(',', $tags) . ',',
                 'generated' => $this->isGenerated() ? 1 : 0,
                 'generator' => $this->getGenerator()
             ],
@@ -526,7 +540,7 @@ class Group
      * @param string $tag - Tag
      * @throws QUI\Tags\Exception
      */
-    public function addTag($tag)
+    public function addTag(string $tag): void
     {
         if (empty($tag)) {
             return;
@@ -552,12 +566,12 @@ class Group
      *
      * @param array $tags - tags
      */
-    public function addTags($tags)
+    public function addTags(array $tags): void
     {
         foreach ($tags as $tag) {
             try {
                 $this->addTag($tag);
-            } catch (\Exception $Exception) {
+            } catch (Exception) {
                 // do not add tag
             }
         }
@@ -569,12 +583,16 @@ class Group
      * @param array $tags
      * @return void
      */
-    public function setTags($tags)
+    public function setTags(array $tags): void
     {
         $this->tags = [];
 
         foreach ($tags as $tag) {
-            $this->addTag($tag);
+            try {
+                $this->addTag($tag);
+            } catch (QUI\Exception $exception) {
+                QUI\System\Log::addError($exception->getMessage());
+            }
         }
     }
 
@@ -584,7 +602,7 @@ class Group
      * @param string $tag
      * @return void
      */
-    public function removeTag($tag)
+    public function removeTag(string $tag): void
     {
         if (isset($this->tags[$tag])) {
             unset($this->tags[$tag]);
@@ -597,7 +615,7 @@ class Group
      * @param string $generator - tag generator
      * @return void
      */
-    public function removeTagsByGenerator($generator)
+    public function removeTagsByGenerator(string $generator): void
     {
         $tags = $this->getTags();
 
@@ -615,12 +633,12 @@ class Group
      *
      * @return array
      */
-    public function getTags()
+    public function getTags(): array
     {
-        $tags = \array_values($this->tags);
+        $tags = array_values($this->tags);
 
-        \usort($tags, function ($a, $b) {
-            return \strcmp($a["title"], $b["title"]);
+        usort($tags, function ($a, $b) {
+            return strcmp($a["title"], $b["title"]);
         });
 
         return $tags;
@@ -631,13 +649,13 @@ class Group
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
-        $tags = \array_map(function ($tag) {
+        $tags = array_map(function ($tag) {
             return $tag['tag'];
         }, $this->getTags());
 
-        \sort($tags);
+        sort($tags);
 
         return [
             'id' => $this->id,
@@ -646,8 +664,8 @@ class Group
             'desc' => $this->desc,
             'image' => $this->image,
             'priority' => $this->priority,
-            'tags' => \implode(',', $tags),
-            'countTags' => \count($this->tags),
+            'tags' => implode(',', $tags),
+            'countTags' => count($this->tags),
             'generated' => $this->isGenerated(),
             'parentId' => $this->parentId
         ];
@@ -658,8 +676,8 @@ class Group
      *
      * @return string
      */
-    public function toJSON()
+    public function toJSON(): string
     {
-        return \json_encode($this->toArray());
+        return json_encode($this->toArray());
     }
 }

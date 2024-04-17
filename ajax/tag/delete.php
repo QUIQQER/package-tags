@@ -20,7 +20,7 @@ QUI::$Ajax->registerFunction(
             QUI::getProject($projectName, $projectLang)
         );
 
-        $tags = \json_decode($tags, true);
+        $tags = json_decode($tags, true);
 
         foreach ($tags as $tag) {
             try {

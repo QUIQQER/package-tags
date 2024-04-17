@@ -26,7 +26,7 @@ QUI::$Ajax->registerFunction(
             QUI::getProject($projectName, $projectLang)
         );
 
-        $tagParams = \json_decode($tagParams, true);
+        $tagParams = json_decode($tagParams, true);
 
         $Tags->edit($tag, $tagParams);
     },

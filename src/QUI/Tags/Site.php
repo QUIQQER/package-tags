@@ -8,6 +8,9 @@ namespace QUI\Tags;
 
 use QUI;
 
+use QUI\Exception;
+
+use function class_exists;
 use function count;
 use function explode;
 use function implode;
@@ -26,11 +29,11 @@ class Site
     /**
      * event on site save
      *
-     * @param QUI\Projects\Site $Site
+     * @param QUI\Interfaces\Projects\Site $Site
      *
-     * @throws \QUI\Exception
+     * @throws Exception
      */
-    public static function onSave($Site)
+    public static function onSave(QUI\Interfaces\Projects\Site $Site): void
     {
         $Project = $Site->getProject();
         $tags = $Site->getAttribute('quiqqer.tags.tagList');
@@ -85,15 +88,19 @@ class Site
     /**
      * Add tags to Fulltext search
      *
-     * @param QUI\Projects\Site $Site
+     * @param QUI\Interfaces\Projects\Site $Site
      * @param array $tags
      * @return void
      */
-    public static function setTagsToFulltextSearch($Site, $tags)
+    public static function setTagsToFulltextSearch(QUI\Interfaces\Projects\Site $Site, array $tags): void
     {
         try {
             QUI::getPackageManager()->getInstalledPackage('quiqqer/search');
-        } catch (\Exception $Exception) {
+        } catch (\Exception) {
+            return;
+        }
+
+        if (!class_exists('QUI\Search\Fulltext')) {
             return;
         }
 
@@ -109,11 +116,10 @@ class Site
     /**
      * event : on site deactivate
      *
-     * @param QUI\Projects\Site $Site
-     *
-     * @throws \QUI\Exception
+     * @param QUI\Interfaces\Projects\Site $Site
+     * @throws Exception
      */
-    public static function onSiteDeactivate($Site)
+    public static function onSiteDeactivate(QUI\Interfaces\Projects\Site $Site): void
     {
         self::onSave($Site);
     }
@@ -122,8 +128,9 @@ class Site
      * event on site load
      *
      * @param QUI\Projects\Site $Site
+     * @throws Exception
      */
-    public static function onLoad($Site)
+    public static function onLoad(QUI\Interfaces\Projects\Site $Site): void
     {
         $Manager = new QUI\Tags\Manager($Site->getProject());
         $tags = $Manager->getSiteTags($Site->getId());
@@ -135,8 +142,9 @@ class Site
      * event on site destroy
      *
      * @param QUI\Projects\Site $Site
+     * @throws Exception
      */
-    public static function onDestroy($Site)
+    public static function onDestroy(QUI\Interfaces\Projects\Site $Site): void
     {
         $Manager = new QUI\Tags\Manager($Site->getProject());
         $Manager->deleteSiteTags($Site->getId());

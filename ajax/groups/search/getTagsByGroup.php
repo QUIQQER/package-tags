@@ -16,7 +16,7 @@ QUI::$Ajax->registerFunction(
 
         if (!empty($recursive)) {
             if (!function_exists('getGroupTags')) {
-                function getGroupTags(Group $Group, $Project, &$tags)
+                function getGroupTags(Group $Group, $Project, &$tags): void
                 {
                     $tags = array_merge($Group->getTags(), $tags);
                     $children = $Group->getChildrenIds();

@@ -7,7 +7,11 @@
 namespace QUI\Tags\Groups;
 
 use QUI;
+use QUI\Permissions\Exception;
 use QUI\Projects\Project;
+
+use function strnatcasecmp;
+use function usort;
 
 /**
  * Class Group - Tag groups handler
@@ -21,21 +25,21 @@ class Handler
      *
      * @var array
      */
-    protected static $groups = [];
+    protected static array $groups = [];
 
     /**
      * Category tree runtime cache
      *
      * @var array
      */
-    protected static $trees = [];
+    protected static array $trees = [];
 
     /**
      * Check if tag group feature is enabled.
      *
      * @return bool
      */
-    public static function isTagGroupsEnabled()
+    public static function isTagGroupsEnabled(): bool
     {
         try {
             $Package = QUI::getPackageManager()->getInstalledPackage('quiqqer/tags');
@@ -54,7 +58,7 @@ class Handler
      * @param Project $Project
      * @return string
      */
-    public static function table(Project $Project)
+    public static function table(Project $Project): string
     {
         return QUI::getDBProjectTableName('tags_groups', $Project);
     }
@@ -66,16 +70,18 @@ class Handler
      * @param string $title
      * @param QUI\Interfaces\Users\User|null $User
      * @return Group
+     *
+     * @throws Exception
+     * @throws QUI\Tags\Exception
+     * @throws QUI\Database\Exception
      */
-    public static function create(Project $Project, $title, $User = null)
+    public static function create(Project $Project, string $title, QUI\Interfaces\Users\User $User = null): Group
     {
         QUI\Permissions\Permission::checkPermission('tags.group.create', $User);
 
         QUI::getDataBase()->insert(
             self::table($Project),
-            [
-                'title' => QUI\Utils\Security\Orthos::cleanHTML($title)
-            ]
+            ['title' => QUI\Utils\Security\Orthos::cleanHTML($title)]
         );
 
         $gid = QUI::getDataBase()->getPDO()->lastInsertId();
@@ -89,8 +95,10 @@ class Handler
      * @param Project $Project
      * @param array $queryParams
      * @return int
+     *
+     * @throws QUI\Database\Exception
      */
-    public static function count(Project $Project, $queryParams = [])
+    public static function count(Project $Project, array $queryParams = []): int
     {
         $query = [
             'from' => self::table($Project),
@@ -110,7 +118,7 @@ class Handler
 
         $data = QUI::getDataBase()->fetch($query);
 
-        if (isset($data[0]) && isset($data[0]['count'])) {
+        if (isset($data[0]['count'])) {
             return (int)$data[0]['count'];
         }
 
@@ -126,8 +134,9 @@ class Handler
      * @return void
      *
      * @throws QUI\Tags\Exception
+     * @throws Exception
      */
-    public static function delete(Project $Project, $groupId, $User = null)
+    public static function delete(Project $Project, int $groupId, QUI\Interfaces\Users\User $User = null): void
     {
         QUI\Permissions\Permission::checkPermission('tags.group.delete', $User);
 
@@ -160,11 +169,7 @@ class Handler
             ]
         );
 
-        if (
-            isset(self::$groups[$project])
-            && isset(self::$groups[$project][$lang])
-            && isset(self::$groups[$project][$lang][$groupId])
-        ) {
+        if (isset(self::$groups[$project][$lang][$groupId])) {
             unset(self::$groups[$project][$lang][$groupId]);
         }
     }
@@ -177,7 +182,7 @@ class Handler
      * @param array $queryParams -  optional, query params order, limit
      * @return array
      */
-    public static function search(Project $Project, $search, $queryParams = [])
+    public static function search(Project $Project, string $search, array $queryParams = []): array
     {
         $query = [
             'from' => self::table($Project),
@@ -197,20 +202,25 @@ class Handler
             $query['limit'] = $queryParams['limit'];
         }
 
-        return QUI::getDataBase()->fetch($query);
+        try {
+            return QUI::getDataBase()->fetch($query);
+        } catch (QUI\Exception $exception) {
+            QUI\System\Log::addError($exception->getMessage());
+            return [];
+        }
     }
 
     /**
-     * Return a tag group list by its sektor (title)
+     * Return a tag group list by its sector (title)
      *
      * @param Project $Project
-     * @param string $sektor - group sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
+     * @param string $sector - group sector, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
      *
      * @return array
      */
-    public static function getBySektor(Project $Project, $sektor)
+    public static function getBySektor(Project $Project, string $sector): array
     {
-        switch ($sektor) {
+        switch ($sector) {
             default:
             case 'abc':
                 $where = 'title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%"';
@@ -276,16 +286,12 @@ class Handler
      * @return Group
      * @throws QUI\Tags\Exception
      */
-    public static function get(Project $Project, $groupId)
+    public static function get(Project $Project, int $groupId): Group
     {
         $project = $Project->getName();
         $lang = $Project->getLang();
 
-        if (
-            isset(self::$groups[$project])
-            && isset(self::$groups[$project][$lang])
-            && isset(self::$groups[$project][$lang][$groupId])
-        ) {
+        if (isset(self::$groups[$project][$lang][$groupId])) {
             return self::$groups[$project][$lang][$groupId];
         }
 
@@ -303,13 +309,12 @@ class Handler
      * @param integer $groupId
      * @return bool
      */
-    public static function exists(Project $Project, $groupId)
+    public static function exists(Project $Project, int $groupId): bool
     {
         try {
             self::get($Project, $groupId);
-
             return true;
-        } catch (QUI\Tags\Exception $Exception) {
+        } catch (QUI\Exception) {
         }
 
         return false;
@@ -329,7 +334,7 @@ class Handler
      *
      * @throws QUI\Tags\Exception
      */
-    public static function getGroups(Project $Project, $params = [])
+    public static function getGroups(Project $Project, array $params = []): array
     {
         $result = [];
         $groupIds = self::getGroupIds($Project, $params);
@@ -353,7 +358,7 @@ class Handler
      *                              $queryParams['order']
      * @return array
      */
-    public static function getGroupIds(Project $Project, $params = [])
+    public static function getGroupIds(Project $Project, array $params = []): array
     {
         $query = [
             'from' => self::table($Project)
@@ -371,7 +376,7 @@ class Handler
             $query['limit'] = $params['limit'];
         }
 
-        if (isset($params['order']) && !empty($params['order'])) {
+        if (!empty($params['order'])) {
             $query['order'] = $params['order'];
         }
 
@@ -383,10 +388,7 @@ class Handler
         $data = QUI::getDataBase()->fetch($query);
 
         foreach ($data as $entry) {
-            try {
-                $result[] = (int)$entry['id'];
-            } catch (QUI\Exception $Exception) {
-            }
+            $result[] = (int)$entry['id'];
         }
 
         return $result;
@@ -399,7 +401,7 @@ class Handler
      * @param string $tag
      * @return int[]
      */
-    public static function getGroupIdsByTag(Project $Project, string $tag)
+    public static function getGroupIdsByTag(Project $Project, string $tag): array
     {
         return self::getGroupIds($Project, [
             'where' => [
@@ -412,12 +414,12 @@ class Handler
     }
 
     /**
-     * Get complete hierarchial tag group tree from a project
+     * Get complete hierarchical tag group tree from a project
      *
      * @param Project $Project
      * @return array
      */
-    public static function getTree(Project $Project)
+    public static function getTree(Project $Project): array
     {
         $project = $Project->getName();
         $lang = $Project->getLang();
@@ -502,10 +504,10 @@ class Handler
      * @param array $groups
      * @return array - alphabetically sorted array
      */
-    protected static function sortGroupsAlphabetically($groups)
+    protected static function sortGroupsAlphabetically(array $groups): array
     {
-        \usort($groups, function ($a, $b) {
-            return \strnatcasecmp($a['title'], $b['title']);
+        usort($groups, function ($a, $b) {
+            return strnatcasecmp($a['title'], $b['title']);
         });
 
         return $groups;
@@ -515,14 +517,13 @@ class Handler
      * Get IDs of all children (recursive) of a tag group
      *
      * @param Project $Project
-     * @param int $groupId - tag group ID
-     * @param $groupId
+     * @param int $groupId
      * @return array
      */
-    public static function getTagGroupChildrenIds(Project $Project, $groupId)
+    public static function getTagGroupChildrenIds(Project $Project, int $groupId): array
     {
         $tree = self::getTree($Project);
-        $groupNode = self::searchTree($tree, (int)$groupId);
+        $groupNode = self::searchTree($tree, $groupId);
 
         // group has no children
         if (empty($groupNode)) {
@@ -533,15 +534,15 @@ class Handler
     }
 
     /**
-     * Get all children IDs from a tree nide
+     * Get all children IDs from a tree node
      *
-     * @param array $node - tree nide
+     * @param array $node - tree node
      * @param array $children (optional) - array that includes children ids
      * @return array
      */
-    protected static function getChildrenIdsFromNode($node, &$children = [])
+    protected static function getChildrenIdsFromNode(array $node, array &$children = []): array
     {
-        foreach ($node as $k => $item) {
+        foreach ($node as $item) {
             $children[] = $item['id'];
 
             if (!empty($item['children'])) {
@@ -559,15 +560,15 @@ class Handler
      * @param int $nodeId - ID of the node to search for
      * @return array|false
      */
-    protected static function searchTree($tree, $nodeId)
+    protected static function searchTree(array $tree, int $nodeId): bool|array
     {
-        foreach ($tree as $k => $node) {
+        foreach ($tree as $node) {
             if ($node['id'] == $nodeId) {
                 return $node;
             }
         }
 
-        foreach ($tree as $k => $node) {
+        foreach ($tree as $node) {
             if (!empty($node['children'])) {
                 $resultNode = self::searchTree($node['children'], $nodeId);
 

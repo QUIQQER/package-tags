@@ -44,16 +44,10 @@ QUI::$Ajax->registerFunction(
             );
         }
 
-        if (
-            isset($searchParams['sortOn']) &&
-            !empty($searchParams['sortOn'])
-        ) {
+        if (!empty($searchParams['sortOn'])) {
             $order = $searchParams['sortOn'];
 
-            if (
-                isset($searchParams['sortBy']) &&
-                !empty($searchParams['sortBy'])
-            ) {
+            if (!empty($searchParams['sortBy'])) {
                 $order .= ' ' . $searchParams['sortBy'];
             }
         }
@@ -83,12 +77,10 @@ QUI::$Ajax->registerFunction(
             ];
         }
 
-        $result = $Grid->parseResult(
+        return $Grid->parseResult(
             $tagSites,
-            \count($siteIds)
+            count($siteIds)
         );
-
-        return $result;
     },
     ['projectName', 'projectLang', 'tag', 'searchParams']
 );
