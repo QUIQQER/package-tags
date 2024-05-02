@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * This file contains the tag-search site type
+ *
+ * @var QUI\Projects\Project $Project
+ * @var QUI\Projects\Site $Site
+ * @var QUI\Interfaces\Template\EngineInterface $Engine
+ * @var QUI\Template $Template
+ **/
+
+/**
  * settings
  */
 
