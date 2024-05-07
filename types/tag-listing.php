@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file contains the tag-listing site type
+ *
+ * @var QUI\Projects\Project $Project
+ * @var QUI\Projects\Site $Site
+ * @var QUI\Interfaces\Template\EngineInterface $Engine
+ * @var QUI\Template $Template
+ **/
+
 $url = $_REQUEST['_url'];
 $url = pathinfo($url);
 

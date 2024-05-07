@@ -25,9 +25,9 @@ QUI::$Ajax->registerFunction(
         );
 
         $result = [];
-        $tags = \json_decode($tags, true);
+        $tags = json_decode($tags, true);
 
-        if (!\is_array($tags)) {
+        if (!is_array($tags)) {
             $tags = [];
         }
 
@@ -36,7 +36,7 @@ QUI::$Ajax->registerFunction(
                 if ($Tags->existsTag($tag)) {
                     $result[] = $Tags->get($tag);
                 }
-            } catch (QUI\Exception $Exception) {
+            } catch (QUI\Exception) {
             }
         }
 

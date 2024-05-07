@@ -7,7 +7,11 @@
 namespace QUI\Tags\Controls;
 
 use QUI;
+use QUI\Tags\Exception;
 use QUI\Tags\Groups\Handler as TagGroupsHandler;
+
+use function dirname;
+use function usort;
 
 /**
  * Class TagSelect
@@ -19,16 +23,17 @@ class TagSelect extends QUI\Control
     /**
      * Current Project
      *
-     * @var QUI\Projects\Project
+     * @var ?QUI\Projects\Project
      */
-    protected $Project = null;
+    protected ?QUI\Projects\Project $Project = null;
 
     /**
      * constructor
      *
      * @param array $attributes
+     * @throws QUI\Exception
      */
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         if (
             isset($attributes['Project'])
@@ -45,7 +50,7 @@ class TagSelect extends QUI\Control
         ]);
 
         $this->addCSSClass('quiqqer-tags-tagselect');
-        $this->addCSSFile(\dirname(__FILE__) . '/TagSelect.css');
+        $this->addCSSFile(dirname(__FILE__) . '/TagSelect.css');
 
         parent::__construct($attributes);
     }
@@ -53,9 +58,10 @@ class TagSelect extends QUI\Control
     /**
      * (non-PHPdoc)
      *
+     * @throws Exception
      * @see \QUI\Control::create()
      */
-    public function getBody()
+    public function getBody(): string
     {
         $Engine = QUI::getTemplateManager()->getEngine();
 
@@ -67,15 +73,16 @@ class TagSelect extends QUI\Control
             'selectedTags' => $this->getAttribute('selectedTags')
         ]);
 
-        return $Engine->fetch(\dirname(__FILE__) . '/TagSelect.html');
+        return $Engine->fetch(dirname(__FILE__) . '/TagSelect.html');
     }
 
     /**
      * Get all tag groups
      *
      * @return array
+     * @throws Exception
      */
-    public function getChildren()
+    public function getChildren(): array
     {
         $tagGroupIds = TagGroupsHandler::getGroupIds($this->Project);
         $children = [];
@@ -97,7 +104,7 @@ class TagSelect extends QUI\Control
         }
 
         // sort by priority DESC
-        \usort($children, function ($a, $b) {
+        usort($children, function ($a, $b) {
             $prioA = $a['priority'];
             $prioB = $b['priority'];
 

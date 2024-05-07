@@ -22,7 +22,7 @@ QUI::$Ajax->registerFunction(
         $Project = QUI::getProject($projectName, $projectLang);
         $Tags = new QUI\Tags\Manager($Project);
 
-        $gridParams = \json_decode($gridParams, true);
+        $gridParams = json_decode($gridParams, true);
         $Grid = new QUI\Utils\Grid($gridParams);
         $result = $Tags->getList($gridParams);
 
@@ -37,11 +37,11 @@ QUI::$Ajax->registerFunction(
                 }
 
                 // Sort tag groups alphabetically
-                \usort($tagGroups, function ($a, $b) {
-                    return \strnatcmp($a, $b);
+                usort($tagGroups, function ($a, $b) {
+                    return strnatcmp($a, $b);
                 });
 
-                $result[$k]['tagGroups'] = \implode(', ', $tagGroups);
+                $result[$k]['tagGroups'] = implode(', ', $tagGroups);
             }
         }
 

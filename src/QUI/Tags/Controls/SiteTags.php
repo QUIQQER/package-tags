@@ -7,6 +7,11 @@
 namespace QUI\Tags\Controls;
 
 use QUI;
+use QUI\Database\Exception;
+
+use function dirname;
+use function is_array;
+use function json_decode;
 
 /**
  * tag list control
@@ -20,7 +25,7 @@ class SiteTags extends QUI\Control
      *
      * @param array $attributes
      */
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         // defaults
         $this->setAttributes([
@@ -30,7 +35,7 @@ class SiteTags extends QUI\Control
         parent::__construct($attributes);
 
         $this->addCSSFile(
-            \dirname(__FILE__) . '/SiteTags.css'
+            dirname(__FILE__) . '/SiteTags.css'
         );
 
         $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
@@ -41,7 +46,7 @@ class SiteTags extends QUI\Control
      *
      * @see \QUI\Control::create()
      */
-    public function getBody()
+    public function getBody(): string
     {
         /* @var $Site QUI\Projects\Site */
         $Engine = QUI::getTemplateManager()->getEngine();
@@ -56,11 +61,11 @@ class SiteTags extends QUI\Control
         $tags = $Site->getAttribute('quiqqer.tags.tagList');
         $tagList = [];
 
-        if (\is_array($tags)) {
+        if (is_array($tags)) {
             foreach ($tags as $tag) {
                 try {
                     $tagList[] = $Tags->get($tag);
-                } catch (QUI\Exception $Exception) {
+                } catch (QUI\Exception) {
                 }
             }
         }
@@ -75,15 +80,16 @@ class SiteTags extends QUI\Control
             'SearchSite' => $this->getSearchSite()
         ]);
 
-        return $Engine->fetch(\dirname(__FILE__) . '/SiteTags.html');
+        return $Engine->fetch(dirname(__FILE__) . '/SiteTags.html');
     }
 
     /**
      * Return the global tag search site
      *
      * @return mixed|QUI\Projects\Site|QUI\Projects\Site\Edit
+     * @throws Exception|QUI\Exception
      */
-    protected function getSearchSite()
+    protected function getSearchSite(): mixed
     {
         $Site = $this->getAttribute('Site');
 
@@ -98,14 +104,14 @@ class SiteTags extends QUI\Control
             return $Project->get(
                 QUI\Cache\Manager::get($cacheName)
             );
-        } catch (QUI\Exception $Exception) {
+        } catch (QUI\Exception) {
         }
 
         $language = $Project->getLang();
         $tagSearchIds = $Project->getConfig('tags.tagSearchId');
 
         if ($tagSearchIds) {
-            $tagSearchIds = \json_decode($tagSearchIds, true);
+            $tagSearchIds = json_decode($tagSearchIds, true);
 
             if ($tagSearchIds[$language]) {
                 try {
@@ -114,7 +120,7 @@ class SiteTags extends QUI\Control
                     QUI\Cache\Manager::set($cacheName, $Site->getId());
 
                     return $Site;
-                } catch (QUI\Exception $Exception) {
+                } catch (QUI\Exception) {
                 }
             }
         }
