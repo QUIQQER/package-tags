@@ -6,8 +6,15 @@
 
 namespace QUI\Tags\Controls;
 
+use Exception;
 use QUI;
 use QUI\Tags\Groups\Handler as TagGroupsHandler;
+
+use function array_unique;
+use function dirname;
+use function implode;
+use function is_null;
+use function json_decode;
 
 /**
  * tag list control
@@ -21,23 +28,21 @@ class TagList extends QUI\Control
      *
      * @param array $attributes
      */
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
 
         $this->addCSSFile(
-            \dirname(__FILE__) . '/TagList.css'
+            dirname(__FILE__) . '/TagList.css'
         );
 
         $this->setAttribute('class', 'quiqqer-tags-list grid-100 grid-parent');
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \QUI\Control::create()
+     * @throws Exception
      */
-    public function getBody()
+    public function getBody(): string
     {
         $Engine = QUI::getTemplateManager()->getEngine();
         $Rewrite = QUI::getRewrite();
@@ -77,20 +82,21 @@ class TagList extends QUI\Control
         ]);
 
 
-        return $Engine->fetch(\dirname(__FILE__) . '/TagList.html');
+        return $Engine->fetch(dirname(__FILE__) . '/TagList.html');
     }
 
     /**
-     * Return a tag list by its sektor (title)
+     * Return a tag list by its sector (title)
      *
-     * @param String $sektor - tag sektor, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
-     * @param int $groupId (optional) - limit results to a specific tag group
+     * @param string $sector - tag sector, "abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vz", "123"
+     * @param int|null $groupId (optional) - limit results to a specific tag group
      *
      * @return array
+     * @throws Exception
      */
-    public function getList($sektor, $groupId = null)
+    public function getList(string $sector, int $groupId = null): array
     {
-        switch ($sektor) {
+        switch ($sector) {
             default:
             case 'abc':
                 $where = '(title LIKE "a%" OR title LIKE "b%" OR title LIKE "c%")';
@@ -141,7 +147,7 @@ class TagList extends QUI\Control
                 break;
         }
 
-        if (!\is_null($groupId)) {
+        if (!is_null($groupId)) {
             $TagGroup = TagGroupsHandler::get($this->getProject(), $groupId);
             $tags = [];
             $groupTags = $TagGroup->getTags();
@@ -154,12 +160,12 @@ class TagList extends QUI\Control
                 $tags[] = $tagData['tag'];
             }
 
-            $tags = \array_unique($tags);
+            $tags = array_unique($tags);
 
             if (empty($where)) {
-                $where .= '`tag` IN (\'' . \implode('\',\'', $tags) . '\')';
+                $where .= '`tag` IN (\'' . implode('\',\'', $tags) . '\')';
             } else {
-                $where .= ' AND `tag` IN (\'' . \implode('\',\'', $tags) . '\')';
+                $where .= ' AND `tag` IN (\'' . implode('\',\'', $tags) . '\')';
             }
         }
 
@@ -174,8 +180,9 @@ class TagList extends QUI\Control
      * Return the Tag Search Site
      *
      * @return QUI\Projects\Site
+     * @throws Exception
      */
-    protected function getSite()
+    protected function getSite(): QUI\Projects\Site
     {
         if ($this->getAttribute('Site')) {
             return $this->getAttribute('Site');
@@ -186,7 +193,7 @@ class TagList extends QUI\Control
         $tagSearchIds = $Project->getConfig('tags.tagSearchId');
 
         if ($tagSearchIds) {
-            $tagSearchIds = \json_decode($tagSearchIds, true);
+            $tagSearchIds = json_decode($tagSearchIds, true);
 
             if ($tagSearchIds[$language]) {
                 try {
@@ -194,7 +201,7 @@ class TagList extends QUI\Control
                     $this->setAttribute('Site', $Site);
 
                     return $Site;
-                } catch (QUI\Exception $Exception) {
+                } catch (QUI\Exception) {
                 }
             }
         }

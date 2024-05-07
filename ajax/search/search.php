@@ -30,8 +30,8 @@ QUI::$Ajax->registerFunction(
         if (!empty($group) && is_numeric($group)) {
             try {
                 $TagGroup = QUI\Tags\Groups\Handler::get($Project, $group);
-                return $TagGroup->searchTags($search, json_decode($params, true));
-            } catch (QUI\Exception $Exception) {
+                return $TagGroup->searchTags($search);
+            } catch (QUI\Exception) {
                 return $Tags->searchTags($search, json_decode($params, true));
             }
         } else {

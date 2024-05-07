@@ -18,7 +18,7 @@ QUI::$Ajax->registerFunction(
     function ($project, $groupId, $data) {
         try {
             $Project = QUI::getProjectManager()->decode($project);
-            $data = \json_decode($data, true);
+            $data = json_decode($data, true);
             $Group = QUI\Tags\Groups\Handler::get($Project, $groupId);
 
             if (isset($data['title'])) {
@@ -42,7 +42,7 @@ QUI::$Ajax->registerFunction(
             }
 
             if (isset($data['tags'])) {
-                $tags = \explode(',', $data['tags']);
+                $tags = explode(',', $data['tags']);
                 $Group->setTags($tags);
             }
 

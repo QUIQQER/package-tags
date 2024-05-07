@@ -21,7 +21,7 @@ QUI::$Ajax->registerFunction(
 
         $groupIds = QUI\Tags\Groups\Handler::getGroupIds(
             $Project,
-            $Grid->parseDBParams(\json_decode($params, true))
+            $Grid->parseDBParams(json_decode($params, true))
         );
 
         foreach ($groupIds as $groupId) {
