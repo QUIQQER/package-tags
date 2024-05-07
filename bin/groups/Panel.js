@@ -144,7 +144,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
             // buttons
             this.addButton({
                 name     : 'add',
-                text     : QUILocale.get('quiqqer/quiqqer', 'add'),
+                text     : QUILocale.get('quiqqer/core', 'add'),
                 textimage: 'fa fa-plus',
                 events   : {
                     onClick: this.openCreateGroupDialog
@@ -153,7 +153,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
 
             this.addButton({
                 name     : 'edit',
-                text     : QUILocale.get('quiqqer/quiqqer', 'edit'),
+                text     : QUILocale.get('quiqqer/core', 'edit'),
                 textimage: 'fa fa-edit',
                 disabled : true,
                 events   : {
@@ -172,7 +172,7 @@ define('package/quiqqer/tags/bin/groups/Panel', [
 
             this.addButton({
                 name     : 'delete',
-                text     : QUILocale.get('quiqqer/quiqqer', 'delete'),
+                text     : QUILocale.get('quiqqer/core', 'delete'),
                 textimage: 'fa fa-trash',
                 disabled : true,
                 events   : {
@@ -203,27 +203,27 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                 sortOn           : this.getAttribute('sortOn'),
                 serverSort       : true,
                 columnModel      : [{
-                    header   : QUILocale.get('quiqqer/quiqqer', 'id'),
+                    header   : QUILocale.get('quiqqer/core', 'id'),
                     dataIndex: 'id',
                     dataType : 'number',
                     width    : 50
                 }, {
-                    header   : QUILocale.get('quiqqer/quiqqer', 'title'),
+                    header   : QUILocale.get('quiqqer/core', 'title'),
                     dataIndex: 'title',
                     dataType : 'text',
                     width    : 200
                 }, {
-                    header   : QUILocale.get('quiqqer/quiqqer', 'workingtitle'),
+                    header   : QUILocale.get('quiqqer/core', 'workingtitle'),
                     dataIndex: 'workingtitle',
                     dataType : 'text',
                     width    : 200
                 }, {
-                    header   : QUILocale.get('quiqqer/quiqqer', 'description'),
+                    header   : QUILocale.get('quiqqer/core', 'description'),
                     dataIndex: 'desc',
                     dataType : 'text',
                     width    : 250
                 }, {
-                    header   : QUILocale.get('quiqqer/quiqqer', 'priority'),
+                    header   : QUILocale.get('quiqqer/core', 'priority'),
                     dataIndex: 'priority',
                     dataType : 'number',
                     width    : 100
@@ -333,9 +333,9 @@ define('package/quiqqer/tags/bin/groups/Panel', [
                         var Content = Win.getContent();
 
                         Content.set('html', Mustache.render(templateCreateGroup, {
-                            title      : QUILocale.get('quiqqer/quiqqer', 'title'),
-                            image      : QUILocale.get('quiqqer/quiqqer', 'image'),
-                            description: QUILocale.get('quiqqer/quiqqer', 'description')
+                            title      : QUILocale.get('quiqqer/core', 'title'),
+                            image      : QUILocale.get('quiqqer/core', 'image'),
+                            description: QUILocale.get('quiqqer/core', 'description')
                         }));
 
                         QUI.parse(Content).then(function () {
