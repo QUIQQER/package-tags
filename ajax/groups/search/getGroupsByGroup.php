@@ -15,7 +15,7 @@ QUI::$Ajax->registerFunction(
         $groups = [];
 
         if (!empty($recursive)) {
-            function getGroups(Group $Group, $Project, &$groups)
+            function getGroups(Group $Group, $Project, &$groups): void
             {
                 $subGroups = $Group->getChildrenIds();
                 $subGroupList = array_map(function ($groupId) use ($Project) {

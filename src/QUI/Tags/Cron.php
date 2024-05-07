@@ -9,6 +9,7 @@ namespace QUI\Tags;
 use QUI;
 
 use function count;
+use function explode;
 use function implode;
 
 /**
@@ -24,7 +25,7 @@ class Cron
      * @param array $params
      * @param QUI\Cron\Manager $CronManager
      */
-    public static function createCache($params, $CronManager)
+    public static function createCache(array $params, $CronManager): void
     {
         if (!isset($params['project'])) {
             return;
@@ -52,7 +53,7 @@ class Cron
         $_tmp = [];
 
         foreach ($result as $entry) {
-            $tags = \explode(',', $entry['tags']);
+            $tags = explode(',', $entry['tags']);
 
             foreach ($tags as $tag) {
                 if (empty($tag)) {
@@ -92,7 +93,7 @@ class Cron
                     if ($Site->getAttribute('active')) {
                         $siteIds[] = $siteId;
                     }
-                } catch (QUI\Exception $Exception) {
+                } catch (QUI\Exception) {
                     continue;
                 }
             }

@@ -14,6 +14,9 @@
  *
  * @return array
  */
+
+use QUI\System\Log;
+
 QUI::$Ajax->registerFunction(
     'package_quiqqer_tags_ajax_tag_add',
     function (
@@ -26,12 +29,12 @@ QUI::$Ajax->registerFunction(
             QUI::getProject($projectName, $projectLang)
         );
 
-        $tagParams = \json_decode($tagParams, true);
+        $tagParams = json_decode($tagParams, true);
 
         try {
             $tag = $Tags->add($tag, $tagParams);
         } catch (QUI\Exception $Exception) {
-            \QUI\System\Log::writeException($Exception);
+            Log::writeException($Exception);
         }
 
         return $Tags->get($Tags->clearTagName($tag));

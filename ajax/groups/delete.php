@@ -10,7 +10,7 @@ use QUI\Tags\Groups\Handler;
  * Delete one ore more tag groups
  *
  * @param string $project - JSON project params
- * @param array $groupIds - IDs of the tag groups that are to be delteted
+ * @param array $groupIds - IDs of the tag groups that are to be deleted
  *
  * @return bool - success
  */
@@ -19,7 +19,7 @@ QUI::$Ajax->registerFunction(
     function ($project, $groupIds) {
         try {
             $Project = QUI::getProjectManager()->decode($project);
-            $groupIds = \json_decode($groupIds, true);
+            $groupIds = json_decode($groupIds, true);
 
             foreach ($groupIds as $id) {
                 Handler::delete($Project, $id);

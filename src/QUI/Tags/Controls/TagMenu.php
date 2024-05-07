@@ -7,7 +7,11 @@
 namespace QUI\Tags\Controls;
 
 use QUI;
+use QUI\Exception;
 use QUI\Tags\Groups\Handler as TagGroupsHandler;
+
+use function dirname;
+use function usort;
 
 /**
  * Class TagMenu
@@ -17,16 +21,17 @@ class TagMenu extends QUI\Control
     /**
      * Current Project
      *
-     * @var QUI\Projects\Project
+     * @var ?QUI\Projects\Project
      */
-    protected $Project = null;
+    protected ?QUI\Projects\Project $Project = null;
 
     /**
      * constructor
      *
      * @param array $attributes
+     * @throws Exception
      */
-    public function __construct($attributes = [])
+    public function __construct(array $attributes = [])
     {
         if (
             isset($attributes['Project'])
@@ -44,7 +49,7 @@ class TagMenu extends QUI\Control
         ]);
 
         $this->addCSSClass('quiqqer-tags-tagmenu');
-        $this->addCSSFile(\dirname(__FILE__) . '/TagMenu.css');
+        $this->addCSSFile(dirname(__FILE__) . '/TagMenu.css');
 
         parent::__construct($attributes);
     }
@@ -52,9 +57,10 @@ class TagMenu extends QUI\Control
     /**
      * (non-PHPdoc)
      *
+     * @throws Exception
      * @see \QUI\Control::create()
      */
-    public function getBody()
+    public function getBody(): string
     {
         $Engine = QUI::getTemplateManager()->getEngine();
 
@@ -70,21 +76,22 @@ class TagMenu extends QUI\Control
         $Engine->assign([
             'children' => $this->getChildren(),
             'this' => $this,
-            'childrenTemplate' => \dirname(__FILE__) . '/TagMenu.Children.html',
+            'childrenTemplate' => dirname(__FILE__) . '/TagMenu.Children.html',
             'Rewrite' => QUI::getRewrite(),
             'tagSearchUrl' => $tagSearchUrl,
             'selectedTags' => $this->getAttribute('selectedTags')
         ]);
 
-        return $Engine->fetch(\dirname(__FILE__) . '/TagMenu.html');
+        return $Engine->fetch(dirname(__FILE__) . '/TagMenu.html');
     }
 
     /**
      * Get all tag groups
      *
      * @return array
+     * @throws QUI\Tags\Exception
      */
-    public function getChildren()
+    public function getChildren(): array
     {
         $tagGroupIds = TagGroupsHandler::getGroupIds($this->Project);
         $children = [];
@@ -107,7 +114,7 @@ class TagMenu extends QUI\Control
         }
 
         // sort by priority DESC
-        \usort($children, function ($a, $b) {
+        usort($children, function ($a, $b) {
             $prioA = $a['priority'];
             $prioB = $b['priority'];
 
