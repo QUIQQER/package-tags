@@ -114,7 +114,7 @@ define('package/quiqqer/tags/bin/groups/Group', [
         $onCreate: function () {
             this.addButton({
                 name     : 'save',
-                text     : QUILocale.get('quiqqer/quiqqer', 'save'),
+                text     : QUILocale.get('quiqqer/core', 'save'),
                 textimage: 'fa fa-save',
                 events   : {
                     onClick: this.save
@@ -123,7 +123,7 @@ define('package/quiqqer/tags/bin/groups/Group', [
 
             this.addCategory({
                 name  : 'information',
-                text  : QUILocale.get('quiqqer/quiqqer', 'information'),
+                text  : QUILocale.get('quiqqer/core', 'information'),
                 icon  : 'fa fa-file-o',
                 events: {
                     onClick: this.$openInformation
@@ -208,13 +208,13 @@ define('package/quiqqer/tags/bin/groups/Group', [
                 var Content = this.getContent();
 
                 Content.set('html', Mustache.render(templateGroupInformation, {
-                    tableHeader : QUILocale.get('quiqqer/quiqqer', 'information'),
-                    title       : QUILocale.get('quiqqer/quiqqer', 'title'),
-                    workingtitle: QUILocale.get('quiqqer/quiqqer', 'workingtitle'),
-                    project     : QUILocale.get('quiqqer/quiqqer', 'project'),
-                    image       : QUILocale.get('quiqqer/quiqqer', 'image'),
-                    desc        : QUILocale.get('quiqqer/quiqqer', 'description'),
-                    priority    : QUILocale.get('quiqqer/quiqqer', 'priority'),
+                    tableHeader : QUILocale.get('quiqqer/core', 'information'),
+                    title       : QUILocale.get('quiqqer/core', 'title'),
+                    workingtitle: QUILocale.get('quiqqer/core', 'workingtitle'),
+                    project     : QUILocale.get('quiqqer/core', 'project'),
+                    image       : QUILocale.get('quiqqer/core', 'image'),
+                    desc        : QUILocale.get('quiqqer/core', 'description'),
+                    priority    : QUILocale.get('quiqqer/core', 'priority'),
                     parent      : QUILocale.get('quiqqer/tags', 'tag.groups.panel.template.parent')
                 }));
 
