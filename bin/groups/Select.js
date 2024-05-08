@@ -287,7 +287,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
             };
 
             new QUIButton({
-                text  : QUILocale.get('quiqqer/quiqqer', 'save'),
+                text  : QUILocale.get('quiqqer/core', 'save'),
                 events: {
                     onClick: function () {
                         self.createTagGroup(title).then(function () {
@@ -304,7 +304,7 @@ define('package/quiqqer/tags/bin/groups/Select', [
             }).inject(Container);
 
             new QUIButton({
-                text  : QUILocale.get('quiqqer/quiqqer', 'cancel'),
+                text  : QUILocale.get('quiqqer/core', 'cancel'),
                 events: {
                     onClick: hide
                 },
