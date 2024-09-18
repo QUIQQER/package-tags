@@ -137,7 +137,11 @@ class Group
 
         $this->setTitle($data['title']);
         $this->setWorkingTitle($data['workingtitle']);
-        $this->setDescription($data['desc']);
+
+        if (!empty($data['desc'])) {
+            $this->setDescription($data['desc']);
+        }
+
         $this->setPriority($data['priority']);
         $this->setGenerateStatus($data['generated']);
         $this->setGenerator($data['generator']);
