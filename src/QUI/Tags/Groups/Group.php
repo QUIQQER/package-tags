@@ -286,10 +286,14 @@ class Group
      * Set the tag group title
      * no html allowed
      *
-     * @param string $title
+     * @param string|null $title
      */
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
+        if ($title === null) {
+            return;
+        }
+
         if (!empty($title)) {
             $title = trim(Orthos::removeHTML($title));
         }
@@ -301,10 +305,14 @@ class Group
      * Set the tag group working title
      * no html allowed
      *
-     * @param string $title
+     * @param string|null $title
      */
-    public function setWorkingTitle(string $title): void
+    public function setWorkingTitle(?string $title): void
     {
+        if ($title === null) {
+            return;
+        }
+
         if (!empty($title)) {
             $title = trim(Orthos::removeHTML($title));
         }
@@ -316,10 +324,14 @@ class Group
      * Set the tag group description
      * no html allowed
      *
-     * @param string $description
+     * @param string|null $description
      */
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
+        if ($description === null) {
+            return;
+        }
+
         if (!empty($description)) {
             $description = trim(Orthos::removeHTML($description));
         }
