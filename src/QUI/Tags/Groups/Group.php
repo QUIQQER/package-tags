@@ -8,6 +8,7 @@ namespace QUI\Tags\Groups;
 
 use Exception;
 use QUI;
+use QUI\Projects\Media\Image;
 use QUI\Projects\Project;
 use QUI\Utils\Security\Orthos;
 
@@ -368,10 +369,14 @@ class Group
     /**
      * Set string describing the generator of the tags (e.g. package name)
      *
-     * @param string $generator
+     * @param string|null $generator
      */
-    public function setGenerator(string $generator): void
+    public function setGenerator(?string $generator): void
     {
+        if (empty($generator)) {
+            return;
+        }
+
         $this->generator = $generator;
         $this->generated = true;
     }
@@ -379,12 +384,12 @@ class Group
     /**
      * Set the tag group image
      *
-     * @param string|QUI\Projects\Media\Image $Image
+     * @param Image|string|null $Image
      *
-     * @throws QUI\Tags\Exception
      * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
-    public function setImage(QUI\Projects\Media\Image|string $Image): void
+    public function setImage(null|QUI\Projects\Media\Image|string $Image): void
     {
         if (empty($Image)) {
             $this->image = '';
