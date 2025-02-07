@@ -8,6 +8,7 @@ namespace QUI\Tags\Groups;
 
 use Exception;
 use QUI;
+use QUI\Projects\Media\Image;
 use QUI\Projects\Project;
 use QUI\Utils\Security\Orthos;
 
@@ -137,7 +138,11 @@ class Group
 
         $this->setTitle($data['title']);
         $this->setWorkingTitle($data['workingtitle']);
-        $this->setDescription($data['desc']);
+
+        if (!empty($data['desc'])) {
+            $this->setDescription($data['desc']);
+        }
+
         $this->setPriority($data['priority']);
         $this->setGenerateStatus($data['generated']);
         $this->setGenerator($data['generator']);
@@ -282,10 +287,14 @@ class Group
      * Set the tag group title
      * no html allowed
      *
-     * @param string $title
+     * @param string|null $title
      */
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
+        if ($title === null) {
+            return;
+        }
+
         if (!empty($title)) {
             $title = trim(Orthos::removeHTML($title));
         }
@@ -297,10 +306,14 @@ class Group
      * Set the tag group working title
      * no html allowed
      *
-     * @param string $title
+     * @param string|null $title
      */
-    public function setWorkingTitle(string $title): void
+    public function setWorkingTitle(?string $title): void
     {
+        if ($title === null) {
+            return;
+        }
+
         if (!empty($title)) {
             $title = trim(Orthos::removeHTML($title));
         }
@@ -312,10 +325,14 @@ class Group
      * Set the tag group description
      * no html allowed
      *
-     * @param string $description
+     * @param string|null $description
      */
-    public function setDescription(string $description): void
+    public function setDescription(?string $description): void
     {
+        if ($description === null) {
+            return;
+        }
+
         if (!empty($description)) {
             $description = trim(Orthos::removeHTML($description));
         }
@@ -352,10 +369,14 @@ class Group
     /**
      * Set string describing the generator of the tags (e.g. package name)
      *
-     * @param string $generator
+     * @param string|null $generator
      */
-    public function setGenerator(string $generator): void
+    public function setGenerator(?string $generator): void
     {
+        if (empty($generator)) {
+            return;
+        }
+
         $this->generator = $generator;
         $this->generated = true;
     }
@@ -363,12 +384,12 @@ class Group
     /**
      * Set the tag group image
      *
-     * @param string|QUI\Projects\Media\Image $Image
+     * @param Image|string|null $Image
      *
-     * @throws QUI\Tags\Exception
      * @throws QUI\Exception
+     * @throws QUI\Tags\Exception
      */
-    public function setImage(QUI\Projects\Media\Image|string $Image): void
+    public function setImage(null|QUI\Projects\Media\Image|string $Image): void
     {
         if (empty($Image)) {
             $this->image = '';
