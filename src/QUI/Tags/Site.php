@@ -40,8 +40,9 @@ class Site
 
         // register path
         if (
-            $Site->getAttribute('type') == 'quiqqer/tags:types/tag-listing' &&
-            $Site->getAttribute('active')
+            $Site->getAttribute('type') == 'quiqqer/tags:types/tag-listing'
+            && $Site->getAttribute('active')
+            && method_exists($Site, 'getLocation')
         ) {
             $url = $Site->getLocation();
             $url = str_replace(QUI\Rewrite::getDefaultSuffix(), '', $url);

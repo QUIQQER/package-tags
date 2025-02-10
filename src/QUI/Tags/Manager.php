@@ -976,10 +976,10 @@ class Manager
     /**
      * Set tags to a site
      *
-     * @param string $siteId - id of the Site ID
+     * @param string|int $siteId - id of the Site ID
      * @param array $tags - Tag List
      */
-    public function setSiteTags(string $siteId, array $tags): void
+    public function setSiteTags(string | int $siteId, array $tags): void
     {
         $siteId = (int)$siteId;
         $Site = new Edit($this->Project, $siteId);
@@ -1145,9 +1145,9 @@ class Manager
     /**
      * Delete the tags from a site
      *
-     * @param string $siteId
+     * @param string|int $siteId
      */
-    public function deleteSiteTags(string $siteId): void
+    public function deleteSiteTags(string | int $siteId): void
     {
         $table = QUI::getDBProjectTableName(
             'tags_sites',

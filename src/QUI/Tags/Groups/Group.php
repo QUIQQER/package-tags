@@ -225,7 +225,7 @@ class Group
      *
      * @return QUI\Projects\Media\Image|false
      */
-    public function getImage(): QUI\Projects\Media\Image|bool
+    public function getImage(): QUI\Projects\Media\Image | bool
     {
         if (QUI\Projects\Media\Utils::isMediaUrl($this->image)) {
             try {
@@ -389,7 +389,7 @@ class Group
      * @throws QUI\Exception
      * @throws QUI\Tags\Exception
      */
-    public function setImage(null|QUI\Projects\Media\Image|string $Image): void
+    public function setImage(null | QUI\Projects\Media\Image | string $Image): void
     {
         if (empty($Image)) {
             $this->image = '';
@@ -567,15 +567,7 @@ class Group
             return;
         }
 
-        try {
-            $tagData = $this->Manager->get($tag);
-        } catch (QUI\Tags\Exception $Exception) {
-            throw $Exception;
-        } catch (QUI\Exception $Exception) {
-            QUI\System\Log::writeException($Exception);
-
-            return;
-        }
+        $tagData = $this->Manager->get($tag);
 
         if (!isset($this->tags[$tagData['tag']])) {
             $this->tags[$tagData['tag']] = $tagData;

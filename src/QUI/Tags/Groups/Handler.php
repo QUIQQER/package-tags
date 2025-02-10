@@ -75,7 +75,7 @@ class Handler
      * @throws QUI\Tags\Exception
      * @throws QUI\Database\Exception
      */
-    public static function create(Project $Project, string $title, QUI\Interfaces\Users\User $User = null): Group
+    public static function create(Project $Project, string $title, null | QUI\Interfaces\Users\User $User = null): Group
     {
         QUI\Permissions\Permission::checkPermission('tags.group.create', $User);
 
@@ -86,7 +86,7 @@ class Handler
 
         $gid = QUI::getDataBase()->getPDO()->lastInsertId();
 
-        return self::get($Project, $gid);
+        return self::get($Project, (int)$gid);
     }
 
     /**
@@ -136,7 +136,7 @@ class Handler
      * @throws QUI\Tags\Exception
      * @throws Exception
      */
-    public static function delete(Project $Project, int $groupId, QUI\Interfaces\Users\User $User = null): void
+    public static function delete(Project $Project, int $groupId, null | QUI\Interfaces\Users\User $User = null): void
     {
         QUI\Permissions\Permission::checkPermission('tags.group.delete', $User);
 
@@ -560,7 +560,7 @@ class Handler
      * @param int $nodeId - ID of the node to search for
      * @return array|false
      */
-    protected static function searchTree(array $tree, int $nodeId): bool|array
+    protected static function searchTree(array $tree, int $nodeId): bool | array
     {
         foreach ($tree as $node) {
             if ($node['id'] == $nodeId) {
