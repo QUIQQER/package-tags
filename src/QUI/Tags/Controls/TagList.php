@@ -94,7 +94,7 @@ class TagList extends QUI\Control
      * @return array
      * @throws Exception
      */
-    public function getList(string $sector, int $groupId = null): array
+    public function getList(string $sector, null | int $groupId = null): array
     {
         switch ($sector) {
             default:
